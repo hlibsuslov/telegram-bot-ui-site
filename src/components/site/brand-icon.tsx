@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FileText, SquareTerminal } from "lucide-react";
+import { Boxes, Feather, FileText, SquareTerminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GithubMark } from "./section";
 
@@ -13,9 +13,12 @@ const LOGOS = {
   antigravity: { light: "/logos/antigravity.svg" },
   copilot: { light: "/logos/copilot.svg", dark: "/logos/copilot-dark.svg" },
   python: { light: "/logos/python.svg" },
+  grok: { light: "/logos/grok.svg", dark: "/logos/grok-dark.svg" },
+  opencode: { light: "/logos/opencode.svg", dark: "/logos/opencode-dark.svg" },
+  replit: { light: "/logos/replit.svg" },
 } satisfies Record<string, { light: string; dark?: string }>;
 
-export type BrandKey = keyof typeof LOGOS | "github" | "terminal" | "file";
+export type BrandKey = keyof typeof LOGOS | "github" | "terminal" | "file" | "hermes" | "any";
 
 export function BrandIcon({ name, className }: { name: BrandKey; className?: string }) {
   const size = cn("size-4 shrink-0", className);
@@ -26,6 +29,10 @@ export function BrandIcon({ name, className }: { name: BrandKey; className?: str
       return <SquareTerminal aria-hidden="true" className={size} strokeWidth={1.75} />;
     case "file":
       return <FileText aria-hidden="true" className={size} strokeWidth={1.75} />;
+    case "hermes":
+      return <Feather aria-hidden="true" className={size} strokeWidth={1.75} />;
+    case "any":
+      return <Boxes aria-hidden="true" className={size} strokeWidth={1.75} />;
     default: {
       const logo: { light: string; dark?: string } = LOGOS[name];
       return (

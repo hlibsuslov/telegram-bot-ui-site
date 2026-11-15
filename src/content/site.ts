@@ -38,62 +38,144 @@ export const AGENTS: { name: string; icon: BrandKey }[] = [
   { name: "Gemini CLI", icon: "gemini" },
   { name: "Antigravity", icon: "antigravity" },
   { name: "GitHub Copilot", icon: "copilot" },
+  { name: "OpenCode", icon: "opencode" },
+  { name: "Grok Build", icon: "grok" },
+  { name: "Hermes Agent", icon: "hermes" },
+  { name: "Replit Agent", icon: "replit" },
   { name: "Devin", icon: "terminal" },
   { name: "AGENTS.md readers", icon: "file" },
 ];
 
-export type InstallMethod = {
+export type InstallStep = { label: string; command: string };
+
+export type InstallGuide = {
   id: string;
   label: string;
   icon: BrandKey;
   title: string;
   note: string;
-  commands: string[];
+  steps: InstallStep[];
+  update: InstallStep;
+  alt?: InstallStep & { note: string };
 };
 
-export const INSTALL_METHODS: InstallMethod[] = [
+const SKILLS_ADD = "npx skills add hlibsuslov/telegram-bot-ui";
+
+/** `npx skills` guide for one agent, installed for every project (-g). */
+function skillsCli(id: string, label: string, icon: BrandKey, agent: string, note: string, alt?: InstallGuide["alt"]): InstallGuide {
+  return {
+    id,
+    label,
+    icon,
+    title: `${label}: install with the skills CLI`,
+    note,
+    steps: [{ label: "Install", command: `${SKILLS_ADD} -a ${agent} -g -y` }],
+    update: { label: "Update to the latest", command: "npx skills update telegram-bot-ui -g -y" },
+    alt,
+  };
+}
+
+// Commands come from the skill README and the official docs of each tool; the
+// skills CLI ones (vercel-labs/skills, docs/agents.md) were run against this
+// repository on 2026-11-15. `npx skills` installs the latest commit of main;
+// `gh skill` installs the latest tagged release.
+export const INSTALL_GUIDES: InstallGuide[] = [
+  {
+    id: "any",
+    label: "Any agent",
+    icon: "any",
+    title: "Any agent: pick yours in the prompt",
+    note: "Run it in your project; the CLI finds the agents on your machine and asks where to install. Add -g to install for every project. Needs Node.js 22.20 or later.",
+    steps: [{ label: "Install", command: SKILLS_ADD }],
+    update: { label: "Update to the latest", command: "npx skills update telegram-bot-ui" },
+    alt: {
+      label: "Or with the GitHub CLI (2.96+), latest tagged release",
+      command: "gh skill install hlibsuslov/telegram-bot-ui",
+      note: "Update with gh skill update.",
+    },
+  },
   {
     id: "claude",
-    icon: "claude",
     label: "Claude Code",
-    title: "Claude Code plugin: skill plus five subagents",
-    note: "Inside a Claude Code session (2.1.275 or later).",
-    commands: ["/plugin install telegram-bot-ui --marketplace hlibsuslov/telegram-bot-ui"],
+    icon: "claude",
+    title: "Claude Code: plugin with the skill and five subagents",
+    note: "Run inside a Claude Code session (2.1.275 or later). The skill is then /telegram-bot-ui:telegram-bot-ui.",
+    steps: [{ label: "Install", command: "/plugin install telegram-bot-ui --marketplace hlibsuslov/telegram-bot-ui" }],
+    update: { label: "Update to the latest", command: "claude plugin update telegram-bot-ui" },
+    alt: {
+      label: "Or the skill alone, without subagents",
+      command: `${SKILLS_ADD} -a claude-code -g -y`,
+      note: "Installs to ~/.claude/skills.",
+    },
   },
+  skillsCli("codex", "Codex", "codex", "codex", "Installs to ~/.agents/skills. Call it with $telegram-bot-ui or just describe the task.", {
+    label: "Or as a Codex plugin",
+    command: "codex plugin marketplace add hlibsuslov/telegram-bot-ui",
+    note: "Then install telegram-bot-ui from the Plugins directory in Codex.",
+  }),
+  skillsCli("cursor", "Cursor", "cursor", "cursor", "Installs to ~/.cursor/skills. Cursor picks it up by description or from the / menu."),
   {
-    id: "gh",
-    icon: "github",
-    label: "GitHub CLI",
-    title: "Any agent, with the GitHub CLI",
-    note: "gh 2.96 or later. It asks which agents to install for: claude-code, codex, cursor, gemini-cli, github-copilot, antigravity and more.",
-    commands: ["gh skill install hlibsuslov/telegram-bot-ui"],
+    id: "copilot",
+    label: "GitHub Copilot",
+    icon: "copilot",
+    title: "GitHub Copilot: install with the GitHub CLI",
+    note: "GitHub CLI 2.96 or later; installs the latest tagged release for Copilot.",
+    steps: [
+      {
+        label: "Install",
+        command: "gh skill install hlibsuslov/telegram-bot-ui telegram-bot-ui --agent github-copilot --scope user",
+      },
+    ],
+    update: { label: "Update to the latest", command: "gh skill update" },
+    alt: {
+      label: "Or with the skills CLI",
+      command: `${SKILLS_ADD} -a github-copilot -g -y`,
+      note: "Installs to ~/.copilot/skills.",
+    },
   },
+  skillsCli("gemini", "Gemini CLI", "gemini", "gemini-cli", "Installs to ~/.gemini/skills.", {
+    label: "Or with Gemini’s own installer",
+    command: "gemini skills install https://github.com/hlibsuslov/telegram-bot-ui",
+    note: "Gemini asks for consent the first time the skill activates.",
+  }),
+  skillsCli("antigravity", "Antigravity", "antigravity", "antigravity", "Installs to ~/.gemini/config/skills; the skill becomes a slash command."),
+  skillsCli("opencode", "OpenCode", "opencode", "opencode", "Installs to ~/.config/opencode/skills."),
+  skillsCli("grok", "Grok Build", "grok", "grok", "xAI Grok Build. Installs to ~/.grok/skills."),
+  skillsCli("hermes", "Hermes Agent", "hermes", "hermes-agent", "Installs to ~/.hermes/skills.", {
+    label: "Or with Hermes’ own installer",
+    command: "hermes skills install hlibsuslov/telegram-bot-ui/skills/telegram-bot-ui",
+    note: "From the Hermes Agent docs.",
+  }),
   {
-    id: "npx",
-    icon: "terminal",
-    label: "skills CLI",
-    title: "Any agent, with the open skills CLI",
-    note: "Runs through npx, so it only needs Node.js.",
-    commands: ["npx skills add hlibsuslov/telegram-bot-ui"],
+    id: "replit",
+    label: "Replit Agent",
+    icon: "replit",
+    title: "Replit Agent: add it to your Repl",
+    note: "Run it in the Repl’s Shell. Replit reads skills from the project’s .agents/skills folder.",
+    steps: [{ label: "Install", command: `${SKILLS_ADD} -a replit -y` }],
+    update: { label: "Update to the latest", command: "npx skills update telegram-bot-ui -p -y" },
+    alt: {
+      label: "Or without the Shell",
+      command: "https://github.com/hlibsuslov/telegram-bot-ui",
+      note: "In Agent, open + → Use a skill and import this repository URL.",
+    },
   },
-  {
-    id: "gemini",
-    icon: "gemini",
-    label: "Gemini CLI",
-    title: "Gemini CLI and Antigravity",
-    note: "Antigravity reads the same .agents/skills folder as Gemini CLI, so a project install covers both.",
-    commands: ["gemini skills install https://github.com/hlibsuslov/telegram-bot-ui"],
-  },
+  skillsCli("devin", "Devin", "terminal", "devin", "Devin for Terminal. Installs to ~/.config/devin/skills."),
+  skillsCli("cline", "Cline", "file", "cline", "Installs to ~/.agents/skills."),
   {
     id: "installer",
+    label: "No Node.js",
     icon: "python",
-    label: "Installer",
-    title: "Without a package manager: clone and run the installer",
-    note: "Standard-library Python. On Windows use py -3 instead of python. Add --dry-run to see the plan first.",
-    commands: [
-      "git clone https://github.com/hlibsuslov/telegram-bot-ui.git && cd telegram-bot-ui",
-      "python scripts/install.py --host all --scope user",
+    title: "Without Node.js: clone and run the installer",
+    note: "Standard-library Python; on Windows use py -3 instead of python. --host takes claude, codex, cursor, gemini, copilot or all; add --dry-run to see the plan first. Includes the subagents.",
+    steps: [
+      { label: "Clone", command: "git clone https://github.com/hlibsuslov/telegram-bot-ui.git && cd telegram-bot-ui" },
+      { label: "Install", command: "python scripts/install.py --host all --scope user" },
     ],
+    update: {
+      label: "Update to the latest (inside the clone)",
+      command: "git pull && python scripts/install.py --host all --scope user",
+    },
   },
 ];
 
@@ -162,7 +244,7 @@ export const FAQ = [
   },
   {
     q: "What is not verified yet?",
-    a: "Agent evals are prepared but not yet run. Cursor, Antigravity, Copilot, Devin and Cline were checked by documentation only. Live calls to Telegram and rendering in the Telegram apps are not part of the offline checks, and the skill tells your agent to say which level of evidence it has.",
+    a: "Agent evals are prepared but not yet run. Cursor, Antigravity, Copilot, Devin, Cline, OpenCode, Grok Build, Hermes Agent and Replit Agent were checked by documentation only. Live calls to Telegram and rendering in the Telegram apps are not part of the offline checks, and the skill tells your agent to say which level of evidence it has.",
   },
   {
     q: "Is this an official Telegram project?",

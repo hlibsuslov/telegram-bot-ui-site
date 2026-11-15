@@ -1,4 +1,4 @@
-import { BOT_API, INSTALL_METHODS, REPO_URL, VERIFIED_ON } from "@/content/site";
+import { BOT_API, INSTALL_GUIDES, REPO_URL, VERIFIED_ON } from "@/content/site";
 import { InstallWindow } from "./install-window";
 import { Section } from "./section";
 
@@ -25,11 +25,11 @@ export function Install() {
     <Section
       id="install"
       eyebrow="Install"
-      title="One line, then just ask."
-      description="Pick the way that fits your agent. The skill activates on its own: no API names needed."
+      title="Pick your agent, copy one line."
+      description="Every command installs the latest version and comes with the one that updates it. Then just ask: the skill activates on its own, no API names needed."
     >
       <div className="space-y-12">
-        <InstallWindow methods={INSTALL_METHODS} />
+        <InstallWindow guides={INSTALL_GUIDES} />
         <div className="min-w-0">
           <h3 className="font-semibold">Then, in your bot’s repository</h3>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

@@ -10,6 +10,10 @@ const HOSTS: { name: string; icon: BrandKey; how: string; call?: string }[] = [
   { name: "Gemini CLI", icon: "gemini", how: "~/.gemini/skills, or gemini skills install from the repository URL." },
   { name: "Antigravity", icon: "antigravity", how: "Reads .agents/skills in the workspace; skills become slash commands.", call: "/telegram-bot-ui" },
   { name: "GitHub Copilot", icon: "copilot", how: "Reads ~/.agents/skills; optional copilot-instructions block." },
+  { name: "OpenCode", icon: "opencode", how: "Reads .agents/skills in the project and ~/.config/opencode/skills." },
+  { name: "Grok Build", icon: "grok", how: "xAI’s agent. Reads .grok/skills and ~/.grok/skills." },
+  { name: "Hermes Agent", icon: "hermes", how: "Reads ~/.hermes/skills; project folders after hermes skills trust." },
+  { name: "Replit Agent", icon: "replit", how: "Reads .agents/skills in the Repl, or imports the skill from the repository URL." },
   { name: "Devin", icon: "terminal", how: "Reads ~/.agents/skills; install with --host codex." },
   { name: "AGENTS.md readers", icon: "file", how: "Cline and others: paste the AGENTS.md snippet and keep the folder in the repo." },
 ];
@@ -22,8 +26,8 @@ export function Agents() {
       title="One skill folder, every major coding agent."
       description={
         <>
-          The skill is one folder with a <code className="font-mono text-[0.9em]">SKILL.md</code> entry point. Every
-          install path is checked against each host’s documentation.{" "}
+          The skill is one folder with a <code className="font-mono text-[0.9em]">SKILL.md</code> entry point. Install
+          paths follow each host’s own documentation.{" "}
           <a href={HOSTS_URL} className="text-brand underline underline-offset-4 hover:no-underline">
             See how each host loads it
           </a>
