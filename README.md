@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# telegram-bot-ui-site
 
-## Getting Started
+Landing page for [telegram-bot-ui](https://github.com/hlibsuslov/telegram-bot-ui), an open-source Agent Skill for Telegram bot UI and UX.
 
-First, run the development server:
+Next.js (App Router) + Tailwind CSS + shadcn/ui. Sections are adapted from 21st.dev blocks; the chat mock-ups are hand-drawn SVG in `src/components/chat/`.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+npm run lint && npm run build
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Every claim comes from the skill repository. Facts, install commands and FAQ live in `src/content/site.ts`; update it with each skill release.
+- Demo video: put the files in `public/` and fill `DEMO_VIDEO.src` and `DEMO_VIDEO.poster` in `src/content/site.ts`. The block stays hidden while `src` is empty.
+- The GitHub star count is fetched at build time and refreshed hourly.
+- `NEXT_PUBLIC_SITE_URL` overrides the canonical URL; on Vercel it defaults to the production domain.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
