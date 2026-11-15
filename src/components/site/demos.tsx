@@ -8,32 +8,8 @@ import {
   RichAndWidget,
   StreamingReply,
 } from "@/components/chat/demos";
-import { COMPARISON, DEMO_VIDEO } from "@/content/site";
-import { Container, Section } from "./section";
-
-/** Video near the hero; renders nothing until DEMO_VIDEO.src is set. */
-export function DemoVideo() {
-  if (!DEMO_VIDEO.src) return null;
-  return (
-    <Container className="pb-8">
-      <figure className="overflow-hidden rounded-2xl border border-border bg-card">
-        <video
-          controls
-          preload="none"
-          playsInline
-          poster={DEMO_VIDEO.poster || undefined}
-          width={DEMO_VIDEO.width}
-          height={DEMO_VIDEO.height}
-          className="block h-auto w-full"
-        >
-          <source src={DEMO_VIDEO.src} />
-          <a href={DEMO_VIDEO.src}>Watch the demo video</a>
-        </video>
-        <figcaption className="px-4 py-3 text-sm text-muted-foreground">{DEMO_VIDEO.title}</figcaption>
-      </figure>
-    </Container>
-  );
-}
+import { COMPARISON } from "@/content/site";
+import { Section } from "./section";
 
 function DemoCard({
   index,

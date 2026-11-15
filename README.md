@@ -16,7 +16,7 @@ npm run lint && npm run build
 ## Content
 
 - Every claim comes from the skill repository. Facts, install commands and FAQ live in `src/content/site.ts`; update it with each skill release.
-- Demo video: put the files in `public/` and fill `DEMO_VIDEO.src` and `DEMO_VIDEO.poster` in `src/content/site.ts`. The block stays hidden while `src` is empty.
+- Demo video: web copies in `public/video/` (1280x720 H.264 MP4 with faststart and VP9 WebM, ~1.7 MB and ~1.3 MB), wired up in `DEMO_VIDEO` in `src/content/site.ts`. It loads only when played, autoplays muted while in view and never autoplays with reduced motion.
 - The GitHub star count is fetched at build time and refreshed hourly.
 - `NEXT_PUBLIC_SITE_URL` overrides the canonical URL; on Vercel it defaults to the production domain.
 

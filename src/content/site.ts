@@ -17,23 +17,17 @@ export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for Telegram bot desi
 export const SITE_DESCRIPTION =
   "An open-source UI/UX skill for coding agents that makes Telegram bots look and feel like real products: clean screens and keyboards, streaming AI replies with Stop, HTML widgets, channel publishing. Updated for every Bot API release.";
 
-/**
- * Demo video near the hero. Leave `src` empty to hide the block; set it (and
- * `poster`, both under /public) when the video is ready.
- */
-export const DEMO_VIDEO: {
-  src: string;
-  poster: string;
-  title: string;
-  width: number;
-  height: number;
-} = {
-  src: "",
-  poster: "",
-  title: "telegram-bot-ui in under a minute",
-  width: 1920,
-  height: 1080,
-};
+/** Demo video below the hero (web copies of the 16:9 master, 1280x720). */
+export const DEMO_VIDEO = {
+  sources: [
+    { src: "/video/demo.webm", type: "video/webm" },
+    { src: "/video/demo.mp4", type: "video/mp4" },
+  ],
+  poster: "/video/demo-poster.jpg",
+  title: "From one sentence to your agent to a bot that feels like a product, in half a minute.",
+  width: 1280,
+  height: 720,
+} as const;
 
 export const AGENTS = [
   "Claude Code",

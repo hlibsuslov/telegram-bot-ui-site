@@ -1,6 +1,7 @@
 import { Agents } from "@/components/site/agents";
 import { Capabilities } from "@/components/site/capabilities";
-import { DemoVideo, Demos } from "@/components/site/demos";
+import { DemoVideo } from "@/components/site/demo-video";
+import { Demos } from "@/components/site/demos";
 import { Faq } from "@/components/site/faq";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
