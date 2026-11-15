@@ -2,8 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* The site follows the system theme; there is no manual toggle. */
-@custom-variant dark (@media (prefers-color-scheme: dark));
+/* Dark mode is the .dark class on <html>, set before paint from the saved choice or the system theme. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -83,47 +83,45 @@
   --chat-quote: #3b82f6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b111c;
-    --foreground: #f2f4f7;
-    --card: #111a27;
-    --card-foreground: #f2f4f7;
-    --popover: #111a27;
-    --popover-foreground: #f2f4f7;
-    --primary: #3b82f6;
-    --primary-foreground: #ffffff;
-    --secondary: #1a2433;
-    --secondary-foreground: #f2f4f7;
-    --muted: #151f2d;
-    --muted-foreground: #a3aebd;
-    --accent: #1a2433;
-    --accent-foreground: #f2f4f7;
-    --destructive: #ef4444;
-    --border: #1f2b3b;
-    --input: #2a3749;
-    --ring: #60a5fa;
-    --brand: #60a5fa;
-    --success: #4ade80;
-    --danger: #f87171;
+:root.dark {
+  --background: #0b111c;
+  --foreground: #f2f4f7;
+  --card: #111a27;
+  --card-foreground: #f2f4f7;
+  --popover: #111a27;
+  --popover-foreground: #f2f4f7;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #1a2433;
+  --secondary-foreground: #f2f4f7;
+  --muted: #151f2d;
+  --muted-foreground: #a3aebd;
+  --accent: #1a2433;
+  --accent-foreground: #f2f4f7;
+  --destructive: #ef4444;
+  --border: #1f2b3b;
+  --input: #2a3749;
+  --ring: #60a5fa;
+  --brand: #60a5fa;
+  --success: #4ade80;
+  --danger: #f87171;
 
-    --chat-wall: #0f1824;
-    --chat-wall-2: #0c141e;
-    --chat-bubble: #1b2636;
-    --chat-bubble-out: #1d3557;
-    --chat-text: #eef2f6;
-    --chat-sub: #98a2b3;
-    --chat-time: #7d8a9c;
-    --chat-key: #2a3442;
-    --chat-key-text: #eef2f6;
-    --chat-primary: #2563eb;
-    --chat-link: #60a5fa;
-    --chat-success: #16a34a;
-    --chat-danger: #dc2626;
-    --chat-line: #2a3749;
-    --chat-chip: #243145;
-    --chat-quote: #60a5fa;
-  }
+  --chat-wall: #0f1824;
+  --chat-wall-2: #0c141e;
+  --chat-bubble: #1b2636;
+  --chat-bubble-out: #1d3557;
+  --chat-text: #eef2f6;
+  --chat-sub: #98a2b3;
+  --chat-time: #7d8a9c;
+  --chat-key: #2a3442;
+  --chat-key-text: #eef2f6;
+  --chat-primary: #2563eb;
+  --chat-link: #60a5fa;
+  --chat-success: #16a34a;
+  --chat-danger: #dc2626;
+  --chat-line: #2a3749;
+  --chat-chip: #243145;
+  --chat-quote: #60a5fa;
 }
 
 @layer base {

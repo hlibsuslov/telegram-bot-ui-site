@@ -3,6 +3,7 @@ import { Star } from "lucide-react";
 import { REPO_URL } from "@/content/site";
 import { getStarCount } from "@/lib/github";
 import { Container, GithubMark } from "./section";
+import { ThemeToggle } from "./theme-toggle";
 
 const NAV = [
   { href: "#demos", label: "Demos" },
@@ -24,7 +25,7 @@ export async function StarButton({ size = "sm" }: { size?: "sm" | "lg" }) {
       className={`inline-flex shrink-0 items-center justify-center border border-border bg-card font-medium text-foreground transition-colors hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none ${base}`}
     >
       <GithubMark />
-      <span>GitHub</span>
+      <span className={size === "sm" ? "sr-only sm:not-sr-only" : undefined}>GitHub</span>
       {stars !== null ? (
         <span className="ml-1 inline-flex items-center gap-1 border-l border-border pl-2 text-muted-foreground tabular-nums">
           <Star aria-hidden="true" className="size-3.5" />
@@ -44,7 +45,7 @@ export function SiteHeader() {
       <Container className="flex h-16 items-center justify-between gap-4">
         <a href="#top" className="flex items-center gap-2.5 rounded-md font-semibold tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
           <Image src="/icon.svg" alt="" width={28} height={28} className="rounded-md" priority />
-          <span>telegram-bot-ui</span>
+          <span className="whitespace-nowrap">telegram-bot-ui</span>
         </a>
         <nav aria-label="Sections" className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
@@ -57,7 +58,10 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <StarButton />
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
+          <StarButton />
+        </div>
       </Container>
     </header>
   );
