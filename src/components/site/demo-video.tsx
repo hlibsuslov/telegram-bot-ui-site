@@ -55,7 +55,7 @@ export function DemoVideo() {
 
   return (
     <Container className="pb-4">
-      <figure className="overflow-hidden rounded-3xl border border-border bg-card p-2 sm:p-3">
+      <figure>
         <video
           ref={ref}
           controls
@@ -67,14 +67,14 @@ export function DemoVideo() {
           width={DEMO_VIDEO.width}
           height={DEMO_VIDEO.height}
           aria-label="Demo video of the telegram-bot-ui skill"
-          className="block aspect-video h-auto w-full rounded-2xl bg-muted"
+          className="block aspect-video h-auto w-full rounded-2xl border border-border bg-muted"
         >
           {DEMO_VIDEO.sources.map((source) => (
             <source key={source.src} src={source.src} type={source.type} />
           ))}
           <a href={DEMO_VIDEO.sources[DEMO_VIDEO.sources.length - 1].src}>Download the demo video</a>
         </video>
-        <figcaption className="px-2 pt-3 pb-1 text-sm text-muted-foreground sm:px-3">{DEMO_VIDEO.title}</figcaption>
+        <figcaption className="pt-3 text-sm text-muted-foreground">{DEMO_VIDEO.title}</figcaption>
       </figure>
     </Container>
   );

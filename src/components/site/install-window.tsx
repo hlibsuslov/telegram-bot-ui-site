@@ -3,6 +3,7 @@
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { cn } from "@/lib/utils";
 import type { InstallMethod } from "@/content/site";
+import { BrandIcon } from "./brand-icon";
 
 // Tabs, keyboard navigation and the copy button are adapted from the 21st.dev
 // "Split Developer Hero with Interactive Code Terminal" block.
@@ -139,12 +140,13 @@ export function InstallWindow({ methods }: { methods: InstallMethod[] }) {
               tabIndex={active === i ? 0 : -1}
               onClick={() => setActive(i)}
               className={cn(
-                "shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
+                "inline-flex shrink-0 items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:text-sm",
                 active === i
                   ? "bg-card text-foreground shadow-sm ring-1 ring-border"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
+              <BrandIcon name={method.icon} className="size-3.5" />
               {method.label}
             </button>
           ))}

@@ -1,4 +1,4 @@
-import { useId, type ComponentType, type SVGProps } from "react";
+import type { ComponentType, SVGProps } from "react";
 import { AppWindow, Ban, BookOpen, Bot, LayoutPanelTop, Megaphone, ShoppingBag, Sticker } from "lucide-react";
 import { Section } from "./section";
 
@@ -59,69 +59,15 @@ const FEATURES: Feature[] = [
   },
 ];
 
-// Fixed squares per card (the original block randomises them, which would
-// differ between server and client renders).
-const PATTERNS = [
-  [[7, 1], [9, 3], [8, 5], [10, 2], [7, 4]],
-  [[8, 2], [10, 4], [7, 6], [9, 1], [8, 5]],
-  [[9, 2], [7, 3], [10, 5], [8, 1], [9, 6]],
-  [[10, 1], [8, 3], [7, 5], [9, 4], [10, 6]],
-];
-
-// Adapted from the 21st.dev "Grid Feature Cards" block.
-function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
+// Adapted from the 21st.dev "Grid Feature Cards" block (hairline grid, icon, title, text).
+function FeatureCard({ feature }: { feature: Feature }) {
   const Icon = feature.icon;
   return (
-    <li className="relative overflow-hidden bg-card p-6">
-      <div className="pointer-events-none absolute top-0 left-1/2 -mt-2 -ml-20 h-full w-full [mask-image:linear-gradient(white,transparent)]">
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/5 to-foreground/[0.01] [mask-image:radial-gradient(farthest-side_at_top,white,transparent)]">
-          <GridPattern
-            width={20}
-            height={20}
-            x={-12}
-            y={4}
-            squares={PATTERNS[index % PATTERNS.length]}
-            className="absolute inset-0 h-full w-full fill-foreground/[0.04] stroke-foreground/10"
-          />
-        </div>
-      </div>
+    <li className="bg-background p-6">
       <Icon className="size-6 text-brand" strokeWidth={1.5} aria-hidden="true" />
-      <h3 className="mt-8 text-base font-semibold">{feature.title}</h3>
-      <p className="relative z-10 mt-2 text-sm leading-6 text-muted-foreground">{feature.description}</p>
+      <h3 className="mt-6 text-base font-semibold">{feature.title}</h3>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">{feature.description}</p>
     </li>
-  );
-}
-
-function GridPattern({
-  width,
-  height,
-  x,
-  y,
-  squares,
-  className,
-}: {
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-  squares: number[][];
-  className?: string;
-}) {
-  const patternId = useId();
-  return (
-    <svg aria-hidden="true" className={className}>
-      <defs>
-        <pattern id={patternId} width={width} height={height} patternUnits="userSpaceOnUse" x={x} y={y}>
-          <path d={`M.5 ${height}V.5H${width}`} fill="none" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" strokeWidth={0} fill={`url(#${patternId})`} />
-      <svg x={x} y={y} className="overflow-visible">
-        {squares.map(([sx, sy]) => (
-          <rect strokeWidth={0} key={`${sx}-${sy}`} width={width + 1} height={height + 1} x={sx * width} y={sy * height} />
-        ))}
-      </svg>
-    </svg>
   );
 }
 
@@ -134,8 +80,8 @@ export function Capabilities() {
       description="The skill routes each task to focused guides, 65 recipes and offline tools, so your agent writes only what your project is missing."
     >
       <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-        {FEATURES.map((feature, i) => (
-          <FeatureCard key={feature.title} feature={feature} index={i} />
+        {FEATURES.map((feature) => (
+          <FeatureCard key={feature.title} feature={feature} />
         ))}
       </ul>
     </Section>

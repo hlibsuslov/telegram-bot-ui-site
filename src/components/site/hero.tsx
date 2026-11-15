@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { HeroChat } from "@/components/chat/demos";
 import { AGENTS, BOT_API, VERSION } from "@/content/site";
+import { BrandIcon } from "./brand-icon";
 import { StarButton } from "./header";
 import { Container } from "./section";
 
@@ -40,16 +41,17 @@ export function Hero() {
           <p className="mt-4 text-sm text-muted-foreground">MIT licensed · offline checks · no bot token needed to try it</p>
           <div className="mt-10">
             <p className="text-sm font-medium">Works with</p>
-            <ul className="mt-3 flex flex-wrap gap-2" aria-label="Supported agents">
+            <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-3" aria-label="Supported agents">
               {AGENTS.map((agent) => (
-                <li key={agent} className="rounded-lg bg-secondary px-2.5 py-1 text-sm text-secondary-foreground">
-                  {agent}
+                <li key={agent.name} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <BrandIcon name={agent.icon} className="text-foreground" />
+                  {agent.name}
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <div className="min-w-0 rounded-[28px] border border-border bg-card p-3 shadow-[0_24px_60px_-28px_rgb(16_24_40/0.25)] sm:p-4">
+        <div className="min-w-0 drop-shadow-[0_24px_40px_rgb(16_24_40/0.14)]">
           <HeroChat />
         </div>
       </Container>

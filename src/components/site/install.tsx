@@ -12,10 +12,12 @@ const PROMPTS = [
 ];
 
 const FACTS = [
-  { value: `Bot API ${BOT_API}`, label: `verified against the official docs on ${VERIFIED_ON}` },
-  { value: "193 · 425", label: "Bot API methods and types in the offline catalog" },
-  { value: "414 + 31", label: "Python and TypeScript tests, offline, on Linux and Windows in CI" },
-  { value: "65 · 18", label: "numbered recipes and ready HTML widgets" },
+  { value: BOT_API, label: `Bot API version, verified against the official docs on ${VERIFIED_ON}` },
+  { value: "193", label: "Bot API methods in the offline catalog, plus 425 types" },
+  { value: "445", label: "offline tests: 414 Python and 31 TypeScript, run in CI on Linux and Windows" },
+  { value: "65", label: "numbered recipes, from a settings screen to a whole shop" },
+  { value: "18", label: "ready HTML widgets with light and dark themes" },
+  { value: "5", label: "subagents: designer, builder, publisher, widget builder, reviewer" },
 ];
 
 export function Install() {
@@ -32,7 +34,7 @@ export function Install() {
           <h3 className="font-semibold">Then, in your bot’s repository</h3>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {PROMPTS.map((prompt) => (
-              <li key={prompt} className="rounded-xl border border-border bg-card px-4 py-3 text-sm leading-6 text-pretty">
+              <li key={prompt} className="rounded-xl border border-border px-4 py-3 text-sm leading-6 text-pretty">
                 “{prompt}”
               </li>
             ))}
@@ -49,11 +51,11 @@ export function Install() {
 
       <div className="mt-20">
         <h3 className="text-xl font-semibold tracking-tight">Checked, not assumed</h3>
-        <dl className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {FACTS.map((fact) => (
-            <div key={fact.value} className="flex flex-col-reverse bg-card p-5">
-              <dt className="mt-1 text-sm leading-6 text-muted-foreground">{fact.label}</dt>
-              <dd className="text-2xl font-semibold tracking-tight tabular-nums">{fact.value}</dd>
+            <div key={fact.label} className="flex flex-col-reverse justify-end border-t border-border pt-5">
+              <dt className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">{fact.label}</dt>
+              <dd className="text-5xl font-light tracking-tight text-foreground tabular-nums">{fact.value}</dd>
             </div>
           ))}
         </dl>

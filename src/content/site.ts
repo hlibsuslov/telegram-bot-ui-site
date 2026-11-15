@@ -1,6 +1,8 @@
 // Every claim on the page comes from the skill repository (README, SKILL.md,
 // CHANGELOG, docs/hosts.md). Update this file together with a skill release.
 
+import type { BrandKey } from "@/components/site/brand-icon";
+
 export const REPO = "hlibsuslov/telegram-bot-ui";
 export const REPO_URL = `https://github.com/${REPO}`;
 export const RELEASES_URL = `${REPO_URL}/releases`;
@@ -29,20 +31,21 @@ export const DEMO_VIDEO = {
   height: 720,
 } as const;
 
-export const AGENTS = [
-  "Claude Code",
-  "Codex",
-  "Cursor",
-  "Gemini CLI",
-  "Antigravity",
-  "GitHub Copilot",
-  "Devin",
-  "AGENTS.md readers",
-] as const;
+export const AGENTS: { name: string; icon: BrandKey }[] = [
+  { name: "Claude Code", icon: "claude" },
+  { name: "Codex", icon: "codex" },
+  { name: "Cursor", icon: "cursor" },
+  { name: "Gemini CLI", icon: "gemini" },
+  { name: "Antigravity", icon: "antigravity" },
+  { name: "GitHub Copilot", icon: "copilot" },
+  { name: "Devin", icon: "terminal" },
+  { name: "AGENTS.md readers", icon: "file" },
+];
 
 export type InstallMethod = {
   id: string;
   label: string;
+  icon: BrandKey;
   title: string;
   note: string;
   commands: string[];
@@ -51,6 +54,7 @@ export type InstallMethod = {
 export const INSTALL_METHODS: InstallMethod[] = [
   {
     id: "claude",
+    icon: "claude",
     label: "Claude Code",
     title: "Claude Code plugin: skill plus five subagents",
     note: "Inside a Claude Code session (2.1.275 or later).",
@@ -58,6 +62,7 @@ export const INSTALL_METHODS: InstallMethod[] = [
   },
   {
     id: "gh",
+    icon: "github",
     label: "GitHub CLI",
     title: "Any agent, with the GitHub CLI",
     note: "gh 2.96 or later. It asks which agents to install for: claude-code, codex, cursor, gemini-cli, github-copilot, antigravity and more.",
@@ -65,6 +70,7 @@ export const INSTALL_METHODS: InstallMethod[] = [
   },
   {
     id: "npx",
+    icon: "terminal",
     label: "skills CLI",
     title: "Any agent, with the open skills CLI",
     note: "Runs through npx, so it only needs Node.js.",
@@ -72,6 +78,7 @@ export const INSTALL_METHODS: InstallMethod[] = [
   },
   {
     id: "gemini",
+    icon: "gemini",
     label: "Gemini CLI",
     title: "Gemini CLI and Antigravity",
     note: "Antigravity reads the same .agents/skills folder as Gemini CLI, so a project install covers both.",
@@ -79,6 +86,7 @@ export const INSTALL_METHODS: InstallMethod[] = [
   },
   {
     id: "installer",
+    icon: "python",
     label: "Installer",
     title: "Without a package manager: clone and run the installer",
     note: "Standard-library Python. On Windows use py -3 instead of python. Add --dry-run to see the plan first.",
