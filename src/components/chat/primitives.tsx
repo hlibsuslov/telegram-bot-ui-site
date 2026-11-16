@@ -18,17 +18,19 @@ export function ChatFrame({
   title,
   desc,
   height,
+  width = FRAME_WIDTH,
   children,
 }: {
   id: string;
   title: string;
   desc: string;
   height: number;
+  width?: number;
   children: ReactNode;
 }) {
   return (
     <svg
-      viewBox={`0 0 ${FRAME_WIDTH} ${height}`}
+      viewBox={`0 0 ${width} ${height}`}
       role="img"
       aria-labelledby={`${id}-title ${id}-desc`}
       className="mx-auto block h-auto w-full max-w-[420px] select-none font-sans"
@@ -41,7 +43,7 @@ export function ChatFrame({
           <stop offset="1" style={{ stopColor: c("wall-2") }} />
         </linearGradient>
       </defs>
-      <rect width={FRAME_WIDTH} height={height} rx={20} fill={`url(#${id}-wall)`} />
+      <rect width={width} height={height} rx={20} fill={`url(#${id}-wall)`} />
       {children}
     </svg>
   );

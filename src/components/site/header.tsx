@@ -17,7 +17,7 @@ export async function StarButton({ size = "sm" }: { size?: "sm" | "lg" }) {
   const stars = await getStarCount();
   const base =
     size === "lg"
-      ? "h-12 gap-2 rounded-xl px-5 text-sm"
+      ? "h-12 gap-2 rounded-full px-6 text-sm"
       : "h-9 gap-1.5 rounded-lg px-3 text-sm";
   return (
     <a

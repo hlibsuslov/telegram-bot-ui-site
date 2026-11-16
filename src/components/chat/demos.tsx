@@ -312,30 +312,3 @@ export function RichAndWidget() {
     </ChatFrame>
   );
 }
-
-/** Hero composition: a clean settings screen above a streaming answer with Stop. */
-export function HeroChat() {
-  return (
-    <ChatFrame
-      id="hero"
-      height={404}
-      title="A Telegram bot designed with the skill"
-      desc="A settings screen with Notifications, Language, a red Delete account and Back, followed by an AI answer that streams with a Searching 3 sources status and a Stop button."
-    >
-      <Bubble y={16} h={66} time="10:02" />
-      <T x={30} y={42} size={15} weight={700}>
-        Settings
-      </T>
-      <T x={30} y={64}>
-        Choose what to change.
-      </T>
-      <Key y={90} w={HALF} label="Notifications" />
-      <Key x={RIGHT_X} y={90} w={HALF} label="Language" />
-      <Key y={132} label="Delete account" tone="danger" />
-      <Key y={174} label="Back" icon="back" />
-      <StreamingBubble y={226} />
-      <Key y={352} h={36} label="Stop" icon="stop" />
-    </ChatFrame>
-  );
-}
-
