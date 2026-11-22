@@ -1,0 +1,27 @@
+{
+  "id": "checkout.note",
+  "title": "Note for the barista",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.plain",
+    "text": {
+      "en": "Send one message with a note for the barista.",
+      "ru": "Напишите одним сообщением комментарий для бариста.",
+      "uk": "Напишіть одним повідомленням коментар для баристи."
+    }
+  },
+  "keyboard": {
+    "type": "force_reply",
+    "placeholder": {
+      "en": "For example: extra hot, no lid",
+      "ru": "Например: погорячее, без крышки",
+      "uk": "Наприклад: гарячіше, без кришки"
+    }
+  },
+  "input": {
+    "field": "order.note",
+    "to": "checkout.review"
+  }
+}

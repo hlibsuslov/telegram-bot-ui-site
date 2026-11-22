@@ -1,0 +1,92 @@
+{
+  "id": "happy-hour",
+  "title": "Happy hour",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "Iced drinks are 30% off right now",
+    "ru": "Холодные напитки сейчас −30%",
+    "uk": "Холодні напої зараз −30%"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "fallbackScreen": "menu.coffee",
+  "dataFields": {
+    "chatData": {
+      "pc": {
+        "label": "Percent off",
+        "type": "number"
+      },
+      "d": {
+        "label": "Ends at",
+        "type": "time"
+      },
+      "nx": {
+        "label": "Next one starts",
+        "type": "time"
+      },
+      "c": {
+        "label": "Code",
+        "type": "text",
+        "help": "Empty until the bot answers the code request."
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "Goes up with every update so the widget ignores older data. The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "pc": 30,
+        "d": 1794737880,
+        "nx": 1794819600,
+        "c": "",
+        "r": 0
+      }
+    },
+    "ending": {
+      "chatData": {
+        "pc": 30,
+        "d": 1794736825,
+        "nx": 1794819600,
+        "c": "",
+        "r": 0
+      }
+    },
+    "revealed": {
+      "chatData": {
+        "pc": 30,
+        "d": 1794737880,
+        "nx": 1794819600,
+        "c": "ICED30-7QK",
+        "r": 0
+      }
+    },
+    "over": {
+      "chatData": {
+        "pc": 30,
+        "d": 1794736740,
+        "nx": 1794819600,
+        "c": "",
+        "r": 0
+      }
+    }
+  },
+  "queries": [
+    "code"
+  ],
+  "fresh": [
+    "d",
+    "nx"
+  ]
+}

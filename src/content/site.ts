@@ -10,14 +10,14 @@ export const CHANGELOG_URL = `${REPO_URL}/blob/main/CHANGELOG.md`;
 export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`;
 export const HOSTS_URL = `${REPO_URL}/blob/main/docs/hosts.md`;
 
-export const VERSION = "2.3.0";
+export const VERSION = "3.0.0";
 export const BOT_API = "10.5";
 export const VERIFIED_ON = "2026-11-22";
 
 export const SITE_NAME = "Telegram Bot UI";
-export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for Telegram bot design";
+export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for the whole Telegram bot interface";
 export const SITE_DESCRIPTION =
-  "An open-source UI/UX skill for coding agents that makes Telegram bots look and feel like real products: clean screens and keyboards, streaming AI replies with Stop, HTML widgets, channel publishing. Updated for every Bot API release.";
+  "An open-source UI/UX skill for coding agents that covers the whole interface of a Telegram bot: screens, texts and keyboards, navigation and states, streaming AI replies with Stop, HTML widgets, premium emoji and channel publishing, plus the local bot-ui Studio to map and edit it. Updated for every Bot API release.";
 
 /** Demo video below the hero (web copies of the 16:9 master, 1280x720). */
 export const DEMO_VIDEO = {
@@ -26,7 +26,7 @@ export const DEMO_VIDEO = {
     { src: "/video/demo.mp4", type: "video/mp4" },
   ],
   poster: "/video/demo-poster.jpg",
-  title: "From one sentence to your agent to a bot that feels like a product, in half a minute.",
+  title: "One sentence to your agent fixes the bot, then bot-ui Studio maps it, edits it with premium emoji and simulates every tap. In under a minute.",
   width: 1280,
   height: 720,
 } as const;

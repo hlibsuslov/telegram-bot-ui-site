@@ -1,0 +1,89 @@
+{
+  "id": "checkout.review",
+  "title": "Review order",
+  "kind": "confirmation",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Your order</b>\n{cart.summary}\nReady at {pickup.time} · total {cart.total}",
+      "ru": "<b>Ваш заказ</b>\n{cart.summary}\nБудет готов к {pickup.time} · итого {cart.total}",
+      "uk": "<b>Ваше замовлення</b>\n{cart.summary}\nБуде готове о {pickup.time} · разом {cart.total}"
+    },
+    "states": {
+      "loading": {
+        "text": {
+          "en": "⏳ Confirming the payment…",
+          "ru": "⏳ Подтверждаем оплату…",
+          "uk": "⏳ Підтверджуємо оплату…"
+        }
+      }
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "pay"
+      ],
+      [
+        "note",
+        "pastry"
+      ],
+      [
+        "cancel"
+      ]
+    ]
+  },
+  "actions": {
+    "pay": {
+      "label": {
+        "en": "Pay {cart.total}",
+        "ru": "Оплатить {cart.total}",
+        "uk": "Сплатити {cart.total}"
+      },
+      "type": "handler",
+      "handlerId": "checkout.pay",
+      "outcomes": {
+        "ok": "order.placed",
+        "declined": "checkout.declined"
+      },
+      "pending": {
+        "en": "Confirming the payment…",
+        "ru": "Подтверждаем оплату…",
+        "uk": "Підтверджуємо оплату…"
+      },
+      "style": "success"
+    },
+    "note": {
+      "label": {
+        "en": "Add a note",
+        "ru": "Комментарий",
+        "uk": "Коментар"
+      },
+      "type": "navigate",
+      "to": "checkout.note",
+      "presentation": "send"
+    },
+    "pastry": {
+      "label": {
+        "en": "Add a pastry",
+        "ru": "Добавить выпечку",
+        "uk": "Додати випічку"
+      },
+      "type": "navigate",
+      "to": "menu.bakery",
+      "presentation": "edit"
+    },
+    "cancel": {
+      "label": {
+        "en": "Cancel",
+        "ru": "Отмена",
+        "uk": "Скасувати"
+      },
+      "type": "back",
+      "fallback": "entry.start"
+    }
+  }
+}

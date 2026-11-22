@@ -1,0 +1,55 @@
+{
+  "id": "order.placed",
+  "title": "Order placed",
+  "kind": "result",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "✅ <b>Order #{order.no} is in</b>\nIt will be ready at {pickup.time}. We'll message you the moment it is.",
+      "ru": "✅ <b>Заказ #{order.no} принят</b>\nБудет готов к {pickup.time}. Напишем, как только он будет готов.",
+      "uk": "✅ <b>Замовлення #{order.no} прийнято</b>\nБуде готове о {pickup.time}. Напишемо, щойно воно буде готове."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "track"
+      ],
+      [
+        "menu"
+      ]
+    ]
+  },
+  "actions": {
+    "track": {
+      "label": {
+        "en": "Track order",
+        "ru": "Следить за заказом",
+        "uk": "Стежити за замовленням"
+      },
+      "type": "navigate",
+      "to": "order.status",
+      "presentation": "send",
+      "style": "primary",
+      "set": {
+        "order.active": true
+      }
+    },
+    "menu": {
+      "label": {
+        "en": "Main menu",
+        "ru": "В меню",
+        "uk": "У меню"
+      },
+      "type": "navigate",
+      "to": "entry.start",
+      "presentation": "edit",
+      "set": {
+        "order.active": true
+      }
+    }
+  }
+}

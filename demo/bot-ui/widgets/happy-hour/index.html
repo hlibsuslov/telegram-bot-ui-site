@@ -1,0 +1,17 @@
+<!-- Pulloa happy hour (private chat): a countdown offer with a code revealed on tap, after the visual
+  builder's countdown and promo types. Build with bot-ui build.
+  chat_data: {"pc":percent off,"d":offer ends (unix),"nx":next one starts (unix),"c":code once the bot sent it (or ""),"r":N}
+  Requests: "code" (the code is not in the HTML: the bot answers it in the state). A tap on the code copies it. -->
+<!--@file style.css-->
+<div class="k">
+  <div class="hd"><span class="tt el" id="ti"></span><span class="pl" id="pl"></span></div>
+  <div class="mt" id="tx"></div>
+  <div class="cd" id="cd"><span><b id="v0"></b><i id="u0"></i></span><span><b id="v1"></b><i id="u1"></i></span><span><b id="v2"></b><i id="u2"></i></span></div>
+  <button class="cp" id="cp"></button>
+  <div class="mt" id="cn"></div>
+  <button class="wd" id="go"></button>
+  <div class="st" id="st"></div>
+</div>
+<!--@kit runtime.js-->
+<!--@kit i18n.js-->
+<!--@file widget.js-->

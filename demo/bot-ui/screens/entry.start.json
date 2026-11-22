@@ -1,0 +1,110 @@
+{
+  "id": "entry.start",
+  "title": "Start",
+  "kind": "entry",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Pulloa</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nOrder ahead and skip the line. Your usual is two taps away.",
+      "ru": "<b>Pulloa</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nЗакажите заранее и не стойте в очереди. Ваш обычный заказ в двух нажатиях.",
+      "uk": "<b>Pulloa</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nЗамовте заздалегідь і не стійте в черзі. Ваше звичне замовлення за два натискання."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "menu"
+      ],
+      [
+        "usual"
+      ],
+      [
+        "order",
+        "card"
+      ],
+      [
+        "help"
+      ]
+    ]
+  },
+  "actions": {
+    "menu": {
+      "label": {
+        "en": "Menu",
+        "ru": "Меню",
+        "uk": "Меню"
+      },
+      "type": "navigate",
+      "to": "menu.categories",
+      "presentation": "edit",
+      "style": "primary",
+      "icon": {
+        "customEmojiId": "5350392020785437399"
+      }
+    },
+    "usual": {
+      "label": {
+        "en": "Repeat my usual",
+        "ru": "Повторить обычный",
+        "uk": "Повторити звичне"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "edit",
+      "set": {
+        "drink": "flat_white",
+        "cup.size": "m",
+        "milk": "oat"
+      }
+    },
+    "order": {
+      "label": {
+        "en": "My order",
+        "ru": "Мой заказ",
+        "uk": "Моє замовлення"
+      },
+      "type": "navigate",
+      "rule": {
+        "when": {
+          "field": "order.active",
+          "eq": true
+        },
+        "match": "order.status",
+        "otherwise": "order.none"
+      },
+      "presentation": "edit",
+      "icon": {
+        "customEmojiId": "5431492767249342908"
+      }
+    },
+    "card": {
+      "label": {
+        "en": "Loyalty card",
+        "ru": "Карта гостя",
+        "uk": "Картка гостя"
+      },
+      "type": "navigate",
+      "to": "loyalty.card",
+      "presentation": "edit",
+      "icon": {
+        "customEmojiId": "5235579393115438657"
+      }
+    },
+    "help": {
+      "label": {
+        "en": "Support",
+        "ru": "Поддержка",
+        "uk": "Підтримка"
+      },
+      "type": "navigate",
+      "to": "support.start",
+      "presentation": "send",
+      "icon": {
+        "customEmojiId": "5417915203100613993"
+      }
+    }
+  }
+}

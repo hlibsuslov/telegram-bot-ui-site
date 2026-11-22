@@ -1,0 +1,78 @@
+{
+  "id": "menu.bakery",
+  "title": "Bakery",
+  "kind": "menu",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Bakery</b>\nBaked this morning.\nButter croissant · €2.40\nCinnamon roll · €2.90",
+      "ru": "<b>Выпечка</b>\nИспекли сегодня утром.\nСливочный круассан · 2,40 €\nСиннабон · 2,90 €",
+      "uk": "<b>Випічка</b>\nСпекли сьогодні зранку.\nВершковий круасан · 2,40 €\nСинабон · 2,90 €"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "croissant",
+        "roll"
+      ],
+      [
+        "checkout"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "croissant": {
+      "label": {
+        "en": "+ Croissant",
+        "ru": "+ Круассан",
+        "uk": "+ Круасан"
+      },
+      "type": "answer",
+      "text": {
+        "en": "Croissant added",
+        "ru": "Круассан добавлен",
+        "uk": "Круасан додано"
+      }
+    },
+    "roll": {
+      "label": {
+        "en": "+ Cinnamon roll",
+        "ru": "+ Синнабон",
+        "uk": "+ Синабон"
+      },
+      "type": "answer",
+      "text": {
+        "en": "Cinnamon roll added",
+        "ru": "Синнабон добавлен",
+        "uk": "Синабон додано"
+      }
+    },
+    "checkout": {
+      "label": {
+        "en": "Review order",
+        "ru": "К заказу",
+        "uk": "До замовлення"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "edit",
+      "style": "primary"
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "menu.categories"
+    }
+  }
+}

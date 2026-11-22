@@ -1,0 +1,50 @@
+{
+  "id": "loyalty.card",
+  "title": "Loyalty card",
+  "kind": "status",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "⭐ <b>Loyalty card</b>\n{loyalty.stamps} of 10 stamps. Every 10th drink is on us.",
+      "ru": "⭐ <b>Карта гостя</b>\n{loyalty.stamps} из 10 отметок. Каждый 10-й напиток в подарок.",
+      "uk": "⭐ <b>Картка гостя</b>\n{loyalty.stamps} з 10 позначок. Кожен 10-й напій у подарунок."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "how"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "how": {
+      "label": {
+        "en": "How it works",
+        "ru": "Как это работает",
+        "uk": "Як це працює"
+      },
+      "type": "answer",
+      "text": {
+        "en": "One stamp per drink, added automatically",
+        "ru": "Одна отметка за напиток, ставится сама",
+        "uk": "Одна позначка за напій, ставиться сама"
+      }
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "entry.start"
+    }
+  }
+}

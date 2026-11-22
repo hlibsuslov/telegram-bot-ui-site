@@ -1,0 +1,17 @@
+<!-- Pulloa order tracker (private chat). Build with bot-ui build.
+  chat_data: {"no":"#218","s":0-3 current step (3 = picked up),"m":0 normal|1 running late,
+              "t0".."t3": unix time each step was reached,"eta": ready by (unix),"ba":"barista","at":unix,"r":N}
+  Requests: "sync" (background refresh), "warm" (guest is running late: keep it warm), "help". -->
+<!--@file style.css-->
+<div class="k">
+  <div class="hd"><span class="tt el" id="ti"></span><span class="pl" id="pl"></span></div>
+  <div class="mt" id="eta"></div>
+  <div class="br pg"><i id="bar"></i></div>
+  <div class="tl" id="tl"></div>
+  <div class="sf rw" id="ba"><span class="cup" aria-hidden="true">☕</span><span class="gr el" id="bn"></span><span class="mt" id="bl"></span></div>
+  <div class="rw ac" id="ac"></div>
+  <div class="st" id="st"></div>
+</div>
+<!--@kit runtime.js-->
+<!--@kit i18n.js-->
+<!--@file widget.js-->

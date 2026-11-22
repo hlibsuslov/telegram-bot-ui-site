@@ -1,0 +1,48 @@
+{
+  "id": "order.none",
+  "title": "No active order",
+  "kind": "empty",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>No active orders</b>\nOrder ahead and you can follow it here, step by step.",
+      "ru": "<b>Активных заказов нет</b>\nЗакажите заранее, и здесь будет видно каждый шаг.",
+      "uk": "<b>Активних замовлень немає</b>\nЗамовте заздалегідь, і тут буде видно кожен крок."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "menu"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "menu": {
+      "label": {
+        "en": "☕ Open the menu",
+        "ru": "☕ Открыть меню",
+        "uk": "☕ Відкрити меню"
+      },
+      "type": "navigate",
+      "to": "menu.categories",
+      "presentation": "edit",
+      "style": "primary"
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "entry.start"
+    }
+  }
+}

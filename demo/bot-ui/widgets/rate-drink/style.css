@@ -1,0 +1,12 @@
+/*@kit tokens.css*/
+.sr { display: flex; gap: 2px; margin: 6px 0 }
+.sr button { flex: 1; min-width: 0; min-height: 40px; padding: 0; border: 0; background: none; font-size: 1.6em; color: var(--k-hint); transition: transform .15s }
+.sr .on { color: var(--k-warn) }
+.sr button:active { transform: scale(1.2) }
+.cs { display: flex; flex-wrap: wrap; gap: 6px }
+.cd { margin-top: 8px; animation: in .3s ease-out }
+.cd[hidden] { display: none }
+.cd b { flex: 1; min-width: 0; font-size: 1.1em; letter-spacing: .08em }
+.ac { display: grid; gap: 6px; margin-top: 8px }
+.ac button { min-height: 36px }
+@keyframes in { from { opacity: 0; transform: scale(.96) } }

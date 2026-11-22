@@ -1,0 +1,78 @@
+{
+  "id": "order.size",
+  "title": "Size",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Pick a size</b>\nS 250 ml · M 350 ml · L 450 ml",
+      "ru": "<b>Выберите размер</b>\nS 250 мл · M 350 мл · L 450 мл",
+      "uk": "<b>Оберіть розмір</b>\nS 250 мл · M 350 мл · L 450 мл"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "s",
+        "m",
+        "l"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "s": {
+      "label": {
+        "en": "S",
+        "ru": "S",
+        "uk": "S"
+      },
+      "type": "navigate",
+      "to": "order.milk",
+      "presentation": "edit",
+      "set": {
+        "cup.size": "s"
+      }
+    },
+    "m": {
+      "label": {
+        "en": "M",
+        "ru": "M",
+        "uk": "M"
+      },
+      "type": "navigate",
+      "to": "order.milk",
+      "presentation": "edit",
+      "set": {
+        "cup.size": "m"
+      }
+    },
+    "l": {
+      "label": {
+        "en": "L",
+        "ru": "L",
+        "uk": "L"
+      },
+      "type": "navigate",
+      "to": "order.milk",
+      "presentation": "edit",
+      "set": {
+        "cup.size": "l"
+      }
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "menu.coffee"
+    }
+  }
+}

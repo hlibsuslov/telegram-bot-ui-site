@@ -1,0 +1,35 @@
+{
+  "id": "support.sent",
+  "title": "Message sent",
+  "kind": "result",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "📨 <b>Sent to the team</b>\nWe'll answer right here in this chat.",
+      "ru": "📨 <b>Отправили команде</b>\nОтветим прямо здесь, в этом чате.",
+      "uk": "📨 <b>Надіслали команді</b>\nВідповімо просто тут, у цьому чаті."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "menu"
+      ]
+    ]
+  },
+  "actions": {
+    "menu": {
+      "label": {
+        "en": "Main menu",
+        "ru": "В меню",
+        "uk": "У меню"
+      },
+      "type": "navigate",
+      "to": "entry.start",
+      "presentation": "edit"
+    }
+  }
+}

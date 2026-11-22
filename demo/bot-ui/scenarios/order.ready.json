@@ -1,0 +1,47 @@
+{
+  "scenarioId": "order.ready",
+  "title": "The bot says the order is ready; courier branch",
+  "locale": "en",
+  "context": {
+    "chat": "private",
+    "delivery.method": "courier"
+  },
+  "data": {
+    "cart.summary": "Flat white M, oat milk · Butter croissant",
+    "cart.total": "€6.30",
+    "order.no": "218",
+    "pickup.time": "8:45",
+    "order.status_text": "brewing",
+    "loyalty.stamps": "7"
+  },
+  "steps": [
+    {
+      "event": "order.ready",
+      "data": {
+        "order.status_text": "ready at the counter"
+      }
+    },
+    {
+      "expect": {
+        "screen": "order.ready",
+        "contains": "218"
+      }
+    },
+    {
+      "press": "open"
+    },
+    {
+      "expect": {
+        "screen": "order.status"
+      }
+    },
+    {
+      "press": "route"
+    },
+    {
+      "expect": {
+        "screen": "order.courier"
+      }
+    }
+  ]
+}

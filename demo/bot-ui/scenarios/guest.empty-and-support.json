@@ -1,0 +1,55 @@
+{
+  "scenarioId": "guest.empty-and-support",
+  "title": "No order yet, loyalty card, a message to support",
+  "locale": "uk",
+  "context": {
+    "chat": "private",
+    "delivery.method": "pickup"
+  },
+  "data": {
+    "cart.summary": "Flat white M, oat milk · Butter croissant",
+    "cart.total": "€6.30",
+    "order.no": "218",
+    "pickup.time": "8:45",
+    "order.status_text": "brewing",
+    "loyalty.stamps": "7"
+  },
+  "steps": [
+    {
+      "command": "start"
+    },
+    {
+      "press": "order"
+    },
+    {
+      "expect": {
+        "screen": "order.none"
+      }
+    },
+    {
+      "press": "back"
+    },
+    {
+      "press": "card"
+    },
+    {
+      "expect": {
+        "screen": "loyalty.card"
+      }
+    },
+    {
+      "press": "back"
+    },
+    {
+      "press": "help"
+    },
+    {
+      "text": "Забули додати кришку"
+    },
+    {
+      "expect": {
+        "screen": "support.sent"
+      }
+    }
+  ]
+}

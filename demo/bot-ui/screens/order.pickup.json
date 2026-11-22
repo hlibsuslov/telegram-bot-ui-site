@@ -1,0 +1,34 @@
+{
+  "id": "order.pickup",
+  "title": "Pickup",
+  "kind": "result",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "📍 <b>Pickup</b>\nPulloa, 12 Harbour St, the counter by the window. Say order #{order.no}.",
+      "ru": "📍 <b>Самовывоз</b>\nPulloa, Портовая, 12, стойка у окна. Назовите заказ #{order.no}.",
+      "uk": "📍 <b>Самовивіз</b>\nPulloa, Портова, 12, стійка біля вікна. Назвіть замовлення #{order.no}."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "back": {
+      "label": {
+        "en": "← Status",
+        "ru": "← Статус",
+        "uk": "← Статус"
+      },
+      "type": "back",
+      "fallback": "order.status"
+    }
+  }
+}

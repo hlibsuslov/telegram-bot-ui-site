@@ -1,0 +1,18 @@
+<!-- Pulloa pickup time (private chat), adapted from the skill gallery's slot-booking. Build with bot-ui build.
+  chat_data: {"no":"#218","d0":unix time within the first day,"b":first slot (minutes after midnight),"sp":slot step (minutes),
+              "m":[hex string per day: bit i set = slot i is free],"sel":"<day>:<HHMM>" chosen (or ""),"bk":"<day>:<HHMM>" booked (or ""),"r":N}
+  Requests: "pick:<day>:<HHMM>@rev" (the slot may be taken meanwhile), "book" (confirm sel), "cancel".
+  The day strip is local UI: every day is already in the state. -->
+<!--@file style.css-->
+<div class="k">
+  <div class="hd"><span class="tt el" id="ti"></span><span class="mt" id="no"></span></div>
+  <div class="mt" id="du"></div>
+  <div class="ds" id="ds"></div>
+  <div class="gd" id="gd"></div>
+  <div class="sf bs" id="bs"></div>
+  <div class="ft" id="ft"></div>
+  <div class="st" id="st"></div>
+</div>
+<!--@kit runtime.js-->
+<!--@kit i18n.js-->
+<!--@file widget.js-->

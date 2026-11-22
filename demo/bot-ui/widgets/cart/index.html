@@ -1,0 +1,17 @@
+<!-- Pulloa cart (private chat), adapted from the skill gallery's cart-checkout. Build with bot-ui build.
+  chat_data: {"it":[[name,variant,qty,unit price in minor units]],"cur":"EUR","dl":chosen option,
+              "dm":[[label,price in minor units]],"ph":0 editing|1 awaiting payment|2 paid,"no":"#219 once paid","rd":ready by (unix),"r":N}
+  Requests: "q:<line>:<+1|-1>@rev" (stale verb), "dl:<i>", "checkout". Totals are derived from the lines and the option. -->
+<!--@file style.css-->
+<div class="k">
+  <div class="hd"><span class="tt el" id="ti"></span><span class="pl" id="pl"></span></div>
+  <div class="ls" id="ls"></div>
+  <div class="tl" id="tl"></div>
+  <div class="dv" id="dv"></div>
+  <div class="sf pd" id="pd"></div>
+  <button class="cb" id="co"></button>
+  <div class="st" id="st"></div>
+</div>
+<!--@kit runtime.js-->
+<!--@kit i18n.js-->
+<!--@file widget.js-->
