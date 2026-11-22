@@ -12,6 +12,8 @@ Writes, and both are committed so the site deploys without Python:
 from __future__ import annotations
 
 import argparse
+import base64
+import html
 import json
 import os
 import subprocess
@@ -39,17 +41,22 @@ def demo_page(studio: str, tmp: str) -> None:
     if not os.path.isfile(template):
         raise SystemExit(f"{template} is missing: run `npm ci && npm run build:artifact` in studio/web")
     snap_path = os.path.join(tmp, "snapshot.json")
-    cli(studio, "export-snapshot", "--format", "json", "--output", snap_path)
+    # Every emoji of the imported packs gets its picture, so the demo shows the whole packs.
+    cli(studio, "export-snapshot", "--format", "json", "--emoji-previews", "all", "--emoji-budget", "2500000",
+        "--output", snap_path)
     with open(snap_path, encoding="utf-8") as fh:
         doc = json.load(fh)
     # Same surface as the artifact (edit texts and rules, simulate, export a patch) plus the demo copy.
     doc["features"] = {**doc.get("features", {}), "demo": True}
+    with open(os.path.join(PROJECT, "assets", "avatar.png"), "rb") as fh:
+        doc["demoAvatar"] = "data:image/png;base64," + base64.b64encode(fh.read()).decode("ascii")
     payload = json.dumps(doc, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
     with open(template, encoding="utf-8") as fh:
         page = fh.read()
     if MARK not in page:
         raise SystemExit(f"{template} has no {MARK} placeholder")
-    page = page.replace(MARK, payload, 1).replace("<title>bot-ui Studio</title>", "<title>Brewline · bot-ui Studio demo</title>", 1)
+    title = html.escape(doc["project"]["title"])
+    page = page.replace(MARK, payload, 1).replace("<title>bot-ui Studio</title>", f"<title>{title} · bot-ui Studio demo</title>", 1)
     os.makedirs(os.path.dirname(PAGE_OUT), exist_ok=True)
     with open(PAGE_OUT, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(page)

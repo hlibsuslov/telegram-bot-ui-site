@@ -1,0 +1,17 @@
+<!-- Pulloa: rate your drink (private chat), adapted from the skill gallery's rating-feedback. Build with bot-ui build.
+  chat_data: {"o":item key,"no":"#218","v":stars sent,"m":tag bitmask sent,"k":0 open|1 thanks|2 rated earlier,"c":coupon code,"r":N}
+  Stars and tag chips are local; "Send" sends "r:<stars>:<tagbitmask>" (absolute) once.
+  Free text is not possible in a widget: "Write a comment" opens the bot chat with a deep link. -->
+<!--@file style.css-->
+<div class="k">
+  <div class="hd"><span class="tt el" id="ti"></span><span class="mt" id="no"></span></div>
+  <div class="mt" id="hh"></div>
+  <div class="sr" id="sr"></div>
+  <div class="cs" id="tg"></div>
+  <div class="sf cd" id="cd"><div class="mt" id="cu"></div><div class="rw"><b id="cc"></b><button class="ch" id="cb"></button></div></div>
+  <div class="ac" id="ac"></div>
+  <div class="st" id="st"></div>
+</div>
+<!--@kit runtime.js-->
+<!--@kit i18n.js-->
+<!--@file widget.js-->

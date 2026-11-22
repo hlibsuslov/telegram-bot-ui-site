@@ -1,0 +1,12 @@
+/*@kit tokens.css*/
+.pg { margin: 8px 0 }
+.qq { font-weight: 600; margin: 4px 0 8px }
+.ol { display: grid; gap: 6px }
+.ol .ch { border-radius: var(--k-r); min-height: 40px; text-align: start; padding: 8px 12px }
+#qz, #rs { animation: in .25s ease-out }
+#rs .hd { margin-top: 2px }
+.ag { margin-top: 6px }
+[hidden] { display: none !important }
+@keyframes in { from { opacity: 0; transform: translateX(8px) } }
+.fa { animation: in .25s ease-out } .fb { animation: in2 .25s ease-out }
+@keyframes in2 { from { opacity: 0; transform: translateX(8px) } }

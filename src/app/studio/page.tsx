@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Image from "next/image";
+import avatar from "../../../demo/bot-ui/assets/avatar.png";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
-import { CommandRow } from "@/components/site/install-window";
 import { Container, Section } from "@/components/site/section";
-import { LOYALTY_STATES, ORDER_STATES } from "@/components/site/studio";
 import { AgentFlow } from "@/components/studio/agent-flow";
 import { DemoFrame } from "@/components/studio/demo-frame";
 import { LiveWidget } from "@/components/studio/live-widget";
-import { CONTRACT_URL, DEMO_BOT, RUN_NOTE, RUN_STEPS, STUDIO_FACTS, STUDIO_README_URL } from "@/content/studio";
+import { StudioMapPreview } from "@/components/studio/map-preview";
+import { StudioActions } from "@/components/studio/studio-actions";
+import { StudioSetup } from "@/components/studio/studio-setup";
+import { DEMO_BOT_NAME, DEMO_SCREEN_COUNT, LIVE_WIDGETS } from "@/content/studio";
 
-const TITLE = "bot-ui Studio live demo: a sample Telegram bot you can use and edit";
+const TITLE = "bot-ui Studio | Telegram bot editor and simulator";
 const DESCRIPTION =
-  "Use bot-ui Studio in your browser on Brewline, a sample coffee bot: the map of every screen, a Telegram-style simulator, the screen editor, live widgets and the task it writes for your coding agent.";
+  `See the map of a Telegram bot, test its buttons in the simulator and edit screens in the ${DEMO_BOT_NAME} demo. Run bot-ui Studio locally to work on your own bot.`;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -21,8 +23,6 @@ export const metadata: Metadata = {
   openGraph: { type: "website", url: "/studio", title: TITLE, description: DESCRIPTION },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
-
-const LINK = "font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground";
 
 export default function StudioPage() {
   return (
@@ -35,90 +35,72 @@ export default function StudioPage() {
       </a>
       <SiteHeader />
       <main id="main">
-        <section aria-labelledby="demo-heading" className="pt-12 pb-16 sm:pt-16">
-          <Container className="max-w-7xl">
-            <div className="max-w-3xl">
-              <p className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/5 px-3 py-1 text-xs font-medium text-brand">
-                <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
-                Live demo · bot-ui Studio
-              </p>
-              <h1 id="demo-heading" className="mt-5 text-4xl font-bold tracking-tight text-balance sm:text-5xl">
-                Use the Studio on a sample bot.
-              </h1>
-              <p className="mt-5 text-base leading-7 text-pretty text-muted-foreground sm:text-lg">
-                {DEMO_BOT.name} is {DEMO_BOT.what}: {DEMO_BOT.screens} screens in {DEMO_BOT.locales.join(", ")}, a rule with two branches,
-                an empty state, a declined payment and {DEMO_BOT.widgets} widgets. Everything below runs in your browser. Nothing is sent to
-                Telegram, and your edits stay on this device.
-              </p>
+        <section aria-labelledby="studio-heading" className="pt-4 pb-12 sm:pt-6 sm:pb-16">
+          <Container>
+            <StudioMapPreview href="#demo" eager />
+            <div className="mt-6 grid gap-5 sm:mt-8 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end xl:gap-8">
+              <div className="max-w-2xl">
+                <h1 id="studio-heading" className="text-3xl font-bold tracking-tight sm:text-5xl">bot-ui Studio</h1>
+                <p className="mt-3 text-base leading-7 text-pretty text-muted-foreground sm:text-lg">
+                  Map your Telegram bot, test its buttons and edit its messages. Try {DEMO_BOT_NAME}’s {DEMO_SCREEN_COUNT} screens in your browser.
+                  For your own bot, run Studio locally on your computer.
+                </p>
+              </div>
+              <StudioActions demoHref="#demo" runHref="#run" widgetsHref="#widgets" />
             </div>
-            <div className="mt-10">
-              <DemoFrame />
-            </div>
-            <p className="mt-3 text-xs leading-5 text-muted-foreground">
-              The demo is the Studio’s offline edition with the bot’s snapshot inside: map, screens, simulator and changes. Widgets are below,
-              and saving to files happens in the local Studio on your machine.
-            </p>
           </Container>
         </section>
 
         <Section
           id="widgets"
-          eyebrow="The bot’s widgets"
-          title="Live widgets, built from the bot’s own files."
-          description="These are the real builds of Brewline’s two widgets, running in the skill’s mock of Telegram’s widget runtime. Switch the state the bot sends, the language, or the site’s theme, and tap their buttons."
+          title={`${DEMO_BOT_NAME}’s live widgets`}
+          description="Each card runs the bot’s real widget HTML. Tap its buttons: a simulated bot answers after a moment, and the widget updates as it would in Telegram."
+          className="border-t border-border bg-card/40"
+        >
+          <div className="grid min-w-0 gap-5 lg:grid-cols-2">
+            {LIVE_WIDGETS.map((card) => (
+              <LiveWidget
+                key={card.id}
+                widget={card.id}
+                hint={card.hint}
+                states={card.states}
+                initialState={"initialState" in card ? card.initialState : undefined}
+              />
+            ))}
+          </div>
+        </Section>
+
+        <section id="demo" aria-labelledby="demo-heading" className="border-t border-border bg-card/40 py-10 sm:py-14">
+          <Container>
+            <div className="flex items-center gap-3">
+              <Image src={avatar} alt="" width={40} height={40} className="rounded-full" />
+              <h2 id="demo-heading" className="text-2xl font-semibold tracking-tight sm:text-3xl">{DEMO_BOT_NAME} live demo</h2>
+            </div>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+              Use the editor and simulator with a coffee pickup bot. Drafts stay in your browser.
+            </p>
+            <div className="mt-5">
+              <DemoFrame />
+            </div>
+          </Container>
+        </section>
+
+        <Section
+          id="run"
+          title="Run Studio locally"
+          description="Work on your own bot at 127.0.0.1. Studio serves one project from your computer, and Save writes changes to that project’s bot-ui/ folder."
           className="border-t border-border"
         >
-          <div className="grid gap-12 lg:grid-cols-2">
-            <LiveWidget widget="order-status" states={ORDER_STATES} />
-            <LiveWidget widget="loyalty-card" states={LOYALTY_STATES} />
-          </div>
-          <p className="mt-6 max-w-3xl text-xs leading-5 text-muted-foreground">
-            A browser preview: it shows the design and the flow, not how each Telegram app draws a widget. Telegram counts the size of the HTML
-            after compression and allows 4 KB.
-          </p>
+          <StudioSetup />
         </Section>
 
         <Section
           id="agents"
-          eyebrow="Connected to your AI agents"
-          title="You point, the agent writes the code."
-          description="The Studio and your coding agent work on the same files in the bot’s repository and follow the same contract, so every change is one reviewable diff."
+          title="From bot files to the Studio map"
+          description="The local Studio and your coding agent share the bot-ui/ folder in your repository."
           className="border-t border-border"
         >
           <AgentFlow />
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {STUDIO_FACTS.map((fact) => (
-              <li key={fact.title} className="border-l-2 border-brand/40 pl-4">
-                <p className="text-sm font-semibold">{fact.title}</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">{fact.text}</p>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        <Section
-          id="run"
-          eyebrow="On your own bot"
-          title="Run the Studio next to your bot."
-          description={RUN_NOTE}
-          className="border-t border-border"
-        >
-          <div className="max-w-3xl space-y-4 rounded-2xl border border-border bg-card p-4 shadow-[0_24px_60px_-32px_rgb(16_24_40/0.3)] sm:p-6">
-            {RUN_STEPS.map((step) => (
-              <CommandRow key={step.command} step={step} />
-            ))}
-          </div>
-          <p className="mt-6 max-w-3xl text-sm leading-6 text-muted-foreground">
-            The format of the files and every rule the Studio checks are in the{" "}
-            <a className={LINK} href={CONTRACT_URL}>
-              project contract
-            </a>
-            ; commands, the offline edition and the adapters for aiogram and plain Bot API are in the{" "}
-            <a className={LINK} href={STUDIO_README_URL}>
-              Studio README
-            </a>
-            . The Telegram skill itself is installed separately: see <Link className={LINK} href="/#install">Install</Link>.
-          </p>
         </Section>
       </main>
       <SiteFooter />

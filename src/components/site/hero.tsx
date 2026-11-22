@@ -58,10 +58,9 @@ export function Hero() {
       <Container className="flex flex-col items-center text-center lg:max-w-[620px] xl:max-w-[720px]">
         <a
           href="#studio"
-          className="group inline-flex items-center gap-2 rounded-full border border-brand/30 bg-card/70 py-1 pr-3 pl-1 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-brand/60 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+          className="group inline-flex items-center gap-2 rounded-full border border-brand/30 bg-card/70 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-brand/60 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
-          <span className="rounded-full bg-brand px-2 py-0.5 text-[11px] text-primary-foreground">New</span>
-          bot-ui Studio: map, widgets and screens with your agent
+          Try bot-ui Studio
           <ArrowRight aria-hidden="true" className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
         </a>
         <p className="mt-3 text-xs font-medium text-muted-foreground">
@@ -79,8 +78,9 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-lg leading-8 text-pretty text-muted-foreground">
-          A UI/UX skill for your coding agent: clean screens and keyboards, streaming answers with Stop, live widgets
-          and channel posts that go out once. <span className="text-foreground">Updated for every Bot API release.</span>
+          Give your coding agent a skill for Telegram screens, keyboards, streaming replies, widgets and channel posts.
+          Use <a href="#studio" className="font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground">bot-ui Studio</a>{" "}
+          to map your bot and test its flows.
         </p>
 
         <div className="mt-9 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">

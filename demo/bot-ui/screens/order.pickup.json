@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "📍 <b>Pickup</b>\nBrewline, 12 Harbour St, the counter by the window. Say order #{order.no}.",
-      "ru": "📍 <b>Самовывоз</b>\nBrewline, Портовая, 12, стойка у окна. Назовите заказ #{order.no}.",
-      "uk": "📍 <b>Самовивіз</b>\nBrewline, Портова, 12, стійка біля вікна. Назвіть замовлення #{order.no}."
+      "en": "📍 <b>Pickup</b>\nPulloa, 12 Harbour St, the counter by the window. Say order #{order.no}.",
+      "ru": "📍 <b>Самовывоз</b>\nPulloa, Портовая, 12, стойка у окна. Назовите заказ #{order.no}.",
+      "uk": "📍 <b>Самовивіз</b>\nPulloa, Портова, 12, стійка біля вікна. Назвіть замовлення #{order.no}."
     }
   },
   "keyboard": {

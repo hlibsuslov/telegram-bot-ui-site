@@ -1,7 +1,0 @@
-/*@kit tokens.css*/
-.gd { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 10px 0 8px }
-.gd span { aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 1.05em;
-  background: var(--k-sec); color: var(--k-hint); border: 2px dashed var(--k-sep) }
-.gd span.on { background: var(--k-btn); color: var(--k-btx); border: 2px solid var(--k-btn) }
-.gd span.gift { border-style: solid; border-color: var(--k-ok); color: var(--k-ok) }
-.gd span.gift.on { background: var(--k-ok); color: var(--k-btx) }

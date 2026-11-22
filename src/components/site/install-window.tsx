@@ -27,7 +27,7 @@ async function copyToClipboard(text: string) {
   }
 }
 
-function CopyButton({ text, label }: { text: string; label: string }) {
+export function CopyButton({ text, label }: { text: string; label: string }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 

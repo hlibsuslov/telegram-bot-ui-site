@@ -1,0 +1,100 @@
+{
+  "id": "drink-match",
+  "title": "Find your drink",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "Not sure what to order? Three quick questions",
+    "ru": "Не знаете, что заказать? Три коротких вопроса",
+    "uk": "Не знаєте, що замовити? Три короткі запитання"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "fallbackScreen": "menu.categories",
+  "dataFields": {
+    "chatData": {
+      "a": {
+        "label": "Matched answers",
+        "type": "text",
+        "help": "<i>.<j>.<k>, empty while the guest answers."
+      },
+      "p": {
+        "label": "Match",
+        "help": "[drink key, milk key, price in cents]"
+      },
+      "ad": {
+        "label": "Added to the order",
+        "type": "choice",
+        "options": [
+          {
+            "value": 0,
+            "label": "No"
+          },
+          {
+            "value": 1,
+            "label": "Yes"
+          }
+        ]
+      },
+      "cur": {
+        "label": "Currency",
+        "type": "text",
+        "advanced": true
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "Goes up with every update so the widget ignores older data. The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "a": "",
+        "p": null,
+        "cur": "EUR",
+        "ad": 0,
+        "r": 0
+      }
+    },
+    "matched": {
+      "chatData": {
+        "a": "1.1.1",
+        "p": [
+          "il",
+          "oat",
+          420
+        ],
+        "cur": "EUR",
+        "ad": 0,
+        "r": 0
+      }
+    },
+    "added": {
+      "chatData": {
+        "a": "1.1.1",
+        "p": [
+          "il",
+          "oat",
+          420
+        ],
+        "cur": "EUR",
+        "ad": 1,
+        "r": 0
+      }
+    }
+  },
+  "queries": [
+    "m:1.1.1",
+    "add"
+  ],
+  "fresh": []
+}
