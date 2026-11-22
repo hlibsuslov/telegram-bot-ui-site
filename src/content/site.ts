@@ -26,7 +26,7 @@ export const DEMO_VIDEO = {
     { src: "/video/demo.mp4", type: "video/mp4" },
   ],
   poster: "/video/demo-poster.jpg",
-  title: "From one sentence to your agent to a bot that feels like a product, in half a minute.",
+  title: "One sentence to your agent fixes the bot, then bot-ui Studio maps it, edits it with premium emoji and simulates every tap. In under a minute.",
   width: 1280,
   height: 720,
 } as const;

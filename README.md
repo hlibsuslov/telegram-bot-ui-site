@@ -16,7 +16,7 @@ npm run lint && npm run build
 ## Content
 
 - Every claim comes from the skill repository. Facts, install commands and FAQ live in `src/content/site.ts`; update it with each skill release.
-- Demo video: web copies in `public/video/` (1280x720 H.264 MP4 with faststart and VP9 WebM, ~1.7 MB and ~1.3 MB), wired up in `DEMO_VIDEO` in `src/content/site.ts`. It loads only when played, autoplays muted while in view and never autoplays with reduced motion.
+- Demo video: web copies in `public/video/` (58 s, 1280x720 H.264 MP4 with faststart and VP9 WebM, ~4.4 MB and ~3.5 MB; v2 with real bot-ui Studio footage), wired up in `DEMO_VIDEO` in `src/content/site.ts`. It loads only when played, autoplays muted while in view and never autoplays with reduced motion.
 - Studio: `/studio` embeds the offline build of the Pulloa project in `demo/bot-ui/`. Build the public-demo client with `npm run build:artifact` in its `studio/web` folder, then run `python scripts/build_demo.py --studio /path/to/studio` here. Refresh the lossless screenshots in `public/studio/` from that build when the UI changes: map at 1440×700 and 390×420, simulator checkout at 500×620, Start screen editor at 760×620.
 - The GitHub star count is fetched at build time and refreshed hourly.
 - `NEXT_PUBLIC_SITE_URL` overrides the canonical URL; on Vercel it defaults to the production domain.
