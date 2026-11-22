@@ -1,20 +1,29 @@
 // Premium emoji pack resolver for bot-ui Studio: reads a public custom emoji set with the
 // site's own bot, so a Studio user only sends the pack name and never needs a bot token.
 //
-// The token (EMOJI_RESOLVER_BOT_TOKEN) is read on the server only, sent only to
-// api.telegram.org, never logged, never returned, and never part of a cache key. Only the
-// read-only methods getStickerSet and getFile are called; nothing is sent to any chat, so a
-// bot that already runs with the same token (polling or webhook) is not affected.
+// The token (EMOJI_RESOLVER_BOT_TOKEN) is read on the server only and sent only to
+// api.telegram.org. Requests go through node:https, not fetch, so Next.js fetch tracing and
+// logging never see the URL that carries it; it is never logged, returned or used as a cache
+// key. Only the read-only methods getStickerSet and getFile are called and nothing is sent to
+// any chat, so a bot that already runs with the same token (polling or webhook) keeps working.
+//
+// Cost control: the CDN caches every answer (Cache-Control in the routes); behind it each
+// instance keeps successful sets for an hour, joins concurrent requests for the same pack,
+// runs at most MAX_CONCURRENT Telegram calls at a time, and stops calling Telegram while a 429
+// retry_after is running.
 import "server-only";
-import { cacheLife } from "next/cache";
+import { request } from "node:https";
 
-const API = "https://api.telegram.org";
 export const PACK_NAME = /^[A-Za-z0-9_]{1,64}$/;
 export const EMOJI_ID = /^\d{1,20}$/;
 const FILE_PATH = /^[A-Za-z0-9_-]+(\/[A-Za-z0-9_.-]+)*$/;
 const PACK_MAX = 200;
 export const FILE_MAX = 512 * 1024;
+const JSON_MAX = 2 * 1024 * 1024;
 const TIMEOUT_MS = 10_000;
+const SET_TTL_MS = 60 * 60 * 1000;
+const SET_CACHE_MAX = 500;
+const MAX_CONCURRENT = 4;
 
 export type Format = "static" | "animated" | "video";
 export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null }
@@ -27,62 +36,100 @@ interface Sticker {
 interface StickerSet { name: string; title?: string; sticker_type?: string; stickers?: Sticker[] }
 
 export class ResolverError extends Error {
-  constructor(readonly code: string, readonly status: number, message: string) {
+  constructor(readonly code: string, readonly status: number, message: string, readonly retryAfter?: number) {
     super(message);
   }
 }
 
 function token(): string {
-  const t = process.env.EMOJI_RESOLVER_BOT_TOKEN;
+  const t = process.env.EMOJI_RESOLVER_BOT_TOKEN?.trim();
   if (!t) throw new ResolverError("RESOLVER_OFF", 503, "the emoji resolver is not configured");
   return t;
 }
 
+// ------------------------------------------------------------------ Telegram, bounded
+
+let active = 0;
+const waiting: (() => void)[] = [];
+let pausedUntil = 0;
+
+async function slot<T>(work: () => Promise<T>): Promise<T> {
+  if (Date.now() < pausedUntil) {
+    const wait = Math.ceil((pausedUntil - Date.now()) / 1000);
+    throw new ResolverError("RATE_LIMITED", 429, "busy; retry in a moment", wait);
+  }
+  if (active >= MAX_CONCURRENT) await new Promise<void>((resolve) => waiting.push(resolve));
+  active++;
+  try {
+    return await work();
+  } finally {
+    active--;
+    waiting.shift()?.();
+  }
+}
+
+/** One HTTPS request to api.telegram.org; no redirects, bounded body, the path never surfaces. */
+function telegram(path: string, body: string | null, limit: number): Promise<{ status: number; data: Buffer }> {
+  return new Promise((resolve, reject) => {
+    const req = request({
+      host: "api.telegram.org", path, method: body === null ? "GET" : "POST", timeout: TIMEOUT_MS,
+      headers: body === null ? {} : { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(body) },
+    }, (res) => {
+      const chunks: Buffer[] = [];
+      let size = 0;
+      res.on("data", (c: Buffer) => {
+        size += c.length;
+        if (size > limit) { req.destroy(); reject(new ResolverError("TOO_LARGE", 413, "answer too large")); return; }
+        chunks.push(c);
+      });
+      res.on("end", () => resolve({ status: res.statusCode ?? 0, data: Buffer.concat(chunks) }));
+      res.on("error", () => reject(new ResolverError("TELEGRAM_UNREACHABLE", 502, "Telegram did not answer")));
+    });
+    req.on("timeout", () => req.destroy());
+    req.on("error", () => reject(new ResolverError("TELEGRAM_UNREACHABLE", 502, "Telegram did not answer")));
+    if (body !== null) req.write(body);
+    req.end();
+  });
+}
+
 /** One read-only Bot API call. Errors carry Telegram's description, never the request URL. */
 async function call<T>(method: "getStickerSet" | "getFile", params: Record<string, string>): Promise<T> {
-  let res: Response;
-  try {
-    res = await fetch(`${API}/bot${token()}/${method}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(params),
-      cache: "no-store",
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
-  } catch (err) {
-    if (err instanceof ResolverError) throw err;
-    throw new ResolverError("TELEGRAM_UNREACHABLE", 502, "Telegram did not answer");
-  }
-  const doc = (await res.json().catch(() => ({}))) as { ok?: boolean; result?: T; description?: string };
+  const path = `/bot${token()}/${method}`;
+  const { status, data } = await slot(() => telegram(path, JSON.stringify(params), JSON_MAX));
+  let doc: { ok?: boolean; result?: T; description?: string; parameters?: { retry_after?: number } } = {};
+  try { doc = JSON.parse(data.toString("utf8")); } catch { /* not JSON */ }
   if (doc.ok) return doc.result as T;
-  const desc = String(doc.description ?? `HTTP ${res.status}`);
+  const desc = String(doc.description ?? `HTTP ${status}`);
+  if (status === 429) {
+    const wait = Math.min(Math.max(Number(doc.parameters?.retry_after) || 30, 1), 3600);
+    pausedUntil = Date.now() + wait * 1000;
+    throw new ResolverError("RATE_LIMITED", 429, "Telegram asks to slow down; retry later", wait);
+  }
   if (/STICKERSET_INVALID|not found/i.test(desc)) throw new ResolverError("PACK_NOT_FOUND", 404, "no such pack");
-  if (res.status === 429) throw new ResolverError("RATE_LIMITED", 429, "Telegram asks to slow down; retry in a minute");
+  if (status === 401 || status === 404) throw new ResolverError("RESOLVER_OFF", 503, "the emoji resolver is misconfigured");
   throw new ResolverError("TELEGRAM_ERROR", 502, `${method}: ${desc}`.slice(0, 200));
 }
 
-/** The raw set, cached per name (the token is not an argument, so it is not in the key).
- * Errors are not cached; they cross the cache boundary as plain Errors, so the code travels
- * in the message and `stickerSet` turns it back into a ResolverError. */
-async function cachedStickerSet(name: string): Promise<StickerSet> {
-  "use cache";
-  cacheLife("hours");
-  try {
-    return await call<StickerSet>("getStickerSet", { name });
-  } catch (err) {
-    const e = err instanceof ResolverError ? err : new ResolverError("TELEGRAM_ERROR", 502, "getStickerSet failed");
-    throw new Error(JSON.stringify({ code: e.code, status: e.status, message: e.message }));
-  }
-}
+// ------------------------------------------------------------------ sets, cached per instance
 
+const sets = new Map<string, { at: number; set: StickerSet }>();
+const inflight = new Map<string, Promise<StickerSet>>();
+
+/** The raw set: an hour in memory for successes; errors are never kept. */
 async function stickerSet(name: string): Promise<StickerSet> {
-  try {
-    return await cachedStickerSet(name);
-  } catch (err) {
-    let e: { code?: string; status?: number; message?: string } = {};
-    try { e = JSON.parse(err instanceof Error ? err.message : ""); } catch { /* not ours */ }
-    throw new ResolverError(e.code ?? "TELEGRAM_ERROR", e.status ?? 502, e.message ?? "getStickerSet failed");
-  }
+  const hit = sets.get(name);
+  if (hit && Date.now() - hit.at < SET_TTL_MS) return hit.set;
+  const running = inflight.get(name);
+  if (running) return running;
+  const p = call<StickerSet>("getStickerSet", { name })
+    .then((set) => {
+      if (sets.size >= SET_CACHE_MAX) sets.delete(sets.keys().next().value as string);
+      sets.set(name, { at: Date.now(), set });
+      return set;
+    })
+    .finally(() => inflight.delete(name));
+  inflight.set(name, p);
+  return p;
 }
 
 function previewFileId(s: Sticker): string | null {
@@ -101,7 +148,7 @@ export async function resolvePack(name: string): Promise<Pack> {
     if (!s.custom_emoji_id || !EMOJI_ID.test(s.custom_emoji_id)) continue;
     emoji.push({
       id: s.custom_emoji_id,
-      fallback: s.emoji ?? "",
+      fallback: typeof s.emoji === "string" ? s.emoji : "",
       format: s.is_video ? "video" : s.is_animated ? "animated" : "static",
       adaptive: !!s.needs_repainting,
       preview: previewFileId(s) ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}` : null,
@@ -124,19 +171,13 @@ export async function previewFile(name: string, id: string): Promise<{ body: Arr
   const ext = path.split(".").pop()?.toLowerCase() ?? "";
   if (!FILE_PATH.test(path) || path.includes("..") || !TYPES[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported picture");
   if ((file.file_size ?? 0) > FILE_MAX) throw new ResolverError("TOO_LARGE", 413, "picture too large");
-  let res: Response;
-  try {
-    res = await fetch(`${API}/file/bot${token()}/${path}`, { cache: "no-store", signal: AbortSignal.timeout(TIMEOUT_MS) });
-  } catch {
-    throw new ResolverError("TELEGRAM_UNREACHABLE", 502, "Telegram did not answer");
-  }
-  if (!res.ok) throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${res.status}`);
-  const body = await res.arrayBuffer();
-  if (body.byteLength > FILE_MAX) throw new ResolverError("TOO_LARGE", 413, "picture too large");
-  return { body, type: TYPES[ext] };
+  const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, FILE_MAX));
+  if (status !== 200) throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
+  return { body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type: TYPES[ext] };
 }
 
-// Best-effort limit per instance on uncached work (the CDN answers repeated requests).
+// ------------------------------------------------------------------ per-client limit, errors
+
 const hits = new Map<string, number[]>();
 export function allow(key: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now();
@@ -157,7 +198,7 @@ export function errorResponse(err: unknown): Response {
   if (!(err instanceof ResolverError)) console.error("emoji resolver:", err instanceof Error ? err.name : "unknown error");
   // Short CDN cache for misses, so a burst for a wrong name does not reach Telegram each time.
   const cache = e.status === 404 || e.status === 400 || e.status === 422 ? "public, s-maxage=300" : "no-store";
-  return Response.json({ ok: false, error: { code: e.code, message: e.message } }, {
-    status: e.status, headers: { "Cache-Control": cache, "X-Content-Type-Options": "nosniff" },
-  });
+  const headers: Record<string, string> = { "Cache-Control": cache, "X-Content-Type-Options": "nosniff" };
+  if (e.retryAfter) headers["Retry-After"] = String(e.retryAfter);
+  return Response.json({ ok: false, error: { code: e.code, message: e.message } }, { status: e.status, headers });
 }
