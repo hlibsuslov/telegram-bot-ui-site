@@ -1,0 +1,52 @@
+{
+  "id": "order.ready",
+  "title": "Order ready",
+  "kind": "notification",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "🔔 <b>Order #{order.no} is ready</b>\nPick it up at the counter while it's hot.",
+      "ru": "🔔 <b>Заказ #{order.no} готов</b>\nЗаберите на стойке, пока горячий.",
+      "uk": "🔔 <b>Замовлення #{order.no} готове</b>\nЗаберіть на стійці, поки гаряче."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "omw",
+        "open"
+      ]
+    ]
+  },
+  "actions": {
+    "omw": {
+      "label": {
+        "en": "On my way",
+        "ru": "Уже иду",
+        "uk": "Вже йду"
+      },
+      "type": "answer",
+      "text": {
+        "en": "We'll keep it warm",
+        "ru": "Сохраним тёплым",
+        "uk": "Збережемо теплим"
+      }
+    },
+    "open": {
+      "label": {
+        "en": "Open order",
+        "ru": "Открыть заказ",
+        "uk": "Відкрити замовлення"
+      },
+      "type": "navigate",
+      "to": "order.status",
+      "presentation": "send",
+      "set": {
+        "order.active": true
+      }
+    }
+  }
+}

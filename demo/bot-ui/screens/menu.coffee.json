@@ -1,0 +1,80 @@
+{
+  "id": "menu.coffee",
+  "title": "Coffee",
+  "kind": "menu",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Coffee</b>\nFlat white · €3.90\nCappuccino · €3.60\nIced latte · €4.20",
+      "ru": "<b>Кофе</b>\nФлэт уайт · 3,90 €\nКапучино · 3,60 €\nАйс-латте · 4,20 €",
+      "uk": "<b>Кава</b>\nФлет вайт · 3,90 €\nКапучино · 3,60 €\nАйс-лате · 4,20 €"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "flat",
+        "capp"
+      ],
+      [
+        "iced"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "flat": {
+      "label": {
+        "en": "Flat white",
+        "ru": "Флэт уайт",
+        "uk": "Флет вайт"
+      },
+      "type": "navigate",
+      "to": "order.size",
+      "presentation": "edit",
+      "set": {
+        "drink": "flat_white"
+      }
+    },
+    "capp": {
+      "label": {
+        "en": "Cappuccino",
+        "ru": "Капучино",
+        "uk": "Капучино"
+      },
+      "type": "navigate",
+      "to": "order.size",
+      "presentation": "edit",
+      "set": {
+        "drink": "cappuccino"
+      }
+    },
+    "iced": {
+      "label": {
+        "en": "Iced latte",
+        "ru": "Айс-латте",
+        "uk": "Айс-лате"
+      },
+      "type": "navigate",
+      "to": "order.size",
+      "presentation": "edit",
+      "set": {
+        "drink": "iced_latte"
+      }
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "menu.categories"
+    }
+  }
+}

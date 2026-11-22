@@ -1,0 +1,64 @@
+{
+  "id": "menu.tea",
+  "title": "Tea & more",
+  "kind": "menu",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Tea &amp; more</b>\nMatcha latte · €4.40\nChai latte · €4.10",
+      "ru": "<b>Чай и не только</b>\nМатча-латте · 4,40 €\nЧай-латте · 4,10 €",
+      "uk": "<b>Чай і не тільки</b>\nМатча-лате · 4,40 €\nЧай-лате · 4,10 €"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "matcha",
+        "chai"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "matcha": {
+      "label": {
+        "en": "Matcha latte",
+        "ru": "Матча-латте",
+        "uk": "Матча-лате"
+      },
+      "type": "navigate",
+      "to": "order.size",
+      "presentation": "edit",
+      "set": {
+        "drink": "matcha"
+      }
+    },
+    "chai": {
+      "label": {
+        "en": "Chai latte",
+        "ru": "Чай-латте",
+        "uk": "Чай-лате"
+      },
+      "type": "navigate",
+      "to": "order.size",
+      "presentation": "edit",
+      "set": {
+        "drink": "chai"
+      }
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "menu.categories"
+    }
+  }
+}

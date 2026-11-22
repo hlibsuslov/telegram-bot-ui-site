@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
 import { Hero } from "@/components/site/hero";
 import { Install } from "@/components/site/install";
+import { Studio } from "@/components/site/studio";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <main id="main">
         <Hero />
         <DemoVideo />
+        <Studio />
         <Demos />
         <Capabilities />
         <Agents />

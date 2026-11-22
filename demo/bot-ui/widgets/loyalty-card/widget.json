@@ -1,0 +1,80 @@
+{
+  "id": "loyalty-card",
+  "title": "Loyalty card",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "{loyalty.stamps} of 10 stamps",
+    "ru": "{loyalty.stamps} из 10 отметок",
+    "uk": "{loyalty.stamps} з 10 позначок"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "fallbackScreen": "loyalty.card",
+  "dataFields": {
+    "chatData": {
+      "n": {
+        "label": "Stamps",
+        "type": "number",
+        "help": "0 to 10."
+      },
+      "of": {
+        "label": "Stamps for a free drink",
+        "type": "number",
+        "advanced": true
+      },
+      "name": {
+        "label": "Guest name",
+        "type": "text"
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "n": 7,
+        "of": 10,
+        "name": "Alice",
+        "r": 0
+      }
+    },
+    "almost": {
+      "chatData": {
+        "n": 9,
+        "of": 10,
+        "name": "Alice",
+        "r": 0
+      }
+    },
+    "free": {
+      "chatData": {
+        "n": 10,
+        "of": 10,
+        "name": "Alice",
+        "r": 0
+      }
+    },
+    "new": {
+      "chatData": {
+        "n": 0,
+        "of": 10,
+        "r": 0
+      }
+    }
+  },
+  "queries": [
+    "code"
+  ]
+}

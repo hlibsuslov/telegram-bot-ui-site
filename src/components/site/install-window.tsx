@@ -85,7 +85,7 @@ function CopyButton({ text, label }: { text: string; label: string }) {
   );
 }
 
-function CommandRow({ step }: { step: InstallStep }) {
+export function CommandRow({ step }: { step: InstallStep }) {
   return (
     <div>
       <p className="mb-1.5 text-xs font-medium text-muted-foreground">{step.label}</p>

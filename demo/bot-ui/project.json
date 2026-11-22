@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "projectId": "brewline",
+  "title": "Brewline",
+  "defaultLocale": "en",
+  "locales": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "entryPoints": [
+    {
+      "id": "start",
+      "type": "command",
+      "command": "start",
+      "screen": "entry.start"
+    },
+    {
+      "id": "menu",
+      "type": "command",
+      "command": "menu",
+      "screen": "menu.categories"
+    },
+    {
+      "id": "card",
+      "type": "command",
+      "command": "card",
+      "screen": "loyalty.card"
+    },
+    {
+      "id": "help",
+      "type": "command",
+      "command": "help",
+      "screen": "support.start"
+    },
+    {
+      "id": "order-ready",
+      "type": "event",
+      "eventKey": "order.ready",
+      "screen": "order.ready"
+    }
+  ],
+  "contexts": [
+    "private"
+  ],
+  "fields": {
+    "cart.summary": {
+      "type": "string",
+      "source": "data",
+      "example": "Flat white M, oat milk · Butter croissant"
+    },
+    "cart.total": {
+      "type": "string",
+      "source": "data",
+      "example": "€6.30"
+    },
+    "order.no": {
+      "type": "string",
+      "source": "data",
+      "example": "218"
+    },
+    "pickup.time": {
+      "type": "string",
+      "source": "data",
+      "example": "8:45"
+    },
+    "order.status_text": {
+      "type": "string",
+      "source": "data",
+      "example": "brewing"
+    },
+    "loyalty.stamps": {
+      "type": "string",
+      "source": "data",
+      "example": "7"
+    },
+    "drink": {
+      "type": "enum",
+      "values": [
+        "flat_white",
+        "cappuccino",
+        "iced_latte",
+        "matcha",
+        "chai"
+      ],
+      "source": "state"
+    },
+    "cup.size": {
+      "type": "enum",
+      "values": [
+        "s",
+        "m",
+        "l"
+      ],
+      "source": "state"
+    },
+    "milk": {
+      "type": "enum",
+      "values": [
+        "dairy",
+        "oat",
+        "none"
+      ],
+      "source": "state"
+    },
+    "order.active": {
+      "type": "boolean",
+      "source": "state"
+    },
+    "delivery.method": {
+      "type": "enum",
+      "values": [
+        "pickup",
+        "courier"
+      ],
+      "source": "context"
+    },
+    "order.note": {
+      "type": "string",
+      "source": "input",
+      "maxLength": 140
+    },
+    "support.text": {
+      "type": "string",
+      "source": "input",
+      "maxLength": 500
+    }
+  },
+  "handlers": {
+    "checkout.pay": {
+      "outcomes": [
+        "ok",
+        "declined"
+      ],
+      "description": "Charges the order on the server; the demo returns a scripted outcome."
+    }
+  },
+  "messages": {
+    "stale": {
+      "en": "This button is out of date. Use the latest message.",
+      "ru": "Эта кнопка устарела. Откройте последнее сообщение.",
+      "uk": "Ця кнопка застаріла. Відкрийте останнє повідомлення."
+    },
+    "disabled": {
+      "en": "Not available right now.",
+      "ru": "Сейчас недоступно.",
+      "uk": "Зараз недоступно."
+    }
+  },
+  "capabilities": {
+    "widgets": true,
+    "richMessages": false
+  },
+  "adapter": {
+    "sdk": "aiogram",
+    "sdkVersion": "3.31.0",
+    "source": "read on start and on change"
+  }
+}

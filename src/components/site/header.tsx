@@ -1,16 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Star } from "lucide-react";
 import { REPO_URL } from "@/content/site";
 import { getStarCount } from "@/lib/github";
 import { Container, GithubMark } from "./section";
 import { ThemeToggle } from "./theme-toggle";
 
+// Absolute paths so the same header works on the home page and on /studio.
 const NAV = [
-  { href: "#demos", label: "Demos" },
-  { href: "#capabilities", label: "Capabilities" },
-  { href: "#agents", label: "Agents" },
-  { href: "#install", label: "Install" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#demos", label: "Demos" },
+  { href: "/#studio", label: "Studio" },
+  { href: "/#capabilities", label: "Capabilities" },
+  { href: "/#install", label: "Install" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/studio", label: "Live demo" },
 ];
 
 export async function StarButton({ size = "sm" }: { size?: "sm" | "lg" }) {
@@ -43,19 +46,19 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <Container className="flex h-16 items-center justify-between gap-4">
-        <a href="#top" className="flex items-center gap-2.5 rounded-md font-semibold tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+        <Link href="/#top" className="flex items-center gap-2.5 rounded-md font-semibold tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
           <Image src="/icon.svg" alt="" width={28} height={28} className="rounded-md" priority />
           <span className="whitespace-nowrap">telegram-bot-ui</span>
-        </a>
+        </Link>
         <nav aria-label="Sections" className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex items-center gap-1.5">
