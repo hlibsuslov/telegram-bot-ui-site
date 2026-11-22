@@ -78,7 +78,7 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-lg leading-8 text-pretty text-muted-foreground">
-          Give your coding agent a skill for Telegram screens, keyboards, streaming replies, widgets and channel posts.
+          Give your coding agent a skill for the whole interface of a Telegram bot: screens, texts, keyboards, streaming replies, widgets and channel posts.
           Use <a href="#studio" className="font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground">bot-ui Studio</a>{" "}
           to map your bot and test its flows.
         </p>
