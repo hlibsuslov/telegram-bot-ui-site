@@ -13,9 +13,9 @@ const PROMPTS = [
 
 const FACTS = [
   { value: BOT_API, label: `Bot API version, verified against the official docs on ${VERIFIED_ON}` },
-  { value: "193", label: "Bot API methods in the offline catalog, plus 425 types" },
-  { value: "445", label: "offline tests: 414 Python and 31 TypeScript, run in CI on Linux and Windows" },
-  { value: "65", label: "numbered recipes, from a settings screen to a whole shop" },
+  { value: "194", label: "Bot API methods in the offline catalog, plus 426 types" },
+  { value: "474", label: "offline tests: 443 Python and 31 TypeScript, run in CI on Linux and Windows" },
+  { value: "66", label: "numbered recipes, from a settings screen to a whole shop" },
   { value: "18", label: "ready HTML widgets with light and dark themes" },
   { value: "5", label: "subagents: designer, builder, publisher, widget builder, reviewer" },
 ];

@@ -10,9 +10,9 @@ export const CHANGELOG_URL = `${REPO_URL}/blob/main/CHANGELOG.md`;
 export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`;
 export const HOSTS_URL = `${REPO_URL}/blob/main/docs/hosts.md`;
 
-export const VERSION = "2.1.0";
-export const BOT_API = "10.4";
-export const VERIFIED_ON = "2026-11-15";
+export const VERSION = "2.3.0";
+export const BOT_API = "10.5";
+export const VERIFIED_ON = "2026-11-22";
 
 export const SITE_NAME = "Telegram Bot UI";
 export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for Telegram bot design";
