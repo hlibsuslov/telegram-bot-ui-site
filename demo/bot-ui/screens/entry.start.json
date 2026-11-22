@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "<b>Brewline</b> ☕\nOrder ahead and skip the line. Your usual is two taps away.",
-      "ru": "<b>Brewline</b> ☕\nЗакажите заранее и не стойте в очереди. Ваш обычный заказ в двух нажатиях.",
-      "uk": "<b>Brewline</b> ☕\nЗамовте заздалегідь і не стійте в черзі. Ваше звичне замовлення за два натискання."
+      "en": "<b>Brewline</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nOrder ahead and skip the line. Your usual is two taps away.",
+      "ru": "<b>Brewline</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nЗакажите заранее и не стойте в очереди. Ваш обычный заказ в двух нажатиях.",
+      "uk": "<b>Brewline</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nЗамовте заздалегідь і не стійте в черзі. Ваше звичне замовлення за два натискання."
     }
   },
   "keyboard": {
@@ -33,14 +33,17 @@
   "actions": {
     "menu": {
       "label": {
-        "en": "☕ Menu",
-        "ru": "☕ Меню",
-        "uk": "☕ Меню"
+        "en": "Menu",
+        "ru": "Меню",
+        "uk": "Меню"
       },
       "type": "navigate",
       "to": "menu.categories",
       "presentation": "edit",
-      "style": "primary"
+      "style": "primary",
+      "icon": {
+        "customEmojiId": "5350392020785437399"
+      }
     },
     "usual": {
       "label": {
@@ -59,12 +62,11 @@
     },
     "order": {
       "label": {
-        "en": "📦 My order",
-        "ru": "📦 Мой заказ",
-        "uk": "📦 Моє замовлення"
+        "en": "My order",
+        "ru": "Мой заказ",
+        "uk": "Моє замовлення"
       },
       "type": "navigate",
-      "presentation": "edit",
       "rule": {
         "when": {
           "field": "order.active",
@@ -72,27 +74,37 @@
         },
         "match": "order.status",
         "otherwise": "order.none"
+      },
+      "presentation": "edit",
+      "icon": {
+        "customEmojiId": "5431492767249342908"
       }
     },
     "card": {
       "label": {
-        "en": "⭐ Loyalty card",
-        "ru": "⭐ Карта гостя",
-        "uk": "⭐ Картка гостя"
+        "en": "Loyalty card",
+        "ru": "Карта гостя",
+        "uk": "Картка гостя"
       },
       "type": "navigate",
       "to": "loyalty.card",
-      "presentation": "edit"
+      "presentation": "edit",
+      "icon": {
+        "customEmojiId": "5235579393115438657"
+      }
     },
     "help": {
       "label": {
-        "en": "💬 Support",
-        "ru": "💬 Поддержка",
-        "uk": "💬 Підтримка"
+        "en": "Support",
+        "ru": "Поддержка",
+        "uk": "Підтримка"
       },
       "type": "navigate",
       "to": "support.start",
-      "presentation": "send"
+      "presentation": "send",
+      "icon": {
+        "customEmojiId": "5417915203100613993"
+      }
     }
   }
 }

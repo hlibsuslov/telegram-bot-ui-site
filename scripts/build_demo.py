@@ -39,7 +39,9 @@ def demo_page(studio: str, tmp: str) -> None:
     if not os.path.isfile(template):
         raise SystemExit(f"{template} is missing: run `npm ci && npm run build:artifact` in studio/web")
     snap_path = os.path.join(tmp, "snapshot.json")
-    cli(studio, "export-snapshot", "--format", "json", "--output", snap_path)
+    # Every emoji of the imported packs gets its picture, so the demo shows the whole packs.
+    cli(studio, "export-snapshot", "--format", "json", "--emoji-previews", "all", "--emoji-budget", "2500000",
+        "--output", snap_path)
     with open(snap_path, encoding="utf-8") as fh:
         doc = json.load(fh)
     # Same surface as the artifact (edit texts and rules, simulate, export a patch) plus the demo copy.

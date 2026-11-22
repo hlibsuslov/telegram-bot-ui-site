@@ -149,7 +149,8 @@
   },
   "capabilities": {
     "widgets": true,
-    "richMessages": false
+    "richMessages": false,
+    "customEmoji": "owner_premium"
   },
   "adapter": {
     "sdk": "aiogram",
