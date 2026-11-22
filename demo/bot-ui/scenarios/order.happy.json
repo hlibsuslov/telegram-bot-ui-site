@@ -1,0 +1,87 @@
+{
+  "scenarioId": "order.happy",
+  "title": "Coffee ordered and paid on the first try, pickup",
+  "locale": "en",
+  "context": {
+    "chat": "private",
+    "delivery.method": "pickup"
+  },
+  "data": {
+    "cart.summary": "Flat white M, oat milk · Butter croissant",
+    "cart.total": "€6.30",
+    "order.no": "218",
+    "pickup.time": "8:45",
+    "order.status_text": "brewing",
+    "loyalty.stamps": "7"
+  },
+  "handlers": {
+    "checkout.pay": [
+      "ok"
+    ]
+  },
+  "steps": [
+    {
+      "command": "start"
+    },
+    {
+      "expect": {
+        "screen": "entry.start"
+      }
+    },
+    {
+      "press": "menu"
+    },
+    {
+      "press": "coffee"
+    },
+    {
+      "press": "flat"
+    },
+    {
+      "press": "m"
+    },
+    {
+      "press": "oat"
+    },
+    {
+      "expect": {
+        "screen": "checkout.review"
+      }
+    },
+    {
+      "press": "note"
+    },
+    {
+      "text": "Extra hot, please"
+    },
+    {
+      "expect": {
+        "screen": "checkout.review"
+      }
+    },
+    {
+      "press": "pay"
+    },
+    {
+      "expect": {
+        "screen": "order.placed"
+      }
+    },
+    {
+      "press": "track"
+    },
+    {
+      "expect": {
+        "screen": "order.status"
+      }
+    },
+    {
+      "press": "route"
+    },
+    {
+      "expect": {
+        "screen": "order.pickup"
+      }
+    }
+  ]
+}

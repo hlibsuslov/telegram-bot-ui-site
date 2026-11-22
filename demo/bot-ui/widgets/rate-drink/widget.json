@@ -1,0 +1,121 @@
+{
+  "id": "rate-drink",
+  "title": "Rate your drink",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "Order #218 picked up. How was it?",
+    "ru": "Заказ #218 получен. Как вам?",
+    "uk": "Замовлення #218 отримано. Як вам?"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "dataFields": {
+    "chatData": {
+      "o": {
+        "label": "Drink",
+        "type": "text",
+        "help": "Key of the rated drink; the widget translates it."
+      },
+      "no": {
+        "label": "Order number",
+        "type": "text"
+      },
+      "v": {
+        "label": "Stars sent",
+        "type": "number"
+      },
+      "m": {
+        "label": "Tags sent",
+        "type": "number",
+        "advanced": true,
+        "help": "Bitmask of the chosen tags."
+      },
+      "k": {
+        "label": "Phase",
+        "type": "choice",
+        "options": [
+          {
+            "value": 0,
+            "label": "Open"
+          },
+          {
+            "value": 1,
+            "label": "Thanks"
+          },
+          {
+            "value": 2,
+            "label": "Rated earlier"
+          }
+        ]
+      },
+      "c": {
+        "label": "Coupon",
+        "type": "text"
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "Goes up with every update so the widget ignores older data. The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "o": "fw",
+        "no": "#218",
+        "v": 0,
+        "m": 0,
+        "k": 0,
+        "c": "",
+        "r": 0
+      }
+    },
+    "thanks": {
+      "chatData": {
+        "o": "fw",
+        "no": "#218",
+        "v": 5,
+        "m": 9,
+        "k": 1,
+        "c": "PULLOA-K7Q2",
+        "r": 0
+      }
+    },
+    "sorry": {
+      "chatData": {
+        "o": "fw",
+        "no": "#218",
+        "v": 2,
+        "m": 2,
+        "k": 1,
+        "c": "PULLOA-FREE",
+        "r": 0
+      }
+    },
+    "rated": {
+      "chatData": {
+        "o": "fw",
+        "no": "#218",
+        "v": 4,
+        "m": 1,
+        "k": 2,
+        "c": "",
+        "r": 0
+      }
+    }
+  },
+  "queries": [
+    "r:5:9",
+    "r:2:2"
+  ],
+  "fresh": []
+}

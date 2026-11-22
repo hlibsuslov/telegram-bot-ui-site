@@ -1,0 +1,139 @@
+{
+  "id": "pickup-time",
+  "title": "Pickup time",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "When should order #218 be ready?",
+    "ru": "К какому времени приготовить заказ #218?",
+    "uk": "На котру приготувати замовлення #218?"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "fallbackScreen": "order.pickup",
+  "dataFields": {
+    "chatData": {
+      "no": {
+        "label": "Order number",
+        "type": "text"
+      },
+      "d0": {
+        "label": "First day",
+        "type": "time",
+        "help": "Any moment of the first day in the strip."
+      },
+      "b": {
+        "label": "First slot",
+        "type": "number",
+        "help": "Minutes after midnight, e.g. 450 for 7:30."
+      },
+      "sp": {
+        "label": "Slot step",
+        "type": "number",
+        "help": "Minutes between slots."
+      },
+      "m": {
+        "label": "Free slots",
+        "advanced": true,
+        "help": "One hex string per day: bit i set = slot i is free."
+      },
+      "sel": {
+        "label": "Chosen slot",
+        "type": "text",
+        "help": "<day>:<HHMM>, not yet confirmed."
+      },
+      "bk": {
+        "label": "Booked slot",
+        "type": "text",
+        "help": "<day>:<HHMM>"
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "Goes up with every update so the widget ignores older data. The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "no": "#218",
+        "d0": 1794736800,
+        "b": 450,
+        "sp": 15,
+        "m": [
+          "f6f0",
+          "fef3",
+          "0fff"
+        ],
+        "sel": "",
+        "bk": "",
+        "r": 0
+      }
+    },
+    "chosen": {
+      "chatData": {
+        "no": "#218",
+        "d0": 1794736800,
+        "b": 450,
+        "sp": 15,
+        "m": [
+          "f6f0",
+          "fef3",
+          "0fff"
+        ],
+        "sel": "0:0900",
+        "bk": "",
+        "r": 0
+      }
+    },
+    "booked": {
+      "chatData": {
+        "no": "#218",
+        "d0": 1794736800,
+        "b": 450,
+        "sp": 15,
+        "m": [
+          "f6f0",
+          "fef3",
+          "0fff"
+        ],
+        "sel": "",
+        "bk": "0:0900",
+        "r": 0
+      }
+    },
+    "full": {
+      "chatData": {
+        "no": "#218",
+        "d0": 1794736800,
+        "b": 450,
+        "sp": 15,
+        "m": [
+          "0000",
+          "fef3",
+          "0fff"
+        ],
+        "sel": "",
+        "bk": "",
+        "r": 0
+      }
+    }
+  },
+  "queries": [
+    "pick:0:0900@0",
+    "pick:0:0830@0",
+    "book",
+    "cancel"
+  ],
+  "fresh": [
+    "d0"
+  ]
+}

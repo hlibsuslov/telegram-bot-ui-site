@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CHANGELOG_URL, LICENSE_URL, RELEASES_URL, REPO_URL, VERSION } from "@/content/site";
 import { Container, GithubMark } from "./section";
 
@@ -10,10 +11,11 @@ const PROJECT = [
 ];
 
 const LEARN = [
-  { title: "Demos", href: "#demos" },
-  { title: "Capabilities", href: "#capabilities" },
-  { title: "Install", href: "#install" },
-  { title: "FAQ", href: "#faq" },
+  { title: "Demos", href: "/#demos" },
+  { title: "Studio", href: "/studio" },
+  { title: "Capabilities", href: "/#capabilities" },
+  { title: "Install", href: "/#install" },
+  { title: "FAQ", href: "/#faq" },
 ];
 
 // Adapted from the 21st.dev "Minimal Footer" block.
@@ -22,10 +24,10 @@ export function SiteFooter() {
     <footer className="border-t border-border">
       <Container className="grid grid-cols-6 gap-8 py-12">
         <div className="col-span-6 flex flex-col gap-4 md:col-span-4">
-          <a href="#top" className="flex w-max items-center gap-2.5 rounded-md font-semibold focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+          <Link href="/#top" className="flex w-max items-center gap-2.5 rounded-md font-semibold focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
             <Image src="/icon.svg" alt="" width={32} height={32} className="rounded-lg" />
             telegram-bot-ui
-          </a>
+          </Link>
           <p className="max-w-sm text-sm text-balance text-muted-foreground">
             An open-source Agent Skill for Telegram bot UI and UX. Version {VERSION}.
           </p>
@@ -49,14 +51,14 @@ export function SiteFooter() {
             ))}
           </ul>
         </nav>
-        <nav aria-label="On this page" className="col-span-3 md:col-span-1">
-          <p className="mb-2 text-xs text-muted-foreground">On this page</p>
+        <nav aria-label="Site" className="col-span-3 md:col-span-1">
+          <p className="mb-2 text-xs text-muted-foreground">Site</p>
           <ul className="flex flex-col gap-1">
             {LEARN.map((link) => (
               <li key={link.title}>
-                <a href={link.href} className="inline-block py-1 text-sm hover:underline">
+                <Link href={link.href} className="inline-block py-1 text-sm hover:underline">
                   {link.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

@@ -1,0 +1,80 @@
+{
+  "id": "order.milk",
+  "title": "Milk",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Which milk?</b>\nOat and almond are free.",
+      "ru": "<b>Какое молоко?</b>\nОвсяное и миндальное без доплаты.",
+      "uk": "<b>Яке молоко?</b>\nВівсяне й мигдальне без доплати."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "dairy",
+        "oat"
+      ],
+      [
+        "none"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "dairy": {
+      "label": {
+        "en": "Dairy",
+        "ru": "Обычное",
+        "uk": "Звичайне"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "edit",
+      "set": {
+        "milk": "dairy"
+      }
+    },
+    "oat": {
+      "label": {
+        "en": "Oat",
+        "ru": "Овсяное",
+        "uk": "Вівсяне"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "edit",
+      "set": {
+        "milk": "oat"
+      }
+    },
+    "none": {
+      "label": {
+        "en": "No milk",
+        "ru": "Без молока",
+        "uk": "Без молока"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "edit",
+      "set": {
+        "milk": "none"
+      }
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "order.size"
+    }
+  }
+}

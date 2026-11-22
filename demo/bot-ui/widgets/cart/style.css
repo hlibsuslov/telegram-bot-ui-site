@@ -1,0 +1,17 @@
+/*@kit tokens.css*/
+.pl { font-size: .8em; padding: 2px 8px; border-radius: 999px; background: var(--k-sec); white-space: nowrap; color: var(--k-warn) }
+.pl.ok { color: var(--k-ok) }
+.ln { padding: 4px 0; min-height: 34px }
+.ln .rw { justify-content: space-between }
+.qs { display: flex; align-items: center; gap: 2px }
+.qs .ch { min-width: 34px; padding: 4px 0; text-align: center }
+.qs b { min-width: 1.4em; text-align: center; font-weight: 600 }
+.tt2 { display: flex; justify-content: space-between; margin-top: 2px }
+.tt2.tot { font-weight: 600; font-size: 1.07em; border-top: 1px solid var(--k-sep); padding-top: 4px; margin-top: 4px }
+.tl { margin-top: 8px }
+.dv { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px }
+.cb { margin-top: 8px; width: 100%; min-height: 36px }
+.pd { margin-top: 8px } .pd b { display: block }
+#pd[hidden], .cb[hidden] { display: none }
+.em { padding: 12px 0 }
+.fl { animation: fl .6s ease-out } @keyframes fl { from { background: var(--k-sec) } }

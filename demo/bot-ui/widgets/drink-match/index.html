@@ -1,0 +1,24 @@
+<!-- Pulloa: find your drink (private chat), a three-question quiz after the visual builder's quiz type. Build with bot-ui build.
+  chat_data: {"a":answers "<i>.<j>.<k>" the bot matched (or ""),"p":[drink key, milk key or "", price in minor units],"cur":"EUR","ad":0|1 added,"r":N}
+  Questions are local; the last answer sends "m:<i>.<j>.<k>" and the bot answers the match in the state.
+  "add" puts the match into the order. Start over is local until the next answer. -->
+<!--@file style.css-->
+<div class="k">
+  <div id="qz">
+    <div class="hd"><span class="tt el" id="ti"></span><span class="mt" id="qn"></span></div>
+    <div class="br pg"><i id="pb"></i></div>
+    <div class="qq" id="qq"></div>
+    <div class="ol" id="an"></div>
+  </div>
+  <div id="rs">
+    <div class="mt" id="ym"></div>
+    <div class="hd"><span class="tt el" id="nm"></span><span class="tt" id="pr"></span></div>
+    <div class="mt" id="ds"></div>
+    <button class="wd" id="ad"></button>
+    <button class="ch ag" id="ag"></button>
+  </div>
+  <div class="st" id="st"></div>
+</div>
+<!--@kit runtime.js-->
+<!--@kit i18n.js-->
+<!--@file widget.js-->

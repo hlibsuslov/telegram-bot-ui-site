@@ -1,0 +1,66 @@
+{
+  "scenarioId": "order.declined",
+  "title": "Card declined, the guest retries and pays",
+  "locale": "ru",
+  "context": {
+    "chat": "private",
+    "delivery.method": "pickup"
+  },
+  "data": {
+    "cart.summary": "Флэт уайт M, овсяное молоко",
+    "cart.total": "6,30 €",
+    "order.no": "218",
+    "pickup.time": "8:45",
+    "order.status_text": "brewing",
+    "loyalty.stamps": "7"
+  },
+  "handlers": {
+    "checkout.pay": [
+      "declined",
+      "ok"
+    ]
+  },
+  "steps": [
+    {
+      "command": "start"
+    },
+    {
+      "press": "usual"
+    },
+    {
+      "expect": {
+        "screen": "checkout.review"
+      }
+    },
+    {
+      "press": "pay"
+    },
+    {
+      "expect": {
+        "screen": "checkout.declined"
+      }
+    },
+    {
+      "press": "retry"
+    },
+    {
+      "press": "pay"
+    },
+    {
+      "expect": {
+        "screen": "order.placed"
+      }
+    },
+    {
+      "press": "menu"
+    },
+    {
+      "press": "order"
+    },
+    {
+      "expect": {
+        "screen": "order.status"
+      }
+    }
+  ]
+}

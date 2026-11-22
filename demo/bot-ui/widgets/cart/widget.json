@@ -1,0 +1,222 @@
+{
+  "id": "cart",
+  "title": "Cart",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "Your order at Pulloa, Harbour St",
+    "ru": "Ваш заказ в Pulloa на Портовой",
+    "uk": "Ваше замовлення в Pulloa на Портовій"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "fallbackScreen": "checkout.review",
+  "dataFields": {
+    "chatData": {
+      "it": {
+        "label": "Lines",
+        "help": "[item key, variant keys, quantity, unit price in cents]; the widget translates the keys."
+      },
+      "dl": {
+        "label": "Chosen option",
+        "type": "number",
+        "help": "Index in the pickup or courier options."
+      },
+      "dm": {
+        "label": "Pickup or courier options",
+        "advanced": true,
+        "help": "[label key, price in cents]"
+      },
+      "ph": {
+        "label": "Phase",
+        "type": "choice",
+        "options": [
+          {
+            "value": 0,
+            "label": "Editing"
+          },
+          {
+            "value": 1,
+            "label": "Awaiting payment"
+          },
+          {
+            "value": 2,
+            "label": "Paid"
+          }
+        ]
+      },
+      "no": {
+        "label": "Order number",
+        "type": "text",
+        "help": "Shown once paid."
+      },
+      "rd": {
+        "label": "Ready by",
+        "type": "time"
+      },
+      "cur": {
+        "label": "Currency",
+        "type": "text",
+        "advanced": true
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "Goes up with every update so the widget ignores older data. The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "it": [
+          [
+            "fw",
+            "M oat",
+            1,
+            390
+          ],
+          [
+            "cr",
+            "",
+            1,
+            240
+          ],
+          [
+            "il",
+            "L dairy",
+            1,
+            470
+          ]
+        ],
+        "cur": "EUR",
+        "dl": 0,
+        "dm": [
+          [
+            "pk",
+            0
+          ],
+          [
+            "cu",
+            250
+          ]
+        ],
+        "ph": 0,
+        "r": 0
+      }
+    },
+    "awaiting": {
+      "chatData": {
+        "it": [
+          [
+            "fw",
+            "M oat",
+            1,
+            390
+          ],
+          [
+            "cr",
+            "",
+            1,
+            240
+          ],
+          [
+            "il",
+            "L dairy",
+            1,
+            470
+          ]
+        ],
+        "cur": "EUR",
+        "dl": 0,
+        "dm": [
+          [
+            "pk",
+            0
+          ],
+          [
+            "cu",
+            250
+          ]
+        ],
+        "ph": 1,
+        "r": 0
+      }
+    },
+    "paid": {
+      "chatData": {
+        "it": [
+          [
+            "fw",
+            "M oat",
+            1,
+            390
+          ],
+          [
+            "cr",
+            "",
+            1,
+            240
+          ],
+          [
+            "il",
+            "L dairy",
+            1,
+            470
+          ]
+        ],
+        "cur": "EUR",
+        "dl": 0,
+        "dm": [
+          [
+            "pk",
+            0
+          ],
+          [
+            "cu",
+            250
+          ]
+        ],
+        "ph": 2,
+        "r": 0,
+        "no": "#219",
+        "rd": 1794737220
+      }
+    },
+    "empty": {
+      "chatData": {
+        "it": [],
+        "cur": "EUR",
+        "dl": 0,
+        "dm": [
+          [
+            "pk",
+            0
+          ],
+          [
+            "cu",
+            250
+          ]
+        ],
+        "ph": 0,
+        "r": 0
+      }
+    }
+  },
+  "queries": [
+    "q:0:+1@0",
+    "q:1:-1@0",
+    "dl:1",
+    "checkout"
+  ],
+  "fresh": [
+    "rd"
+  ]
+}

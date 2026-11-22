@@ -1,0 +1,14 @@
+/*@kit tokens.css*/
+.pl { font-size: .8em; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--k-btn); color: var(--k-btx); white-space: nowrap }
+.pl.off { background: var(--k-sec); color: var(--k-hint) }
+#tx { margin-top: 2px }
+.cd { display: flex; gap: 6px; margin: 10px 0 4px }
+.cd span { flex: 1; padding: 6px 4px; border-radius: var(--k-r); text-align: center; font-size: .8em; background: var(--k-sec); color: var(--k-hint) }
+.cd b { display: block; font-size: 1.75em; font-weight: 600; line-height: 1.15; color: var(--k-tx) }
+.cd i { font-style: normal }
+.cd.lw b { color: var(--k-warn) }
+.cp { width: 100%; margin-top: 8px; min-height: 48px; border-radius: var(--k-r); background: none; color: var(--k-tx); border: 2px dashed var(--k-btn);
+      font-family: ui-monospace, monospace; font-size: 1.25em; font-weight: 600; letter-spacing: .08em; animation: rv .4s ease-out }
+@keyframes rv { from { opacity: 0; transform: scaleY(.2) } }
+#cn { margin-top: 4px }
+[hidden] { display: none !important }

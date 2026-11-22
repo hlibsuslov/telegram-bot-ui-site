@@ -1,0 +1,71 @@
+{
+  "id": "menu.categories",
+  "title": "Menu",
+  "kind": "menu",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Menu</b>\nWhat are we having today?",
+      "ru": "<b>Меню</b>\nЧто будем сегодня?",
+      "uk": "<b>Меню</b>\nЩо будемо сьогодні?"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "coffee",
+        "tea"
+      ],
+      [
+        "bakery"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "coffee": {
+      "label": {
+        "en": "Coffee",
+        "ru": "Кофе",
+        "uk": "Кава"
+      },
+      "type": "navigate",
+      "to": "menu.coffee",
+      "presentation": "edit"
+    },
+    "tea": {
+      "label": {
+        "en": "Tea & more",
+        "ru": "Чай и не только",
+        "uk": "Чай і не тільки"
+      },
+      "type": "navigate",
+      "to": "menu.tea",
+      "presentation": "edit"
+    },
+    "bakery": {
+      "label": {
+        "en": "Bakery",
+        "ru": "Выпечка",
+        "uk": "Випічка"
+      },
+      "type": "navigate",
+      "to": "menu.bakery",
+      "presentation": "edit"
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "entry.start"
+    }
+  }
+}

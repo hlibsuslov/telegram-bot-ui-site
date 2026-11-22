@@ -1,0 +1,49 @@
+{
+  "id": "checkout.declined",
+  "title": "Payment declined",
+  "kind": "error",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "⚠️ <b>The payment didn't go through</b>\nNothing was charged. Try again or pick another card.",
+      "ru": "⚠️ <b>Оплата не прошла</b>\nДеньги не списаны. Попробуйте ещё раз или выберите другую карту.",
+      "uk": "⚠️ <b>Оплата не пройшла</b>\nКошти не списано. Спробуйте ще раз або оберіть іншу картку."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "retry"
+      ],
+      [
+        "menu"
+      ]
+    ]
+  },
+  "actions": {
+    "retry": {
+      "label": {
+        "en": "Try again",
+        "ru": "Попробовать снова",
+        "uk": "Спробувати знову"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "edit",
+      "style": "primary"
+    },
+    "menu": {
+      "label": {
+        "en": "Main menu",
+        "ru": "В меню",
+        "uk": "У меню"
+      },
+      "type": "navigate",
+      "to": "entry.start",
+      "presentation": "edit"
+    }
+  }
+}

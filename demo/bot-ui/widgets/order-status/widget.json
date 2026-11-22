@@ -1,0 +1,172 @@
+{
+  "id": "order-status",
+  "title": "Order tracker",
+  "entry": "index.html",
+  "languages": [
+    "en",
+    "ru",
+    "uk"
+  ],
+  "caption": {
+    "en": "Order #{order.no} · {order.status_text}",
+    "ru": "Заказ #{order.no} · {order.status_text}",
+    "uk": "Замовлення #{order.no} · {order.status_text}"
+  },
+  "send": {
+    "allow_queries": true
+  },
+  "fallbackScreen": "order.status",
+  "dataFields": {
+    "chatData": {
+      "no": {
+        "label": "Order number",
+        "type": "text",
+        "help": "Shown as the widget title, e.g. #218."
+      },
+      "s": {
+        "label": "Current step",
+        "type": "choice",
+        "options": [
+          {
+            "value": 0,
+            "label": "Received"
+          },
+          {
+            "value": 1,
+            "label": "Brewing"
+          },
+          {
+            "value": 2,
+            "label": "Ready at the counter"
+          },
+          {
+            "value": 3,
+            "label": "Picked up"
+          }
+        ]
+      },
+      "m": {
+        "label": "Order state",
+        "type": "choice",
+        "options": [
+          {
+            "value": 0,
+            "label": "On time"
+          },
+          {
+            "value": 1,
+            "label": "Running late"
+          }
+        ]
+      },
+      "t0": {
+        "label": "Time: received",
+        "type": "time",
+        "help": "When this step was reached; leave empty if not yet."
+      },
+      "t1": {
+        "label": "Time: brewing",
+        "type": "time",
+        "help": "When this step was reached; leave empty if not yet."
+      },
+      "t2": {
+        "label": "Time: ready at the counter",
+        "type": "time",
+        "help": "When this step was reached; leave empty if not yet."
+      },
+      "t3": {
+        "label": "Time: picked up",
+        "type": "time",
+        "help": "When this step was reached; leave empty if not yet."
+      },
+      "eta": {
+        "label": "Ready by",
+        "type": "time"
+      },
+      "ba": {
+        "label": "Barista",
+        "type": "text"
+      },
+      "at": {
+        "label": "Last update",
+        "type": "time",
+        "advanced": true
+      },
+      "r": {
+        "label": "Data version",
+        "type": "number",
+        "advanced": true,
+        "help": "Goes up with every update so the widget ignores older data. The bot sets it."
+      }
+    }
+  },
+  "now": 1794736800,
+  "states": {
+    "default": {
+      "chatData": {
+        "no": "#218",
+        "m": 0,
+        "t0": 1794736500,
+        "t1": 1794736620,
+        "eta": 1794737040,
+        "ba": "Lena",
+        "at": 1794736740,
+        "r": 0,
+        "s": 1
+      }
+    },
+    "late": {
+      "chatData": {
+        "no": "#218",
+        "m": 1,
+        "t0": 1794736500,
+        "t1": 1794736620,
+        "eta": 1794737400,
+        "ba": "Lena",
+        "at": 1794736740,
+        "r": 0,
+        "s": 1
+      }
+    },
+    "ready": {
+      "chatData": {
+        "no": "#218",
+        "m": 0,
+        "t0": 1794736500,
+        "t1": 1794736620,
+        "ba": "Lena",
+        "at": 1794736740,
+        "r": 0,
+        "s": 2,
+        "t2": 1794736770
+      }
+    },
+    "picked": {
+      "chatData": {
+        "no": "#218",
+        "m": 0,
+        "t0": 1794736500,
+        "t1": 1794736620,
+        "ba": "Lena",
+        "at": 1794736740,
+        "r": 0,
+        "s": 3,
+        "t2": 1794736700,
+        "t3": 1794736780
+      }
+    }
+  },
+  "queries": [
+    "sync",
+    "warm",
+    "help"
+  ],
+  "fresh": [
+    "at",
+    "eta",
+    "t0",
+    "t1",
+    "t2",
+    "t3"
+  ]
+}

@@ -40,7 +40,10 @@ export function subscribe(notify: () => void) {
   listeners.add(notify);
   const media = window.matchMedia(DARK_QUERY);
   const onSystemChange = () => {
-    if (readPreference() === "system") apply("system");
+    if (readPreference() === "system") {
+      apply("system");
+      notify();
+    }
   };
   const onStorage = (event: StorageEvent) => {
     if (event.key !== KEY) return;

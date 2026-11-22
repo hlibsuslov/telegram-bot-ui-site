@@ -1,0 +1,27 @@
+{
+  "id": "support.start",
+  "title": "Support",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.plain",
+    "text": {
+      "en": "Tell us what went wrong in one message. A person from the team answers within 10 minutes, 8:00–20:00.",
+      "ru": "Опишите одним сообщением, что пошло не так. Человек из команды ответит за 10 минут, с 8:00 до 20:00.",
+      "uk": "Опишіть одним повідомленням, що пішло не так. Людина з команди відповість за 10 хвилин, з 8:00 до 20:00."
+    }
+  },
+  "keyboard": {
+    "type": "force_reply",
+    "placeholder": {
+      "en": "Describe the problem",
+      "ru": "Опишите проблему",
+      "uk": "Опишіть проблему"
+    }
+  },
+  "input": {
+    "field": "support.text",
+    "to": "support.sent"
+  }
+}
