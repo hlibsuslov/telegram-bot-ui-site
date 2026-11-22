@@ -105,8 +105,9 @@ async function call<T>(method: "getStickerSet" | "getFile", params: Record<strin
     pausedUntil = Date.now() + wait * 1000;
     throw new ResolverError("RATE_LIMITED", 429, "Telegram asks to slow down; retry later", wait);
   }
-  if (/STICKERSET_INVALID|not found/i.test(desc)) throw new ResolverError("PACK_NOT_FOUND", 404, "no such pack");
+  // A malformed or revoked token answers 404 "Not Found" / 401: that is our config, not a missing pack.
   if (status === 401 || status === 404) throw new ResolverError("RESOLVER_OFF", 503, "the emoji resolver is misconfigured");
+  if (/STICKERSET_INVALID/i.test(desc)) throw new ResolverError("PACK_NOT_FOUND", 404, "no such pack");
   throw new ResolverError("TELEGRAM_ERROR", 502, `${method}: ${desc}`.slice(0, 200));
 }
 
