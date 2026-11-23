@@ -224,10 +224,11 @@ export async function getLibraryPack(name: string): Promise<{ pack: LibraryPack;
     const same = library.packs.find((p) => p.name === pack.name);
     return { pack: { ...pack, similar: same?.similar ?? [] }, emoji };
   } catch (err) {
-    // Only a definite answer from Telegram is cached as "no page"; a timeout or a 429 throws, so the
+    // Only a definite answer is cached as "no page" (no such pack, not an emoji pack, no resolver token
+    // in this deployment); a timeout or a 429 throws, so the
     // cache keeps the last good page instead of a 404 for hours.
     const code = (err as { code?: string })?.code;
-    if (code === "PACK_NOT_FOUND" || code === "NOT_EMOJI_PACK") return null;
+    if (code === "PACK_NOT_FOUND" || code === "NOT_EMOJI_PACK" || code === "RESOLVER_OFF") return null;
     throw err;
   }
 }
