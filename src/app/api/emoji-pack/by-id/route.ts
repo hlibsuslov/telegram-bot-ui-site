@@ -4,14 +4,20 @@
 // name (pack names have no "-").
 import { connection } from "next/server";
 import { allow, clientKey, errorResponse, parseIds, resolveSets, ResolverError } from "@/lib/emoji-pack";
+import { listedPackName } from "@/lib/emoji-pack-list";
+import { emojiPackPath, telegramPackUrl } from "@/lib/emoji-links";
 
 export async function GET(req: Request) {
   // Every answer depends on the query: never prerender this route at build time.
   await connection();
   try {
-    if (!allow(`ids:${clientKey(req)}`)) throw new ResolverError("RATE_LIMITED", 429, "too many lookups at once; retry in a minute");
+    if (!allow(`ids:${clientKey(req)}`)) throw new ResolverError("RATE_LIMITED", 429, "too many lookups at once; retry in a minute", 60);
     const ids = parseIds(new URL(req.url).searchParams.get("ids"));
-    const emoji = await resolveSets(ids);
+    const emoji = (await resolveSets(ids)).map((item) => ({
+      ...item,
+      pageUrl: listedPackName(item.set) ? emojiPackPath(item.set, item.id) : null,
+      telegramUrl: telegramPackUrl(item.set),
+    }));
     return Response.json({ ok: true, emoji }, {
       headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800", "X-Content-Type-Options": "nosniff" },
     });

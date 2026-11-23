@@ -15,8 +15,8 @@
 import "server-only";
 import { request } from "node:https";
 import { fixtureAnimation, fixturePack, fixturePreview, fixturesOn } from "./emoji-fixtures";
+import { PACK_NAME } from "./emoji-pack-list";
 
-export const PACK_NAME = /^[A-Za-z0-9_]{1,64}$/;
 export const EMOJI_ID = /^\d{1,20}$/;
 const FILE_PATH = /^[A-Za-z0-9_-]+(\/[A-Za-z0-9_.-]+)*$/;
 const PACK_MAX = 200;

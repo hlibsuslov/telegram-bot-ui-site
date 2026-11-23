@@ -8,6 +8,7 @@ import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection, LibraryPack } from "@/lib/emoji-library";
+import { emojiPackPath } from "@/lib/emoji-links";
 import { BOT_SLOTS } from "@/lib/emoji-slots";
 import { PremiumEmoji } from "./premium-emoji";
 import { copy, useSaved } from "./saved";
@@ -71,8 +72,8 @@ export function PackCard({ pack, saved, onSave, className }: { pack: LibraryPack
         {pack.sample.map((e) => <PremiumEmoji key={e.id} emoji={e} active={hot} size={28} className="mx-auto" />)}
       </Link>
       <div className="mt-auto flex items-center gap-4 pt-3">
-        <Link href={`/emoji/${pack.name}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
-        <a href={pack.link} target="_blank" rel="noopener noreferrer" className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
+        <Link href={emojiPackPath(pack.name)} aria-label={`Open pack ${pack.title}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
+        <a href={pack.link} target="_blank" rel="noopener noreferrer" aria-label={`Add to Telegram · ${pack.title}`} className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
         {pack.count > pack.sample.length ? <span className="tg-hint ml-auto text-xs">+{pack.count - pack.sample.length}</span> : null}
       </div>
     </article>
@@ -84,7 +85,8 @@ function HitTile({ hit }: { hit: EmojiHit }) {
   return (
     <li>
       <Link
-        href={`/emoji/${hit.pack}#e=${hit.id}`} title={`${hit.fallback} · ${hit.pack}`} aria-label={`${hit.fallback || "emoji"} from ${hit.pack}`}
+        href={emojiPackPath(hit.pack, hit.id)} title={`${hit.fallback} · ${FORMAT_LABEL[hit.format]} · ${hit.pack}`}
+        aria-label={`${FORMAT_LABEL[hit.format]} ${hit.fallback || "emoji"} from ${hit.pack}, custom emoji ID ${hit.id}`}
         onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}
         className="tg-cell flex aspect-square items-center justify-center rounded-xl"
       >

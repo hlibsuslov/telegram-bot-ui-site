@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     "HTML widgets",
   ],
   authors: [{ name: "hlibsuslov", url: "https://github.com/hlibsuslov" }],
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "/",
