@@ -2,13 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { ArrowLeft } from "lucide-react";
-import { Disclaimer } from "@/components/emoji/filter-chips";
-import { PackBrowser } from "@/components/emoji/pack-browser";
-import { SiteFooter } from "@/components/site/footer";
-import { SiteHeader } from "@/components/site/header";
-import { Container } from "@/components/site/section";
-import { getLibraryPack, listedPackNames } from "@/lib/emoji-library";
+import { ChevronLeft } from "lucide-react";
+import { PackSheet } from "@/components/emoji/pack-sheet";
+import { getLibrary, getLibraryPack, listedPackNames, type LibraryPack } from "@/lib/emoji-library";
 
 // Cache Components needs at least one param at build time; "_" renders the 404 when the list is empty.
 export async function generateStaticParams() {
@@ -29,26 +25,17 @@ async function Pack({ params }: { params: PageProps<"/emoji/[name]">["params"] }
   const { name } = await params;
   const data = await getLibraryPack(name);
   if (!data) notFound();
-  const { pack, emoji } = data;
-  return (
-    <>
-      <h1 className="mt-4 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{pack.title}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {pack.name} · {pack.count} emoji{pack.adaptive ? " · some take the text color in Telegram" : ""}
-      </p>
-      <div className="mt-6">
-        <PackBrowser pack={pack} emoji={emoji} />
-      </div>
-    </>
-  );
+  const library = await getLibrary();
+  const byName = new Map(library.packs.map((p) => [p.name, p]));
+  const similar = data.pack.similar.map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p);
+  return <PackSheet pack={data.pack} emoji={data.emoji} similar={similar} />;
 }
 
 function PackLoading() {
   return (
-    <div aria-busy="true" aria-label="Loading the pack" className="mt-4 space-y-3">
-      <div className="h-8 w-64 animate-pulse rounded-md bg-muted motion-reduce:animate-none" />
-      <div className="h-4 w-40 animate-pulse rounded bg-muted motion-reduce:animate-none" />
-      <div className="mt-6 h-64 animate-pulse rounded-xl bg-muted motion-reduce:animate-none" />
+    <div aria-busy="true" aria-label="Loading the pack" className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="tg-glass h-[28rem] animate-pulse rounded-3xl motion-reduce:animate-none" />
+      <div className="tg-glass h-72 animate-pulse rounded-3xl motion-reduce:animate-none" />
     </div>
   );
 }
@@ -56,22 +43,12 @@ function PackLoading() {
 export default function EmojiPackPage({ params }: PageProps<"/emoji/[name]">) {
   return (
     <>
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:shadow">
-        Skip to content
-      </a>
-      <SiteHeader />
-      <main id="main" className="py-8 sm:py-12">
-        <Container>
-          <Link href="/emoji" className="inline-flex items-center gap-1.5 rounded-md text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50">
-            <ArrowLeft aria-hidden="true" className="size-4" /> All packs
-          </Link>
-          <Suspense fallback={<PackLoading />}>
-            <Pack params={params} />
-          </Suspense>
-          <Disclaimer className="mt-10 max-w-3xl" />
-        </Container>
-      </main>
-      <SiteFooter />
+      <Link href="/emoji" className="tg-accent mb-3 inline-flex items-center gap-0.5 rounded px-1 text-[15px]">
+        <ChevronLeft aria-hidden="true" className="size-5" /> All packs
+      </Link>
+      <Suspense fallback={<PackLoading />}>
+        <Pack params={params} />
+      </Suspense>
     </>
   );
 }
