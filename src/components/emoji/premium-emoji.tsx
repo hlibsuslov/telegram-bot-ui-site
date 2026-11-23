@@ -14,25 +14,18 @@ import { cn } from "@/lib/utils";
 
 export type { EmojiData };
 
-type LottieItem = {
-  destroy(): void; goToAndStop(value: number, isFrame: boolean): void; addEventListener(name: "DOMLoaded", cb: () => void): void;
-  isLoaded: boolean; totalFrames: number; frameRate: number;
-};
-type LottiePlayer = { loadAnimation(o: { container: Element; renderer: "svg" | "canvas"; loop: boolean; autoplay: boolean; animationData: unknown }): LottieItem };
+type LottieItem = { destroy(): void; addEventListener(name: "DOMLoaded", cb: () => void): void; isLoaded: boolean };
+type LottiePlayer = { loadAnimation(o: { container: Element; renderer: "svg"; loop: boolean; autoplay: boolean; animationData: unknown }): LottieItem };
 
-const players = new Map<string, Promise<LottiePlayer>>();
+let player: Promise<LottiePlayer> | null = null;
 const animations = new Map<string, Promise<unknown>>();
 
-/** SVG Lottie on a desktop; canvas on touch screens, where many SVG animations at once stutter. */
-function loadPlayer(canvas: boolean): Promise<LottiePlayer> {
-  const key = canvas ? "canvas" : "svg";
-  let p = players.get(key);
-  if (!p) {
-    p = (canvas ? import("lottie-web/build/player/lottie_light_canvas") : import("lottie-web/build/player/lottie_light"))
-      .then((m) => (m.default ?? m) as unknown as LottiePlayer);
-    players.set(key, p);
-  }
-  return p;
+// SVG, also on phones: measured with 60 emoji playing at once on a 4x slowed CPU, SVG kept every
+// frame under 16 ms while lottie-web's canvas renderer dropped frames (small canvases are drawn on
+// the main thread and composited through buffers).
+function loadPlayer(): Promise<LottiePlayer> {
+  player ??= import("lottie-web/build/player/lottie_light").then((m) => (m.default ?? m) as unknown as LottiePlayer);
+  return player;
 }
 
 type LottieLayer = { ty?: number; shapes?: LottieShape[] };
@@ -175,13 +168,23 @@ export function EmojiStill({
   );
 }
 
-// Starting a Lottie player builds its whole scene at once. "Play all" or a hovered card starts dozens
-// together, which on a phone was one long frozen frame: start them a few per frame instead, within a
-// small time budget, so scrolling and taps keep running in between.
+// Starting a Lottie player builds its whole scene at once, and while a finger scrolls a "Play all"
+// grid, every tile coming into view starts one: that, not drawing, was what stuttered on a phone.
+// Players start only once scrolling has paused, a few per frame within a small time budget; the
+// still pictures stand in meanwhile, as in Telegram.
 const starts: (() => void)[] = [];
 let startsScheduled = false;
-function runStarts() {
-  const end = performance.now() + 8;
+let lastScroll = 0;
+const SCROLL_IDLE_MS = 150;
+if (typeof window !== "undefined") {
+  window.addEventListener("scroll", () => { lastScroll = performance.now(); }, { capture: true, passive: true });
+}
+function runStarts(now: number) {
+  if (now - lastScroll < SCROLL_IDLE_MS) {
+    requestAnimationFrame(runStarts);
+    return;
+  }
+  const end = performance.now() + 6;
   while (starts.length && performance.now() < end) starts.shift()!();
   if (starts.length) requestAnimationFrame(runStarts);
   else startsScheduled = false;
@@ -192,33 +195,6 @@ function inFrames(start: () => void) {
     startsScheduled = true;
     requestAnimationFrame(runStarts);
   }
-}
-
-// On a touch screen one shared clock drives every player at 30 frames a second, half of them on each
-// display frame: a phone with "Play all" on draws a quarter of what 60 fps for all would cost, and
-// every emoji still moves. Desktops keep lottie-web's own 60 fps loop.
-const FPS = 30;
-const clocked = new Map<LottieItem, number>(); // player -> its start time
-let clockFrame = 0;
-let clockRunning = false;
-function clockTick(now: number) {
-  let i = 0;
-  clockFrame++;
-  for (const [item, start] of clocked) {
-    if (i++ % 2 !== clockFrame % 2 || !item.isLoaded) continue;
-    const frame = Math.floor(((now - start) / 1000) * FPS) * (item.frameRate / FPS);
-    item.goToAndStop(frame % item.totalFrames, true);
-  }
-  if (clocked.size) requestAnimationFrame(clockTick);
-  else clockRunning = false;
-}
-function clock(item: LottieItem): () => void {
-  clocked.set(item, performance.now());
-  if (!clockRunning) {
-    clockRunning = true;
-    requestAnimationFrame(clockTick);
-  }
-  return () => clocked.delete(item);
 }
 
 /** The moving emoji over its still, mounted only while it plays: the Lottie player or the WEBM. */
@@ -234,18 +210,15 @@ export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
     // The still hides only once something moves over it, so there is never a blank square.
     const show = () => box.setAttribute("data-playing", "");
     let item: LottieItem | null = null;
-    let unclock: (() => void) | null = null;
     let cancelled = false;
     if (v) {
       v.addEventListener("playing", show);
       void v.play().catch(() => undefined);
     } else if (emoji.animation) {
-      const canvas = !matchMedia(HOVER).matches;
-      Promise.all([loadPlayer(canvas), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
+      Promise.all([loadPlayer(), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
         inFrames(() => {
           if (cancelled || !stage.current) return;
-          item = lottie.loadAnimation({ container: stage.current, renderer: canvas ? "canvas" : "svg", loop: true, autoplay: !canvas, animationData: data });
-          if (canvas) unclock = clock(item);
+          item = lottie.loadAnimation({ container: stage.current, renderer: "svg", loop: true, autoplay: true, animationData: data });
           // Reveal it once its first frame is drawn, so the still never gives way to an empty square.
           if (item.isLoaded) show();
           else item.addEventListener("DOMLoaded", show);
@@ -254,7 +227,6 @@ export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
     }
     return () => {
       cancelled = true;
-      unclock?.();
       item?.destroy();
       box.removeAttribute("data-playing");
       if (v) {
@@ -276,7 +248,7 @@ export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
     );
   }
   if (emoji.format === "animated" && emoji.animation) {
-    return <span ref={stage} aria-hidden="true" className="tg-emoji-motion pointer-events-none absolute inset-0 [&_canvas]:!size-full [&_svg]:!size-full" />;
+    return <span ref={stage} aria-hidden="true" className="tg-emoji-motion pointer-events-none absolute inset-0 [&_svg]:!size-full" />;
   }
   return null;
 }
