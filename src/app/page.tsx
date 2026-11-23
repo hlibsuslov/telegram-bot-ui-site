@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Agents } from "@/components/site/agents";
 import { Capabilities } from "@/components/site/capabilities";
 import { DemoVideo } from "@/components/site/demo-video";
@@ -11,6 +12,8 @@ import { Install } from "@/components/site/install";
 import { Scenarios } from "@/components/site/scenarios";
 import { SkillMap } from "@/components/site/skill-map";
 import { Studio } from "@/components/site/studio";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function Home() {
   return (

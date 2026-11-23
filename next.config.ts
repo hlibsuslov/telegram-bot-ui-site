@@ -7,7 +7,10 @@ const EMOJI_CSP = "img-src 'self' data: blob:; media-src 'self' blob:; connect-s
 
 const nextConfig: NextConfig = {
   async headers() {
-    return ["/emoji", "/emoji/:path*"].map((source) => ({ source, headers: [{ key: "Content-Security-Policy", value: EMOJI_CSP }] }));
+    return [
+      ...["/emoji", "/emoji/:path*"].map((source) => ({ source, headers: [{ key: "Content-Security-Policy", value: EMOJI_CSP }] })),
+      ...["/api/emoji-search", "/api/emoji-pack/:name"].map((source) => ({ source, headers: [{ key: "X-Robots-Tag", value: "noindex" }] })),
+    ];
   },
   // The site moved to SITE_ORIGIN. Pages on the old vercel.app address redirect for good; /api/* stays
   // served there, because bot-ui Studio installs already out there call the emoji resolver at that host
