@@ -12,6 +12,7 @@ export const HOSTS_URL = `${REPO_URL}/blob/main/docs/hosts.md`;
 
 export const VERSION = "3.0.0";
 export const BOT_API = "10.5";
+export const VERIFIED_ON = "2026-11-22";
 
 export const SITE_NAME = "Telegram Bot UI";
 export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for the whole Telegram bot interface";

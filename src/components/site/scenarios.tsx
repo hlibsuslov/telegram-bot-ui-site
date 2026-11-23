@@ -89,7 +89,7 @@ export function Scenarios() {
         role="tablist"
         aria-label="Stage of your bot"
         onKeyDown={onKeyDown}
-        className="flex flex-wrap gap-x-1.5 border-b border-border text-[13px] min-[360px]:gap-x-3 min-[360px]:text-sm sm:gap-x-7"
+        className="flex flex-wrap gap-x-4 border-b border-border sm:gap-x-7"
       >
         {STAGES.map((item, i) => (
           <button
@@ -104,7 +104,7 @@ export function Scenarios() {
             aria-controls={panelId}
             tabIndex={active === i ? 0 : -1}
             onClick={() => setActive(i)}
-            className="-mb-px min-h-10 cursor-pointer border-b-2 border-transparent font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-selected:border-brand aria-selected:text-foreground"
+            className="-mb-px min-h-10 cursor-pointer border-b-2 border-transparent text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-selected:border-brand aria-selected:text-foreground"
           >
             {item.label}
           </button>
