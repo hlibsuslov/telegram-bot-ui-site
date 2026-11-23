@@ -34,15 +34,29 @@ const STUDIO_BRANCHES: MapNode[] = [
   { id: "agent-task", title: "Instructions for the agent", text: "Requests on screens become one prompt. The agent commits on a branch.", href: "/studio#run" },
 ];
 
+const MINI_APPS_ID = "mini-apps";
+const MINI_APP_BRANCHES = [
+  { id: "mini-apps-create", title: "Create a Mini App", text: "Design screens and launch them in Telegram." },
+  { id: "mini-apps-edit", title: "Edit an existing app", text: "Improve layouts, navigation and components." },
+  { id: "mini-apps-review", title: "Review the UI", text: "Check themes, safe areas and native controls." },
+];
+
+const ROOT_BRANCH_IDS = [MINI_APPS_ID, ...BRANCHES.map((b) => b.id)];
+const BRANCH_GROUPS = [
+  { id: MINI_APPS_ID, leaves: MINI_APP_BRANCHES },
+  { id: "studio", leaves: STUDIO_BRANCHES },
+];
+
 type Edge = { from: string; to: string };
 
 const EDGES: Edge[] = [
-  ...BRANCHES.map((b) => ({ from: ROOT.id, to: b.id })),
-  ...STUDIO_BRANCHES.map((b) => ({ from: "studio", to: b.id })),
+  ...ROOT_BRANCH_IDS.map((id) => ({ from: ROOT.id, to: id })),
+  ...BRANCH_GROUPS.flatMap((group) => group.leaves.map((leaf) => ({ from: group.id, to: leaf.id }))),
 ];
 
 /** Leaves in tour order, each with the edges from the root down to it. */
 const ROUTES: { id: string; edges: string[] }[] = [
+  ...MINI_APP_BRANCHES.map((b) => ({ id: b.id, edges: [`${ROOT.id}>${MINI_APPS_ID}`, `${MINI_APPS_ID}>${b.id}`] })),
   ...BRANCHES.filter((b) => b.id !== "studio").map((b) => ({ id: b.id, edges: [`${ROOT.id}>${b.id}`] })),
   ...STUDIO_BRANCHES.map((b) => ({ id: b.id, edges: [`${ROOT.id}>studio`, `studio>${b.id}`] })),
 ];
@@ -55,8 +69,9 @@ function edgeKey(e: Edge) {
 }
 
 function edgeDelay(index: number) {
-  // Root branches draw one after another, then Studio opens its own.
-  return index < BRANCHES.length ? index * 110 : BRANCHES.length * 110 + DRAW_MS * 0.6 + (index - BRANCHES.length) * 120;
+  // Draw the branches from the root, then the branches from each group.
+  const rootCount = ROOT_BRANCH_IDS.length;
+  return index < rootCount ? index * 110 : rootCount * 110 + DRAW_MS * 0.6 + (index - rootCount) * 120;
 }
 
 function nodeDelay(id: string) {
@@ -77,7 +92,7 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-/** Curves between node cards, measured from the DOM so the tree fits any width. */
+/** Curves between nodes, measured from the DOM so the tree fits any width. */
 function usePaths(ref: React.RefObject<HTMLDivElement | null>) {
   const [paths, setPaths] = useState<{ d: Record<string, string>; w: number; h: number }>({ d: {}, w: 0, h: 0 });
 
@@ -88,29 +103,29 @@ function usePaths(ref: React.RefObject<HTMLDivElement | null>) {
     const measure = () => {
       const box = root.getBoundingClientRect();
       const wide = window.matchMedia("(min-width: 1024px)").matches;
-      const rect = (id: string, part: "card" | "icon") => {
+      const rect = (id: string, part: "node" | "icon") => {
         const el = root.querySelector<HTMLElement>(`[data-node="${id}"]${part === "icon" ? " [data-icon]" : ""}`);
         const r = el?.getBoundingClientRect();
         return r ? { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top, b: r.bottom - box.top } : null;
       };
       const d: Record<string, string> = {};
       for (const e of EDGES) {
-        const fromCard = rect(e.from, "card");
+        const fromNode = rect(e.from, "node");
         const fromIcon = rect(e.from, "icon");
-        const toCard = rect(e.to, "card");
+        const toNode = rect(e.to, "node");
         const toIcon = rect(e.to, "icon");
-        if (!fromCard || !fromIcon || !toCard || !toIcon) continue;
+        if (!fromNode || !fromIcon || !toNode || !toIcon) continue;
         const ty = (toIcon.t + toIcon.b) / 2;
         if (wide) {
-          const x1 = fromCard.r;
+          const x1 = fromNode.r;
           const y1 = (fromIcon.t + fromIcon.b) / 2;
-          const x2 = toCard.l;
+          const x2 = toNode.l;
           const mid = (x1 + x2) / 2;
           d[edgeKey(e)] = `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${ty}, ${x2} ${ty}`;
         } else {
           const x1 = (fromIcon.l + fromIcon.r) / 2;
           const y1 = fromIcon.b;
-          const x2 = toCard.l;
+          const x2 = toNode.l;
           const r = Math.min(14, Math.max(0, (x2 - x1) / 2), Math.max(0, ty - y1));
           d[edgeKey(e)] = `M ${x1} ${y1} V ${ty - r} Q ${x1} ${ty} ${x1 + r} ${ty} H ${x2}`;
         }
@@ -176,6 +191,58 @@ function NodeCard({
   );
 }
 
+function MiniAppsBranch({
+  activeNodes,
+  onActivate,
+}: {
+  activeNodes: ReadonlySet<string>;
+  onActivate: (id: string | null) => void;
+}) {
+  return (
+    <section
+      id={MINI_APPS_ID}
+      aria-labelledby="mini-apps-heading"
+      className="grid scroll-mt-24 gap-y-3 pl-12 lg:col-span-2 lg:grid-cols-subgrid lg:pl-0"
+    >
+      <div
+        data-node={MINI_APPS_ID}
+        className="flex min-w-0 items-center gap-3 lg:self-center"
+        onMouseEnter={() => onActivate(MINI_APPS_ID)}
+        onMouseLeave={() => onActivate(null)}
+      >
+        <span data-icon className="grid size-12 shrink-0 place-items-center">
+          <DuckIcon name={MINI_APPS_ID} className="size-11" />
+        </span>
+        <div className="min-w-0">
+          <h3 id="mini-apps-heading" className="text-base leading-snug font-semibold text-brand">Mini Apps</h3>
+          <p className="mt-0.5 text-[0.8125rem] leading-5 text-muted-foreground">Telegram design guidelines and a ready-to-use UI kit.</p>
+        </div>
+      </div>
+      <ul className="grid gap-3 pl-12 lg:pl-0">
+        {MINI_APP_BRANCHES.map((leaf) => (
+          <li
+            key={leaf.id}
+            data-node={leaf.id}
+            className="flex min-w-0 items-start gap-2.5"
+            onMouseEnter={() => onActivate(leaf.id)}
+            onMouseLeave={() => onActivate(null)}
+          >
+            <span
+              data-icon
+              aria-hidden="true"
+              className={cn("mt-1.5 size-2 shrink-0 rounded-full border border-brand/55", activeNodes.has(leaf.id) && "border-brand bg-brand")}
+            />
+            <div className="min-w-0">
+              <p className="text-sm leading-5 font-semibold">{leaf.title}</p>
+              <p className="text-[0.8125rem] leading-5 text-muted-foreground">{leaf.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export function SkillMap() {
   const treeRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -196,7 +263,7 @@ export function SkillMap() {
           observer.disconnect();
         }
       },
-      { threshold: 0.25 },
+      { rootMargin: "0px 0px -15% 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -207,17 +274,18 @@ export function SkillMap() {
     if (!inView || reduced || hovered) return;
     const start = window.setTimeout(
       () => setTour((t) => (t + 1) % ROUTES.length),
-      tour < 0 ? nodeDelay(STUDIO_BRANCHES.at(-1)!.id) + 400 : STEP_MS,
+      tour < 0 ? edgeDelay(EDGES.length - 1) + DRAW_MS + 200 : STEP_MS,
     );
     return () => window.clearTimeout(start);
   }, [inView, reduced, hovered, tour]);
 
   const activeId = hovered ?? (tour >= 0 ? ROUTES[tour].id : null);
+  const activeGroup = BRANCH_GROUPS.find((group) => group.id === activeId);
   const activeEdges = new Set<string>(
     activeId === ROOT.id
       ? [`${ROOT.id}>studio`]
-      : activeId === "studio"
-        ? [`${ROOT.id}>studio`, ...STUDIO_BRANCHES.map((b) => `studio>${b.id}`)]
+      : activeGroup
+        ? [`${ROOT.id}>${activeGroup.id}`, ...activeGroup.leaves.map((leaf) => `${activeGroup.id}>${leaf.id}`)]
         : (ROUTES.find((r) => r.id === activeId)?.edges ?? []),
   );
   const activeNodes = new Set<string>(activeId ? [ROOT.id, ...[...activeEdges].map((k) => k.split(">")[1]), activeId] : []);
@@ -282,9 +350,10 @@ export function SkillMap() {
           </svg>
 
           <div className="relative grid gap-6 lg:grid-cols-[minmax(0,14rem)_minmax(0,19rem)_minmax(0,19rem)] lg:justify-between lg:gap-x-10">
-            <div className="lg:self-center">
+            <div className="lg:row-span-2 lg:self-center">
               <NodeCard node={ROOT} kind="root" shown={shown} active={activeNodes.has(ROOT.id)} onActivate={setHovered} />
             </div>
+            <MiniAppsBranch activeNodes={activeNodes} onActivate={setHovered} />
             <ul className="grid gap-2.5 pl-12 lg:pl-0">
               {BRANCHES.map((node) => (
                 <li key={node.id}>

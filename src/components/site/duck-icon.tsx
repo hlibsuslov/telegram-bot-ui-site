@@ -7,6 +7,7 @@ export type DuckIconName =
   | "channels"
   | "operator"
   | "widgets"
+  | "mini-apps"
   | "emoji"
   | "bot-api"
   | "studio"
