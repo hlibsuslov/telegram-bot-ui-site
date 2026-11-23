@@ -2,9 +2,12 @@
 // can import the packs an existing bot already uses. Read-only (getCustomEmojiStickers); ids
 // Telegram does not know are left out. A static segment, so it never collides with a pack
 // name (pack names have no "-").
+import { connection } from "next/server";
 import { allow, clientKey, errorResponse, parseIds, resolveSets, ResolverError } from "@/lib/emoji-pack";
 
 export async function GET(req: Request) {
+  // Every answer depends on the query: never prerender this route at build time.
+  await connection();
   try {
     if (!allow(`ids:${clientKey(req)}`)) throw new ResolverError("RATE_LIMITED", 429, "too many lookups at once; retry in a minute");
     const ids = parseIds(new URL(req.url).searchParams.get("ids"));
