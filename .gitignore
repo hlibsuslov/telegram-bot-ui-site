@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local tooling
 .claude/
+
+# contact sheets for tagging the emoji library (scripts/emoji_sheets.py)
+/.emoji-sheets/
