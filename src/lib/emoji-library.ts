@@ -11,7 +11,7 @@ import { fixturesOn } from "./emoji-fixtures";
 import { PACK_NAME, resolvePack, type Format, type PackEmoji } from "./emoji-pack";
 
 const LINK = /^(?:https?:\/\/)?(?:www\.)?(?:t\.me|telegram\.me|telegram\.dog)\/addemoji\/([A-Za-z0-9_]{1,64})\/?(?:[?#].*)?$/i;
-const SAMPLE = 8;
+const SAMPLE = 16;   // two rows of 8 on a pack card
 const FIXTURE_PACKS = ["bot_ui_demo_icons", "bot_ui_demo_motion", "bot_ui_demo_status"];
 
 export interface LibraryEmoji extends PackEmoji { tags: string[]; search: string }

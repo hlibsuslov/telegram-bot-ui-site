@@ -4,7 +4,7 @@
 // format or by what this visitor saved, and open a pack. Hovering a card plays its sample.
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
-import { Check, Copy, ExternalLink, Search, Star } from "lucide-react";
+import { ArrowRight, Check, Copy, ExternalLink, Search, Star } from "lucide-react";
 import type { LibraryPack } from "@/lib/emoji-library";
 import { cn } from "@/lib/utils";
 import { FilterChips } from "./filter-chips";
@@ -31,7 +31,7 @@ function PackCard({ pack, saved, onSave }: { pack: LibraryPack; saved: boolean; 
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
           <h3 className="truncate font-semibold">
-            <Link href={`/emoji/${pack.name}`} className="outline-none after:absolute after:inset-0 after:rounded-xl">{pack.title}</Link>
+            <Link href={`/emoji/${pack.name}`} className="rounded outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50">{pack.title}</Link>
           </h3>
           <p className="truncate text-xs text-muted-foreground">
             {pack.name} · {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}
@@ -39,20 +39,31 @@ function PackCard({ pack, saved, onSave }: { pack: LibraryPack; saved: boolean; 
         </div>
         <button
           type="button" onClick={onSave} aria-pressed={saved} aria-label={saved ? `Remove ${pack.title} from saved` : `Save ${pack.title}`}
-          className="relative z-10 -mt-1 -mr-1 inline-flex size-8 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="-mt-1 -mr-1 inline-flex size-8 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <Star aria-hidden="true" className={cn("size-4", saved && "fill-amber-400 text-amber-500")} />
         </button>
       </div>
-      <div className="mt-3 grid grid-cols-8 gap-1">
+      <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-3 grid grid-cols-8 gap-1">
         {pack.sample.map((e) => <PremiumEmoji key={e.id} emoji={e} active={hot} size={30} className="mx-auto" />)}
+      </Link>
+      {pack.count > pack.sample.length ? (
+        <p className="mt-1.5 text-xs text-muted-foreground">+{pack.count - pack.sample.length} more in the pack</p>
+      ) : null}
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
+        <Link
+          href={`/emoji/${pack.name}`}
+          className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-foreground px-3 text-sm font-medium text-background outline-none hover:opacity-90 focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          Open pack <ArrowRight aria-hidden="true" className="size-3.5" />
+        </Link>
+        <a
+          href={pack.link} target="_blank" rel="noopener noreferrer"
+          className="inline-flex h-8 items-center gap-1 rounded-lg border border-border px-3 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          Add to Telegram <ExternalLink aria-hidden="true" className="size-3.5" />
+        </a>
       </div>
-      <a
-        href={pack.link} target="_blank" rel="noopener noreferrer"
-        className="relative z-10 mt-3 inline-flex w-fit items-center gap-1 rounded-md text-xs font-medium text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-      >
-        Add to Telegram <ExternalLink aria-hidden="true" className="size-3" />
-      </a>
     </li>
   );
 }
