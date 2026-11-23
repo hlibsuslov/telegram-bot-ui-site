@@ -8,7 +8,7 @@
 // A library page shows about a thousand of these, so the still keeps no React state: whether the
 // picture has loaded or failed is written on the DOM (data-ready, data-broken) and drawn by CSS
 // (emoji.css). The player is a separate component that exists only while the emoji plays.
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type PointerEvent, type ReactNode, type Ref } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent, type ReactNode, type Ref } from "react";
 import type { EmojiData } from "@/lib/emoji-card";
 import { cn } from "@/lib/utils";
 
@@ -128,8 +128,8 @@ export function EmojiStill({
       key={picture ?? videoStill ?? emoji.id}
       ref={ref}
       // Adaptive emoji take the text color, as in Telegram: black on light, white on dark.
-      className={cn("tg-emoji relative inline-block shrink-0", emoji.adaptive && TONE[tone ?? "page"], className)}
-      style={{ width: size, height: size, fontSize: size * 0.7 }}
+      className={cn("tg-emoji", emoji.adaptive && TONE[tone ?? "page"], className)}
+      style={{ "--emoji-size": `${size}px` } as CSSProperties}
       data-fallback={emoji.fallback || "□"}
       data-broken={picture || videoStill ? undefined : ""}
       onPointerEnter={onPointerEnter}
@@ -138,14 +138,14 @@ export function EmojiStill({
       {picture ? (
         // eslint-disable-next-line @next/next/no-img-element -- pictures come from the resolver API, sized by the grid
         <img
-          ref={settled} src={picture} alt="" loading="lazy" decoding="async" draggable={false}
-          className="tg-emoji-still size-full object-contain"
+          ref={settled} src={picture} alt="" loading="lazy" decoding="async" fetchPriority="low" draggable={false}
+          className="tg-emoji-still"
           onLoad={(e) => ready(e.currentTarget)} onError={(e) => retry(e.currentTarget)}
         />
       ) : videoStill ? (
         <video
           ref={settled} src={videoStill} muted playsInline preload="metadata" aria-hidden="true"
-          className="tg-emoji-still size-full object-contain"
+          className="tg-emoji-still"
           onLoadedData={(e) => ready(e.currentTarget)} onError={(e) => retry(e.currentTarget)}
         />
       ) : null}

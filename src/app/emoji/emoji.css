@@ -86,7 +86,24 @@
 
 /* One emoji (premium-emoji.tsx). A still placeholder until the picture loads, the ordinary emoji when
    it cannot, and the picture hidden while the animation plays over it. No CSS animation here: a
-   library page shows about a thousand emoji, and a pulse on each kept phones busy. */
+   library page shows about a thousand emoji, and a pulse on each kept phones busy. The box is set
+   here rather than with utilities on each element, which kept the page's HTML a few hundred KB
+   heavier; it sits in the components layer, so a caller's utilities still win. */
+@layer components {
+  .tg-emoji {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--emoji-size);
+    height: var(--emoji-size);
+    font-size: calc(var(--emoji-size) * 0.7);
+  }
+  .tg-emoji-still {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
 .tg-emoji:not([data-ready]):not([data-broken])::before {
   content: "";
   position: absolute;

@@ -26,6 +26,7 @@ type View = { kind: "all" } | { kind: "saved" } | { kind: "collection"; id: stri
 type Format = "any" | "animated" | "static";
 const FORMAT_LABEL = { static: "Static", animated: "Animated", video: "Video" } as const;
 const PAGE = 36;
+const MOBILE_SAMPLE = 8;
 
 function formatOk(p: CardPack, f: Format) {
   if (f === "animated") return p.formats.some((x) => x !== "static");
@@ -71,7 +72,8 @@ export const PackCard = memo(function PackCard({ pack, saved, onSave, className 
           <Star aria-hidden="true" className={cn("size-[18px]", saved ? "fill-amber-400 text-amber-500" : "tg-hint")} />
         </button>
       </div>
-      <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-2.5 grid grid-cols-8 gap-1">
+      {/* A phone shows one row of eight: the hidden half never loads (lazy pictures under display: none). */}
+      <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-2.5 grid grid-cols-8 gap-1 max-sm:[&>:nth-child(n+9)]:hidden">
         {pack.sample.map((t) => {
           const e = fromCardEmoji(pack.name, t);
           return <EmojiStill key={e.id} emoji={e} size={28} className="mx-auto">{hot && e.format !== "static" ? <EmojiMotion emoji={e} /> : null}</EmojiStill>;
@@ -80,7 +82,8 @@ export const PackCard = memo(function PackCard({ pack, saved, onSave, className 
       <div className="mt-auto flex items-center gap-4 pt-3">
         <Link href={emojiPackPath(pack.name)} aria-label={`Open pack ${pack.title}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
         <a href={telegramPackUrl(pack.name)} target="_blank" rel="noopener noreferrer" aria-label={`Add to Telegram · ${pack.title}`} className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
-        {pack.count > pack.sample.length ? <span className="tg-hint ml-auto text-xs">+{pack.count - pack.sample.length}</span> : null}
+        {pack.count > MOBILE_SAMPLE ? <span className="tg-hint ml-auto text-xs sm:hidden">+{pack.count - MOBILE_SAMPLE}</span> : null}
+        {pack.count > pack.sample.length ? <span className="tg-hint ml-auto hidden text-xs sm:inline">+{pack.count - pack.sample.length}</span> : null}
       </div>
     </article>
   );
