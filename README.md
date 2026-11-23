@@ -19,7 +19,9 @@ npm run lint && npm run build
 - Demo video: web copies in `public/video/` (58 s, 1280x720 H.264 MP4 with faststart and VP9 WebM, ~4.4 MB and ~3.5 MB; v2 with real bot-ui Studio footage), wired up in `DEMO_VIDEO` in `src/content/site.ts`. It loads only when played, autoplays muted while in view and never autoplays with reduced motion.
 - Studio: `/studio` embeds the offline build of the Pulloa project in `demo/bot-ui/`. Build the public-demo client with `npm run build:artifact` in its `studio/web` folder, then run `python scripts/build_demo.py --studio /path/to/studio` here. Refresh the lossless screenshots in `public/studio/` from that build when the UI changes: map at 1440×700 and 390×420, simulator checkout at 500×620, Start screen editor at 760×620.
 - The GitHub star count is fetched at build time and refreshed hourly.
-- `NEXT_PUBLIC_SITE_URL` overrides the canonical URL; on Vercel it defaults to the production domain.
+- `NEXT_PUBLIC_SITE_URL` overrides the canonical origin. Production defaults to `https://telegram-bot-ui.hlixli.com`, and Vercel previews use their own origin.
+- The catalog, pack pages, and sitemap use the existing server-side `EMOJI_RESOLVER_BOT_TOKEN`. Pack pages and the sitemap resolve data on request. The documentation and other site pages also render locally without the resolver.
+- The [Emoji Library API reference](https://telegram-bot-ui.hlixli.com/emoji/api-docs) documents pack search, pack contents, and reverse ID lookup.
 
 ## License
 

@@ -4,47 +4,30 @@
 // the bottom) with an analysis column: formats, the bot icons the pack covers, the picked emoji
 // with everything a bot needs to use it, and similar packs below.
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import { Bookmark, Check, Copy, Play, Search, Star } from "lucide-react";
+import { Bookmark, Play, Search, Star } from "lucide-react";
 import type { CardPack } from "@/lib/emoji-card";
 import type { LibraryEmoji, LibraryPack } from "@/lib/emoji-library";
+import { buttonEmojiField, messageEmojiHtml } from "@/lib/emoji-snippets";
 import { BOT_SLOTS, stripVariation } from "@/lib/emoji-slots";
 import { cn } from "@/lib/utils";
+import { CopyRow } from "./copy-row";
 import { matches, PackCard } from "./library-app";
 import { isMouse, PremiumEmoji, useCanHover } from "./premium-emoji";
-import { copy, useSaved } from "./saved";
+import { useSaved } from "./saved";
 
 const FORMAT = { static: { label: "Static", color: "#8e8e93" }, animated: { label: "Animated", color: "#3390ec" }, video: { label: "Video", color: "#34c759" } } as const;
-
-function CopyRow({ label, value }: { label: string; value: string }) {
-  const [done, setDone] = useState(false);
-  return (
-    <div>
-      <p className="tg-hint mb-1 text-[13px]">{label}</p>
-      <div className="tg-field flex items-center rounded-xl pl-3">
-        <code className="min-w-0 flex-1 truncate py-2 font-mono text-[13px]">{value}</code>
-        <button
-          type="button" aria-label={`Copy ${label}`}
-          onClick={async () => { if (await copy(value)) { setDone(true); setTimeout(() => setDone(false), 1500); } }}
-          className="tg-cell inline-flex size-9 shrink-0 items-center justify-center rounded-xl"
-        >
-          {done ? <Check aria-hidden="true" className="size-4 text-emerald-500" /> : <Copy aria-hidden="true" className="tg-hint size-4" />}
-        </button>
-      </div>
-    </div>
-  );
-}
 
 /** An emoji of the grid. A mouse plays it on hover; a touch screen plays the one tapped (picked), so
  *  a phone runs one or two animations at a time instead of every one a finger passes. */
 function Tile({ e, selected, all, canHover, onSelect }: { e: LibraryEmoji; selected: boolean; all: boolean; canHover: boolean; onSelect: () => void }) {
   const [hot, setHot] = useState(false);
   return (
-    <li id={`emoji-${e.id}`}>
+    <li id={`emoji-${e.id}`} className="scroll-mt-24">
       <button
-        type="button" onClick={onSelect} aria-pressed={selected} aria-label={`${e.fallback || "emoji"} ${e.id}`}
+        id={`e=${e.id}`} type="button" onClick={onSelect} aria-pressed={selected} aria-label={`${FORMAT[e.format].label} ${e.fallback || "emoji"}, custom emoji ID ${e.id}`}
         onPointerEnter={(ev) => isMouse(ev) && setHot(true)} onPointerLeave={() => setHot(false)}
         onFocus={(ev) => ev.currentTarget.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
-        className={cn("tg-cell flex aspect-square w-full items-center justify-center rounded-xl", selected && "ring-2 ring-[var(--tg-accent)]")}
+        className={cn("tg-cell flex aspect-square w-full scroll-mt-24 items-center justify-center rounded-xl", selected && "ring-2 ring-[var(--tg-accent)]")}
       >
         <PremiumEmoji emoji={e} play={all ? "always" : "hover"} active={hot || (!canHover && selected)} size={40} />
       </button>
@@ -100,7 +83,7 @@ function ThemePreview({ emoji, pick }: { emoji: LibraryEmoji[]; pick: LibraryEmo
   );
 }
 
-export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: CardPack[] }) {
+export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: CardPack[]; pageUrl: string }) {
   const { saved, togglePack, toggleEmoji } = useSaved();
   const canHover = useCanHover();
   const [query, setQuery] = useState("");
@@ -114,13 +97,16 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
 
   // A search result links here as #e=<id>: open the pack on that emoji.
   useEffect(() => {
-    const id = /^#e=(\d{1,20})$/.exec(window.location.hash)?.[1];
-    const target = id ? emoji.find((e) => e.id === id) : undefined;
-    if (!target) return;
-    // The URL hash is only readable after hydration; syncing from it is what an effect is for.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPick(target);
-    document.getElementById(`emoji-${target.id}`)?.scrollIntoView({ block: "center" });
+    function selectFromHash() {
+      const id = /^#e=(\d{1,20})$/.exec(window.location.hash)?.[1];
+      const target = id ? emoji.find((e) => e.id === id) : undefined;
+      if (!target) return;
+      setPick(target);
+      document.getElementById(`e=${target.id}`)?.scrollIntoView({ block: "center" });
+    }
+    selectFromHash();
+    window.addEventListener("hashchange", selectFromHash);
+    return () => window.removeEventListener("hashchange", selectFromHash);
   }, [emoji]);
 
   const formatCounts = (["animated", "video", "static"] as const).map((f) => ({ f, n: emoji.filter((e) => e.format === f).length })).filter((x) => x.n);
@@ -175,7 +161,7 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
 
         <aside aria-label="About this pack" className="space-y-4 lg:sticky lg:top-20 lg:self-start">
           {pick ? (
-            <section aria-label="Picked emoji" className="tg-glass space-y-3 rounded-3xl p-4">
+            <section key={pick.id} aria-label="Picked emoji" className="tg-glass space-y-3 rounded-3xl p-4">
               <div className="flex items-center gap-3">
                 <span className="tg-field flex size-20 items-center justify-center rounded-2xl">
                   <PremiumEmoji key={pick.id} emoji={pick} play="always" size={60} />
@@ -190,8 +176,9 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
                 </div>
               </div>
               <CopyRow label="Custom emoji ID" value={pick.id} />
-              <CopyRow label="In a message (HTML)" value={`<tg-emoji emoji-id="${pick.id}">${pick.fallback}</tg-emoji>`} />
-              <CopyRow label="On a button" value={`"icon_custom_emoji_id": "${pick.id}"`} />
+              {pick.fallback && <CopyRow label="In a message (HTML)" accessibleLabel="Telegram message HTML" value={messageEmojiHtml(pick.id, pick.fallback)} />}
+              <CopyRow label="On a button" accessibleLabel="icon_custom_emoji_id button field" value={buttonEmojiField(pick.id)} />
+              <CopyRow label="Emoji source link" value={`${pageUrl}#e=${pick.id}`} />
               {pick.tags.length ? <p className="tg-hint text-xs">Tags: {pick.tags.join(", ")}</p> : null}
             </section>
           ) : null}

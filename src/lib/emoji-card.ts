@@ -36,10 +36,6 @@ export interface CardPack {
   sample: CardEmoji[];
 }
 
-export function packLink(name: string): string {
-  return `https://t.me/addemoji/${name}`;
-}
-
 export function toCardEmoji(e: { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null; still: string | null }): CardEmoji {
   return [e.id, e.fallback, FORMATS.indexOf(e.format) | (e.adaptive ? ADAPTIVE : 0) | (e.preview ? PREVIEW : 0) | (e.still ? STILL : 0)];
 }

@@ -5,19 +5,16 @@
 // so "cart" finds a custom 🛒.
 import "server-only";
 import { cacheLife } from "next/cache";
-import packsText from "@/content/emoji-packs.txt";
 import tagsText from "@/content/emoji-tags.txt";
 import { toCardEmoji, type CardPack } from "./emoji-card";
-import { fixturesOn } from "./emoji-fixtures";
-import { PACK_NAME, resolvePack, type Format, type PackEmoji } from "./emoji-pack";
+import { resolvePack, type Format, type PackEmoji } from "./emoji-pack";
+import { listedPacks, OTHER, type ListedPack } from "./emoji-pack-list";
 import { emojiSearchText, type SearchSource } from "./emoji-search";
 import { slotEmoji } from "./emoji-slots";
+import { telegramPackUrl } from "./emoji-links";
 
-const LINK = /^(?:https?:\/\/)?(?:www\.)?(?:t\.me|telegram\.me|telegram\.dog)\/addemoji\/([A-Za-z0-9_]{1,64})\/?(?:[?#].*)?$/i;
 const SAMPLE = 16; // two rows of 8 on a pack card
-export const OTHER = "Other";
 
-export interface ListedPack { name: string; category: string }
 export interface LibraryEmoji extends PackEmoji { tags: string[]; search: string }
 export interface LibraryPack {
   name: string; title: string; link: string; category: string; count: number; formats: Format[]; adaptive: boolean;
@@ -42,33 +39,6 @@ export interface Library {
 
 
 
-const FIXTURE_PACKS: ListedPack[] = [
-  { name: "bot_ui_demo_icons", category: "Interface" },
-  { name: "bot_ui_demo_motion", category: "Animated marks" },
-  { name: "bot_ui_demo_status", category: "Interface" },
-];
-
-/** Packs from the links file, in file order, without duplicates (case-insensitive). A line
- *  "## Category" puts the links below it in that category; links before any heading are "Other". */
-export function parsePackList(text: string): ListedPack[] {
-  const seen = new Set<string>();
-  const out: ListedPack[] = [];
-  let category = OTHER;
-  for (const raw of text.split(/\r?\n/)) {
-    const line = raw.trim();
-    if (line.startsWith("## ")) {
-      category = line.slice(3).trim().slice(0, 40) || OTHER;
-      continue;
-    }
-    if (!line || line.startsWith("#")) continue;
-    const name = LINK.exec(line)?.[1] ?? line;
-    if (!PACK_NAME.test(name) || seen.has(name.toLowerCase())) continue;
-    seen.add(name.toLowerCase());
-    out.push({ name, category });
-  }
-  return out;
-}
-
 /** Tags by "pack" and "pack/emojiId" from emoji-tags.txt; keys are lowercase. */
 export function parseTags(text: string): Map<string, string[]> {
   const out = new Map<string, string[]>();
@@ -84,11 +54,6 @@ export function parseTags(text: string): Map<string, string[]> {
 }
 
 const strip = (s: string) => s.replace(/[︎️]/g, "");
-
-/** The packs file, or the local stand-in packs while developing with EMOJI_RESOLVER_FIXTURES=1. */
-function listed(): ListedPack[] {
-  return fixturesOn() ? FIXTURE_PACKS : parsePackList(packsText);
-}
 
 function withSearch(pack: string, e: PackEmoji, tags: Map<string, string[]>): LibraryEmoji {
   const own = tags.get(`${pack.toLowerCase()}/${e.id}`) ?? [];
@@ -109,7 +74,7 @@ async function readPack({ name, category }: ListedPack, tags: Map<string, string
     emoji,
     fallbacks,
     pack: {
-      name: p.name, title: p.title, link: `https://t.me/addemoji/${p.name}`, category, count: emoji.length, formats,
+      name: p.name, title: p.title, link: telegramPackUrl(p.name), category, count: emoji.length, formats,
       rank, meanings: fallbacks.size, covers: coverage(fallbacks), similar: [],
       adaptive: emoji.some((e) => e.adaptive), adaptiveShare: emoji.length ? emoji.filter((e) => e.adaptive).length / emoji.length : 0, tags: packTags, sample: emoji.slice(0, SAMPLE).map((e) => ({ ...e, tags: [], search: "" })),
     },
@@ -150,12 +115,18 @@ export function cardPack(p: LibraryPack): CardPack {
 export async function getLibrary(): Promise<Library> {
   "use cache";
   cacheLife("hours");
-  const list = listed();
+  const list = listedPacks();
   const tags = parseTags(tagsText);
   const results = await settledInBatches(list, READ_PARALLEL, (p, i) => readPack(p, tags, i));
   const read: { pack: LibraryPack; emoji: LibraryEmoji[]; fallbacks: Set<string> }[] = [];
   const unavailable: string[] = [];
-  results.forEach((r, i) => (r.status === "fulfilled" ? read.push(r.value) : unavailable.push(list[i].name)));
+  results.forEach((r, i) => {
+    if (r.status === "fulfilled") {
+      if (r.value.pack.count) read.push(r.value);
+    } else {
+      unavailable.push(list[i].name);
+    }
+  });
   // A Telegram outage or a 429 pause mid-refresh must not be cached as a smaller library for hours:
   // throw, so the cache keeps the previous library. Without a resolver token at all (a build that
   // has none yet) every pack fails the same way; that renders as an empty library instead.
@@ -224,11 +195,12 @@ function revisionOf(text: string): string {
 export async function getLibraryPack(name: string): Promise<{ pack: LibraryPack; emoji: LibraryEmoji[] } | null> {
   "use cache";
   cacheLife("hours");
-  const list = listed();
+  const list = listedPacks();
   const rank = list.findIndex((p) => p.name.toLowerCase() === name.toLowerCase());
   if (rank < 0) return null;
   try {
     const { pack, emoji } = await readPack(list[rank], parseTags(tagsText), rank);
+    if (!emoji.length) return null;
     const library = await getLibrary();
     const same = library.packs.find((p) => p.name === pack.name);
     return { pack: { ...pack, similar: same?.similar ?? [] }, emoji };
@@ -240,8 +212,4 @@ export async function getLibraryPack(name: string): Promise<{ pack: LibraryPack;
     if (code === "PACK_NOT_FOUND" || code === "NOT_EMOJI_PACK" || code === "RESOLVER_OFF") return null;
     throw err;
   }
-}
-
-export async function listedPackNames(): Promise<string[]> {
-  return listed().map((p) => p.name);
 }

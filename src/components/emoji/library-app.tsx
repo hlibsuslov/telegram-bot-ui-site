@@ -9,7 +9,8 @@ import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection } from "@/lib/emoji-library";
-import { fromCardEmoji, packLink, type CardPack } from "@/lib/emoji-card";
+import { fromCardEmoji, type CardPack } from "@/lib/emoji-card";
+import { emojiPackPath, telegramPackUrl } from "@/lib/emoji-links";
 import { BOT_SLOTS } from "@/lib/emoji-slots";
 import { EmojiMotion, EmojiStill, isMouse, PremiumEmoji } from "./premium-emoji";
 import { copy, useSaved } from "./saved";
@@ -49,7 +50,6 @@ function Cell({ active, onClick, icon, label, count }: { active: boolean; onClic
 
 export function PackCard({ pack, saved, onSave, className }: { pack: CardPack; saved: boolean; onSave: () => void; className?: string }) {
   const [hot, setHot] = useState(false);
-  const link = packLink(pack.name);
   return (
     <article
       className={cn("tg-glass tg-card flex flex-col rounded-2xl p-3.5", className)}
@@ -77,8 +77,8 @@ export function PackCard({ pack, saved, onSave, className }: { pack: CardPack; s
         })}
       </Link>
       <div className="mt-auto flex items-center gap-4 pt-3">
-        <Link href={`/emoji/${pack.name}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
-        <a href={link} target="_blank" rel="noopener noreferrer" className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
+        <Link href={emojiPackPath(pack.name)} aria-label={`Open pack ${pack.title}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
+        <a href={telegramPackUrl(pack.name)} target="_blank" rel="noopener noreferrer" aria-label={`Add to Telegram · ${pack.title}`} className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
         {pack.count > pack.sample.length ? <span className="tg-hint ml-auto text-xs">+{pack.count - pack.sample.length}</span> : null}
       </div>
     </article>
@@ -90,7 +90,8 @@ function HitTile({ hit }: { hit: EmojiHit }) {
   return (
     <li>
       <Link
-        href={`/emoji/${hit.pack}#e=${hit.id}`} title={`${hit.fallback} · ${hit.pack}`} aria-label={`${hit.fallback || "emoji"} from ${hit.pack}`}
+        href={emojiPackPath(hit.pack, hit.id)} title={`${hit.fallback} · ${FORMAT_LABEL[hit.format]} · ${hit.pack}`}
+        aria-label={`${FORMAT_LABEL[hit.format]} ${hit.fallback || "emoji"} from ${hit.pack}, custom emoji ID ${hit.id}`}
         onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
         onFocus={(e) => e.currentTarget.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
         className="tg-cell flex aspect-square items-center justify-center rounded-xl"
@@ -269,7 +270,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
             {view.kind === "saved" && shown.length ? (
               <button
                 type="button"
-                onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${packLink(p.name)}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
+                onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${telegramPackUrl(p.name)}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
                 className="tg-accent ml-auto inline-flex items-center gap-1.5 rounded text-sm"
               >
                 {copied ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />} Copy bot-ui import commands

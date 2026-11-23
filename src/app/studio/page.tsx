@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import avatar from "../../../demo/bot-ui/assets/avatar.png";
 import { SiteFooter } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/header";
@@ -11,6 +12,7 @@ import { StudioMapPreview } from "@/components/studio/map-preview";
 import { StudioActions } from "@/components/studio/studio-actions";
 import { StudioSetup } from "@/components/studio/studio-setup";
 import { DEMO_BOT_NAME, DEMO_SCREEN_COUNT, LIVE_WIDGETS } from "@/content/studio";
+import { EMOJI_GUIDE_PATH } from "@/lib/emoji-links";
 
 const TITLE = "bot-ui Studio | Telegram bot editor and simulator";
 const DESCRIPTION =
@@ -44,6 +46,10 @@ export default function StudioPage() {
                 <p className="mt-3 text-base leading-7 text-pretty text-muted-foreground sm:text-lg">
                   Map your Telegram bot, test its buttons and edit its messages. Try {DEMO_BOT_NAME}’s {DEMO_SCREEN_COUNT} screens in your browser.
                   For your own bot, run Studio locally on your computer.
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  <Link href="/emoji" className="underline underline-offset-2">Browse Telegram emoji packs</Link>{" · "}
+                  <Link href={EMOJI_GUIDE_PATH} className="underline underline-offset-2">Use custom emoji in your bot</Link>
                 </p>
               </div>
               <StudioActions demoHref="#demo" runHref="#run" widgetsHref="#widgets" />
