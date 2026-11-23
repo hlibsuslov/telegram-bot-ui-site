@@ -228,7 +228,7 @@ export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack
           <h2 id="similar-title" className="mb-2 px-1 text-lg font-semibold">Similar packs</h2>
           <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
             {similar.map((p) => (
-              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
+              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={togglePack} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
             ))}
           </div>
         </section>

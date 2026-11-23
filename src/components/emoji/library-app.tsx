@@ -5,7 +5,7 @@
 // collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
 // screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
-import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
+import { memo, useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection } from "@/lib/emoji-library";
@@ -48,7 +48,8 @@ function Cell({ active, onClick, icon, label, count }: { active: boolean; onClic
   );
 }
 
-export function PackCard({ pack, saved, onSave, className }: { pack: CardPack; saved: boolean; onSave: () => void; className?: string }) {
+/** Memoized, with a stable onSave(name): typing in search re-renders the page, not every card. */
+export const PackCard = memo(function PackCard({ pack, saved, onSave, className }: { pack: CardPack; saved: boolean; onSave: (name: string) => void; className?: string }) {
   const [hot, setHot] = useState(false);
   return (
     <article
@@ -64,7 +65,7 @@ export function PackCard({ pack, saved, onSave, className }: { pack: CardPack; s
           </p>
         </div>
         <button
-          type="button" onClick={onSave} aria-pressed={saved} aria-label={saved ? `Remove ${pack.title} from saved` : `Save ${pack.title}`}
+          type="button" onClick={() => onSave(pack.name)} aria-pressed={saved} aria-label={saved ? `Remove ${pack.title} from saved` : `Save ${pack.title}`}
           className="tg-cell -mt-1 -mr-1 inline-flex size-9 items-center justify-center rounded-full"
         >
           <Star aria-hidden="true" className={cn("size-[18px]", saved ? "fill-amber-400 text-amber-500" : "tg-hint")} />
@@ -83,7 +84,7 @@ export function PackCard({ pack, saved, onSave, className }: { pack: CardPack; s
       </div>
     </article>
   );
-}
+});
 
 function HitTile({ hit }: { hit: EmojiHit }) {
   const [hot, setHot] = useState(false);
@@ -237,7 +238,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
             </div>
             <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
               {c.packs.slice(0, 8).map((n) => byName.get(n)).filter((p): p is CardPack => !!p).map((p) => (
-                <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
+                <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={togglePack} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
               ))}
             </div>
           </section>
@@ -280,7 +281,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
           <p aria-live="polite" className="sr-only">{shown.length} packs shown</p>
           {shown.length ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} />)}
+              {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={togglePack} />)}
             </div>
           ) : null}
           {shown.length > limit ? (
