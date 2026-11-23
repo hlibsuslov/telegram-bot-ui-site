@@ -13,6 +13,8 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const q = (url.searchParams.get("q") ?? "").slice(0, 100);
   const pack = url.searchParams.get("pack") ?? undefined;
+  // An empty query answers at once: it must not wake the whole catalog up.
+  if (!q.trim()) return Response.json({ ok: true, ...search({ packs: [], emoji: [], revision: "" }, "") });
   const library = await getLibrary();
   const result = search(library.source, q, { pack, limit: pack ? 200 : 60 });
   return Response.json({ ok: true, ...result }, {

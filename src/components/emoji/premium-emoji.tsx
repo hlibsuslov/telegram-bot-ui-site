@@ -34,6 +34,8 @@ function loadAnimation(url: string): Promise<unknown> {
       return JSON.parse(text) as unknown;
     });
     p.catch(() => animations.delete(url));
+    // Keep the last few decoded animations only: a long browse would otherwise hold them all.
+    if (animations.size >= 64) animations.delete(animations.keys().next().value as string);
     animations.set(url, p);
   }
   return p;

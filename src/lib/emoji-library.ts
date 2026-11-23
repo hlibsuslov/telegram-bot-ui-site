@@ -157,10 +157,11 @@ export async function getLibrary(): Promise<Library> {
   linkSimilar(read);
   const packs = read.map((r) => r.pack);
   const categories = [...new Set(packs.map((p) => p.category))].sort((a, b) => Number(a === OTHER) - Number(b === OTHER));
-  const source: SearchSource = {
+  const body = {
     packs: packs.map((p) => ({ name: p.name, title: p.title, category: p.category, rank: p.rank, tags: p.tags })),
-    emoji: read.flatMap((r, p) => r.emoji.map((e) => ({ p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, tags: e.tags }))),
+    emoji: read.flatMap((r, p) => r.emoji.map((e) => ({ p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, pv: !!e.preview, tags: e.tags }))),
   };
+  const source: SearchSource = { ...body, revision: revisionOf(JSON.stringify(body)) };
   return { packs, categories, collections: collections(packs), listed: list.length, unavailable, source };
 }
 
@@ -203,6 +204,13 @@ function collections(packs: LibraryPack[]): Collection[] {
   ].filter((c) => c.packs.length >= 3);
 }
 
+/** A short fingerprint of the catalog, so the search index rebuilds when anything in it changes. */
+function revisionOf(text: string): string {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+  return `${text.length.toString(36)}-${(h >>> 0).toString(36)}`;
+}
+
 /** One listed pack with all its emoji, or null when it is not in the list or cannot be read. */
 export async function getLibraryPack(name: string): Promise<{ pack: LibraryPack; emoji: LibraryEmoji[] } | null> {
   "use cache";
@@ -215,8 +223,12 @@ export async function getLibraryPack(name: string): Promise<{ pack: LibraryPack;
     const library = await getLibrary();
     const same = library.packs.find((p) => p.name === pack.name);
     return { pack: { ...pack, similar: same?.similar ?? [] }, emoji };
-  } catch {
-    return null;
+  } catch (err) {
+    // Only a definite answer from Telegram is cached as "no page"; a timeout or a 429 throws, so the
+    // cache keeps the last good page instead of a 404 for hours.
+    const code = (err as { code?: string })?.code;
+    if (code === "PACK_NOT_FOUND" || code === "NOT_EMOJI_PACK") return null;
+    throw err;
   }
 }
 

@@ -76,6 +76,11 @@ async function slot<T>(work: () => Promise<T>, pool: Pool = apiPool): Promise<T>
     // A flood must not park requests until the function timeout (billed time): refuse past a queue.
     if (pool.waiting.length >= QUEUE_MAX) throw new ResolverError("BUSY", 503, "busy; retry in a moment", 2);
     await new Promise<void>((resolve) => pool.waiting.push(resolve));
+    // A 429 may have arrived while this call waited: do not start it into the cooldown.
+    if (Date.now() < pausedUntil) {
+      pool.waiting.shift()?.();
+      throw new ResolverError("RATE_LIMITED", 429, "busy; retry in a moment", Math.ceil((pausedUntil - Date.now()) / 1000));
+    }
   }
   pool.active++;
   try {
@@ -210,6 +215,8 @@ export function parseIds(raw: string | null): string[] {
 export async function resolveSets(ids: string[]): Promise<{ id: string; set: string }[]> {
   const now = Date.now();
   const ask = ids.filter((id) => { const hit = owners.get(id); return !hit || now - hit.at >= SET_TTL_MS; });
+  // The answer is built from what this request knows, so a cache clear in between cannot drop ids.
+  const known = new Map<string, string | null>(ids.filter((id) => !ask.includes(id)).map((id) => [id, owners.get(id)?.set ?? null]));
   if (ask.length) {
     const stickers = await call<{ custom_emoji_id?: string; set_name?: string }[]>("getCustomEmojiStickers", { custom_emoji_ids: ask });
     const found = new Map<string, string>();
@@ -217,9 +224,12 @@ export async function resolveSets(ids: string[]): Promise<{ id: string; set: str
       if (s.custom_emoji_id && s.set_name && PACK_NAME.test(s.set_name)) found.set(s.custom_emoji_id, s.set_name);
     }
     if (owners.size + ask.length > OWNER_CACHE_MAX) owners.clear();
-    for (const id of ask) owners.set(id, { at: now, set: found.get(id) ?? null });
+    for (const id of ask) {
+      owners.set(id, { at: now, set: found.get(id) ?? null });
+      known.set(id, found.get(id) ?? null);
+    }
   }
-  return ids.flatMap((id) => { const set = owners.get(id)?.set; return set ? [{ id, set }] : []; });
+  return ids.flatMap((id) => { const set = known.get(id); return set ? [{ id, set }] : []; });
 }
 
 const TYPES: Record<string, string> = { webp: "image/webp", webm: "video/webm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg" };
@@ -243,6 +253,8 @@ const paths = new Map<string, { at: number; path: string; size: number }>();
 let cachedBytes = 0;
 
 function remember(key: string, data: Buffer, type: string) {
+  const old = files.get(key);
+  if (old) { files.delete(key); cachedBytes -= old.data.length; }
   files.set(key, { at: Date.now(), data, type });
   cachedBytes += data.length;
   for (const [k, v] of files) {

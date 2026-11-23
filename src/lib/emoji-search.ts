@@ -22,12 +22,14 @@ import type { Format } from "./emoji-pack";
 import { stripVariation } from "./emoji-slots";
 
 export interface SearchPack { name: string; title: string; category: string; rank: number; tags: string[] }
-export interface SearchEmoji { p: number; id: string; f: string; fmt: Format; ad: boolean; tags: string[] }
-export interface SearchSource { packs: SearchPack[]; emoji: SearchEmoji[] }
+/** pv: the emoji has a preview picture (an animated emoji without a thumbnail has none) */
+export interface SearchEmoji { p: number; id: string; f: string; fmt: Format; ad: boolean; pv: boolean; tags: string[] }
+/** revision: a fingerprint of the whole catalog; the search index is rebuilt when it changes */
+export interface SearchSource { packs: SearchPack[]; emoji: SearchEmoji[]; revision: string }
 
 export interface EmojiHit {
   pack: string; id: string; fallback: string; format: Format; adaptive: boolean;
-  preview: string; animation: string | null; score: number;
+  preview: string | null; animation: string | null; score: number;
 }
 export interface SearchResult {
   query: string;
@@ -141,8 +143,7 @@ function build(src: SearchSource): Index {
 }
 
 function indexOf(src: SearchSource): Index {
-  const key = `${src.packs.length}:${src.emoji.length}:${src.emoji[0]?.id}:${src.emoji.at(-1)?.id}:${src.emoji.reduce((n, e) => n + e.tags.length, 0)}`;
-  if (cached?.key !== key) cached = { key, index: build(src) };
+  if (cached?.key !== src.revision) cached = { key: src.revision, index: build(src) };
   return cached.index;
 }
 
@@ -187,6 +188,7 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
   const onlyPack = pack ? src.packs.findIndex((p) => p.name.toLowerCase() === pack.toLowerCase()) : -1;
   const empty: SearchResult = { query: q, emoji: [], packs: [], suggest: { complete: [], related: [], categories: [], didYouMean: null }, total: 0 };
   if (!qWords.length && !emojiInQuery.length) return empty;
+  if (pack && onlyPack < 0) return empty; // an unknown pack filter means nothing, not everything
 
   // Score of each query part, per emoji and per pack.
   const parts: { emoji: Map<number, number>; packs: Map<number, number> }[] = [];
@@ -244,7 +246,7 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
     const name = src.packs[e.p].name;
     return {
       pack: name, id: e.id, fallback: e.f, format: e.fmt, adaptive: e.ad, score: Math.round(score * 100) / 100,
-      preview: `/api/emoji-pack/${name}/${e.id}`, animation: e.fmt === "animated" ? `/api/emoji-pack/${name}/${e.id}/anim` : null,
+      preview: e.pv ? `/api/emoji-pack/${name}/${e.id}` : null, animation: e.fmt === "animated" ? `/api/emoji-pack/${name}/${e.id}/anim` : null,
     };
   });
 

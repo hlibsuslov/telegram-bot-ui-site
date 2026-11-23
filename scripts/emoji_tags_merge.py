@@ -52,8 +52,14 @@ def main() -> int:
                 lines.append(f"{name}/{index[key][0]}: {', '.join(tags)}")
         generated[name] = lines
     text = open(TAGS, encoding="utf-8").read()
-    head = text.split(BEGIN)[0].rstrip("\n")
-    body = [line for name in sorted(generated, key=str.lower) for line in generated[name]]
+    head, _, old = text.partition(BEGIN)
+    head = head.rstrip("\n")
+    # Packs tagged earlier whose sheets are not in this folder keep their lines.
+    for line in old.splitlines():
+        name = line.split("/", 1)[0].split(":", 1)[0].strip()
+        if name and not line.startswith("#") and name not in generated:
+            generated.setdefault(f"\0{name}", []).append(line)
+    body = [line for name in sorted(generated, key=lambda n: n.lstrip("\0").lower()) for line in generated[name]]
     with open(TAGS, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(head + "\n\n" + BEGIN + "\n" + "\n".join(body) + "\n")
     print(f"{len(generated)} packs, {len(body)} tag lines -> {os.path.relpath(TAGS)}")
