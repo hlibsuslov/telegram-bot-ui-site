@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { DuckIcon, type DuckIconName } from "./duck-icon";
 import { Container } from "./section";
 
-type MapNode = { id: DuckIconName; title: string; text: string; href: string };
+type MapNode = { id: DuckIconName; title: string; text: string; href?: string };
 
 const ROOT: MapNode = {
   id: "skill",
@@ -35,6 +35,12 @@ const STUDIO_BRANCHES: MapNode[] = [
 ];
 
 const MINI_APPS_ID = "mini-apps";
+const MINI_APPS: MapNode = {
+  id: MINI_APPS_ID,
+  title: "Mini Apps",
+  text: "Telegram design guidelines and a ready-to-use UI kit.",
+};
+
 const MINI_APP_BRANCHES = [
   { id: "mini-apps-create", title: "Create a Mini App", text: "Design screens and launch them in Telegram." },
   { id: "mini-apps-edit", title: "Edit an existing app", text: "Improve layouts, navigation and components." },
@@ -147,17 +153,21 @@ function NodeCard({
   kind,
   shown,
   active,
+  headingId,
   onActivate,
 }: {
   node: MapNode;
   kind: "root" | "branch" | "studio" | "leaf";
   shown: boolean;
   active: boolean;
+  headingId?: string;
   onActivate: (id: string | null) => void;
 }) {
   const big = kind === "root" || kind === "studio";
+  const Card = node.href ? "a" : "div";
+  const Title = headingId ? "h3" : "span";
   return (
-    <a
+    <Card
       href={node.href}
       data-node={node.id}
       onMouseEnter={() => onActivate(node.id)}
@@ -183,18 +193,22 @@ function NodeCard({
       >
         <DuckIcon name={node.id} className={big ? "size-11" : "size-9"} />
       </span>
-      <span className="min-w-0">
-        <span className={cn("block leading-snug font-semibold", kind === "root" ? "text-lg" : "text-sm")}>{node.title}</span>
+      <div className="min-w-0">
+        <Title id={headingId} className={cn("block leading-snug font-semibold", kind === "root" ? "text-lg" : "text-sm")}>
+          {node.title}
+        </Title>
         <span className="mt-0.5 block text-[0.8125rem] leading-5 text-muted-foreground">{node.text}</span>
-      </span>
-    </a>
+      </div>
+    </Card>
   );
 }
 
 function MiniAppsBranch({
+  shown,
   activeNodes,
   onActivate,
 }: {
+  shown: boolean;
   activeNodes: ReadonlySet<string>;
   onActivate: (id: string | null) => void;
 }) {
@@ -202,23 +216,18 @@ function MiniAppsBranch({
     <section
       id={MINI_APPS_ID}
       aria-labelledby="mini-apps-heading"
-      className="grid scroll-mt-24 gap-y-3 pl-12 lg:col-span-2 lg:grid-cols-subgrid lg:pl-0"
+      className="grid scroll-mt-24 gap-y-2.5 pl-12 lg:col-span-2 lg:grid-cols-subgrid lg:pl-0"
     >
-      <div
-        data-node={MINI_APPS_ID}
-        className="flex min-w-0 items-center gap-3 lg:self-center"
-        onMouseEnter={() => onActivate(MINI_APPS_ID)}
-        onMouseLeave={() => onActivate(null)}
-      >
-        <span data-icon className="grid size-12 shrink-0 place-items-center">
-          <DuckIcon name={MINI_APPS_ID} className="size-11" />
-        </span>
-        <div className="min-w-0">
-          <h3 id="mini-apps-heading" className="text-base leading-snug font-semibold text-brand">Mini Apps</h3>
-          <p className="mt-0.5 text-[0.8125rem] leading-5 text-muted-foreground">Telegram design guidelines and a ready-to-use UI kit.</p>
-        </div>
-      </div>
-      <ul className="grid gap-3 pl-12 lg:pl-0">
+      <NodeCard
+        node={MINI_APPS}
+        kind="branch"
+        headingId="mini-apps-heading"
+        shown={shown}
+        active={activeNodes.has(MINI_APPS_ID)}
+        onActivate={onActivate}
+      />
+      {/* Balance the description line so the middle title aligns with the card center. */}
+      <ul className="grid gap-3 pl-12 lg:content-center lg:pt-5 lg:pl-0 lg:[contain:size]">
         {MINI_APP_BRANCHES.map((leaf) => (
           <li
             key={leaf.id}
@@ -349,11 +358,11 @@ export function SkillMap() {
             ) : null}
           </svg>
 
-          <div className="relative grid gap-6 lg:grid-cols-[minmax(0,14rem)_minmax(0,19rem)_minmax(0,19rem)] lg:justify-between lg:gap-x-10">
-            <div className="lg:row-span-2 lg:self-center">
+          <div className="relative grid gap-y-2.5 lg:grid-cols-[minmax(0,14rem)_minmax(0,19rem)_minmax(0,19rem)] lg:justify-between lg:gap-x-10">
+            <div className="mb-3.5 lg:row-span-2 lg:mb-0 lg:self-center">
               <NodeCard node={ROOT} kind="root" shown={shown} active={activeNodes.has(ROOT.id)} onActivate={setHovered} />
             </div>
-            <MiniAppsBranch activeNodes={activeNodes} onActivate={setHovered} />
+            <MiniAppsBranch shown={shown} activeNodes={activeNodes} onActivate={setHovered} />
             <ul className="grid gap-2.5 pl-12 lg:pl-0">
               {BRANCHES.map((node) => (
                 <li key={node.id}>
@@ -367,7 +376,7 @@ export function SkillMap() {
                 </li>
               ))}
             </ul>
-            <div className="-mt-3.5 pl-24 lg:mt-0 lg:self-end lg:pl-0">
+            <div className="pl-24 lg:self-end lg:pl-0">
               <p className="mb-3 hidden text-sm font-medium text-brand lg:block">Inside Studio</p>
               <ul className="grid gap-2.5" aria-label="Inside bot-ui Studio">
                 {STUDIO_BRANCHES.map((node) => (
