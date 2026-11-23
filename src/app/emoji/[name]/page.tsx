@@ -4,12 +4,13 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ChevronLeft } from "lucide-react";
 import { PackSheet } from "@/components/emoji/pack-sheet";
-import { getLibrary, getLibraryPack, listedPackNames, type LibraryPack } from "@/lib/emoji-library";
+import { getLibrary, getLibraryPack, type LibraryPack } from "@/lib/emoji-library";
 
-// Cache Components needs at least one param at build time; "_" renders the 404 when the list is empty.
+// Pack pages render on their first request and are then cached, not at build: prerendering hundreds
+// of them in parallel build workers, each reading the whole catalog, floods Telegram and fails the
+// deploy. Cache Components needs at least one param at build time; "_" is not a pack and renders 404.
 export async function generateStaticParams() {
-  const names = await listedPackNames();
-  return (names.length ? names : ["_"]).map((name) => ({ name }));
+  return [{ name: "_" }];
 }
 
 export async function generateMetadata({ params }: PageProps<"/emoji/[name]">): Promise<Metadata> {
