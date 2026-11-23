@@ -197,59 +197,91 @@ function inFrames(start: () => void) {
   }
 }
 
-/** The moving emoji over its still, mounted only while it plays: the Lottie player or the WEBM. */
-export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
-  const stage = useRef<HTMLSpanElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
+// Each playing WEBM holds a video decoder. A phone has only a few hardware decoders and falls back to
+// slow software decoding past them, so "Play all" on a video pack runs a limited number at once; the
+// others keep their still and start as soon as a slot frees up (a tile scrolls away, a hover ends).
+let videosPlaying = 0;
+const videoQueue: (() => void)[] = [];
+const videoSlots = () => (matchMedia(HOVER).matches ? 24 : 8);
+function videoSlot(granted: () => void): () => void {
+  let held = false;
+  const take = () => {
+    held = true;
+    videosPlaying++;
+    queueMicrotask(granted);
+  };
+  if (videosPlaying < videoSlots()) take();
+  else videoQueue.push(take);
+  return () => {
+    const waiting = videoQueue.indexOf(take);
+    if (waiting >= 0) videoQueue.splice(waiting, 1);
+    if (held) {
+      videosPlaying--;
+      videoQueue.shift()?.();
+    }
+  };
+}
 
+/** Reveals the moving emoji over its still: the still hides only once something moves over it, so
+ *  there is never a blank square. */
+const reveal = (el: Element | null) => el?.parentElement?.setAttribute("data-playing", "");
+const conceal = (el: Element | null) => el?.parentElement?.removeAttribute("data-playing");
+
+function LottieMotion({ animation }: { animation: string }) {
+  const stage = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    const v = video.current;
-    const el = stage.current ?? v;
-    const box = el?.parentElement;
-    if (!el || !box) return;
-    // The still hides only once something moves over it, so there is never a blank square.
-    const show = () => box.setAttribute("data-playing", "");
+    const el = stage.current;
     let item: LottieItem | null = null;
     let cancelled = false;
-    if (v) {
-      v.addEventListener("playing", show);
-      void v.play().catch(() => undefined);
-    } else if (emoji.animation) {
-      Promise.all([loadPlayer(), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
-        inFrames(() => {
-          if (cancelled || !stage.current) return;
-          item = lottie.loadAnimation({ container: stage.current, renderer: "svg", loop: true, autoplay: true, animationData: data });
-          // Reveal it once its first frame is drawn, so the still never gives way to an empty square.
-          if (item.isLoaded) show();
-          else item.addEventListener("DOMLoaded", show);
-        });
-      }).catch(() => undefined);
-    }
+    Promise.all([loadPlayer(), loadAnimation(animation)]).then(([lottie, data]) => {
+      inFrames(() => {
+        if (cancelled || !el) return;
+        item = lottie.loadAnimation({ container: el, renderer: "svg", loop: true, autoplay: true, animationData: data });
+        // Once its first frame is drawn.
+        if (item.isLoaded) reveal(el);
+        else item.addEventListener("DOMLoaded", () => reveal(el));
+      });
+    }).catch(() => undefined);
     return () => {
       cancelled = true;
       item?.destroy();
-      box.removeAttribute("data-playing");
-      if (v) {
-        // Let go of the decoder now, not when the element is collected: phones have few.
-        v.removeEventListener("playing", show);
-        v.pause();
-        v.removeAttribute("src");
-        v.load();
-      }
+      conceal(el);
     };
-  }, [emoji.animation]);
+  }, [animation]);
+  return <span ref={stage} aria-hidden="true" className="tg-emoji-motion pointer-events-none absolute inset-0 [&_svg]:!size-full" />;
+}
 
-  if (emoji.format === "video" && emoji.preview) {
-    return (
-      <video
-        ref={video} src={emoji.preview} muted loop playsInline preload="auto" aria-hidden="true"
-        className="tg-emoji-motion pointer-events-none absolute inset-0 size-full object-contain"
-      />
-    );
-  }
-  if (emoji.format === "animated" && emoji.animation) {
-    return <span ref={stage} aria-hidden="true" className="tg-emoji-motion pointer-events-none absolute inset-0 [&_svg]:!size-full" />;
-  }
+function VideoMotion({ src }: { src: string }) {
+  const video = useRef<HTMLVideoElement>(null);
+  const [slot, setSlot] = useState(false);
+  useEffect(() => videoSlot(() => setSlot(true)), []);
+  useEffect(() => {
+    const v = video.current;
+    if (!slot || !v) return;
+    const show = () => reveal(v);
+    v.addEventListener("playing", show);
+    void v.play().catch(() => undefined);
+    return () => {
+      // Let go of the decoder now, not when the element is collected: phones have few.
+      v.removeEventListener("playing", show);
+      v.pause();
+      v.removeAttribute("src");
+      v.load();
+      conceal(v);
+    };
+  }, [slot]);
+  return slot ? (
+    <video
+      ref={video} src={src} muted loop playsInline preload="auto" aria-hidden="true"
+      className="tg-emoji-motion pointer-events-none absolute inset-0 size-full object-contain"
+    />
+  ) : null;
+}
+
+/** The moving emoji over its still, mounted only while it plays: the Lottie player or the WEBM. */
+export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
+  if (emoji.format === "video" && emoji.preview) return <VideoMotion src={emoji.preview} />;
+  if (emoji.format === "animated" && emoji.animation) return <LottieMotion animation={emoji.animation} />;
   return null;
 }
 
