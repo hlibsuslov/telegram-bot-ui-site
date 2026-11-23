@@ -196,6 +196,9 @@ export function EmojiPacks() {
           <Link href="/studio#run" className="inline-flex items-center gap-2 rounded-md font-medium text-brand hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
             Run Studio on your bot <ArrowRight aria-hidden="true" className="size-4" />
           </Link>
+          <Link href="/emoji" className="inline-flex items-center gap-2 rounded-md font-medium text-brand hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+            Browse the emoji library <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
           <p className="text-muted-foreground">Telegram shows custom emoji when the bot has a Fragment username or its owner has Premium.</p>
         </div>
       </Container>

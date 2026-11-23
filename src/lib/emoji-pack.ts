@@ -9,10 +9,12 @@
 //
 // Cost control: the CDN caches every answer (Cache-Control in the routes); behind it each
 // instance keeps successful sets for an hour, joins concurrent requests for the same pack,
-// runs at most MAX_CONCURRENT Telegram calls at a time, and stops calling Telegram while a 429
+// runs at most MAX_CONCURRENT Bot API calls and DOWNLOADS_CONCURRENT file downloads at a time, keeps
+// pictures in memory (FILE_CACHE_BYTES, least recently used out first), and stops calling Telegram while a 429
 // retry_after is running.
 import "server-only";
 import { request } from "node:https";
+import { fixtureAnimation, fixturePack, fixturePreview, fixturesOn } from "./emoji-fixtures";
 
 export const PACK_NAME = /^[A-Za-z0-9_]{1,64}$/;
 export const EMOJI_ID = /^\d{1,20}$/;
@@ -23,10 +25,17 @@ const JSON_MAX = 2 * 1024 * 1024;
 const TIMEOUT_MS = 10_000;
 const SET_TTL_MS = 60 * 60 * 1000;
 const SET_CACHE_MAX = 500;
-const MAX_CONCURRENT = 4;
+const MAX_CONCURRENT = 8;          // Bot API calls in flight per instance
+const QUEUE_MAX = 200;               // requests allowed to wait for a pool slot
+const DOWNLOADS_CONCURRENT = 16;   // file downloads in flight per instance (a page asks for hundreds of pictures)
+const FILE_CACHE_BYTES = 96 * 1024 * 1024;
+const FILE_TTL_MS = 6 * 60 * 60 * 1000;
+const PATH_TTL_MS = 50 * 60 * 1000; // Telegram keeps a file_path valid for at least an hour
 
 export type Format = "static" | "animated" | "video";
-export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null }
+/** preview: a picture (WEBP, or the WEBM itself for a video emoji; the static thumbnail of a TGS);
+ *  animation: the TGS file of an animated emoji (gzip Lottie), played by the client. */
+export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null; animation: string | null }
 export interface Pack { name: string; title: string; emoji: PackEmoji[] }
 
 interface Sticker {
@@ -41,6 +50,10 @@ export class ResolverError extends Error {
   }
 }
 
+function missing(code: string, message: string): never {
+  throw new ResolverError(code, 404, message);
+}
+
 function token(): string {
   const t = process.env.EMOJI_RESOLVER_BOT_TOKEN?.trim();
   if (!t) throw new ResolverError("RESOLVER_OFF", 503, "the emoji resolver is not configured");
@@ -49,22 +62,32 @@ function token(): string {
 
 // ------------------------------------------------------------------ Telegram, bounded
 
-let active = 0;
-const waiting: (() => void)[] = [];
 let pausedUntil = 0;
+type Pool = { active: number; max: number; waiting: (() => void)[] };
+const apiPool: Pool = { active: 0, max: MAX_CONCURRENT, waiting: [] };
+const filePool: Pool = { active: 0, max: DOWNLOADS_CONCURRENT, waiting: [] };
 
-async function slot<T>(work: () => Promise<T>): Promise<T> {
+async function slot<T>(work: () => Promise<T>, pool: Pool = apiPool): Promise<T> {
   if (Date.now() < pausedUntil) {
     const wait = Math.ceil((pausedUntil - Date.now()) / 1000);
     throw new ResolverError("RATE_LIMITED", 429, "busy; retry in a moment", wait);
   }
-  if (active >= MAX_CONCURRENT) await new Promise<void>((resolve) => waiting.push(resolve));
-  active++;
+  if (pool.active >= pool.max) {
+    // A flood must not park requests until the function timeout (billed time): refuse past a queue.
+    if (pool.waiting.length >= QUEUE_MAX) throw new ResolverError("BUSY", 503, "busy; retry in a moment", 2);
+    await new Promise<void>((resolve) => pool.waiting.push(resolve));
+    // A 429 may have arrived while this call waited: do not start it into the cooldown.
+    if (Date.now() < pausedUntil) {
+      pool.waiting.shift()?.();
+      throw new ResolverError("RATE_LIMITED", 429, "busy; retry in a moment", Math.ceil((pausedUntil - Date.now()) / 1000));
+    }
+  }
+  pool.active++;
   try {
     return await work();
   } finally {
-    active--;
-    waiting.shift()?.();
+    pool.active--;
+    pool.waiting.shift()?.();
   }
 }
 
@@ -115,21 +138,34 @@ async function call<T>(method: "getStickerSet" | "getFile" | "getCustomEmojiStic
 
 const sets = new Map<string, { at: number; set: StickerSet }>();
 const inflight = new Map<string, Promise<StickerSet>>();
+const missingSets = new Map<string, number>(); // pack names Telegram does not know, with when we asked
+const MISSING_TTL_MS = 10 * 60 * 1000;
 
-/** The raw set: an hour in memory for successes; errors are never kept. */
+/** The raw set: an hour in memory for successes, ten minutes for "no such pack"; other errors are
+ *  never kept. Keys are lower-case, so case variants of one name cost one Telegram call. */
 async function stickerSet(name: string): Promise<StickerSet> {
-  const hit = sets.get(name);
+  const key = name.toLowerCase();
+  const hit = sets.get(key);
   if (hit && Date.now() - hit.at < SET_TTL_MS) return hit.set;
-  const running = inflight.get(name);
+  const gone = missingSets.get(key);
+  if (gone && Date.now() - gone < MISSING_TTL_MS) throw new ResolverError("PACK_NOT_FOUND", 404, "no such pack");
+  const running = inflight.get(key);
   if (running) return running;
   const p = call<StickerSet>("getStickerSet", { name })
     .then((set) => {
       if (sets.size >= SET_CACHE_MAX) sets.delete(sets.keys().next().value as string);
-      sets.set(name, { at: Date.now(), set });
+      sets.set(key, { at: Date.now(), set });
       return set;
     })
-    .finally(() => inflight.delete(name));
-  inflight.set(name, p);
+    .catch((err: unknown) => {
+      if (err instanceof ResolverError && err.code === "PACK_NOT_FOUND") {
+        if (missingSets.size > 5000) missingSets.clear();
+        missingSets.set(key, Date.now());
+      }
+      throw err;
+    })
+    .finally(() => inflight.delete(key));
+  inflight.set(key, p);
   return p;
 }
 
@@ -140,6 +176,7 @@ function previewFileId(s: Sticker): string | null {
 
 export async function resolvePack(name: string): Promise<Pack> {
   if (!PACK_NAME.test(name)) throw new ResolverError("PACK_NAME", 400, "a pack name is letters, digits and _");
+  if (fixturesOn()) return fixturePack(name) ?? missing("PACK_NOT_FOUND", "no such pack");
   const set = await stickerSet(name);
   if (set.sticker_type !== "custom_emoji") {
     throw new ResolverError("NOT_EMOJI_PACK", 422, `${set.name} is a ${set.sticker_type ?? "regular"} sticker set, not an emoji pack`);
@@ -153,6 +190,7 @@ export async function resolvePack(name: string): Promise<Pack> {
       format: s.is_video ? "video" : s.is_animated ? "animated" : "static",
       adaptive: !!s.needs_repainting,
       preview: previewFileId(s) ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}` : null,
+      animation: s.is_animated && s.file_id ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}/anim` : null,
     });
   }
   return { name: set.name, title: set.title ?? set.name, emoji };
@@ -177,6 +215,8 @@ export function parseIds(raw: string | null): string[] {
 export async function resolveSets(ids: string[]): Promise<{ id: string; set: string }[]> {
   const now = Date.now();
   const ask = ids.filter((id) => { const hit = owners.get(id); return !hit || now - hit.at >= SET_TTL_MS; });
+  // The answer is built from what this request knows, so a cache clear in between cannot drop ids.
+  const known = new Map<string, string | null>(ids.filter((id) => !ask.includes(id)).map((id) => [id, owners.get(id)?.set ?? null]));
   if (ask.length) {
     const stickers = await call<{ custom_emoji_id?: string; set_name?: string }[]>("getCustomEmojiStickers", { custom_emoji_ids: ask });
     const found = new Map<string, string>();
@@ -184,41 +224,127 @@ export async function resolveSets(ids: string[]): Promise<{ id: string; set: str
       if (s.custom_emoji_id && s.set_name && PACK_NAME.test(s.set_name)) found.set(s.custom_emoji_id, s.set_name);
     }
     if (owners.size + ask.length > OWNER_CACHE_MAX) owners.clear();
-    for (const id of ask) owners.set(id, { at: now, set: found.get(id) ?? null });
+    for (const id of ask) {
+      owners.set(id, { at: now, set: found.get(id) ?? null });
+      known.set(id, found.get(id) ?? null);
+    }
   }
-  return ids.flatMap((id) => { const set = owners.get(id)?.set; return set ? [{ id, set }] : []; });
+  return ids.flatMap((id) => { const set = known.get(id); return set ? [{ id, set }] : []; });
 }
 
 const TYPES: Record<string, string> = { webp: "image/webp", webm: "video/webm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg" };
+// A TGS sticker is a gzip-compressed Lottie animation (Telegram caps custom emoji TGS at 64 KB).
+const ANIM_TYPES: Record<string, string> = { tgs: "application/x-tgsticker" };
+const ANIM_MAX = 128 * 1024;
 
-/** The preview picture of one emoji of a pack. Only emoji of that pack can be fetched. */
-export async function previewFile(name: string, id: string): Promise<{ body: ArrayBuffer; type: string }> {
+export type FileBody = { body: ArrayBuffer; type: string };
+
+async function sticker(name: string, id: string): Promise<Sticker | undefined> {
   if (!PACK_NAME.test(name) || !EMOJI_ID.test(id)) throw new ResolverError("BAD_REQUEST", 400, "bad pack name or emoji id");
   const set = await stickerSet(name);
-  const sticker = set.sticker_type === "custom_emoji" ? set.stickers?.find((s) => s.custom_emoji_id === id) : undefined;
-  const fileId = sticker ? previewFileId(sticker) : null;
-  if (!fileId) throw new ResolverError("NO_PREVIEW", 404, "this emoji has no picture");
+  return set.sticker_type === "custom_emoji" ? set.stickers?.find((s) => s.custom_emoji_id === id) : undefined;
+}
+
+// Pictures, kept per instance: a library page asks for hundreds of them, and the same ones again on
+// every visit until the CDN has them. Least recently used go first past FILE_CACHE_BYTES.
+const files = new Map<string, { at: number; data: Buffer; type: string }>();
+const filesInflight = new Map<string, Promise<{ data: Buffer; type: string }>>();
+const paths = new Map<string, { at: number; path: string; size: number }>();
+let cachedBytes = 0;
+
+function remember(key: string, data: Buffer, type: string) {
+  const old = files.get(key);
+  if (old) { files.delete(key); cachedBytes -= old.data.length; }
+  files.set(key, { at: Date.now(), data, type });
+  cachedBytes += data.length;
+  for (const [k, v] of files) {
+    if (cachedBytes <= FILE_CACHE_BYTES) break;
+    files.delete(k);
+    cachedBytes -= v.data.length;
+  }
+}
+
+async function filePath(fileId: string): Promise<{ path: string; size: number }> {
+  const hit = paths.get(fileId);
+  if (hit && Date.now() - hit.at < PATH_TTL_MS) return hit;
   const file = await call<{ file_path?: string; file_size?: number }>("getFile", { file_id: fileId });
-  const path = file.file_path ?? "";
-  const ext = path.split(".").pop()?.toLowerCase() ?? "";
-  if (!FILE_PATH.test(path) || path.includes("..") || !TYPES[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported picture");
-  if ((file.file_size ?? 0) > FILE_MAX) throw new ResolverError("TOO_LARGE", 413, "picture too large");
-  const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, FILE_MAX));
-  if (status !== 200) throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
-  return { body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type: TYPES[ext] };
+  const out = { at: Date.now(), path: file.file_path ?? "", size: file.file_size ?? 0 };
+  if (paths.size > 20_000) paths.clear();
+  paths.set(fileId, out);
+  return out;
+}
+
+const toBody = (data: Buffer, type: string): FileBody => ({ body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type });
+
+async function download(fileId: string, types: Record<string, string>, max: number): Promise<FileBody> {
+  const hit = files.get(fileId);
+  if (hit) {
+    files.delete(fileId);
+    if (Date.now() - hit.at < FILE_TTL_MS) {
+      files.set(fileId, hit); // back in at the young end
+      return toBody(hit.data, hit.type);
+    }
+    cachedBytes -= hit.data.length; // expired: out now, so the count is subtracted once
+  }
+  let running = filesInflight.get(fileId);
+  if (!running) {
+    running = (async () => {
+      const { path, size } = await filePath(fileId);
+      const ext = path.split(".").pop()?.toLowerCase() ?? "";
+      if (!FILE_PATH.test(path) || path.includes("..") || !types[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported file");
+      if (size > max) throw new ResolverError("TOO_LARGE", 413, "file too large");
+      const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, max), filePool);
+      if (status !== 200) {
+        paths.delete(fileId);
+        throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
+      }
+      remember(fileId, data, types[ext]);
+      return { data, type: types[ext] };
+    })().finally(() => filesInflight.delete(fileId));
+    filesInflight.set(fileId, running);
+  }
+  const { data, type } = await running;
+  return toBody(data, type);
+}
+
+/** The preview picture of one emoji of a pack. Only emoji of that pack can be fetched. */
+export async function previewFile(name: string, id: string): Promise<FileBody> {
+  if (fixturesOn()) return fixturePreview(name, id) ?? missing("NO_PREVIEW", "this emoji has no picture");
+  const s = await sticker(name, id);
+  const fileId = s ? previewFileId(s) : null;
+  if (!fileId) throw new ResolverError("NO_PREVIEW", 404, "this emoji has no picture");
+  return download(fileId, TYPES, FILE_MAX);
+}
+
+/** The animation of an animated (TGS) emoji, as the gzip-compressed Lottie file Telegram stores. */
+export async function animationFile(name: string, id: string): Promise<FileBody> {
+  if (fixturesOn()) return fixtureAnimation(name, id) ?? missing("NO_ANIMATION", "this emoji is not an animated (TGS) emoji");
+  const s = await sticker(name, id);
+  if (!s?.is_animated || !s.file_id) throw new ResolverError("NO_ANIMATION", 404, "this emoji is not an animated (TGS) emoji");
+  return download(s.file_id, ANIM_TYPES, ANIM_MAX);
 }
 
 // ------------------------------------------------------------------ per-client limit, errors
 
-const hits = new Map<string, number[]>();
+// A fixed window per key: two numbers per client instead of a list of timestamps.
+const hits = new Map<string, { start: number; n: number }>();
 export function allow(key: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now();
-  const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
-  if (recent.length >= limit) return false;
-  recent.push(now);
-  hits.set(key, recent);
-  if (hits.size > 5000) hits.clear();
+  let w = hits.get(key);
+  if (!w || now - w.start >= windowMs) {
+    if (!w && hits.size > 20_000) hits.clear();
+    w = { start: now, n: 0 };
+    hits.set(key, w);
+  }
+  if (w.n >= limit) return false;
+  w.n++;
   return true;
+}
+
+/** Proxied files have one canonical URL each, so the CDN serves repeats; a query string would make
+ *  every request a new cache key that reaches the function. */
+export function canonicalOnly(req: Request): void {
+  if (new URL(req.url).search) throw new ResolverError("BAD_REQUEST", 400, "this URL takes no query string");
 }
 
 export function clientKey(req: Request): string {
