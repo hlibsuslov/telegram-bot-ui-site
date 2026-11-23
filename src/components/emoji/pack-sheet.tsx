@@ -3,7 +3,7 @@
 // One pack at /emoji/<name>, laid out like Telegram's "Add emoji" sheet (grid, blue button at
 // the bottom) with an analysis column: formats, the bot icons the pack covers, the picked emoji
 // with everything a bot needs to use it, and similar packs below.
-import { useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Bookmark, Check, Copy, Play, Search, Star } from "lucide-react";
 import type { LibraryEmoji, LibraryPack } from "@/lib/emoji-library";
 import { BOT_SLOTS, stripVariation } from "@/lib/emoji-slots";
@@ -36,7 +36,7 @@ function CopyRow({ label, value }: { label: string; value: string }) {
 function Tile({ e, selected, all, onSelect }: { e: LibraryEmoji; selected: boolean; all: boolean; onSelect: () => void }) {
   const [hot, setHot] = useState(false);
   return (
-    <li>
+    <li id={`emoji-${e.id}`}>
       <button
         type="button" onClick={onSelect} aria-pressed={selected} aria-label={`${e.fallback || "emoji"} ${e.id}`}
         onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}
@@ -45,6 +45,54 @@ function Tile({ e, selected, all, onSelect }: { e: LibraryEmoji; selected: boole
         <PremiumEmoji emoji={e} play={all ? "always" : "hover"} active={hot} size={40} />
       </button>
     </li>
+  );
+}
+
+/** How the pack sits in a Telegram chat in each theme: a message and two buttons on the light and dark
+ *  wallpapers. Adaptive emoji take the text colour of each theme, as Telegram repaints them. */
+function ThemePreview({ emoji, pick }: { emoji: LibraryEmoji[]; pick: LibraryEmoji | null }) {
+  const lead = pick ?? emoji[0];
+  const rest = emoji.filter((e) => e.id !== lead?.id).slice(0, 7);
+  if (!lead) return null;
+  const themes = [
+    { tone: "light" as const, label: "Light theme", wall: "linear-gradient(135deg,#dbddbb,#6ba587 55%,#d5d88d)", bubble: "#ffffff", text: "#000000", hint: "#8a8a8a", btn: "rgba(255,255,255,0.28)" },
+    { tone: "dark" as const, label: "Dark theme", wall: "linear-gradient(135deg,#1b2a1f,#20323a 55%,#2b2640)", bubble: "#212121", text: "#ffffff", hint: "#9a9a9a", btn: "rgba(0,0,0,0.32)" },
+  ];
+  return (
+    <section aria-labelledby="themes-title">
+      <div className="mb-2 px-1">
+        <h2 id="themes-title" className="text-lg font-semibold">In Telegram themes</h2>
+        <p className="tg-hint text-[13px]">
+          {emoji.some((e) => e.adaptive) ? "Adaptive emoji take the text colour, so they read in both themes." : "This pack keeps its own colours in both themes."}
+        </p>
+      </div>
+      <div className="grid gap-3 md:grid-cols-2">
+        {themes.map((t) => (
+          <figure key={t.tone} className="tg-glass overflow-hidden rounded-3xl p-1.5">
+            <div className="rounded-[20px] p-4" style={{ background: t.wall }}>
+              <div className="max-w-[20rem] rounded-2xl rounded-bl-md px-3 py-2 text-[15px] shadow-sm" style={{ background: t.bubble, color: t.text }}>
+                <p className="flex items-center gap-1.5 font-semibold">
+                  <PremiumEmoji emoji={lead} tone={t.tone} size={22} /> Your order is ready
+                </p>
+                <p className="mt-1 leading-7">
+                  Pick it up at the bar{" "}
+                  {rest.slice(0, 5).map((e) => <PremiumEmoji key={e.id} emoji={e} tone={t.tone} size={20} className="align-[-0.3em]" />)}
+                </p>
+                <p className="mt-0.5 text-right text-[11px]" style={{ color: t.hint }}>12:04</p>
+              </div>
+              <div className="mt-1 grid max-w-[20rem] grid-cols-2 gap-1">
+                {rest.slice(5, 7).concat(rest.length < 7 ? [lead] : []).slice(0, 2).map((e, i) => (
+                  <span key={`${e.id}-${i}`} className="flex h-9 items-center justify-center gap-1.5 rounded-lg text-sm font-medium text-white backdrop-blur" style={{ background: t.btn }}>
+                    <PremiumEmoji emoji={e} tone="dark" size={18} /> {i ? "Details" : "Menu"}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <figcaption className="tg-hint px-3 py-1.5 text-[13px]">{t.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -58,6 +106,17 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
   const hasMotion = pack.formats.some((f) => f !== "static");
   const packSaved = saved.packs.includes(pack.name);
   const emojiSaved = !!pick && saved.emoji.some((x) => x.id === pick.id);
+
+  // A search result links here as #e=<id>: open the pack on that emoji.
+  useEffect(() => {
+    const id = /^#e=(\d{1,20})$/.exec(window.location.hash)?.[1];
+    const target = id ? emoji.find((e) => e.id === id) : undefined;
+    if (!target) return;
+    // The URL hash is only readable after hydration; syncing from it is what an effect is for.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPick(target);
+    document.getElementById(`emoji-${target.id}`)?.scrollIntoView({ block: "center" });
+  }, [emoji]);
 
   const formatCounts = (["animated", "video", "static"] as const).map((f) => ({ f, n: emoji.filter((e) => e.format === f).length })).filter((x) => x.n);
   const adaptive = emoji.filter((e) => e.adaptive).length;
@@ -169,6 +228,8 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
           </section>
         </aside>
       </div>
+
+      <ThemePreview emoji={emoji} pick={pick} />
 
       {similar.length ? (
         <section aria-labelledby="similar-title">

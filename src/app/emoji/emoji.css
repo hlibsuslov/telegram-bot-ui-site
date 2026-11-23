@@ -101,3 +101,4 @@
 .tg :focus-visible { outline: 2px solid var(--tg-accent); outline-offset: 2px; }
 .tg-scroll-x { scrollbar-width: none; }
 .tg-scroll-x::-webkit-scrollbar { display: none; }
+.tg input[type="search"]::-webkit-search-cancel-button { display: none; }

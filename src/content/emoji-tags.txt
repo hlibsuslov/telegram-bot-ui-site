@@ -6,3 +6,119 @@
 #   <pack name>/<custom emoji id>: tag, ...    tags for one emoji
 #
 # Empty lines and lines starting with # are ignored.
+
+# ---- generated from contact sheets (scripts/emoji_tags_merge.py); edit above this line ----
+AppLogosEmoji: app logos, brands, apps, crypto exchanges, payments, логотипы, приложения, бренды
+AppLogosEmoji/5206615520945666304: telegram, logo, телеграм
+AppLogosEmoji/5208727124436873906: heart, like, сердце
+AppLogosEmoji/5208563657981591092: lightning, flash, молния
+AppLogosEmoji/5208441350197901541: star, favorite, звезда
+AppLogosEmoji/5208516177118131142: gift, подарок
+AppLogosEmoji/5233558739851707384: chat, message, сообщение
+AppLogosEmoji/5233609514955079498: mail, email, почта
+AppLogosEmoji/5235556548184407555: folder, папка
+AppLogosEmoji/5220108517188335030: fingerprint, отпечаток
+AppLogosEmoji/5220129442269002689: search, magnifier, поиск
+AppLogosEmoji/5206626150989726385: letter f, fragment
+AppLogosEmoji/5235918081351513744: hashtag, хештег
+AppLogosEmoji/5220200055826315396: incognito, spy, anonymous, инкогнито
+AppLogosEmoji/5213379858213665486: anonymous, hacker, hood
+AppLogosEmoji/5215517214328782120: ghost, призрак
+AppLogosEmoji/5226896665755024636: chrome, google chrome, browser, браузер
+AppLogosEmoji/5204340648567667702: discord, logo
+AppLogosEmoji/5206572760251273601: twitch, logo
+AppLogosEmoji/5206341617996300902: kick, streaming, logo
+AppLogosEmoji/5203926742569352936: youtube, ютуб, logo
+AppLogosEmoji/5206563130934591444: x, twitter, logo
+AppLogosEmoji/5206594419771342462: tiktok, тикток, logo
+AppLogosEmoji/5208783770760543317: reddit, logo
+AppLogosEmoji/5208438275001318312: github, logo
+AppLogosEmoji/5206586100419690484: instagram, инстаграм, logo
+AppLogosEmoji/5253483630008759912: pinterest, logo
+AppLogosEmoji/5253679922899089004: dribbble, logo
+AppLogosEmoji/5206443945592125179: facebook, logo
+AppLogosEmoji/5222435431685061473: threads, logo
+AppLogosEmoji/5251605960501263198: signal, messenger, logo
+AppLogosEmoji/5253875352500993004: linkedin, logo
+AppLogosEmoji/5251741879036311956: linktree, logo
+AppLogosEmoji/5226893010737854842: plus, add, плюс
+AppLogosEmoji/5224274747134607590: minus, remove, минус
+AppLogosEmoji/5226946272627290091: win, победа
+AppLogosEmoji/5226618248795028725: lose, проигрыш
+AppLogosEmoji/5226503461499076857: long, trading, лонг
+AppLogosEmoji/5226453785907330769: short, trading, шорт
+AppLogosEmoji/5226594132553660720: buy, купить
+AppLogosEmoji/5226873292543001710: sell, продать
+AppLogosEmoji/5226660704546750080: bid, ставка
+AppLogosEmoji/5212997790807913490: logo
+AppLogosEmoji/5222431969941421977: gem, diamond, алмаз
+AppLogosEmoji/5213249540315971638: wallet, telegram wallet, кошелек
+AppLogosEmoji/5215394399738951801: wallet, кошелек
+AppLogosEmoji/5215371241275292296: rocket, ракета
+AppLogosEmoji/5213075276312900276: logo
+AppLogosEmoji/5215471631840867943: logo
+AppLogosEmoji/5212965857726070544: logo
+AppLogosEmoji/5212917045422750117: logo
+AppLogosEmoji/5213146499755570567: logo
+AppLogosEmoji/5213448405891708810: logo
+AppLogosEmoji/5213304099285533914: logo
+AppLogosEmoji/5213244940405995015: mrkt, market, logo
+AppLogosEmoji/5213089286496223818: chatgpt, openai, logo
+AppLogosEmoji/5215699651654615654: logo
+AppLogosEmoji/5226745323992414666: bitcoin, btc, биткоин, crypto
+AppLogosEmoji/5215297505276755176: ton, gram, тон, crypto
+AppLogosEmoji/5251399166415894427: tron, trx, crypto
+AppLogosEmoji/5253559135533826394: ethereum, eth, эфир, crypto
+AppLogosEmoji/5253977323614541437: solana, sol, crypto
+AppLogosEmoji/5251589807129262518: tether, usdt, crypto
+AppLogosEmoji/5253457920334526485: usdc, crypto
+AppLogosEmoji/5224584208118217907: binance, bnb, crypto exchange
+AppLogosEmoji/5222030905895319476: bybit, crypto exchange
+AppLogosEmoji/5222121654259316692: okx, crypto exchange
+AppLogosEmoji/5222323479067523736: bitget, crypto exchange
+AppLogosEmoji/5222076776146043424: kucoin, crypto exchange
+AppLogosEmoji/5222274855742764605: logo
+AppLogosEmoji/5224502036803913107: mexc, crypto exchange
+AppLogosEmoji/5233582078703990285: kraken, crypto exchange
+AppLogosEmoji/5231123751092912510: phantom, crypto wallet
+AppLogosEmoji/5253748096914980273: coinmarketcap, logo
+AppLogosEmoji/5222174954803460363: logo
+AppLogosEmoji/5224218221070025738: logo
+AppLogosEmoji/5221990039281498925: logo
+AppLogosEmoji/5230975613375905015: logo
+AppLogosEmoji/5231027754278876518: logo
+AppLogosEmoji/5233505611106251865: gamepad, game, геймпад
+AppLogosEmoji/5231167310651231691: logo
+AppLogosEmoji/5253776628382728880: capcut, logo
+AppLogosEmoji/5326054859185618978: otc, trading
+AppLogosEmoji/5233654384478423481: patreon, logo
+AppLogosEmoji/5233742757725502853: ko-fi, coffee, logo
+AppLogosEmoji/5233548990275941145: paypal, payment, logo
+AppLogosEmoji/5231402339851599628: venmo, payment, logo
+AppLogosEmoji/5235770983016595181: mastercard, card, payment, logo
+AppLogosEmoji/5233555157848978662: swift, bank transfer, logo
+AppLogosEmoji/5251715632491166857: exchange, swap, обмен
+AppLogosEmoji/5213119428576707086: dollar, usd, доллар
+AppLogosEmoji/5215455598727953640: euro, eur, евро
+AppLogosEmoji/5213186872448157845: yen, yuan, юань, иена
+AppLogosEmoji/5213329293563688928: hryvnia, uah, гривна
+AppLogosEmoji/5215313920641758926: ruble, rub, рубль
+AppLogosEmoji/5212957246316641686: steam, games, logo
+AppLogosEmoji/5215256033072543218: epic games, logo
+AppLogosEmoji/5253696595962131673: xbox, games, logo
+AppLogosEmoji/5208969583930670433: adult site logo
+AppLogosEmoji/5256018489642088228: onlyfans, logo
+AppLogosEmoji/5253688830661260782: tumblr, logo
+AppLogosEmoji/5255784302255306430: character ai, logo
+AppLogosEmoji/5255990091318328240: spotify, music, logo
+AppLogosEmoji/5256058767845390765: soundcloud, music, logo
+AppLogosEmoji/5256001472981660450: music, note, apple music, музыка
+AppLogosEmoji/5255973680248287904: logo
+AppLogosEmoji/5255845243546273779: ableton, music, logo
+AppLogosEmoji/5255718662270123931: fl studio, music, logo
+AppLogosEmoji/5262472670141772889: google drive, logo
+AppLogosEmoji/5260579878054429273: onedrive, cloud, logo
+AppLogosEmoji/5263015519648249817: dropbox, logo
+AppLogosEmoji/5262748007610220570: devil mask, logo
+AppLogosEmoji/5262509469421567294: tor, browser, logo
+AppLogosEmoji/5303063044551638689: figma, design, logo

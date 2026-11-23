@@ -5,11 +5,13 @@
 // collection rows on the first screen, then the pack grid. Packs play on hover.
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
-import { Bookmark, Check, ChevronRight, Copy, LayoutGrid, Search, Star, X } from "lucide-react";
+import { Bookmark, Check, ChevronRight, Copy, LayoutGrid, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import type { Collection, LibraryPack } from "@/lib/emoji-library";
 import { BOT_SLOTS } from "@/lib/emoji-slots";
 import { PremiumEmoji } from "./premium-emoji";
 import { copy, useSaved } from "./saved";
+import { useEmojiSearch } from "./use-emoji-search";
+import type { EmojiHit, SearchResult } from "@/lib/emoji-search";
 import { cn } from "@/lib/utils";
 
 export function matches(search: string, query: string): boolean {
@@ -53,7 +55,7 @@ export function PackCard({ pack, saved, onSave, className }: { pack: LibraryPack
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-[15px] font-semibold"><Link href={`/emoji/${pack.name}`} className="rounded hover:underline">{pack.title}</Link></h3>
           <p className="tg-hint truncate text-[13px]">
-            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.covers.length >= 6 ? ` · ${pack.covers.length}/${BOT_SLOTS.length} bot icons` : ""}
+            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.adaptiveShare >= 0.5 ? " · ◐ any theme" : ""}{pack.covers.length >= 6 ? ` · ${pack.covers.length}/${BOT_SLOTS.length} bot icons` : ""}
           </p>
         </div>
         <button
@@ -75,6 +77,39 @@ export function PackCard({ pack, saved, onSave, className }: { pack: LibraryPack
   );
 }
 
+function HitTile({ hit }: { hit: EmojiHit }) {
+  const [hot, setHot] = useState(false);
+  return (
+    <li>
+      <Link
+        href={`/emoji/${hit.pack}#e=${hit.id}`} title={`${hit.fallback} · ${hit.pack}`} aria-label={`${hit.fallback || "emoji"} from ${hit.pack}`}
+        onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}
+        className="tg-cell flex aspect-square items-center justify-center rounded-xl"
+      >
+        <PremiumEmoji emoji={{ ...hit, preview: hit.preview, animation: hit.animation }} active={hot} size={36} />
+      </Link>
+    </li>
+  );
+}
+
+function Suggestions({ data, onPick, onCategory }: { data: SearchResult; onPick: (q: string) => void; onCategory: (c: string) => void }) {
+  const { complete, related, categories, didYouMean } = data.suggest;
+  if (!didYouMean && !complete.length && !related.length && !categories.length) return null;
+  const chip = "tg-glass inline-flex h-8 shrink-0 items-center rounded-full px-3 text-sm";
+  return (
+    <div className="space-y-2 px-1">
+      {didYouMean ? (
+        <p className="text-sm">Did you mean <button type="button" onClick={() => onPick(didYouMean)} className="tg-accent rounded font-medium underline-offset-4 hover:underline">{didYouMean}</button>?</p>
+      ) : null}
+      <div className="tg-scroll-x -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5">
+        {categories.map((c) => <button key={`c-${c}`} type="button" onClick={() => onCategory(c)} className={cn(chip, "tg-accent")}>{c}</button>)}
+        {complete.map((w) => <button key={`w-${w}`} type="button" onClick={() => onPick(w)} className={chip}><Search aria-hidden="true" className="tg-hint mr-1.5 size-3.5" />{w}</button>)}
+        {related.map((w) => <button key={`r-${w}`} type="button" onClick={() => onPick(w)} className={chip}><Sparkles aria-hidden="true" className="tg-hint mr-1.5 size-3.5" />{w}</button>)}
+      </div>
+    </div>
+  );
+}
+
 export function LibraryApp({ packs, categories, collections }: { packs: LibraryPack[]; categories: string[]; collections: Collection[] }) {
   const { saved, togglePack } = useSaved();
   const [view, setView] = useState<View>({ kind: "all" });
@@ -83,6 +118,9 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
   const [copied, setCopied] = useState(false);
   const q = useDeferredValue(query);
   const byName = useMemo(() => new Map(packs.map((p) => [p.name, p])), [packs]);
+  const { data, loading, failed } = useEmojiSearch(q);
+  const searching = !!q.trim();
+  const order = new Map((data?.packs ?? []).map((p, i) => [p.name, i]));
   const isSaved = (p: LibraryPack) => saved.packs.includes(p.name);
 
   const inView = (p: LibraryPack, v: View) =>
@@ -90,10 +128,11 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
     : v.kind === "saved" ? isSaved(p)
     : v.kind === "category" ? p.category === v.name
     : (collections.find((c) => c.id === v.id)?.packs ?? []).includes(p.name);
-  const base = packs.filter((p) => formatOk(p, format) && matches(p.search, q));
+  const base = packs.filter((p) => formatOk(p, format) && (!searching || order.has(p.name)));
+  if (searching) base.sort((a, b) => (order.get(a.name) ?? 0) - (order.get(b.name) ?? 0));
   const count = (v: View) => base.filter((p) => inView(p, v)).length;
   let shown = base.filter((p) => inView(p, view));
-  if (view.kind === "collection") {
+  if (view.kind === "collection" && !searching) {
     const order = collections.find((c) => c.id === view.id)?.packs ?? [];
     shown = [...shown].sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
   }
@@ -192,9 +231,29 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           </section>
         )) : null}
 
+        {searching && data ? (
+          <Suggestions data={data} onPick={setQuery} onCategory={(c) => { setView({ kind: "category", name: c }); setQuery(""); }} />
+        ) : null}
+
+        {searching ? (
+          <section aria-labelledby="hits-title" className="tg-glass rounded-2xl p-3">
+            <div className="mb-2 flex items-center gap-2 px-1">
+              <h2 id="hits-title" className="text-[15px] font-semibold">Emoji</h2>
+              <span className="tg-hint text-sm">{data ? `${data.total.toLocaleString("en-US")} found` : ""}</span>
+              {loading ? <Loader2 aria-label="Searching" className="tg-hint size-4 animate-spin motion-reduce:animate-none" /> : null}
+            </div>
+            {failed ? <p className="tg-hint px-1 py-4 text-sm">Search is not available right now. Try again in a moment.</p>
+              : data && data.emoji.length ? (
+                <ul className="grid grid-cols-[repeat(auto-fill,minmax(3rem,1fr))] gap-1">
+                  {data.emoji.map((h) => <HitTile key={`${h.pack}/${h.id}`} hit={h} />)}
+                </ul>
+              ) : data ? <p className="tg-hint px-1 py-4 text-sm">No emoji match. Try a simpler word, the emoji itself, or another language.</p> : null}
+          </section>
+        ) : null}
+
         <section aria-labelledby="grid-title">
           <div className="mb-2 flex flex-wrap items-center gap-3 px-1">
-            <h2 id="grid-title" className="text-lg font-semibold">{title}</h2>
+            <h2 id="grid-title" className="text-lg font-semibold">{searching ? "Packs" : title}</h2>
             <span className="tg-hint text-sm">{shown.length} packs</span>
             {view.kind === "saved" && shown.length ? (
               <button

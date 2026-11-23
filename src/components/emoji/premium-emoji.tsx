@@ -40,7 +40,7 @@ function loadAnimation(url: string): Promise<unknown> {
 }
 
 export function PremiumEmoji({
-  emoji, play = "hover", active: forced, className, size = 40,
+  emoji, play = "hover", active: forced, className, size = 40, tone,
 }: {
   emoji: EmojiData;
   /** hover: plays while hovered or focused (inside an element with `group/emoji`, or the emoji itself); always: plays while visible */
@@ -49,6 +49,8 @@ export function PremiumEmoji({
   active?: boolean;
   className?: string;
   size?: number;
+  /** draw adaptive emoji for this theme instead of the page's (theme previews) */
+  tone?: "light" | "dark";
 }) {
   const box = useRef<HTMLSpanElement>(null);
   const stage = useRef<HTMLSpanElement>(null);
@@ -98,7 +100,7 @@ export function PremiumEmoji({
       className={cn(
         "relative inline-block shrink-0",
         // Adaptive emoji take the text color, as in Telegram: black on light, white on dark.
-        emoji.adaptive && still && "brightness-0 dark:invert",
+        emoji.adaptive && still && (tone === "light" ? "brightness-0" : tone === "dark" ? "brightness-0 invert" : "brightness-0 dark:invert"),
         className,
       )}
       style={style}

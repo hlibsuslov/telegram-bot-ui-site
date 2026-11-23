@@ -4,12 +4,12 @@
 // emoji-tags.txt, and the keywords of the ordinary emoji each custom emoji stands for (emojilib),
 // so "cart" finds a custom 🛒.
 import "server-only";
-import emojilib from "emojilib";
 import { cacheLife } from "next/cache";
 import packsText from "@/content/emoji-packs.txt";
 import tagsText from "@/content/emoji-tags.txt";
 import { fixturesOn } from "./emoji-fixtures";
 import { PACK_NAME, resolvePack, type Format, type PackEmoji } from "./emoji-pack";
+import { emojiSearchText, type SearchSource } from "./emoji-search";
 import { slotEmoji } from "./emoji-slots";
 
 const LINK = /^(?:https?:\/\/)?(?:www\.)?(?:t\.me|telegram\.me|telegram\.dog)\/addemoji\/([A-Za-z0-9_]{1,64})\/?(?:[?#].*)?$/i;
@@ -22,16 +22,22 @@ export interface LibraryPack {
   name: string; title: string; link: string; category: string; count: number; formats: Format[]; adaptive: boolean;
   /** position in the packs file: the list is kept most popular first */
   rank: number;
+  /** share of emoji Telegram repaints in the text colour (needs_repainting): 1 = fits light and dark themes */
+  adaptiveShare: number;
   /** distinct meanings (fallback emoji) in the pack */
   meanings: number;
   /** which common bot interface meanings the pack has an emoji for */
   covers: string[];
   /** names of the most similar packs (same category, shared meanings) */
   similar: string[];
-  tags: string[]; sample: LibraryEmoji[]; search: string;
+  tags: string[]; sample: LibraryEmoji[];
 }
 export interface Collection { id: string; title: string; hint: string; packs: string[] }
-export interface Library { packs: LibraryPack[]; categories: string[]; collections: Collection[]; listed: number; unavailable: string[] }
+export interface Library {
+  packs: LibraryPack[]; categories: string[]; collections: Collection[]; listed: number; unavailable: string[];
+  /** everything the search engine needs; stays on the server */
+  source: SearchSource;
+}
 
 
 
@@ -77,11 +83,6 @@ export function parseTags(text: string): Map<string, string[]> {
 }
 
 const strip = (s: string) => s.replace(/[︎️]/g, "");
-const keywordIndex = new Map(Object.entries(emojilib as Record<string, string[]>).map(([e, words]) => [strip(e), words]));
-
-function keywords(fallback: string): string[] {
-  return (keywordIndex.get(strip(fallback)) ?? []).map((w) => w.replace(/_/g, " "));
-}
 
 /** The packs file, or the local stand-in packs while developing with EMOJI_RESOLVER_FIXTURES=1. */
 function listed(): ListedPack[] {
@@ -90,7 +91,7 @@ function listed(): ListedPack[] {
 
 function withSearch(pack: string, e: PackEmoji, tags: Map<string, string[]>): LibraryEmoji {
   const own = tags.get(`${pack.toLowerCase()}/${e.id}`) ?? [];
-  return { ...e, tags: own, search: [e.fallback, ...own, ...keywords(e.fallback)].join(" ").toLowerCase() };
+  return { ...e, tags: own, search: emojiSearchText(e.fallback, own) };
 }
 
 function coverage(fallbacks: Set<string>): string[] {
@@ -109,8 +110,7 @@ async function readPack({ name, category }: ListedPack, tags: Map<string, string
     pack: {
       name: p.name, title: p.title, link: `https://t.me/addemoji/${p.name}`, category, count: emoji.length, formats,
       rank, meanings: fallbacks.size, covers: coverage(fallbacks), similar: [],
-      adaptive: emoji.some((e) => e.adaptive), tags: packTags, sample: emoji.slice(0, SAMPLE),
-      search: [p.title, p.name, category, ...packTags, ...emoji.map((e) => e.search)].join(" ").toLowerCase(),
+      adaptive: emoji.some((e) => e.adaptive), adaptiveShare: emoji.length ? emoji.filter((e) => e.adaptive).length / emoji.length : 0, tags: packTags, sample: emoji.slice(0, SAMPLE).map((e) => ({ ...e, search: "" })),
     },
   };
 }
@@ -123,13 +123,17 @@ export async function getLibrary(): Promise<Library> {
   const list = listed();
   const tags = parseTags(tagsText);
   const results = await Promise.allSettled(list.map((p, i) => readPack(p, tags, i)));
-  const read: { pack: LibraryPack; fallbacks: Set<string> }[] = [];
+  const read: { pack: LibraryPack; emoji: LibraryEmoji[]; fallbacks: Set<string> }[] = [];
   const unavailable: string[] = [];
   results.forEach((r, i) => (r.status === "fulfilled" ? read.push(r.value) : unavailable.push(list[i].name)));
   linkSimilar(read);
   const packs = read.map((r) => r.pack);
   const categories = [...new Set(packs.map((p) => p.category))].sort((a, b) => Number(a === OTHER) - Number(b === OTHER));
-  return { packs, categories, collections: collections(packs), listed: list.length, unavailable };
+  const source: SearchSource = {
+    packs: packs.map((p) => ({ name: p.name, title: p.title, category: p.category, rank: p.rank, tags: p.tags })),
+    emoji: read.flatMap((r, p) => r.emoji.map((e) => ({ p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, tags: e.tags }))),
+  };
+  return { packs, categories, collections: collections(packs), listed: list.length, unavailable, source };
 }
 
 /** Similar packs: the same category counts most, then the share of meanings two packs have in common. */
@@ -166,6 +170,8 @@ function collections(packs: LibraryPack[]): Collection[] {
       packs: pick([...packs].filter((p) => p.covers.length >= 6).sort((a, b) => b.covers.length - a.covers.length || a.rank - b.rank)) },
     { id: "popular", title: "Popular", hint: "The packs people share most, across categories", packs: pick(popular) },
     { id: "animated", title: "Animated", hint: "Packs that move", packs: pick(popular.filter((p) => p.formats.some((f) => f !== "static"))) },
+    { id: "adaptive", title: "Light and dark themes", hint: "Drawn in the text colour, like Telegram's own icons: they fit any chat theme",
+      packs: popular.filter((p) => p.adaptiveShare >= 0.5).map((p) => p.name) },
   ].filter((c) => c.packs.length >= 3);
 }
 
