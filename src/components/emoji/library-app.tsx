@@ -5,7 +5,7 @@
 // collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
 // screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
-import { memo, useDeferredValue, useMemo, useState, type ReactNode } from "react";
+import { memo, startTransition, useCallback, useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection } from "@/lib/emoji-library";
@@ -26,12 +26,29 @@ type View = { kind: "all" } | { kind: "saved" } | { kind: "collection"; id: stri
 type Format = "any" | "animated" | "static";
 const FORMAT_LABEL = { static: "Static", animated: "Animated", video: "Video" } as const;
 const PAGE = 36;
+const BATCH = 12;
 const MOBILE_SAMPLE = 8;
 
 function formatOk(p: CardPack, f: Format) {
   if (f === "animated") return p.formats.some((x) => x !== "static");
   if (f === "static") return p.formats.length === 1 && p.formats[0] === "static";
   return true;
+}
+
+/** How many grid cards to mount now: a first batch, then another whenever the end of the grid comes
+ *  within a screen or so, up to `limit`. Mounting 36 cards in one go was a long task on a phone. */
+function useGrowing(key: string, limit: number) {
+  const [state, setState] = useState({ key, n: BATCH });
+  const n = Math.min(limit, state.key === key ? state.n : BATCH);
+  const sentinel = useCallback((el: HTMLElement | null) => {
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) startTransition(() => setState((s) => ({ key, n: (s.key === key ? s.n : BATCH) + BATCH })));
+    }, { rootMargin: "1200px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [key]);
+  return { n, sentinel };
 }
 
 function Cell({ active, onClick, icon, label, count }: { active: boolean; onClick: () => void; icon: ReactNode; label: string; count: number }) {
@@ -131,6 +148,10 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
   const [query, setQuery] = useState("");
   const [copied, setCopied] = useState(false);
   const q = useDeferredValue(query);
+  // The pills and the list on the left answer a tap at once; the packs below follow in a background
+  // render React can interrupt, so a tap on a phone never waits for 30 cards to mount.
+  const list = useDeferredValue(view);
+  const fmt = useDeferredValue(format);
   const byName = useMemo(() => new Map(packs.map((p) => [p.name, p])), [packs]);
   const { data, loading, failed } = useEmojiSearch(q);
   const searching = !!q.trim();
@@ -142,21 +163,22 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
     : v.kind === "saved" ? isSaved(p)
     : v.kind === "category" ? p.category === v.name
     : (collections.find((c) => c.id === v.id)?.packs ?? []).includes(p.name);
-  const base = packs.filter((p) => formatOk(p, format) && (!searching || order.has(p.name)));
+  const base = packs.filter((p) => formatOk(p, fmt) && (!searching || order.has(p.name)));
   if (searching) base.sort((a, b) => (order.get(a.name) ?? 0) - (order.get(b.name) ?? 0));
   const count = (v: View) => base.filter((p) => inView(p, v)).length;
-  let shown = base.filter((p) => inView(p, view));
-  if (view.kind === "collection" && !searching) {
-    const order = collections.find((c) => c.id === view.id)?.packs ?? [];
+  let shown = base.filter((p) => inView(p, list));
+  if (list.kind === "collection" && !searching) {
+    const order = collections.find((c) => c.id === list.id)?.packs ?? [];
     shown = [...shown].sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
   }
-  const firstScreen = view.kind === "all" && !q && format === "any";
+  const firstScreen = list.kind === "all" && !q && fmt === "any";
   // The grid renders a page at a time; the page count resets when the list changes.
-  const listKey = JSON.stringify([view, format, q]);
+  const listKey = JSON.stringify([list, fmt, q]);
   const [more, setMore] = useState({ key: listKey, n: PAGE });
-  const limit = more.key === listKey ? more.n : PAGE;
-  const title = view.kind === "all" ? "All packs" : view.kind === "saved" ? "Saved"
-    : view.kind === "category" ? view.name : collections.find((c) => c.id === view.id)?.title ?? "";
+  const limit = Math.min(shown.length, more.key === listKey ? more.n : PAGE);
+  const { n: mounted, sentinel } = useGrowing(listKey, limit);
+  const title = list.kind === "all" ? "All packs" : list.kind === "saved" ? "Saved"
+    : list.kind === "category" ? list.name : collections.find((c) => c.id === list.id)?.title ?? "";
   const same = (v: View) => JSON.stringify(v) === JSON.stringify(view);
 
   const nav = (
@@ -271,7 +293,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
           <div className="mb-2 flex flex-wrap items-center gap-3 px-1">
             <h2 id="grid-title" className="text-lg font-semibold">{searching ? "Packs" : title}</h2>
             <span className="tg-hint text-sm">{shown.length} packs</span>
-            {view.kind === "saved" && shown.length ? (
+            {list.kind === "saved" && shown.length ? (
               <button
                 type="button"
                 onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${telegramPackUrl(p.name)}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
@@ -284,10 +306,12 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
           <p aria-live="polite" className="sr-only">{shown.length} packs shown</p>
           {shown.length ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={togglePack} />)}
+              {shown.slice(0, mounted).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={togglePack} />)}
             </div>
           ) : null}
-          {shown.length > limit ? (
+          {/* A new element per batch, so the observer reports again even if it is still in range. */}
+          {mounted < limit ? <div key={mounted} ref={sentinel} aria-hidden="true" className="h-px" /> : null}
+          {mounted >= limit && shown.length > limit ? (
             <div className="mt-4 flex justify-center">
               <button type="button" onClick={() => setMore({ key: listKey, n: limit + PAGE })}
                 className="tg-glass tg-accent h-10 rounded-full px-5 text-sm font-medium">
@@ -298,7 +322,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
           {!shown.length ? (
             <p className="tg-glass tg-hint rounded-2xl px-4 py-10 text-center text-sm">
               {!packs.length ? "No packs in the library yet."
-                : view.kind === "saved" && !saved.packs.length ? "Nothing saved yet. Tap the star on a pack to keep it here; it stays in this browser."
+                : list.kind === "saved" && !saved.packs.length ? "Nothing saved yet. Tap the star on a pack to keep it here; it stays in this browser."
                 : "No pack matches. Try another word or the emoji itself."}
             </p>
           ) : null}
