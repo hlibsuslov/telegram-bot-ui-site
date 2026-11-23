@@ -2,6 +2,7 @@ import { Agents } from "@/components/site/agents";
 import { Capabilities } from "@/components/site/capabilities";
 import { DemoVideo } from "@/components/site/demo-video";
 import { Demos } from "@/components/site/demos";
+import { EmojiLibraryLink } from "@/components/site/emoji-library-link";
 import { EmojiPacks } from "@/components/site/emoji-packs";
 import { Faq } from "@/components/site/faq";
 import { SiteFooter } from "@/components/site/footer";
@@ -33,6 +34,7 @@ export default function Home() {
         <Scenarios />
         <Agents />
         <Install />
+        <EmojiLibraryLink />
         <Faq />
       </main>
       <SiteFooter />

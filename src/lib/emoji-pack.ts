@@ -26,6 +26,7 @@ const TIMEOUT_MS = 10_000;
 const SET_TTL_MS = 60 * 60 * 1000;
 const SET_CACHE_MAX = 500;
 const MAX_CONCURRENT = 8;          // Bot API calls in flight per instance
+const QUEUE_MAX = 200;               // requests allowed to wait for a pool slot
 const DOWNLOADS_CONCURRENT = 16;   // file downloads in flight per instance (a page asks for hundreds of pictures)
 const FILE_CACHE_BYTES = 96 * 1024 * 1024;
 const FILE_TTL_MS = 6 * 60 * 60 * 1000;
@@ -71,7 +72,11 @@ async function slot<T>(work: () => Promise<T>, pool: Pool = apiPool): Promise<T>
     const wait = Math.ceil((pausedUntil - Date.now()) / 1000);
     throw new ResolverError("RATE_LIMITED", 429, "busy; retry in a moment", wait);
   }
-  if (pool.active >= pool.max) await new Promise<void>((resolve) => pool.waiting.push(resolve));
+  if (pool.active >= pool.max) {
+    // A flood must not park requests until the function timeout (billed time): refuse past a queue.
+    if (pool.waiting.length >= QUEUE_MAX) throw new ResolverError("BUSY", 503, "busy; retry in a moment", 2);
+    await new Promise<void>((resolve) => pool.waiting.push(resolve));
+  }
   pool.active++;
   try {
     return await work();
@@ -128,21 +133,34 @@ async function call<T>(method: "getStickerSet" | "getFile" | "getCustomEmojiStic
 
 const sets = new Map<string, { at: number; set: StickerSet }>();
 const inflight = new Map<string, Promise<StickerSet>>();
+const missingSets = new Map<string, number>(); // pack names Telegram does not know, with when we asked
+const MISSING_TTL_MS = 10 * 60 * 1000;
 
-/** The raw set: an hour in memory for successes; errors are never kept. */
+/** The raw set: an hour in memory for successes, ten minutes for "no such pack"; other errors are
+ *  never kept. Keys are lower-case, so case variants of one name cost one Telegram call. */
 async function stickerSet(name: string): Promise<StickerSet> {
-  const hit = sets.get(name);
+  const key = name.toLowerCase();
+  const hit = sets.get(key);
   if (hit && Date.now() - hit.at < SET_TTL_MS) return hit.set;
-  const running = inflight.get(name);
+  const gone = missingSets.get(key);
+  if (gone && Date.now() - gone < MISSING_TTL_MS) throw new ResolverError("PACK_NOT_FOUND", 404, "no such pack");
+  const running = inflight.get(key);
   if (running) return running;
   const p = call<StickerSet>("getStickerSet", { name })
     .then((set) => {
       if (sets.size >= SET_CACHE_MAX) sets.delete(sets.keys().next().value as string);
-      sets.set(name, { at: Date.now(), set });
+      sets.set(key, { at: Date.now(), set });
       return set;
     })
-    .finally(() => inflight.delete(name));
-  inflight.set(name, p);
+    .catch((err: unknown) => {
+      if (err instanceof ResolverError && err.code === "PACK_NOT_FOUND") {
+        if (missingSets.size > 5000) missingSets.clear();
+        missingSets.set(key, Date.now());
+      }
+      throw err;
+    })
+    .finally(() => inflight.delete(key));
+  inflight.set(key, p);
   return p;
 }
 
@@ -248,10 +266,13 @@ const toBody = (data: Buffer, type: string): FileBody => ({ body: data.buffer.sl
 
 async function download(fileId: string, types: Record<string, string>, max: number): Promise<FileBody> {
   const hit = files.get(fileId);
-  if (hit && Date.now() - hit.at < FILE_TTL_MS) {
-    files.delete(fileId); // move to the young end
-    files.set(fileId, hit);
-    return toBody(hit.data, hit.type);
+  if (hit) {
+    files.delete(fileId);
+    if (Date.now() - hit.at < FILE_TTL_MS) {
+      files.set(fileId, hit); // back in at the young end
+      return toBody(hit.data, hit.type);
+    }
+    cachedBytes -= hit.data.length; // expired: out now, so the count is subtracted once
   }
   let running = filesInflight.get(fileId);
   if (!running) {
@@ -265,7 +286,6 @@ async function download(fileId: string, types: Record<string, string>, max: numb
         paths.delete(fileId);
         throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
       }
-      if (hit) cachedBytes -= hit.data.length;
       remember(fileId, data, types[ext]);
       return { data, type: types[ext] };
     })().finally(() => filesInflight.delete(fileId));
@@ -294,15 +314,25 @@ export async function animationFile(name: string, id: string): Promise<FileBody>
 
 // ------------------------------------------------------------------ per-client limit, errors
 
-const hits = new Map<string, number[]>();
+// A fixed window per key: two numbers per client instead of a list of timestamps.
+const hits = new Map<string, { start: number; n: number }>();
 export function allow(key: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now();
-  const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
-  if (recent.length >= limit) return false;
-  recent.push(now);
-  hits.set(key, recent);
-  if (hits.size > 5000) hits.clear();
+  let w = hits.get(key);
+  if (!w || now - w.start >= windowMs) {
+    if (!w && hits.size > 20_000) hits.clear();
+    w = { start: now, n: 0 };
+    hits.set(key, w);
+  }
+  if (w.n >= limit) return false;
+  w.n++;
   return true;
+}
+
+/** Proxied files have one canonical URL each, so the CDN serves repeats; a query string would make
+ *  every request a new cache key that reaches the function. */
+export function canonicalOnly(req: Request): void {
+  if (new URL(req.url).search) throw new ResolverError("BAD_REQUEST", 400, "this URL takes no query string");
 }
 
 export function clientKey(req: Request): string {

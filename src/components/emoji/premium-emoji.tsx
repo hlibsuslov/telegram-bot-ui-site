@@ -104,9 +104,9 @@ export function PremiumEmoji({
 
   const style = { width: size, height: size };
   const still = emoji.preview && !broken;
-  // A busy resolver (429) or a cold picture can fail once: try again twice, a little later each
-  // time, before falling back to the ordinary emoji. `r` makes the browser ask again.
-  const src = emoji.preview ? (tries ? `${emoji.preview}?r=${tries}` : emoji.preview) : undefined;
+  // A busy resolver (429, not cached) or a cold picture can fail once: try again twice, a little later
+  // each time, before falling back to the ordinary emoji. A fresh element (key) asks the same URL again.
+  const src = emoji.preview ?? undefined;
   const failed = () => {
     if (tries >= 2) { setBroken(true); return; }
     setTimeout(() => setTries((t) => t + 1), 700 * (tries + 1));
@@ -129,14 +129,14 @@ export function PremiumEmoji({
       ) : null}
       {emoji.format === "video" && still ? (
         <video
-          key={src} ref={video} src={src} muted loop playsInline preload="metadata" aria-hidden="true"
+          key={`${src}#${tries}`} ref={video} src={src} muted loop playsInline preload="metadata" aria-hidden="true"
           className={cn("size-full object-contain transition-opacity duration-200", !loaded && "opacity-0")}
           onLoadedData={() => setLoaded(true)} onError={failed}
         />
       ) : still ? (
         // eslint-disable-next-line @next/next/no-img-element -- pictures come from the resolver API, sized by the grid
         <img
-          key={src} ref={img} src={src} alt="" loading="lazy" decoding="async" draggable={false}
+          key={`${src}#${tries}`} ref={img} src={src} alt="" loading="lazy" decoding="async" draggable={false}
           className={cn("size-full object-contain transition-opacity duration-200", (playing || !loaded) && "opacity-0")}
           onLoad={() => setLoaded(true)} onError={failed}
         />

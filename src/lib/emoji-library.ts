@@ -115,6 +115,27 @@ async function readPack({ name, category }: ListedPack, tags: Map<string, string
   };
 }
 
+// Packs are read a few at a time: hundreds at once would fill the resolver's queue (which refuses
+// past its cap) and could trip Telegram's flood limit on a cold start.
+const READ_PARALLEL = 6;
+
+async function settledInBatches<T, R>(items: T[], parallel: number, work: (item: T, i: number) => Promise<R>): Promise<PromiseSettledResult<R>[]> {
+  const out: PromiseSettledResult<R>[] = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const i = next++;
+      try {
+        out[i] = { status: "fulfilled", value: await work(items[i], i) };
+      } catch (reason) {
+        out[i] = { status: "rejected", reason };
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(parallel, items.length) }, worker));
+  return out;
+}
+
 /** Every listed pack the resolver can read; the rest are reported, not shown. Categories keep
  *  the file's order, "Other" last. */
 export async function getLibrary(): Promise<Library> {
@@ -122,10 +143,17 @@ export async function getLibrary(): Promise<Library> {
   cacheLife("hours");
   const list = listed();
   const tags = parseTags(tagsText);
-  const results = await Promise.allSettled(list.map((p, i) => readPack(p, tags, i)));
+  const results = await settledInBatches(list, READ_PARALLEL, (p, i) => readPack(p, tags, i));
   const read: { pack: LibraryPack; emoji: LibraryEmoji[]; fallbacks: Set<string> }[] = [];
   const unavailable: string[] = [];
   results.forEach((r, i) => (r.status === "fulfilled" ? read.push(r.value) : unavailable.push(list[i].name)));
+  // A Telegram outage or a 429 pause mid-refresh must not be cached as a smaller library for hours:
+  // throw, so the cache keeps the previous library. Without a resolver token at all (a build that
+  // has none yet) every pack fails the same way; that renders as an empty library instead.
+  const off = results.every((r) => r.status === "rejected" && (r.reason as { code?: string })?.code === "RESOLVER_OFF");
+  if (!off && unavailable.length > list.length * 0.2) {
+    throw new Error(`emoji library: ${unavailable.length} of ${list.length} packs could not be read; keeping the previous library`);
+  }
   linkSimilar(read);
   const packs = read.map((r) => r.pack);
   const categories = [...new Set(packs.map((p) => p.category))].sort((a, b) => Number(a === OTHER) - Number(b === OTHER));
