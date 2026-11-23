@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
+import { ExpandSummary } from "@/components/emoji/expand-summary";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { PackSheet } from "@/components/emoji/pack-sheet";
 import { getLibrary, getLibraryPack, type LibraryPack } from "@/lib/emoji-library";
@@ -42,8 +43,8 @@ export default async function EmojiPackPage({ params }: PageProps<"/emoji/[name]
         <ChevronLeft aria-hidden="true" className="size-5" /> Emoji Library
       </Link>
       <PackSheet pack={pack} emoji={emoji} similar={similar} pageUrl={`${siteUrl()}${path}`} />
-      <details className="tg-glass mt-5 rounded-2xl px-4 py-3 text-sm">
-        <summary className="cursor-pointer font-medium">Custom emoji IDs in this pack ({pack.count})</summary>
+      <details className="tg-glass group mt-5 rounded-2xl px-4 py-3 text-sm">
+        <ExpandSummary count={pack.count}>Custom emoji IDs in this pack</ExpandSummary>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full text-left">
             <thead><tr><th scope="col">Fallback</th><th scope="col">Custom emoji ID</th><th scope="col">Format</th><th scope="col">Tags</th></tr></thead>
