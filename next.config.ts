@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },
+      // Plain-text content files (the emoji library's pack list) import as their text.
+      "*.txt": {
+        type: "raw",
+      },
     },
   },
 };

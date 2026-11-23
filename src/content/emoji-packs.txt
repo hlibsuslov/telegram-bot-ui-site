@@ -1,0 +1,54 @@
+# Premium emoji packs shown in the library at /emoji.
+# One pack per line: a link like https://t.me/addemoji/<name> (t.me/addemoji/<name> or the bare name also work).
+# Empty lines and lines starting with # are ignored; duplicates are dropped.
+# The site reads each pack through the emoji resolver: a pack Telegram does not know is skipped.
+# Optional search tags go in emoji-tags.txt.
+https://t.me/addemoji/checkified
+https://t.me/addemoji/thevectorlogos
+https://t.me/addemoji/teploevesennee_by_TgEmodziBot
+https://t.me/addemoji/ninecandles
+https://t.me/addemoji/AIByVolodya
+https://t.me/addemoji/Tornado_Emoji
+https://t.me/addemoji/Catz5Emoji
+https://t.me/addemoji/cryptoner
+https://t.me/addemoji/CryptachEmoji
+https://t.me/addemoji/readtheroom_by_fStikBot
+https://t.me/addemoji/BirthdayCollection
+https://t.me/addemoji/MadEmoji
+https://t.me/addemoji/RestrictedEmoji
+https://t.me/addemoji/minecraft_textures
+https://t.me/addemoji/AnimatedAsianEmoji
+https://t.me/addemoji/CreepyEmoji
+https://t.me/addemoji/ReaperSkullEmoji
+https://t.me/addemoji/kovvvalenkstop
+https://t.me/addemoji/Aj7ASzceAAA
+https://t.me/addemoji/DMJUnigramAnimationEmoji
+https://t.me/addemoji/ClownEmoji
+https://t.me/addemoji/NewsEmoji
+https://t.me/addemoji/SignsEmoji
+https://t.me/addemoji/OliverEmoji
+https://t.me/addemoji/alphabet_ru_mini
+https://t.me/addemoji/SharkEmoji
+https://t.me/addemoji/BubbleEmoji
+https://t.me/addemoji/PumpkinEmoji
+https://t.me/addemoji/GhostEmoji
+https://t.me/addemoji/PixelEmoji
+https://t.me/addemoji/IconsEmoji
+https://t.me/addemoji/TONEmoji
+https://t.me/addemoji/FinanceEmoji
+https://t.me/addemoji/PencilEmoji
+https://t.me/addemoji/LedScreenEmoji
+https://t.me/addemoji/TableFontEmoji
+https://t.me/addemoji/SunEmoji
+https://t.me/addemoji/ChicklingEmoji
+https://t.me/addemoji/FestiveFlags
+https://t.me/addemoji/UnicornEmoji
+https://t.me/addemoji/FestiveFontEmoji
+https://t.me/addemoji/BloodyFontEmoji
+https://t.me/addemoji/PixelPigeonEmoji
+https://t.me/addemoji/FlameEmoji
+https://t.me/addemoji/FireFontEmoji
+https://t.me/addemoji/SantaEmoji
+https://t.me/addemoji/CandyFontEmoji
+https://t.me/addemoji/RoboEmoji
+https://t.me/addemoji/MasksEmoji

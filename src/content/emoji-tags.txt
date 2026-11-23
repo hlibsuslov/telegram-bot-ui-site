@@ -1,0 +1,8 @@
+# Search tags for the emoji library: what a pack or one emoji shows, so a search for "nvidia" finds its logo.
+# Telegram keeps the keywords of custom emoji to itself (the Bot API can set them, not read them), so the library
+# searches pack titles, the emoji each custom emoji stands for, and the tags below.
+#
+#   <pack name>: tag, tag, ...                 tags for the whole pack
+#   <pack name>/<custom emoji id>: tag, ...    tags for one emoji
+#
+# Empty lines and lines starting with # are ignored.

@@ -13,6 +13,7 @@
 // retry_after is running.
 import "server-only";
 import { request } from "node:https";
+import { fixtureAnimation, fixturePack, fixturePreview, fixturesOn } from "./emoji-fixtures";
 
 export const PACK_NAME = /^[A-Za-z0-9_]{1,64}$/;
 export const EMOJI_ID = /^\d{1,20}$/;
@@ -26,7 +27,9 @@ const SET_CACHE_MAX = 500;
 const MAX_CONCURRENT = 4;
 
 export type Format = "static" | "animated" | "video";
-export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null }
+/** preview: a picture (WEBP, or the WEBM itself for a video emoji; the static thumbnail of a TGS);
+ *  animation: the TGS file of an animated emoji (gzip Lottie), played by the client. */
+export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null; animation: string | null }
 export interface Pack { name: string; title: string; emoji: PackEmoji[] }
 
 interface Sticker {
@@ -39,6 +42,10 @@ export class ResolverError extends Error {
   constructor(readonly code: string, readonly status: number, message: string, readonly retryAfter?: number) {
     super(message);
   }
+}
+
+function missing(code: string, message: string): never {
+  throw new ResolverError(code, 404, message);
 }
 
 function token(): string {
@@ -140,6 +147,7 @@ function previewFileId(s: Sticker): string | null {
 
 export async function resolvePack(name: string): Promise<Pack> {
   if (!PACK_NAME.test(name)) throw new ResolverError("PACK_NAME", 400, "a pack name is letters, digits and _");
+  if (fixturesOn()) return fixturePack(name) ?? missing("PACK_NOT_FOUND", "no such pack");
   const set = await stickerSet(name);
   if (set.sticker_type !== "custom_emoji") {
     throw new ResolverError("NOT_EMOJI_PACK", 422, `${set.name} is a ${set.sticker_type ?? "regular"} sticker set, not an emoji pack`);
@@ -153,6 +161,7 @@ export async function resolvePack(name: string): Promise<Pack> {
       format: s.is_video ? "video" : s.is_animated ? "animated" : "static",
       adaptive: !!s.needs_repainting,
       preview: previewFileId(s) ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}` : null,
+      animation: s.is_animated && s.file_id ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}/anim` : null,
     });
   }
   return { name: set.name, title: set.title ?? set.name, emoji };
@@ -190,22 +199,44 @@ export async function resolveSets(ids: string[]): Promise<{ id: string; set: str
 }
 
 const TYPES: Record<string, string> = { webp: "image/webp", webm: "video/webm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg" };
+// A TGS sticker is a gzip-compressed Lottie animation (Telegram caps custom emoji TGS at 64 KB).
+const ANIM_TYPES: Record<string, string> = { tgs: "application/x-tgsticker" };
+const ANIM_MAX = 128 * 1024;
 
-/** The preview picture of one emoji of a pack. Only emoji of that pack can be fetched. */
-export async function previewFile(name: string, id: string): Promise<{ body: ArrayBuffer; type: string }> {
+export type FileBody = { body: ArrayBuffer; type: string };
+
+async function sticker(name: string, id: string): Promise<Sticker | undefined> {
   if (!PACK_NAME.test(name) || !EMOJI_ID.test(id)) throw new ResolverError("BAD_REQUEST", 400, "bad pack name or emoji id");
   const set = await stickerSet(name);
-  const sticker = set.sticker_type === "custom_emoji" ? set.stickers?.find((s) => s.custom_emoji_id === id) : undefined;
-  const fileId = sticker ? previewFileId(sticker) : null;
-  if (!fileId) throw new ResolverError("NO_PREVIEW", 404, "this emoji has no picture");
+  return set.sticker_type === "custom_emoji" ? set.stickers?.find((s) => s.custom_emoji_id === id) : undefined;
+}
+
+async function download(fileId: string, types: Record<string, string>, max: number): Promise<FileBody> {
   const file = await call<{ file_path?: string; file_size?: number }>("getFile", { file_id: fileId });
   const path = file.file_path ?? "";
   const ext = path.split(".").pop()?.toLowerCase() ?? "";
-  if (!FILE_PATH.test(path) || path.includes("..") || !TYPES[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported picture");
-  if ((file.file_size ?? 0) > FILE_MAX) throw new ResolverError("TOO_LARGE", 413, "picture too large");
-  const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, FILE_MAX));
+  if (!FILE_PATH.test(path) || path.includes("..") || !types[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported file");
+  if ((file.file_size ?? 0) > max) throw new ResolverError("TOO_LARGE", 413, "file too large");
+  const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, max));
   if (status !== 200) throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
-  return { body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type: TYPES[ext] };
+  return { body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type: types[ext] };
+}
+
+/** The preview picture of one emoji of a pack. Only emoji of that pack can be fetched. */
+export async function previewFile(name: string, id: string): Promise<FileBody> {
+  if (fixturesOn()) return fixturePreview(name, id) ?? missing("NO_PREVIEW", "this emoji has no picture");
+  const s = await sticker(name, id);
+  const fileId = s ? previewFileId(s) : null;
+  if (!fileId) throw new ResolverError("NO_PREVIEW", 404, "this emoji has no picture");
+  return download(fileId, TYPES, FILE_MAX);
+}
+
+/** The animation of an animated (TGS) emoji, as the gzip-compressed Lottie file Telegram stores. */
+export async function animationFile(name: string, id: string): Promise<FileBody> {
+  if (fixturesOn()) return fixtureAnimation(name, id) ?? missing("NO_ANIMATION", "this emoji is not an animated (TGS) emoji");
+  const s = await sticker(name, id);
+  if (!s?.is_animated || !s.file_id) throw new ResolverError("NO_ANIMATION", 404, "this emoji is not an animated (TGS) emoji");
+  return download(s.file_id, ANIM_TYPES, ANIM_MAX);
 }
 
 // ------------------------------------------------------------------ per-client limit, errors
