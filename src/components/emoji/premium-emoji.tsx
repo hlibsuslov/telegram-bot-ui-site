@@ -14,7 +14,10 @@ import { cn } from "@/lib/utils";
 
 export type { EmojiData };
 
-type LottieItem = { destroy(): void };
+type LottieItem = {
+  destroy(): void; goToAndStop(value: number, isFrame: boolean): void; addEventListener(name: "DOMLoaded", cb: () => void): void;
+  isLoaded: boolean; totalFrames: number; frameRate: number;
+};
 type LottiePlayer = { loadAnimation(o: { container: Element; renderer: "svg" | "canvas"; loop: boolean; autoplay: boolean; animationData: unknown }): LottieItem };
 
 const players = new Map<string, Promise<LottiePlayer>>();
@@ -191,6 +194,33 @@ function inFrames(start: () => void) {
   }
 }
 
+// On a touch screen one shared clock drives every player at 30 frames a second, half of them on each
+// display frame: a phone with "Play all" on draws a quarter of what 60 fps for all would cost, and
+// every emoji still moves. Desktops keep lottie-web's own 60 fps loop.
+const FPS = 30;
+const clocked = new Map<LottieItem, number>(); // player -> its start time
+let clockFrame = 0;
+let clockRunning = false;
+function clockTick(now: number) {
+  let i = 0;
+  clockFrame++;
+  for (const [item, start] of clocked) {
+    if (i++ % 2 !== clockFrame % 2 || !item.isLoaded) continue;
+    const frame = Math.floor(((now - start) / 1000) * FPS) * (item.frameRate / FPS);
+    item.goToAndStop(frame % item.totalFrames, true);
+  }
+  if (clocked.size) requestAnimationFrame(clockTick);
+  else clockRunning = false;
+}
+function clock(item: LottieItem): () => void {
+  clocked.set(item, performance.now());
+  if (!clockRunning) {
+    clockRunning = true;
+    requestAnimationFrame(clockTick);
+  }
+  return () => clocked.delete(item);
+}
+
 /** The moving emoji over its still, mounted only while it plays: the Lottie player or the WEBM. */
 export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
   const stage = useRef<HTMLSpanElement>(null);
@@ -204,6 +234,7 @@ export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
     // The still hides only once something moves over it, so there is never a blank square.
     const show = () => box.setAttribute("data-playing", "");
     let item: LottieItem | null = null;
+    let unclock: (() => void) | null = null;
     let cancelled = false;
     if (v) {
       v.addEventListener("playing", show);
@@ -213,13 +244,17 @@ export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
       Promise.all([loadPlayer(canvas), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
         inFrames(() => {
           if (cancelled || !stage.current) return;
-          item = lottie.loadAnimation({ container: stage.current, renderer: canvas ? "canvas" : "svg", loop: true, autoplay: true, animationData: data });
-          show();
+          item = lottie.loadAnimation({ container: stage.current, renderer: canvas ? "canvas" : "svg", loop: true, autoplay: !canvas, animationData: data });
+          if (canvas) unclock = clock(item);
+          // Reveal it once its first frame is drawn, so the still never gives way to an empty square.
+          if (item.isLoaded) show();
+          else item.addEventListener("DOMLoaded", show);
         });
       }).catch(() => undefined);
     }
     return () => {
       cancelled = true;
+      unclock?.();
       item?.destroy();
       box.removeAttribute("data-playing");
       if (v) {
