@@ -4,7 +4,7 @@
 // format or by what this visitor saved, and open a pack. Hovering a card plays its sample.
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
-import { ArrowRight, Check, Copy, ExternalLink, Search, Star } from "lucide-react";
+import { Check, Copy, Search, Star } from "lucide-react";
 import type { LibraryPack } from "@/lib/emoji-library";
 import { cn } from "@/lib/utils";
 import { FilterChips } from "./filter-chips";
@@ -50,18 +50,18 @@ function PackCard({ pack, saved, onSave }: { pack: LibraryPack; saved: boolean; 
       {pack.count > pack.sample.length ? (
         <p className="mt-1.5 text-xs text-muted-foreground">+{pack.count - pack.sample.length} more in the pack</p>
       ) : null}
-      <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
+      <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-3">
         <Link
           href={`/emoji/${pack.name}`}
-          className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-foreground px-3 text-sm font-medium text-background outline-none hover:opacity-90 focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="inline-flex h-8 items-center rounded-lg bg-foreground px-3 text-sm font-medium text-background outline-none hover:opacity-90 focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          Open pack <ArrowRight aria-hidden="true" className="size-3.5" />
+          Open pack
         </Link>
         <a
           href={pack.link} target="_blank" rel="noopener noreferrer"
-          className="inline-flex h-8 items-center gap-1 rounded-lg border border-border px-3 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="rounded text-sm text-brand underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          Add to Telegram <ExternalLink aria-hidden="true" className="size-3.5" />
+          Add to Telegram
         </a>
       </div>
     </li>
