@@ -6,7 +6,7 @@ import { allow, animationFile, clientKey, errorResponse, ResolverError } from "@
 export async function GET(req: Request, ctx: RouteContext<"/api/emoji-pack/[name]/[id]/anim">) {
   const { name, id } = await ctx.params;
   try {
-    if (!allow(`anim:${clientKey(req)}`, 600)) throw new ResolverError("RATE_LIMITED", 429, "too many animations at once; retry in a minute");
+    if (!allow(`anim:${clientKey(req)}`, 1500)) throw new ResolverError("RATE_LIMITED", 429, "too many animations at once; retry in a minute");
     const { body, type } = await animationFile(name, id);
     return new Response(body, {
       headers: {

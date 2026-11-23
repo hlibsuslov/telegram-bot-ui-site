@@ -9,7 +9,8 @@
 //
 // Cost control: the CDN caches every answer (Cache-Control in the routes); behind it each
 // instance keeps successful sets for an hour, joins concurrent requests for the same pack,
-// runs at most MAX_CONCURRENT Telegram calls at a time, and stops calling Telegram while a 429
+// runs at most MAX_CONCURRENT Bot API calls and DOWNLOADS_CONCURRENT file downloads at a time, keeps
+// pictures in memory (FILE_CACHE_BYTES, least recently used out first), and stops calling Telegram while a 429
 // retry_after is running.
 import "server-only";
 import { request } from "node:https";
@@ -24,7 +25,11 @@ const JSON_MAX = 2 * 1024 * 1024;
 const TIMEOUT_MS = 10_000;
 const SET_TTL_MS = 60 * 60 * 1000;
 const SET_CACHE_MAX = 500;
-const MAX_CONCURRENT = 4;
+const MAX_CONCURRENT = 8;          // Bot API calls in flight per instance
+const DOWNLOADS_CONCURRENT = 16;   // file downloads in flight per instance (a page asks for hundreds of pictures)
+const FILE_CACHE_BYTES = 96 * 1024 * 1024;
+const FILE_TTL_MS = 6 * 60 * 60 * 1000;
+const PATH_TTL_MS = 50 * 60 * 1000; // Telegram keeps a file_path valid for at least an hour
 
 export type Format = "static" | "animated" | "video";
 /** preview: a picture (WEBP, or the WEBM itself for a video emoji; the static thumbnail of a TGS);
@@ -56,22 +61,23 @@ function token(): string {
 
 // ------------------------------------------------------------------ Telegram, bounded
 
-let active = 0;
-const waiting: (() => void)[] = [];
 let pausedUntil = 0;
+type Pool = { active: number; max: number; waiting: (() => void)[] };
+const apiPool: Pool = { active: 0, max: MAX_CONCURRENT, waiting: [] };
+const filePool: Pool = { active: 0, max: DOWNLOADS_CONCURRENT, waiting: [] };
 
-async function slot<T>(work: () => Promise<T>): Promise<T> {
+async function slot<T>(work: () => Promise<T>, pool: Pool = apiPool): Promise<T> {
   if (Date.now() < pausedUntil) {
     const wait = Math.ceil((pausedUntil - Date.now()) / 1000);
     throw new ResolverError("RATE_LIMITED", 429, "busy; retry in a moment", wait);
   }
-  if (active >= MAX_CONCURRENT) await new Promise<void>((resolve) => waiting.push(resolve));
-  active++;
+  if (pool.active >= pool.max) await new Promise<void>((resolve) => pool.waiting.push(resolve));
+  pool.active++;
   try {
     return await work();
   } finally {
-    active--;
-    waiting.shift()?.();
+    pool.active--;
+    pool.waiting.shift()?.();
   }
 }
 
@@ -211,15 +217,62 @@ async function sticker(name: string, id: string): Promise<Sticker | undefined> {
   return set.sticker_type === "custom_emoji" ? set.stickers?.find((s) => s.custom_emoji_id === id) : undefined;
 }
 
-async function download(fileId: string, types: Record<string, string>, max: number): Promise<FileBody> {
+// Pictures, kept per instance: a library page asks for hundreds of them, and the same ones again on
+// every visit until the CDN has them. Least recently used go first past FILE_CACHE_BYTES.
+const files = new Map<string, { at: number; data: Buffer; type: string }>();
+const filesInflight = new Map<string, Promise<{ data: Buffer; type: string }>>();
+const paths = new Map<string, { at: number; path: string; size: number }>();
+let cachedBytes = 0;
+
+function remember(key: string, data: Buffer, type: string) {
+  files.set(key, { at: Date.now(), data, type });
+  cachedBytes += data.length;
+  for (const [k, v] of files) {
+    if (cachedBytes <= FILE_CACHE_BYTES) break;
+    files.delete(k);
+    cachedBytes -= v.data.length;
+  }
+}
+
+async function filePath(fileId: string): Promise<{ path: string; size: number }> {
+  const hit = paths.get(fileId);
+  if (hit && Date.now() - hit.at < PATH_TTL_MS) return hit;
   const file = await call<{ file_path?: string; file_size?: number }>("getFile", { file_id: fileId });
-  const path = file.file_path ?? "";
-  const ext = path.split(".").pop()?.toLowerCase() ?? "";
-  if (!FILE_PATH.test(path) || path.includes("..") || !types[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported file");
-  if ((file.file_size ?? 0) > max) throw new ResolverError("TOO_LARGE", 413, "file too large");
-  const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, max));
-  if (status !== 200) throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
-  return { body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type: types[ext] };
+  const out = { at: Date.now(), path: file.file_path ?? "", size: file.file_size ?? 0 };
+  if (paths.size > 20_000) paths.clear();
+  paths.set(fileId, out);
+  return out;
+}
+
+const toBody = (data: Buffer, type: string): FileBody => ({ body: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer, type });
+
+async function download(fileId: string, types: Record<string, string>, max: number): Promise<FileBody> {
+  const hit = files.get(fileId);
+  if (hit && Date.now() - hit.at < FILE_TTL_MS) {
+    files.delete(fileId); // move to the young end
+    files.set(fileId, hit);
+    return toBody(hit.data, hit.type);
+  }
+  let running = filesInflight.get(fileId);
+  if (!running) {
+    running = (async () => {
+      const { path, size } = await filePath(fileId);
+      const ext = path.split(".").pop()?.toLowerCase() ?? "";
+      if (!FILE_PATH.test(path) || path.includes("..") || !types[ext]) throw new ResolverError("NO_PREVIEW", 404, "unsupported file");
+      if (size > max) throw new ResolverError("TOO_LARGE", 413, "file too large");
+      const { status, data } = await slot(() => telegram(`/file/bot${token()}/${path}`, null, max), filePool);
+      if (status !== 200) {
+        paths.delete(fileId);
+        throw new ResolverError("TELEGRAM_ERROR", 502, `file download: HTTP ${status}`);
+      }
+      if (hit) cachedBytes -= hit.data.length;
+      remember(fileId, data, types[ext]);
+      return { data, type: types[ext] };
+    })().finally(() => filesInflight.delete(fileId));
+    filesInflight.set(fileId, running);
+  }
+  const { data, type } = await running;
+  return toBody(data, type);
 }
 
 /** The preview picture of one emoji of a pack. Only emoji of that pack can be fetched. */

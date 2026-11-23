@@ -55,10 +55,13 @@ export function PremiumEmoji({
   const box = useRef<HTMLSpanElement>(null);
   const stage = useRef<HTMLSpanElement>(null);
   const video = useRef<HTMLVideoElement>(null);
+  const img = useRef<HTMLImageElement>(null);
   const [hover, setHover] = useState(false);
   const [visible, setVisible] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [broken, setBroken] = useState(false);
+  const [tries, setTries] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const want = forced ?? hover;
   const on = (play === "always" ? visible : want) && emoji.format !== "static";
 
@@ -92,8 +95,22 @@ export function PremiumEmoji({
     else { v.pause(); v.currentTime = 0; }
   }, [on]);
 
+  // A picture can finish loading before hydration attaches onLoad: then the event is gone, so ask
+  // the element itself (an external system) whether it already has the picture.
+  useEffect(() => {
+    const done = (img.current?.complete && img.current.naturalWidth > 0) || (video.current?.readyState ?? 0) >= 2;
+    if (done) setLoaded(true);
+  }, [tries]);
+
   const style = { width: size, height: size };
   const still = emoji.preview && !broken;
+  // A busy resolver (429) or a cold picture can fail once: try again twice, a little later each
+  // time, before falling back to the ordinary emoji. `r` makes the browser ask again.
+  const src = emoji.preview ? (tries ? `${emoji.preview}?r=${tries}` : emoji.preview) : undefined;
+  const failed = () => {
+    if (tries >= 2) { setBroken(true); return; }
+    setTimeout(() => setTries((t) => t + 1), 700 * (tries + 1));
+  };
   return (
     <span
       ref={box}
@@ -107,16 +124,21 @@ export function PremiumEmoji({
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
     >
+      {still && !loaded ? (
+        <span aria-hidden="true" className="absolute inset-[12%] animate-pulse rounded-[30%] bg-current opacity-[0.07] motion-reduce:animate-none" />
+      ) : null}
       {emoji.format === "video" && still ? (
         <video
-          ref={video} src={emoji.preview ?? undefined} muted loop playsInline preload="metadata"
-          aria-hidden="true" className="size-full object-contain" onError={() => setBroken(true)}
+          key={src} ref={video} src={src} muted loop playsInline preload="metadata" aria-hidden="true"
+          className={cn("size-full object-contain transition-opacity duration-200", !loaded && "opacity-0")}
+          onLoadedData={() => setLoaded(true)} onError={failed}
         />
       ) : still ? (
         // eslint-disable-next-line @next/next/no-img-element -- pictures come from the resolver API, sized by the grid
         <img
-          src={emoji.preview ?? undefined} alt="" loading="lazy" decoding="async" draggable={false}
-          className={cn("size-full object-contain transition-opacity", playing && "opacity-0")} onError={() => setBroken(true)}
+          key={src} ref={img} src={src} alt="" loading="lazy" decoding="async" draggable={false}
+          className={cn("size-full object-contain transition-opacity duration-200", (playing || !loaded) && "opacity-0")}
+          onLoad={() => setLoaded(true)} onError={failed}
         />
       ) : (
         <span aria-hidden="true" className="flex size-full items-center justify-center" style={{ fontSize: size * 0.7 }}>{emoji.fallback || "□"}</span>

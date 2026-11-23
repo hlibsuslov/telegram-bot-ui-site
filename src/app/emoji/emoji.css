@@ -1,7 +1,7 @@
-/* The emoji library's own look: Telegram's palette and system font, a chat-wallpaper gradient,
-   and frosted-glass panels. Scoped to .tg so the landing keeps its style.
-   Glass material after "Liquid Glass Expandable Sidebar" (Automate Flows, MIT, via 21st.dev):
-   layered tint + backdrop blur + inset edge light, solid when transparency is reduced. */
+/* The emoji library's own look: Telegram's palette and system font on a plain page, solid cards and a
+   frosted sticky bar. Scoped to .tg so the landing keeps its style. The frosted material follows
+   "Liquid Glass Expandable Sidebar" (Automate Flows, MIT, via 21st.dev): tint + backdrop blur,
+   solid when transparency is reduced. */
 .tg {
   --tg-accent: #3390ec;
   --tg-accent-ink: #fff;
@@ -9,14 +9,9 @@
   --tg-hint: #707579;
   --tg-sep: rgb(0 0 0 / 0.08);
   --tg-cell-hover: rgb(0 0 0 / 0.04);
-  --tg-glass: rgb(255 255 255 / 0.62);
-  --tg-glass-strong: rgb(255 255 255 / 0.8);
-  --tg-edge: rgb(255 255 255 / 0.75);
-  --tg-shadow: 0 1px 2px rgb(16 35 47 / 0.06), 0 12px 32px -16px rgb(16 35 47 / 0.28);
-  --tg-wall-1: #dbddbb;
-  --tg-wall-2: #6ba587;
-  --tg-wall-3: #d5d88d;
-  --tg-wall-4: #88b884;
+  --tg-page: #f1f2f5;
+  --tg-card: #ffffff;
+  --tg-card-edge: rgb(0 0 0 / 0.06);
   color: var(--tg-text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,52 +22,38 @@
   --tg-hint: #aaaaaa;
   --tg-sep: rgb(255 255 255 / 0.08);
   --tg-cell-hover: rgb(255 255 255 / 0.05);
-  --tg-glass: rgb(33 33 33 / 0.58);
-  --tg-glass-strong: rgb(33 33 33 / 0.78);
-  --tg-edge: rgb(255 255 255 / 0.09);
-  --tg-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -18px rgb(0 0 0 / 0.7);
-  --tg-wall-1: #1b2a1f;
-  --tg-wall-2: #20323a;
-  --tg-wall-3: #2b2640;
-  --tg-wall-4: #142128;
+  --tg-page: #0f0f0f;
+  --tg-card: #1c1c1d;
+  --tg-card-edge: rgb(255 255 255 / 0.07);
 }
 
-/* Telegram's default chat wallpaper: four soft colour fields. */
+/* A plain page in Telegram's grouped-list colours; cards are solid, only the sticky bar is frosted,
+   because content scrolls under it. */
 .tg-wallpaper {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(60% 55% at 12% 18%, var(--tg-wall-1), transparent 70%),
-    radial-gradient(55% 60% at 88% 12%, var(--tg-wall-3), transparent 70%),
-    radial-gradient(65% 60% at 82% 88%, var(--tg-wall-2), transparent 72%),
-    radial-gradient(60% 60% at 10% 92%, var(--tg-wall-4), transparent 70%),
-    var(--tg-wall-1);
+  background: var(--tg-page);
 }
-.dark .tg-wallpaper { background-color: #0f0f0f; }
 
 .tg-glass {
-  background:
-    linear-gradient(150deg, rgb(255 255 255 / 0.18), transparent 42%),
-    var(--tg-glass);
-  -webkit-backdrop-filter: blur(22px) saturate(1.6);
-  backdrop-filter: blur(22px) saturate(1.6);
-  box-shadow:
-    inset 0 0 0 0.75px var(--tg-edge),
-    inset 0 1px 1px var(--tg-edge),
-    var(--tg-shadow);
+  background: var(--tg-card);
+  box-shadow: 0 0 0 1px var(--tg-card-edge), 0 1px 2px rgb(16 35 47 / 0.04);
 }
-.dark .tg-glass { background: linear-gradient(150deg, rgb(255 255 255 / 0.04), transparent 42%), var(--tg-glass); }
-.tg-glass-strong { background: var(--tg-glass-strong); }
+.dark .tg-glass { box-shadow: 0 0 0 1px var(--tg-card-edge); }
+.tg-glass-strong { background: var(--tg-card); }
 
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .tg-glass { background: var(--tg-glass-strong); }
+.tg-bar {
+  background: color-mix(in srgb, var(--tg-card) 82%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: 0 0 0 1px var(--tg-card-edge);
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .tg-glass { background: var(--tg-glass-strong); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .tg-bar { background: var(--tg-card); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 @media (forced-colors: active) {
-  .tg-glass { border: 1px solid CanvasText; box-shadow: none; }
+  .tg-glass, .tg-bar { border: 1px solid CanvasText; box-shadow: none; }
 }
 
 .tg-hint { color: var(--tg-hint); }

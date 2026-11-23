@@ -128,7 +128,7 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_400px]">
         <section aria-labelledby="pack-title" className="tg-glass flex min-w-0 flex-col rounded-3xl">
           <div className="px-4 pt-4 sm:px-5">
             <h1 id="pack-title" className="text-xl font-semibold text-balance">{pack.title}</h1>
@@ -236,7 +236,7 @@ export function PackSheet({ pack, emoji, similar }: { pack: LibraryPack; emoji: 
           <h2 id="similar-title" className="mb-2 px-1 text-lg font-semibold">Similar packs</h2>
           <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
             {similar.map((p) => (
-              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start" />
+              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
             ))}
           </div>
         </section>

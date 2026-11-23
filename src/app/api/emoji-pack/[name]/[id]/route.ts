@@ -5,7 +5,7 @@ import { allow, clientKey, errorResponse, previewFile, ResolverError } from "@/l
 export async function GET(req: Request, ctx: RouteContext<"/api/emoji-pack/[name]/[id]">) {
   const { name, id } = await ctx.params;
   try {
-    if (!allow(`file:${clientKey(req)}`, 600)) throw new ResolverError("RATE_LIMITED", 429, "too many pictures at once; retry in a minute");
+    if (!allow(`file:${clientKey(req)}`, 3000)) throw new ResolverError("RATE_LIMITED", 429, "too many pictures at once; retry in a minute");
     const { body, type } = await previewFile(name, id);
     return new Response(body, {
       headers: {

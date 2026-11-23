@@ -33,7 +33,7 @@ async function Pack({ params }: { params: PageProps<"/emoji/[name]">["params"] }
 
 function PackLoading() {
   return (
-    <div aria-busy="true" aria-label="Loading the pack" className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+    <div aria-busy="true" aria-label="Loading the pack" className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_400px]">
       <div className="tg-glass h-[28rem] animate-pulse rounded-3xl motion-reduce:animate-none" />
       <div className="tg-glass h-72 animate-pulse rounded-3xl motion-reduce:animate-none" />
     </div>

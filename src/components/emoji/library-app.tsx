@@ -5,7 +5,8 @@
 // collection rows on the first screen, then the pack grid. Packs play on hover.
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
-import { Bookmark, Check, ChevronRight, Copy, LayoutGrid, Loader2, Search, Sparkles, Star, X } from "lucide-react";
+import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
+import { CategoryIcon } from "./category-icon";
 import type { Collection, LibraryPack } from "@/lib/emoji-library";
 import { BOT_SLOTS } from "@/lib/emoji-slots";
 import { PremiumEmoji } from "./premium-emoji";
@@ -144,37 +145,34 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
   const limit = more.key === listKey ? more.n : PAGE;
   const title = view.kind === "all" ? "All packs" : view.kind === "saved" ? "Saved"
     : view.kind === "category" ? view.name : collections.find((c) => c.id === view.id)?.title ?? "";
-  const iconOf = (category: string) => packs.find((p) => p.category === category)?.sample[0];
   const same = (v: View) => JSON.stringify(v) === JSON.stringify(view);
 
   const nav = (
     <>
       <p className="tg-section-title px-2.5 pt-1 pb-1">Library</p>
       <ul>
-        <Cell active={same({ kind: "all" })} onClick={() => setView({ kind: "all" })} icon={<LayoutGrid aria-hidden="true" className="tg-accent size-5" />} label="All packs" count={count({ kind: "all" })} />
-        <Cell active={same({ kind: "saved" })} onClick={() => setView({ kind: "saved" })} icon={<Bookmark aria-hidden="true" className="tg-accent size-5" />} label="Saved" count={count({ kind: "saved" })} />
+        <Cell active={same({ kind: "all" })} onClick={() => setView({ kind: "all" })} icon={<CategoryIcon name="all" />} label="All packs" count={count({ kind: "all" })} />
+        <Cell active={same({ kind: "saved" })} onClick={() => setView({ kind: "saved" })} icon={<CategoryIcon name="saved" />} label="Saved" count={count({ kind: "saved" })} />
       </ul>
       {collections.length ? <p className="tg-section-title px-2.5 pt-3 pb-1">Collections</p> : null}
       <ul>
-        {collections.map((c) => {
-          const lead = byName.get(c.packs[0])?.sample[0];
-          return <Cell key={c.id} active={same({ kind: "collection", id: c.id })} onClick={() => setView({ kind: "collection", id: c.id })}
-            icon={lead ? <PremiumEmoji emoji={lead} size={24} /> : null} label={c.title} count={count({ kind: "collection", id: c.id })} />;
-        })}
+        {collections.map((c) => (
+          <Cell key={c.id} active={same({ kind: "collection", id: c.id })} onClick={() => setView({ kind: "collection", id: c.id })}
+            icon={<CategoryIcon name={c.id} />} label={c.title} count={count({ kind: "collection", id: c.id })} />
+        ))}
       </ul>
       {categories.length > 1 ? <p className="tg-section-title px-2.5 pt-3 pb-1">Categories</p> : null}
       <ul>
-        {categories.length > 1 ? categories.map((c) => {
-          const icon = iconOf(c);
-          return <Cell key={c} active={same({ kind: "category", name: c })} onClick={() => setView({ kind: "category", name: c })}
-            icon={icon ? <PremiumEmoji emoji={icon} size={24} /> : null} label={c} count={count({ kind: "category", name: c })} />;
-        }) : null}
+        {categories.length > 1 ? categories.map((c) => (
+          <Cell key={c} active={same({ kind: "category", name: c })} onClick={() => setView({ kind: "category", name: c })}
+            icon={<CategoryIcon name={c} />} label={c} count={count({ kind: "category", name: c })} />
+        )) : null}
       </ul>
     </>
   );
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[272px_minmax(0,1fr)]">
+    <div className="grid gap-4 lg:grid-cols-[272px_minmax(0,1fr)] 2xl:grid-cols-[300px_minmax(0,1fr)] 2xl:gap-5">
       <aside aria-label="Browse" className="tg-glass hidden self-start rounded-2xl p-2 lg:sticky lg:top-20 lg:block lg:max-h-[calc(100svh-6rem)] lg:overflow-y-auto">
         {nav}
       </aside>
@@ -211,7 +209,8 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
             ...collections.map((c) => ({ v: { kind: "collection", id: c.id } as View, l: c.title })),
             ...(categories.length > 1 ? categories.map((c) => ({ v: { kind: "category", name: c } as View, l: c })) : [])].map(({ v, l }) => (
             <button key={l} type="button" aria-pressed={same(v)} onClick={() => setView(v)}
-              className={cn("tg-glass shrink-0 rounded-full px-3.5 py-1.5 text-sm", same(v) && "tg-button")}>
+              className={cn("tg-glass inline-flex shrink-0 items-center gap-2 rounded-full py-1 pr-3.5 pl-1 text-sm", same(v) && "ring-2 ring-[var(--tg-accent)]")}>
+              <CategoryIcon name={v.kind === "category" ? v.name : v.kind === "collection" ? v.id : v.kind} className="size-6 rounded-full" />
               {l}
             </button>
           ))}
@@ -230,7 +229,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
             </div>
             <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
               {c.packs.slice(0, 8).map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p).map((p) => (
-                <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start" />
+                <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
               ))}
             </div>
           </section>
@@ -272,7 +271,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           </div>
           <p aria-live="polite" className="sr-only">{shown.length} packs shown</p>
           {shown.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} />)}
             </div>
           ) : null}

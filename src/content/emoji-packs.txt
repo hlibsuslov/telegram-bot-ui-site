@@ -7,6 +7,7 @@
 # Optional search tags go in emoji-tags.txt.
 
 ## Interface & icons
+https://t.me/addemoji/InvisVPNBot
 https://t.me/addemoji/checkified
 https://t.me/addemoji/ninecandles
 https://t.me/addemoji/DMJUnigramAnimationEmoji
@@ -67,6 +68,7 @@ https://t.me/addemoji/DMJTGStarsEmoji
 https://t.me/addemoji/ApplicationEmoji
 
 ## Crypto & finance
+https://t.me/addemoji/CryptoIcons
 https://t.me/addemoji/cryptoner
 https://t.me/addemoji/CryptachEmoji
 https://t.me/addemoji/TONEmoji
