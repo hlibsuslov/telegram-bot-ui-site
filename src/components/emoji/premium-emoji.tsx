@@ -172,6 +172,25 @@ export function EmojiStill({
   );
 }
 
+// Starting a Lottie player builds its whole scene at once. "Play all" or a hovered card starts dozens
+// together, which on a phone was one long frozen frame: start them a few per frame instead, within a
+// small time budget, so scrolling and taps keep running in between.
+const starts: (() => void)[] = [];
+let startsScheduled = false;
+function runStarts() {
+  const end = performance.now() + 8;
+  while (starts.length && performance.now() < end) starts.shift()!();
+  if (starts.length) requestAnimationFrame(runStarts);
+  else startsScheduled = false;
+}
+function inFrames(start: () => void) {
+  starts.push(start);
+  if (!startsScheduled) {
+    startsScheduled = true;
+    requestAnimationFrame(runStarts);
+  }
+}
+
 /** The moving emoji over its still, mounted only while it plays: the Lottie player or the WEBM. */
 export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
   const stage = useRef<HTMLSpanElement>(null);
@@ -192,9 +211,11 @@ export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
     } else if (emoji.animation) {
       const canvas = !matchMedia(HOVER).matches;
       Promise.all([loadPlayer(canvas), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
-        if (cancelled || !stage.current) return;
-        item = lottie.loadAnimation({ container: stage.current, renderer: canvas ? "canvas" : "svg", loop: true, autoplay: true, animationData: data });
-        show();
+        inFrames(() => {
+          if (cancelled || !stage.current) return;
+          item = lottie.loadAnimation({ container: stage.current, renderer: canvas ? "canvas" : "svg", loop: true, autoplay: true, animationData: data });
+          show();
+        });
       }).catch(() => undefined);
     }
     return () => {
