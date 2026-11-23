@@ -32,6 +32,24 @@ function loadPlayer(canvas: boolean): Promise<LottiePlayer> {
   return p;
 }
 
+type LottieLayer = { ty?: number; shapes?: LottieShape[] };
+type LottieShape = { ty?: string; it?: LottieShape[] };
+
+/** Telegram stores TGS with empty arrays left out (a shape layer without `shapes`, a group without
+ *  `it`), and lottie-web reads their length unguarded: it threw on real packs, so no TGS emoji ever
+ *  moved. Put the empty arrays back. */
+function completeTgs(data: { layers?: LottieLayer[]; assets?: { layers?: LottieLayer[] }[] }) {
+  const shapes = (list: LottieShape[]) => {
+    for (const s of list) if (s.ty === "gr") shapes((s.it ??= []));
+  };
+  const layers = (list: LottieLayer[]) => {
+    for (const l of list) if (l.ty === 4) shapes((l.shapes ??= []));
+  };
+  layers((data.layers ??= []));
+  for (const a of data.assets ?? []) if (a.layers) layers(a.layers);
+  return data;
+}
+
 /** A TGS file is gzip-compressed Lottie JSON; the browser's DecompressionStream opens it. */
 function loadAnimation(url: string): Promise<unknown> {
   let p = animations.get(url);
@@ -39,7 +57,7 @@ function loadAnimation(url: string): Promise<unknown> {
     p = fetch(url).then(async (res) => {
       if (!res.ok || !res.body) throw new Error(`animation: HTTP ${res.status}`);
       const text = await new Response(res.body.pipeThrough(new DecompressionStream("gzip"))).text();
-      return JSON.parse(text) as unknown;
+      return completeTgs(JSON.parse(text));
     });
     p.catch(() => animations.delete(url));
     // Keep the last few decoded animations only: a long browse would otherwise hold them all.
