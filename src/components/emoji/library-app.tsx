@@ -21,6 +21,7 @@ export function matches(search: string, query: string): boolean {
 type View = { kind: "all" } | { kind: "saved" } | { kind: "collection"; id: string } | { kind: "category"; name: string };
 type Format = "any" | "animated" | "static";
 const FORMAT_LABEL = { static: "Static", animated: "Animated", video: "Video" } as const;
+const PAGE = 36;
 
 function formatOk(p: LibraryPack, f: Format) {
   if (f === "animated") return p.formats.some((x) => x !== "static");
@@ -137,6 +138,10 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
     shown = [...shown].sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
   }
   const firstScreen = view.kind === "all" && !q && format === "any";
+  // The grid renders a page at a time; the page count resets when the list changes.
+  const listKey = JSON.stringify([view, format, q]);
+  const [more, setMore] = useState({ key: listKey, n: PAGE });
+  const limit = more.key === listKey ? more.n : PAGE;
   const title = view.kind === "all" ? "All packs" : view.kind === "saved" ? "Saved"
     : view.kind === "category" ? view.name : collections.find((c) => c.id === view.id)?.title ?? "";
   const iconOf = (category: string) => packs.find((p) => p.category === category)?.sample[0];
@@ -268,15 +273,24 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           <p aria-live="polite" className="sr-only">{shown.length} packs shown</p>
           {shown.length ? (
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {shown.map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} />)}
+              {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} />)}
             </div>
-          ) : (
+          ) : null}
+          {shown.length > limit ? (
+            <div className="mt-4 flex justify-center">
+              <button type="button" onClick={() => setMore({ key: listKey, n: limit + PAGE })}
+                className="tg-glass tg-accent h-10 rounded-full px-5 text-sm font-medium">
+                Show more · {shown.length - limit} left
+              </button>
+            </div>
+          ) : null}
+          {!shown.length ? (
             <p className="tg-glass tg-hint rounded-2xl px-4 py-10 text-center text-sm">
               {!packs.length ? "No packs in the library yet."
                 : view.kind === "saved" && !saved.packs.length ? "Nothing saved yet. Tap the star on a pack to keep it here; it stays in this browser."
                 : "No pack matches. Try another word or the emoji itself."}
             </p>
-          )}
+          ) : null}
         </section>
       </div>
     </div>

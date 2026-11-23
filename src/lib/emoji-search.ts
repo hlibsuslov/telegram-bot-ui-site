@@ -54,8 +54,10 @@ export function stem(word: string): string {
 }
 
 const WORD = /[\p{L}\p{N}]+/gu;
-export function words(text: string): string[] {
-  return (text.toLowerCase().replace(/ё/g, "е").match(WORD) ?? []).filter((w) => w.length > 1 || /\d/.test(w));
+/** Lower-cased words. Single letters and digits are kept only where they carry meaning (tags like
+ *  "letter a" and queries); dictionaries drop them, or prepositions like "в" would match everything. */
+export function words(text: string, singles = false): string[] {
+  return (text.toLowerCase().replace(/ё/g, "е").match(WORD) ?? []).filter((w) => singles || w.length > 1 || /\d/.test(w));
 }
 
 const EMOJI_RE = /\p{Extended_Pictographic}(?:️|‍\p{Extended_Pictographic})*|\p{Regional_Indicator}{2}/gu;
@@ -68,7 +70,7 @@ function addMeaning(emoji: string, list: string[]) {
 }
 for (const [e, list] of Object.entries(emojilib as Record<string, string[]>)) addMeaning(e, list.flatMap((w) => words(w.replace(/_/g, " "))));
 for (const data of [ruData, ukData] as { unicode: string; label?: string; tags?: string[] }[][]) {
-  for (const d of data) addMeaning(d.unicode, [...words(d.label ?? ""), ...(d.tags ?? []).flatMap(words)]);
+  for (const d of data) addMeaning(d.unicode, [...words(d.label ?? ""), ...(d.tags ?? []).flatMap((t) => words(t))]);
 }
 
 /** Words for what an ordinary emoji means, in English, Russian and Ukrainian. */
@@ -130,7 +132,7 @@ function build(src: SearchSource): Index {
       meaning = meaningOf(f).map((w) => [w, 2] as Weighted);
       meaningCache.set(f, meaning);
     }
-    const own = e.tags.flatMap(words);
+    const own = e.tags.flatMap((t) => words(t, true));
     tagStems.set(i, own.map(stem));
     for (const w of own) { put(emojiTerms, stem(w), i, 5); count(w); }
     for (const [w, weight] of meaning) { put(emojiTerms, stem(w), i, weight); count(w); }
@@ -181,7 +183,7 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
   const ix = indexOf(src);
   const q = query.trim().slice(0, 100);
   const emojiInQuery = [...new Set((q.match(EMOJI_RE) ?? []).map(stripVariation))];
-  const qWords = words(q.replace(EMOJI_RE, " ")).slice(0, 6);
+  const qWords = words(q.replace(EMOJI_RE, " "), true).slice(0, 6);
   const onlyPack = pack ? src.packs.findIndex((p) => p.name.toLowerCase() === pack.toLowerCase()) : -1;
   const empty: SearchResult = { query: q, emoji: [], packs: [], suggest: { complete: [], related: [], categories: [], didYouMean: null }, total: 0 };
   if (!qWords.length && !emojiInQuery.length) return empty;
@@ -203,6 +205,7 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
     parts.push({ emoji, packs: new Map() });
   }
 
+  const phrase = qWords.length > 1 ? qWords.join(" ") : "";
   // An emoji matches when every part matches it or its pack.
   const scores = new Map<number, number>();
   src.emoji.forEach((e, i) => {
@@ -213,6 +216,8 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
       if (!s) return;
       total += s;
     }
+    // The whole phrase inside one tag ("letter a") beats its words found apart.
+    if (phrase && e.tags.some((t) => t.includes(phrase))) total += 3;
     scores.set(i, total);
   });
 

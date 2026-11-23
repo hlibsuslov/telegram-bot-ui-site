@@ -110,7 +110,7 @@ async function readPack({ name, category }: ListedPack, tags: Map<string, string
     pack: {
       name: p.name, title: p.title, link: `https://t.me/addemoji/${p.name}`, category, count: emoji.length, formats,
       rank, meanings: fallbacks.size, covers: coverage(fallbacks), similar: [],
-      adaptive: emoji.some((e) => e.adaptive), adaptiveShare: emoji.length ? emoji.filter((e) => e.adaptive).length / emoji.length : 0, tags: packTags, sample: emoji.slice(0, SAMPLE).map((e) => ({ ...e, search: "" })),
+      adaptive: emoji.some((e) => e.adaptive), adaptiveShare: emoji.length ? emoji.filter((e) => e.adaptive).length / emoji.length : 0, tags: packTags, sample: emoji.slice(0, SAMPLE).map((e) => ({ ...e, tags: [], search: "" })),
     },
   };
 }
