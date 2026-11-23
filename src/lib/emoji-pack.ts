@@ -93,7 +93,7 @@ function telegram(path: string, body: string | null, limit: number): Promise<{ s
 }
 
 /** One read-only Bot API call. Errors carry Telegram's description, never the request URL. */
-async function call<T>(method: "getStickerSet" | "getFile", params: Record<string, string>): Promise<T> {
+async function call<T>(method: "getStickerSet" | "getFile" | "getCustomEmojiStickers", params: Record<string, string | string[]>): Promise<T> {
   const path = `/bot${token()}/${method}`;
   const { status, data } = await slot(() => telegram(path, JSON.stringify(params), JSON_MAX));
   let doc: { ok?: boolean; result?: T; description?: string; parameters?: { retry_after?: number } } = {};
@@ -156,6 +156,37 @@ export async function resolvePack(name: string): Promise<Pack> {
     });
   }
   return { name: set.name, title: set.title ?? set.name, emoji };
+}
+
+// ------------------------------------------------------------------ pack of an emoji id
+
+export const IDS_MAX = 200; // getCustomEmojiStickers takes at most 200 ids
+const owners = new Map<string, { at: number; set: string | null }>();
+const OWNER_CACHE_MAX = 20_000;
+
+/** Ids from `?ids=1,2,3`: digits only, distinct, at most IDS_MAX. */
+export function parseIds(raw: string | null): string[] {
+  const ids = [...new Set((raw ?? "").split(",").map((s) => s.trim()).filter(Boolean))];
+  if (!ids.length || ids.length > IDS_MAX || !ids.every((id) => EMOJI_ID.test(id))) {
+    throw new ResolverError("BAD_REQUEST", 400, `ids: 1 to ${IDS_MAX} custom emoji ids (digits), comma-separated`);
+  }
+  return ids;
+}
+
+/** The pack each custom emoji belongs to. Ids Telegram does not know (or whose pack is gone) are left out. */
+export async function resolveSets(ids: string[]): Promise<{ id: string; set: string }[]> {
+  const now = Date.now();
+  const ask = ids.filter((id) => { const hit = owners.get(id); return !hit || now - hit.at >= SET_TTL_MS; });
+  if (ask.length) {
+    const stickers = await call<{ custom_emoji_id?: string; set_name?: string }[]>("getCustomEmojiStickers", { custom_emoji_ids: ask });
+    const found = new Map<string, string>();
+    for (const s of Array.isArray(stickers) ? stickers : []) {
+      if (s.custom_emoji_id && s.set_name && PACK_NAME.test(s.set_name)) found.set(s.custom_emoji_id, s.set_name);
+    }
+    if (owners.size + ask.length > OWNER_CACHE_MAX) owners.clear();
+    for (const id of ask) owners.set(id, { at: now, set: found.get(id) ?? null });
+  }
+  return ids.flatMap((id) => { const set = owners.get(id)?.set; return set ? [{ id, set }] : []; });
 }
 
 const TYPES: Record<string, string> = { webp: "image/webp", webm: "video/webm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg" };
