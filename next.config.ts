@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
   // served there, because bot-ui Studio installs already out there call the emoji resolver at that host
   // and refuse redirects.
   async redirects() {
-    const has = [{ type: "host" as const, value: OLD_HOST }];
+    // `value` is a regular expression: escape the dots so only this exact host matches.
+    const has = [{ type: "host" as const, value: OLD_HOST.replace(/\./g, "\\.") }];
     return [
       { source: "/", has, destination: SITE_ORIGIN, permanent: true },
       { source: "/:path((?!api/).+)", has, destination: `${SITE_ORIGIN}/:path`, permanent: true },
