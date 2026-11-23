@@ -10,8 +10,8 @@ export function AgentFlow({ stepHeading: StepHeading = "h3" }: { stepHeading?: "
             <Image
               src={`/studio/flow/${step.id}.webp`}
               alt=""
-              width={288}
-              height={288}
+              width={192}
+              height={192}
               unoptimized
               className="size-16 object-contain sm:size-24"
             />

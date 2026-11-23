@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { DuckIcon, type DuckIconName } from "./duck-icon";
 import { Container } from "./section";
 
-type MapNode = { id: string; title: string; text: string; href: string };
+type MapNode = { id: DuckIconName; title: string; text: string; href: string };
 
 const ROOT: MapNode = {
   id: "skill",
@@ -166,14 +166,7 @@ function NodeCard({
           active && "bg-brand/12",
         )}
       >
-        <Image
-          src={`/skill-map/${node.id}.webp`}
-          alt=""
-          width={160}
-          height={160}
-          unoptimized
-          className={cn("object-contain", big ? "size-11" : "size-9")}
-        />
+        <DuckIcon name={node.id} className={big ? "size-11" : "size-9"} />
       </span>
       <span className="min-w-0">
         <span className={cn("block leading-snug font-semibold", kind === "root" ? "text-lg" : "text-sm")}>{node.title}</span>
