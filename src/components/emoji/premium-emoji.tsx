@@ -222,15 +222,17 @@ function videoSlot(granted: () => void): () => void {
   };
 }
 
-/** Reveals the moving emoji over its still: the still hides only once something moves over it, so
- *  there is never a blank square. */
-const reveal = (el: Element | null) => el?.parentElement?.setAttribute("data-playing", "");
-const conceal = (el: Element | null) => el?.parentElement?.removeAttribute("data-playing");
+/** Marks the emoji box (the player's parent) as playing, which hides the still: only once something
+ *  moves over it, so there is never a blank square. The box is taken when the player mounts, because
+ *  by the time an effect cleans up, React has already detached the player from it. */
+const reveal = (box: Element | null | undefined) => box?.setAttribute("data-playing", "");
+const conceal = (box: Element | null | undefined) => box?.removeAttribute("data-playing");
 
 function LottieMotion({ animation }: { animation: string }) {
   const stage = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const el = stage.current;
+    const box = el?.parentElement;
     let item: LottieItem | null = null;
     let cancelled = false;
     Promise.all([loadPlayer(), loadAnimation(animation)]).then(([lottie, data]) => {
@@ -238,14 +240,14 @@ function LottieMotion({ animation }: { animation: string }) {
         if (cancelled || !el) return;
         item = lottie.loadAnimation({ container: el, renderer: "svg", loop: true, autoplay: true, animationData: data });
         // Once its first frame is drawn.
-        if (item.isLoaded) reveal(el);
-        else item.addEventListener("DOMLoaded", () => reveal(el));
+        if (item.isLoaded) reveal(box);
+        else item.addEventListener("DOMLoaded", () => reveal(box));
       });
     }).catch(() => undefined);
     return () => {
       cancelled = true;
       item?.destroy();
-      conceal(el);
+      conceal(box);
     };
   }, [animation]);
   return <span ref={stage} aria-hidden="true" className="tg-emoji-motion pointer-events-none absolute inset-0 [&_svg]:!size-full" />;
@@ -258,7 +260,8 @@ function VideoMotion({ src }: { src: string }) {
   useEffect(() => {
     const v = video.current;
     if (!slot || !v) return;
-    const show = () => reveal(v);
+    const box = v.parentElement;
+    const show = () => reveal(box);
     v.addEventListener("playing", show);
     void v.play().catch(() => undefined);
     return () => {
@@ -267,7 +270,7 @@ function VideoMotion({ src }: { src: string }) {
       v.pause();
       v.removeAttribute("src");
       v.load();
-      conceal(v);
+      conceal(box);
     };
   }, [slot]);
   return slot ? (
