@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LibraryApp } from "@/components/emoji/library-app";
-import { getLibrary } from "@/lib/emoji-library";
+import { cardPack, getLibrary } from "@/lib/emoji-library";
 
 const TITLE = "Premium emoji library for Telegram bots | telegram-bot-ui";
 const DESCRIPTION =
@@ -23,7 +23,7 @@ export default async function EmojiLibraryPage() {
       <p className="tg-hint mb-3 px-1 text-[13px]">
         {library.packs.length} packs · {emoji.toLocaleString("en-US")} emoji · hover to play · saved packs stay in this browser
       </p>
-      <LibraryApp packs={library.packs} categories={library.categories} collections={library.collections} />
+      <LibraryApp packs={library.packs.map(cardPack)} categories={library.categories} collections={library.collections} />
     </>
   );
 }

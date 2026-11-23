@@ -7,6 +7,7 @@ import "server-only";
 import { cacheLife } from "next/cache";
 import packsText from "@/content/emoji-packs.txt";
 import tagsText from "@/content/emoji-tags.txt";
+import { toCardEmoji, type CardPack } from "./emoji-card";
 import { fixturesOn } from "./emoji-fixtures";
 import { PACK_NAME, resolvePack, type Format, type PackEmoji } from "./emoji-pack";
 import { emojiSearchText, type SearchSource } from "./emoji-search";
@@ -136,6 +137,14 @@ async function settledInBatches<T, R>(items: T[], parallel: number, work: (item:
   return out;
 }
 
+/** A pack as its card shows it, small enough to send hundreds to the browser. */
+export function cardPack(p: LibraryPack): CardPack {
+  return {
+    name: p.name, title: p.title, category: p.category, count: p.count, formats: p.formats,
+    adaptiveShare: Math.round(p.adaptiveShare * 100) / 100, covers: p.covers.length, sample: p.sample.map(toCardEmoji),
+  };
+}
+
 /** Every listed pack the resolver can read; the rest are reported, not shown. Categories keep
  *  the file's order, "Other" last. */
 export async function getLibrary(): Promise<Library> {
@@ -159,7 +168,7 @@ export async function getLibrary(): Promise<Library> {
   const categories = [...new Set(packs.map((p) => p.category))].sort((a, b) => Number(a === OTHER) - Number(b === OTHER));
   const body = {
     packs: packs.map((p) => ({ name: p.name, title: p.title, category: p.category, rank: p.rank, tags: p.tags })),
-    emoji: read.flatMap((r, p) => r.emoji.map((e) => ({ p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, pv: !!e.preview, tags: e.tags }))),
+    emoji: read.flatMap((r, p) => r.emoji.map((e) => ({ p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, pv: !!e.preview, st: !!e.still, tags: e.tags }))),
   };
   const source: SearchSource = { ...body, revision: revisionOf(JSON.stringify(body)) };
   return { packs, categories, collections: collections(packs), listed: list.length, unavailable, source };

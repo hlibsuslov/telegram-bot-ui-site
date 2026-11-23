@@ -2,14 +2,16 @@
 
 // The /emoji index in Telegram's visual language: a settings-style list on the left (library,
 // collections, categories with an icon taken from the packs), search and a format switch on top,
-// collection rows on the first screen, then the pack grid. Packs play on hover.
+// collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
+// screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
-import type { Collection, LibraryPack } from "@/lib/emoji-library";
+import type { Collection } from "@/lib/emoji-library";
+import { fromCardEmoji, packLink, type CardPack } from "@/lib/emoji-card";
 import { BOT_SLOTS } from "@/lib/emoji-slots";
-import { PremiumEmoji } from "./premium-emoji";
+import { EmojiMotion, EmojiStill, isMouse, PremiumEmoji } from "./premium-emoji";
 import { copy, useSaved } from "./saved";
 import { useEmojiSearch } from "./use-emoji-search";
 import type { EmojiHit, SearchResult } from "@/lib/emoji-search";
@@ -24,7 +26,7 @@ type Format = "any" | "animated" | "static";
 const FORMAT_LABEL = { static: "Static", animated: "Animated", video: "Video" } as const;
 const PAGE = 36;
 
-function formatOk(p: LibraryPack, f: Format) {
+function formatOk(p: CardPack, f: Format) {
   if (f === "animated") return p.formats.some((x) => x !== "static");
   if (f === "static") return p.formats.length === 1 && p.formats[0] === "static";
   return true;
@@ -45,19 +47,20 @@ function Cell({ active, onClick, icon, label, count }: { active: boolean; onClic
   );
 }
 
-export function PackCard({ pack, saved, onSave, className }: { pack: LibraryPack; saved: boolean; onSave: () => void; className?: string }) {
+export function PackCard({ pack, saved, onSave, className }: { pack: CardPack; saved: boolean; onSave: () => void; className?: string }) {
   const [hot, setHot] = useState(false);
+  const link = packLink(pack.name);
   return (
     <article
-      className={cn("tg-glass flex flex-col rounded-2xl p-3.5", className)}
-      onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)}
-      onFocus={() => setHot(true)} onBlur={() => setHot(false)}
+      className={cn("tg-glass tg-card flex flex-col rounded-2xl p-3.5", className)}
+      onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
+      onFocus={(e) => e.target.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
     >
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-[15px] font-semibold"><Link href={`/emoji/${pack.name}`} className="rounded hover:underline">{pack.title}</Link></h3>
           <p className="tg-hint truncate text-[13px]">
-            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.adaptiveShare >= 0.5 ? " · ◐ any theme" : ""}{pack.covers.length >= 6 ? ` · ${pack.covers.length}/${BOT_SLOTS.length} bot icons` : ""}
+            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.adaptiveShare >= 0.5 ? " · ◐ any theme" : ""}{pack.covers >= 6 ? ` · ${pack.covers}/${BOT_SLOTS.length} bot icons` : ""}
           </p>
         </div>
         <button
@@ -68,11 +71,14 @@ export function PackCard({ pack, saved, onSave, className }: { pack: LibraryPack
         </button>
       </div>
       <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-2.5 grid grid-cols-8 gap-1">
-        {pack.sample.map((e) => <PremiumEmoji key={e.id} emoji={e} active={hot} size={28} className="mx-auto" />)}
+        {pack.sample.map((t) => {
+          const e = fromCardEmoji(pack.name, t);
+          return <EmojiStill key={e.id} emoji={e} size={28} className="mx-auto">{hot && e.format !== "static" ? <EmojiMotion emoji={e} /> : null}</EmojiStill>;
+        })}
       </Link>
       <div className="mt-auto flex items-center gap-4 pt-3">
         <Link href={`/emoji/${pack.name}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
-        <a href={pack.link} target="_blank" rel="noopener noreferrer" className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
+        <a href={link} target="_blank" rel="noopener noreferrer" className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
         {pack.count > pack.sample.length ? <span className="tg-hint ml-auto text-xs">+{pack.count - pack.sample.length}</span> : null}
       </div>
     </article>
@@ -85,10 +91,11 @@ function HitTile({ hit }: { hit: EmojiHit }) {
     <li>
       <Link
         href={`/emoji/${hit.pack}#e=${hit.id}`} title={`${hit.fallback} · ${hit.pack}`} aria-label={`${hit.fallback || "emoji"} from ${hit.pack}`}
-        onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}
+        onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
+        onFocus={(e) => e.currentTarget.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
         className="tg-cell flex aspect-square items-center justify-center rounded-xl"
       >
-        <PremiumEmoji emoji={{ ...hit, preview: hit.preview, animation: hit.animation }} active={hot} size={36} />
+        <PremiumEmoji emoji={hit} active={hot} size={36} />
       </Link>
     </li>
   );
@@ -112,7 +119,7 @@ function Suggestions({ data, onPick, onCategory }: { data: SearchResult; onPick:
   );
 }
 
-export function LibraryApp({ packs, categories, collections }: { packs: LibraryPack[]; categories: string[]; collections: Collection[] }) {
+export function LibraryApp({ packs, categories, collections }: { packs: CardPack[]; categories: string[]; collections: Collection[] }) {
   const { saved, togglePack } = useSaved();
   const [view, setView] = useState<View>({ kind: "all" });
   const [format, setFormat] = useState<Format>("any");
@@ -123,9 +130,9 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
   const { data, loading, failed } = useEmojiSearch(q);
   const searching = !!q.trim();
   const order = new Map((data?.packs ?? []).map((p, i) => [p.name, i]));
-  const isSaved = (p: LibraryPack) => saved.packs.includes(p.name);
+  const isSaved = (p: CardPack) => saved.packs.includes(p.name);
 
-  const inView = (p: LibraryPack, v: View) =>
+  const inView = (p: CardPack, v: View) =>
     v.kind === "all" ? true
     : v.kind === "saved" ? isSaved(p)
     : v.kind === "category" ? p.category === v.name
@@ -228,7 +235,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
               </button>
             </div>
             <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
-              {c.packs.slice(0, 8).map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p).map((p) => (
+              {c.packs.slice(0, 8).map((n) => byName.get(n)).filter((p): p is CardPack => !!p).map((p) => (
                 <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
               ))}
             </div>
@@ -262,7 +269,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
             {view.kind === "saved" && shown.length ? (
               <button
                 type="button"
-                onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${p.link}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
+                onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${packLink(p.name)}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
                 className="tg-accent ml-auto inline-flex items-center gap-1.5 rounded text-sm"
               >
                 {copied ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />} Copy bot-ui import commands
@@ -271,7 +278,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           </div>
           <p aria-live="polite" className="sr-only">{shown.length} packs shown</p>
           {shown.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} />)}
             </div>
           ) : null}

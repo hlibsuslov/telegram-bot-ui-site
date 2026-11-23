@@ -83,3 +83,32 @@
 .tg-scroll-x { scrollbar-width: none; }
 .tg-scroll-x::-webkit-scrollbar { display: none; }
 .tg input[type="search"]::-webkit-search-cancel-button { display: none; }
+
+/* One emoji (premium-emoji.tsx). A still placeholder until the picture loads, the ordinary emoji when
+   it cannot, and the picture hidden while the animation plays over it. No CSS animation here: a
+   library page shows about a thousand emoji, and a pulse on each kept phones busy. */
+.tg-emoji:not([data-ready]):not([data-broken])::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 30%;
+  background: currentColor;
+  opacity: 0.07;
+}
+.tg-emoji[data-broken] > .tg-emoji-still { display: none; }
+.tg-emoji[data-broken]::after {
+  content: attr(data-fallback);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tg-emoji[data-playing] > .tg-emoji-still { opacity: 0; }
+
+/* Pack cards off screen (below, or to the side in a collection row) are not laid out or painted
+   until they come near; the size keeps the scrollbar steady meanwhile. */
+.tg-card {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 11.5rem;
+}

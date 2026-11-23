@@ -31,6 +31,7 @@ export function fixturePack(name: string): Pack | null {
     id: id(name, i), fallback: GLYPHS[i % GLYPHS.length], format: spec.format, adaptive: false,
     preview: `/api/emoji-pack/${name}/${id(name, i)}`,
     animation: spec.format === "animated" ? `/api/emoji-pack/${name}/${id(name, i)}/anim` : null,
+    still: null,
   }));
   return { name, title: spec.title, emoji };
 }

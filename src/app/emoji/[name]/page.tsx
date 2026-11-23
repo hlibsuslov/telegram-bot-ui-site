@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ChevronLeft } from "lucide-react";
 import { PackSheet } from "@/components/emoji/pack-sheet";
-import { getLibrary, getLibraryPack, type LibraryPack } from "@/lib/emoji-library";
+import { cardPack, getLibrary, getLibraryPack, type LibraryPack } from "@/lib/emoji-library";
 
 // Pack pages render on their first request and are then cached, not at build: prerendering hundreds
 // of them in parallel build workers, each reading the whole catalog, floods Telegram and fails the
@@ -28,7 +28,7 @@ async function Pack({ params }: { params: PageProps<"/emoji/[name]">["params"] }
   if (!data) notFound();
   const library = await getLibrary();
   const byName = new Map(library.packs.map((p) => [p.name, p]));
-  const similar = data.pack.similar.map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p);
+  const similar = data.pack.similar.map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p).map(cardPack);
   return <PackSheet pack={data.pack} emoji={data.emoji} similar={similar} />;
 }
 

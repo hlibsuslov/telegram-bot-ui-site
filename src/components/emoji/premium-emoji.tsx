@@ -2,26 +2,34 @@
 
 // One premium emoji as Telegram draws it: a still picture that comes alive on hover or focus
 // (or always, when `play` is "always" and it is on screen). Animated (TGS) emoji are Lottie,
-// fetched and decompressed only when they first play; video emoji are WEBM; static ones a picture.
-import { useEffect, useRef, useState } from "react";
+// fetched and decompressed only when they first play; video emoji show their thumbnail and load
+// the WEBM only to play; static ones are a picture.
+//
+// A library page shows about a thousand of these, so the still keeps no React state: whether the
+// picture has loaded or failed is written on the DOM (data-ready, data-broken) and drawn by CSS
+// (emoji.css). The player is a separate component that exists only while the emoji plays.
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type PointerEvent, type ReactNode, type Ref } from "react";
+import type { EmojiData } from "@/lib/emoji-card";
 import { cn } from "@/lib/utils";
 
-export type EmojiData = {
-  id: string; fallback: string; format: "static" | "animated" | "video";
-  preview: string | null; animation: string | null;
-  /** needs_repainting: Telegram draws it in the text color (single-color icon packs) */
-  adaptive?: boolean;
-};
+export type { EmojiData };
 
 type LottieItem = { destroy(): void };
-type LottiePlayer = { loadAnimation(o: { container: Element; renderer: "svg"; loop: boolean; autoplay: boolean; animationData: unknown }): LottieItem };
+type LottiePlayer = { loadAnimation(o: { container: Element; renderer: "svg" | "canvas"; loop: boolean; autoplay: boolean; animationData: unknown }): LottieItem };
 
-let player: Promise<LottiePlayer> | null = null;
+const players = new Map<string, Promise<LottiePlayer>>();
 const animations = new Map<string, Promise<unknown>>();
 
-function loadPlayer(): Promise<LottiePlayer> {
-  player ??= import("lottie-web/build/player/lottie_light").then((m) => (m.default ?? m) as unknown as LottiePlayer);
-  return player;
+/** SVG Lottie on a desktop; canvas on touch screens, where many SVG animations at once stutter. */
+function loadPlayer(canvas: boolean): Promise<LottiePlayer> {
+  const key = canvas ? "canvas" : "svg";
+  let p = players.get(key);
+  if (!p) {
+    p = (canvas ? import("lottie-web/build/player/lottie_light_canvas") : import("lottie-web/build/player/lottie_light"))
+      .then((m) => (m.default ?? m) as unknown as LottiePlayer);
+    players.set(key, p);
+  }
+  return p;
 }
 
 /** A TGS file is gzip-compressed Lottie JSON; the browser's DecompressionStream opens it. */
@@ -41,11 +49,169 @@ function loadAnimation(url: string): Promise<unknown> {
   return p;
 }
 
+const HOVER = "(hover: hover)";
+const subscribeHover = (cb: () => void) => {
+  const m = matchMedia(HOVER);
+  m.addEventListener("change", cb);
+  return () => m.removeEventListener("change", cb);
+};
+
+/** Whether the main pointer can hover (a mouse). Touch screens play on tap instead. The server
+ *  renders for a mouse; a touch screen corrects it right after hydration. */
+export function useCanHover(): boolean {
+  return useSyncExternalStore(subscribeHover, () => matchMedia(HOVER).matches, () => true);
+}
+
+/** A mouse pointer, not a finger: a tap fires pointerenter too, and must not start a hover preview. */
+export const isMouse = (e: PointerEvent) => e.pointerType === "mouse";
+
+// One IntersectionObserver for every emoji that plays while visible, instead of one each.
+const watched = new Map<Element, (visible: boolean) => void>();
+let observer: IntersectionObserver | null = null;
+function watch(el: Element, onChange: (visible: boolean) => void): () => void {
+  observer ??= new IntersectionObserver((entries) => {
+    for (const e of entries) watched.get(e.target)?.(e.isIntersecting);
+  }, { rootMargin: "40px" });
+  watched.set(el, onChange);
+  observer.observe(el);
+  return () => {
+    watched.delete(el);
+    observer?.unobserve(el);
+  };
+}
+
+const ready = (el: Element) => el.parentElement?.setAttribute("data-ready", "");
+
+/** A busy resolver (429, not cached) or a cold picture can fail once: ask the same URL again twice,
+ *  a little later each time, before falling back to the ordinary emoji. */
+function retry(el: HTMLImageElement | HTMLVideoElement) {
+  const tries = Number(el.dataset.tries ?? 0);
+  if (tries >= 2) {
+    el.parentElement?.setAttribute("data-broken", "");
+    return;
+  }
+  el.dataset.tries = String(tries + 1);
+  const src = el.getAttribute("src");
+  setTimeout(() => { if (src && el.isConnected) el.setAttribute("src", src); }, 700 * (tries + 1));
+}
+
+/** A picture can finish (or fail) before hydration attaches onLoad: then ask the element itself. */
+function settled(el: HTMLImageElement | HTMLVideoElement | null) {
+  if (!el) return;
+  if (el instanceof HTMLVideoElement) {
+    if (el.readyState >= 2) ready(el);
+  } else if (el.complete && el.getAttribute("src")) {
+    if (el.naturalWidth > 0) ready(el);
+    else retry(el);
+  }
+}
+
+const TONE = { light: "*:brightness-0", dark: "*:brightness-0 *:invert", page: "*:brightness-0 dark:*:invert" } as const;
+
+/** The still picture of an emoji, with room for a player on top (children). No hooks: cheap enough
+ *  for a thousand on a page. */
+export function EmojiStill({
+  emoji, size = 40, tone, className, children, ref, onPointerEnter, onPointerLeave,
+}: {
+  emoji: EmojiData; size?: number;
+  /** draw adaptive emoji for this theme instead of the page's (theme previews) */
+  tone?: "light" | "dark";
+  className?: string; children?: ReactNode; ref?: Ref<HTMLSpanElement>;
+  onPointerEnter?: (e: PointerEvent) => void; onPointerLeave?: (e: PointerEvent) => void;
+}) {
+  const picture = emoji.format === "video" ? emoji.still : emoji.preview;
+  // A video emoji without a thumbnail: the WEBM is the still, as before thumbnails were used.
+  const videoStill = emoji.format === "video" && !emoji.still ? emoji.preview : null;
+  return (
+    <span
+      // A new picture is a new element, so the ready/broken marks of the old one do not carry over.
+      key={picture ?? videoStill ?? emoji.id}
+      ref={ref}
+      // Adaptive emoji take the text color, as in Telegram: black on light, white on dark.
+      className={cn("tg-emoji relative inline-block shrink-0", emoji.adaptive && TONE[tone ?? "page"], className)}
+      style={{ width: size, height: size, fontSize: size * 0.7 }}
+      data-fallback={emoji.fallback || "□"}
+      data-broken={picture || videoStill ? undefined : ""}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+    >
+      {picture ? (
+        // eslint-disable-next-line @next/next/no-img-element -- pictures come from the resolver API, sized by the grid
+        <img
+          ref={settled} src={picture} alt="" loading="lazy" decoding="async" draggable={false}
+          className="tg-emoji-still size-full object-contain"
+          onLoad={(e) => ready(e.currentTarget)} onError={(e) => retry(e.currentTarget)}
+        />
+      ) : videoStill ? (
+        <video
+          ref={settled} src={videoStill} muted playsInline preload="metadata" aria-hidden="true"
+          className="tg-emoji-still size-full object-contain"
+          onLoadedData={(e) => ready(e.currentTarget)} onError={(e) => retry(e.currentTarget)}
+        />
+      ) : null}
+      {children}
+    </span>
+  );
+}
+
+/** The moving emoji over its still, mounted only while it plays: the Lottie player or the WEBM. */
+export function EmojiMotion({ emoji }: { emoji: EmojiData }) {
+  const stage = useRef<HTMLSpanElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = video.current;
+    const el = stage.current ?? v;
+    const box = el?.parentElement;
+    if (!el || !box) return;
+    // The still hides only once something moves over it, so there is never a blank square.
+    const show = () => box.setAttribute("data-playing", "");
+    let item: LottieItem | null = null;
+    let cancelled = false;
+    if (v) {
+      v.addEventListener("playing", show);
+      void v.play().catch(() => undefined);
+    } else if (emoji.animation) {
+      const canvas = !matchMedia(HOVER).matches;
+      Promise.all([loadPlayer(canvas), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
+        if (cancelled || !stage.current) return;
+        item = lottie.loadAnimation({ container: stage.current, renderer: canvas ? "canvas" : "svg", loop: true, autoplay: true, animationData: data });
+        show();
+      }).catch(() => undefined);
+    }
+    return () => {
+      cancelled = true;
+      item?.destroy();
+      box.removeAttribute("data-playing");
+      if (v) {
+        // Let go of the decoder now, not when the element is collected: phones have few.
+        v.removeEventListener("playing", show);
+        v.pause();
+        v.removeAttribute("src");
+        v.load();
+      }
+    };
+  }, [emoji.animation]);
+
+  if (emoji.format === "video" && emoji.preview) {
+    return (
+      <video
+        ref={video} src={emoji.preview} muted loop playsInline preload="auto" aria-hidden="true"
+        className="tg-emoji-motion pointer-events-none absolute inset-0 size-full object-contain"
+      />
+    );
+  }
+  if (emoji.format === "animated" && emoji.animation) {
+    return <span ref={stage} aria-hidden="true" className="tg-emoji-motion pointer-events-none absolute inset-0 [&_canvas]:!size-full [&_svg]:!size-full" />;
+  }
+  return null;
+}
+
 export function PremiumEmoji({
   emoji, play = "hover", active: forced, className, size = 40, tone,
 }: {
   emoji: EmojiData;
-  /** hover: plays while hovered or focused (inside an element with `group/emoji`, or the emoji itself); always: plays while visible */
+  /** hover: plays while the mouse is over it (or `active`); always: plays while visible */
   play?: "hover" | "always";
   /** a parent that tracks hover itself (a whole tile) passes it here */
   active?: boolean;
@@ -54,98 +220,16 @@ export function PremiumEmoji({
   /** draw adaptive emoji for this theme instead of the page's (theme previews) */
   tone?: "light" | "dark";
 }) {
-  const box = useRef<HTMLSpanElement>(null);
-  const stage = useRef<HTMLSpanElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
-  const img = useRef<HTMLImageElement>(null);
   const [hover, setHover] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [broken, setBroken] = useState(false);
-  const [tries, setTries] = useState(0);
-  const [loaded, setLoaded] = useState(false);
-  const want = forced ?? hover;
-  const on = (play === "always" ? visible : want) && emoji.format !== "static";
-
-  useEffect(() => {
-    if (play !== "always" || !box.current) return;
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: "80px" });
-    io.observe(box.current);
-    return () => io.disconnect();
-  }, [play]);
-
-  useEffect(() => {
-    if (emoji.format !== "animated" || !emoji.animation || !on || !stage.current) return;
-    let item: LottieItem | null = null;
-    let cancelled = false;
-    Promise.all([loadPlayer(), loadAnimation(emoji.animation)]).then(([lottie, data]) => {
-      if (cancelled || !stage.current) return;
-      item = lottie.loadAnimation({ container: stage.current, renderer: "svg", loop: true, autoplay: true, animationData: data });
-      setPlaying(true);
-    }).catch(() => setPlaying(false));
-    return () => {
-      cancelled = true;
-      item?.destroy();
-      setPlaying(false);
-    };
-  }, [on, emoji.format, emoji.animation]);
-
-  useEffect(() => {
-    const v = video.current;
-    if (!v) return;
-    if (on) void v.play().catch(() => undefined);
-    else { v.pause(); v.currentTime = 0; }
-  }, [on]);
-
-  // A picture can finish loading before hydration attaches onLoad: then the event is gone, so ask
-  // the element itself (an external system) whether it already has the picture.
-  useEffect(() => {
-    const done = (img.current?.complete && img.current.naturalWidth > 0) || (video.current?.readyState ?? 0) >= 2;
-    if (done) setLoaded(true);
-  }, [tries]);
-
-  const style = { width: size, height: size };
-  const still = emoji.preview && !broken;
-  // A busy resolver (429, not cached) or a cold picture can fail once: try again twice, a little later
-  // each time, before falling back to the ordinary emoji. A fresh element (key) asks the same URL again.
-  const src = emoji.preview ?? undefined;
-  const failed = () => {
-    if (tries >= 2) { setBroken(true); return; }
-    setTimeout(() => setTries((t) => t + 1), 700 * (tries + 1));
-  };
+  const watchRef = useCallback((el: HTMLSpanElement | null) => (el && play === "always" ? watch(el, setVisible) : undefined), [play]);
+  const on = emoji.format !== "static" && (play === "always" ? visible : forced ?? hover);
   return (
-    <span
-      ref={box}
-      className={cn(
-        "relative inline-block shrink-0",
-        // Adaptive emoji take the text color, as in Telegram: black on light, white on dark.
-        emoji.adaptive && still && (tone === "light" ? "brightness-0" : tone === "dark" ? "brightness-0 invert" : "brightness-0 dark:invert"),
-        className,
-      )}
-      style={style}
-      onPointerEnter={() => setHover(true)}
-      onPointerLeave={() => setHover(false)}
+    <EmojiStill
+      ref={watchRef} emoji={emoji} size={size} tone={tone} className={className}
+      onPointerEnter={(e) => isMouse(e) && setHover(true)} onPointerLeave={() => setHover(false)}
     >
-      {still && !loaded ? (
-        <span aria-hidden="true" className="absolute inset-[12%] animate-pulse rounded-[30%] bg-current opacity-[0.07] motion-reduce:animate-none" />
-      ) : null}
-      {emoji.format === "video" && still ? (
-        <video
-          key={`${src}#${tries}`} ref={video} src={src} muted loop playsInline preload="metadata" aria-hidden="true"
-          className={cn("size-full object-contain transition-opacity duration-200", !loaded && "opacity-0")}
-          onLoadedData={() => setLoaded(true)} onError={failed}
-        />
-      ) : still ? (
-        // eslint-disable-next-line @next/next/no-img-element -- pictures come from the resolver API, sized by the grid
-        <img
-          key={`${src}#${tries}`} ref={img} src={src} alt="" loading="lazy" decoding="async" draggable={false}
-          className={cn("size-full object-contain transition-opacity duration-200", (playing || !loaded) && "opacity-0")}
-          onLoad={() => setLoaded(true)} onError={failed}
-        />
-      ) : (
-        <span aria-hidden="true" className="flex size-full items-center justify-center" style={{ fontSize: size * 0.7 }}>{emoji.fallback || "□"}</span>
-      )}
-      {emoji.format === "animated" ? <span ref={stage} aria-hidden="true" className="pointer-events-none absolute inset-0 [&_svg]:!size-full" /> : null}
-    </span>
+      {on ? <EmojiMotion emoji={emoji} /> : null}
+    </EmojiStill>
   );
 }
