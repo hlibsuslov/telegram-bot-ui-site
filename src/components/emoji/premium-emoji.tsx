@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 export type EmojiData = {
   id: string; fallback: string; format: "static" | "animated" | "video";
   preview: string | null; animation: string | null;
+  /** needs_repainting: Telegram draws it in the text color (single-color icon packs) */
+  adaptive?: boolean;
 };
 
 type LottieItem = { destroy(): void };
@@ -93,7 +95,12 @@ export function PremiumEmoji({
   return (
     <span
       ref={box}
-      className={cn("relative inline-block shrink-0", className)}
+      className={cn(
+        "relative inline-block shrink-0",
+        // Adaptive emoji take the text color, as in Telegram: black on light, white on dark.
+        emoji.adaptive && still && "brightness-0 dark:invert",
+        className,
+      )}
       style={style}
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
