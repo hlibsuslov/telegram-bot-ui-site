@@ -18,18 +18,18 @@ import "server-only";
 import emojilib from "emojilib";
 import ruData from "emojibase-data/ru/compact.json";
 import ukData from "emojibase-data/uk/compact.json";
-import type { Format } from "./emoji-pack";
+import { emojiFile, type Format } from "./emoji-card";
 import { stripVariation } from "./emoji-slots";
 
 export interface SearchPack { name: string; title: string; category: string; rank: number; tags: string[] }
-/** pv: the emoji has a preview picture (an animated emoji without a thumbnail has none) */
-export interface SearchEmoji { p: number; id: string; f: string; fmt: Format; ad: boolean; pv: boolean; tags: string[] }
+/** pv: the emoji has a preview picture (an animated emoji without a thumbnail has none); st: a video emoji has a still */
+export interface SearchEmoji { p: number; id: string; f: string; fmt: Format; ad: boolean; pv: boolean; st: boolean; tags: string[] }
 /** revision: a fingerprint of the whole catalog; the search index is rebuilt when it changes */
 export interface SearchSource { packs: SearchPack[]; emoji: SearchEmoji[]; revision: string }
 
 export interface EmojiHit {
   pack: string; id: string; fallback: string; format: Format; adaptive: boolean;
-  preview: string | null; animation: string | null; score: number;
+  preview: string | null; animation: string | null; still: string | null; score: number;
 }
 export interface SearchResult {
   query: string;
@@ -246,7 +246,8 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
     const name = src.packs[e.p].name;
     return {
       pack: name, id: e.id, fallback: e.f, format: e.fmt, adaptive: e.ad, score: Math.round(score * 100) / 100,
-      preview: e.pv ? `/api/emoji-pack/${name}/${e.id}` : null, animation: e.fmt === "animated" ? `/api/emoji-pack/${name}/${e.id}/anim` : null,
+      preview: e.pv ? emojiFile(name, e.id) : null, animation: e.fmt === "animated" ? emojiFile(name, e.id, "anim") : null,
+      still: e.st ? emojiFile(name, e.id, "still") : null,
     };
   });
 

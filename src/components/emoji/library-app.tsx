@@ -2,15 +2,17 @@
 
 // The /emoji index in Telegram's visual language: a settings-style list on the left (library,
 // collections, categories with an icon taken from the packs), search and a format switch on top,
-// collection rows on the first screen, then the pack grid. Packs play on hover.
+// collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
+// screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
-import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
+import { memo, startTransition, useCallback, useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
-import type { Collection, LibraryPack } from "@/lib/emoji-library";
-import { emojiPackPath } from "@/lib/emoji-links";
+import type { Collection } from "@/lib/emoji-library";
+import { fromCardEmoji, type CardPack } from "@/lib/emoji-card";
+import { emojiPackPath, telegramPackUrl } from "@/lib/emoji-links";
 import { BOT_SLOTS } from "@/lib/emoji-slots";
-import { PremiumEmoji } from "./premium-emoji";
+import { EmojiMotion, EmojiStill, isMouse, PremiumEmoji } from "./premium-emoji";
 import { copy, useSaved } from "./saved";
 import { useEmojiSearch } from "./use-emoji-search";
 import type { EmojiHit, SearchResult } from "@/lib/emoji-search";
@@ -24,11 +26,29 @@ type View = { kind: "all" } | { kind: "saved" } | { kind: "collection"; id: stri
 type Format = "any" | "animated" | "static";
 const FORMAT_LABEL = { static: "Static", animated: "Animated", video: "Video" } as const;
 const PAGE = 36;
+const BATCH = 12;
+const MOBILE_SAMPLE = 8;
 
-function formatOk(p: LibraryPack, f: Format) {
+function formatOk(p: CardPack, f: Format) {
   if (f === "animated") return p.formats.some((x) => x !== "static");
   if (f === "static") return p.formats.length === 1 && p.formats[0] === "static";
   return true;
+}
+
+/** How many grid cards to mount now: a first batch, then another whenever the end of the grid comes
+ *  within a screen or so, up to `limit`. Mounting 36 cards in one go was a long task on a phone. */
+function useGrowing(key: string, limit: number) {
+  const [state, setState] = useState({ key, n: BATCH });
+  const n = Math.min(limit, state.key === key ? state.n : BATCH);
+  const sentinel = useCallback((el: HTMLElement | null) => {
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) startTransition(() => setState((s) => ({ key, n: (s.key === key ? s.n : BATCH) + BATCH })));
+    }, { rootMargin: "1200px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [key]);
+  return { n, sentinel };
 }
 
 function Cell({ active, onClick, icon, label, count }: { active: boolean; onClick: () => void; icon: ReactNode; label: string; count: number }) {
@@ -46,39 +66,45 @@ function Cell({ active, onClick, icon, label, count }: { active: boolean; onClic
   );
 }
 
-export function PackCard({ pack, saved, onSave, className }: { pack: LibraryPack; saved: boolean; onSave: () => void; className?: string }) {
+/** Memoized, with a stable onSave(name): typing in search re-renders the page, not every card. */
+export const PackCard = memo(function PackCard({ pack, saved, onSave, className }: { pack: CardPack; saved: boolean; onSave: (name: string) => void; className?: string }) {
   const [hot, setHot] = useState(false);
   return (
     <article
-      className={cn("tg-glass flex flex-col rounded-2xl p-3.5", className)}
-      onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)}
-      onFocus={() => setHot(true)} onBlur={() => setHot(false)}
+      className={cn("tg-glass tg-card flex flex-col rounded-2xl p-3.5", className)}
+      onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
+      onFocus={(e) => e.target.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
     >
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-[15px] font-semibold"><Link href={`/emoji/${pack.name}`} className="rounded hover:underline">{pack.title}</Link></h3>
           <p className="tg-hint truncate text-[13px]">
-            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.adaptiveShare >= 0.5 ? " · ◐ any theme" : ""}{pack.covers.length >= 6 ? ` · ${pack.covers.length}/${BOT_SLOTS.length} bot icons` : ""}
+            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.adaptiveShare >= 0.5 ? " · ◐ any theme" : ""}{pack.covers >= 6 ? ` · ${pack.covers}/${BOT_SLOTS.length} bot icons` : ""}
           </p>
         </div>
         <button
-          type="button" onClick={onSave} aria-pressed={saved} aria-label={saved ? `Remove ${pack.title} from saved` : `Save ${pack.title}`}
+          type="button" onClick={() => onSave(pack.name)} aria-pressed={saved} aria-label={saved ? `Remove ${pack.title} from saved` : `Save ${pack.title}`}
           className="tg-cell -mt-1 -mr-1 inline-flex size-9 items-center justify-center rounded-full"
         >
           <Star aria-hidden="true" className={cn("size-[18px]", saved ? "fill-amber-400 text-amber-500" : "tg-hint")} />
         </button>
       </div>
-      <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-2.5 grid grid-cols-8 gap-1">
-        {pack.sample.map((e) => <PremiumEmoji key={e.id} emoji={e} active={hot} size={28} className="mx-auto" />)}
+      {/* A phone shows one row of eight: the hidden half never loads (lazy pictures under display: none). */}
+      <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-2.5 grid grid-cols-8 gap-1 max-sm:[&>:nth-child(n+9)]:hidden">
+        {pack.sample.map((t) => {
+          const e = fromCardEmoji(pack.name, t);
+          return <EmojiStill key={e.id} emoji={e} size={28} className="mx-auto">{hot && e.format !== "static" ? <EmojiMotion emoji={e} /> : null}</EmojiStill>;
+        })}
       </Link>
       <div className="mt-auto flex items-center gap-4 pt-3">
         <Link href={emojiPackPath(pack.name)} aria-label={`Open pack ${pack.title}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
-        <a href={pack.link} target="_blank" rel="noopener noreferrer" aria-label={`Add to Telegram · ${pack.title}`} className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
-        {pack.count > pack.sample.length ? <span className="tg-hint ml-auto text-xs">+{pack.count - pack.sample.length}</span> : null}
+        <a href={telegramPackUrl(pack.name)} target="_blank" rel="noopener noreferrer" aria-label={`Add to Telegram · ${pack.title}`} className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
+        {pack.count > MOBILE_SAMPLE ? <span className="tg-hint ml-auto text-xs sm:hidden">+{pack.count - MOBILE_SAMPLE}</span> : null}
+        {pack.count > pack.sample.length ? <span className="tg-hint ml-auto hidden text-xs sm:inline">+{pack.count - pack.sample.length}</span> : null}
       </div>
     </article>
   );
-}
+});
 
 function HitTile({ hit }: { hit: EmojiHit }) {
   const [hot, setHot] = useState(false);
@@ -87,10 +113,11 @@ function HitTile({ hit }: { hit: EmojiHit }) {
       <Link
         href={emojiPackPath(hit.pack, hit.id)} title={`${hit.fallback} · ${FORMAT_LABEL[hit.format]} · ${hit.pack}`}
         aria-label={`${FORMAT_LABEL[hit.format]} ${hit.fallback || "emoji"} from ${hit.pack}, custom emoji ID ${hit.id}`}
-        onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}
+        onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
+        onFocus={(e) => e.currentTarget.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
         className="tg-cell flex aspect-square items-center justify-center rounded-xl"
       >
-        <PremiumEmoji emoji={{ ...hit, preview: hit.preview, animation: hit.animation }} active={hot} size={36} />
+        <PremiumEmoji emoji={hit} active={hot} size={36} />
       </Link>
     </li>
   );
@@ -114,39 +141,44 @@ function Suggestions({ data, onPick, onCategory }: { data: SearchResult; onPick:
   );
 }
 
-export function LibraryApp({ packs, categories, collections }: { packs: LibraryPack[]; categories: string[]; collections: Collection[] }) {
+export function LibraryApp({ packs, categories, collections }: { packs: CardPack[]; categories: string[]; collections: Collection[] }) {
   const { saved, togglePack } = useSaved();
   const [view, setView] = useState<View>({ kind: "all" });
   const [format, setFormat] = useState<Format>("any");
   const [query, setQuery] = useState("");
   const [copied, setCopied] = useState(false);
   const q = useDeferredValue(query);
+  // The pills and the list on the left answer a tap at once; the packs below follow in a background
+  // render React can interrupt, so a tap on a phone never waits for 30 cards to mount.
+  const list = useDeferredValue(view);
+  const fmt = useDeferredValue(format);
   const byName = useMemo(() => new Map(packs.map((p) => [p.name, p])), [packs]);
   const { data, loading, failed } = useEmojiSearch(q);
   const searching = !!q.trim();
   const order = new Map((data?.packs ?? []).map((p, i) => [p.name, i]));
-  const isSaved = (p: LibraryPack) => saved.packs.includes(p.name);
+  const isSaved = (p: CardPack) => saved.packs.includes(p.name);
 
-  const inView = (p: LibraryPack, v: View) =>
+  const inView = (p: CardPack, v: View) =>
     v.kind === "all" ? true
     : v.kind === "saved" ? isSaved(p)
     : v.kind === "category" ? p.category === v.name
     : (collections.find((c) => c.id === v.id)?.packs ?? []).includes(p.name);
-  const base = packs.filter((p) => formatOk(p, format) && (!searching || order.has(p.name)));
+  const base = packs.filter((p) => formatOk(p, fmt) && (!searching || order.has(p.name)));
   if (searching) base.sort((a, b) => (order.get(a.name) ?? 0) - (order.get(b.name) ?? 0));
   const count = (v: View) => base.filter((p) => inView(p, v)).length;
-  let shown = base.filter((p) => inView(p, view));
-  if (view.kind === "collection" && !searching) {
-    const order = collections.find((c) => c.id === view.id)?.packs ?? [];
+  let shown = base.filter((p) => inView(p, list));
+  if (list.kind === "collection" && !searching) {
+    const order = collections.find((c) => c.id === list.id)?.packs ?? [];
     shown = [...shown].sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
   }
-  const firstScreen = view.kind === "all" && !q && format === "any";
+  const firstScreen = list.kind === "all" && !q && fmt === "any";
   // The grid renders a page at a time; the page count resets when the list changes.
-  const listKey = JSON.stringify([view, format, q]);
+  const listKey = JSON.stringify([list, fmt, q]);
   const [more, setMore] = useState({ key: listKey, n: PAGE });
-  const limit = more.key === listKey ? more.n : PAGE;
-  const title = view.kind === "all" ? "All packs" : view.kind === "saved" ? "Saved"
-    : view.kind === "category" ? view.name : collections.find((c) => c.id === view.id)?.title ?? "";
+  const limit = Math.min(shown.length, more.key === listKey ? more.n : PAGE);
+  const { n: mounted, sentinel } = useGrowing(listKey, limit);
+  const title = list.kind === "all" ? "All packs" : list.kind === "saved" ? "Saved"
+    : list.kind === "category" ? list.name : collections.find((c) => c.id === list.id)?.title ?? "";
   const same = (v: View) => JSON.stringify(v) === JSON.stringify(view);
 
   const nav = (
@@ -230,8 +262,8 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
               </button>
             </div>
             <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
-              {c.packs.slice(0, 8).map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p).map((p) => (
-                <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
+              {c.packs.slice(0, 8).map((n) => byName.get(n)).filter((p): p is CardPack => !!p).map((p) => (
+                <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={togglePack} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
               ))}
             </div>
           </section>
@@ -261,10 +293,10 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           <div className="mb-2 flex flex-wrap items-center gap-3 px-1">
             <h2 id="grid-title" className="text-lg font-semibold">{searching ? "Packs" : title}</h2>
             <span className="tg-hint text-sm">{shown.length} packs</span>
-            {view.kind === "saved" && shown.length ? (
+            {list.kind === "saved" && shown.length ? (
               <button
                 type="button"
-                onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${p.link}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
+                onClick={async () => { if (await copy(shown.map((p) => `bot-ui emoji import ${telegramPackUrl(p.name)}`).join("\n"))) { setCopied(true); setTimeout(() => setCopied(false), 1500); } }}
                 className="tg-accent ml-auto inline-flex items-center gap-1.5 rounded text-sm"
               >
                 {copied ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />} Copy bot-ui import commands
@@ -273,11 +305,13 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           </div>
           <p aria-live="polite" className="sr-only">{shown.length} packs shown</p>
           {shown.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-              {shown.slice(0, limit).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={() => togglePack(p.name)} />)}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+              {shown.slice(0, mounted).map((p) => <PackCard key={p.name} pack={p} saved={isSaved(p)} onSave={togglePack} />)}
             </div>
           ) : null}
-          {shown.length > limit ? (
+          {/* A new element per batch, so the observer reports again even if it is still in range. */}
+          {mounted < limit ? <div key={mounted} ref={sentinel} aria-hidden="true" className="h-px" /> : null}
+          {mounted >= limit && shown.length > limit ? (
             <div className="mt-4 flex justify-center">
               <button type="button" onClick={() => setMore({ key: listKey, n: limit + PAGE })}
                 className="tg-glass tg-accent h-10 rounded-full px-5 text-sm font-medium">
@@ -288,7 +322,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: LibraryP
           {!shown.length ? (
             <p className="tg-glass tg-hint rounded-2xl px-4 py-10 text-center text-sm">
               {!packs.length ? "No packs in the library yet."
-                : view.kind === "saved" && !saved.packs.length ? "Nothing saved yet. Tap the star on a pack to keep it here; it stays in this browser."
+                : list.kind === "saved" && !saved.packs.length ? "Nothing saved yet. Tap the star on a pack to keep it here; it stays in this browser."
                 : "No pack matches. Try another word or the emoji itself."}
             </p>
           ) : null}

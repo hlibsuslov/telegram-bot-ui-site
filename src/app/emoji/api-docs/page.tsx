@@ -14,7 +14,7 @@ export const metadata = emojiMetadata(EMOJI_API_DOCS_PATH, TITLE, DESCRIPTION);
 
 const sample = {
   id: CHECKMARK.id, fallback: CHECKMARK.fallback, format: CHECKMARK.format, adaptive: CHECKMARK.adaptive,
-  preview: CHECKMARK.preview, animation: CHECKMARK.animation,
+  preview: CHECKMARK.preview, animation: CHECKMARK.animation, still: null,
 };
 
 export default function EmojiApiDocs() {
@@ -29,7 +29,7 @@ export default function EmojiApiDocs() {
 
       <section aria-labelledby="endpoints">
         <h2 id="endpoints">Public JSON endpoints</h2>
-        <p>Use <code>GET</code> on this site. These endpoints are read-only and require no API key. Resolve relative <code>pageUrl</code>, <code>preview</code>, and <code>animation</code> paths against the site origin. Use <code>pageUrl</code> to cite a library pack or <code>telegramUrl</code> for its original Telegram link. Keep every ID as a string.</p>
+        <p>Use <code>GET</code> on this site. These endpoints are read-only and require no API key. Resolve relative <code>pageUrl</code>, <code>preview</code>, <code>animation</code>, and <code>still</code> paths against the site origin. <code>still</code> is the thumbnail of a video emoji (its <code>preview</code> is the WEBM itself), or null. Use <code>pageUrl</code> to cite a library pack or <code>telegramUrl</code> for its original Telegram link. Keep every ID as a string.</p>
 
         <div className="mt-5">
           <h3 id="search"><code>GET /api/emoji-search</code></h3>

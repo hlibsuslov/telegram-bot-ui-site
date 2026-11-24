@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { ExpandSummary } from "@/components/emoji/expand-summary";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { PackSheet } from "@/components/emoji/pack-sheet";
-import { getLibrary, getLibraryPack, type LibraryPack } from "@/lib/emoji-library";
+import { cardPack, getLibrary, getLibraryPack, type LibraryPack } from "@/lib/emoji-library";
 import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { emojiBreadcrumbs, emojiMetadata } from "@/lib/emoji-metadata";
 import { siteUrl } from "@/lib/site-url";
@@ -35,7 +35,7 @@ export default async function EmojiPackPage({ params }: PageProps<"/emoji/[name]
   const path = emojiPackPath(pack.name);
   const library = await getLibrary();
   const byName = new Map(library.packs.map((p) => [p.name, p]));
-  const similar = pack.similar.map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p);
+  const similar = pack.similar.map((n) => byName.get(n)).filter((p): p is LibraryPack => !!p).map(cardPack);
   return (
     <>
       <JsonLd value={emojiBreadcrumbs({ name: "Emoji Library", path: "/emoji" }, { name: pack.title, path })} />

@@ -14,6 +14,7 @@
 // retry_after is running.
 import "server-only";
 import { request } from "node:https";
+import { emojiFile, type Format } from "./emoji-card";
 import { fixtureAnimation, fixturePack, fixturePreview, fixturesOn } from "./emoji-fixtures";
 import { PACK_NAME } from "./emoji-pack-list";
 
@@ -32,10 +33,11 @@ const FILE_CACHE_BYTES = 96 * 1024 * 1024;
 const FILE_TTL_MS = 6 * 60 * 60 * 1000;
 const PATH_TTL_MS = 50 * 60 * 1000; // Telegram keeps a file_path valid for at least an hour
 
-export type Format = "static" | "animated" | "video";
+export type { Format };
 /** preview: a picture (WEBP, or the WEBM itself for a video emoji; the static thumbnail of a TGS);
- *  animation: the TGS file of an animated emoji (gzip Lottie), played by the client. */
-export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null; animation: string | null }
+ *  animation: the TGS file of an animated emoji (gzip Lottie), played by the client;
+ *  still: the thumbnail of a video emoji, so a page can show many without a video decoder each. */
+export interface PackEmoji { id: string; fallback: string; format: Format; adaptive: boolean; preview: string | null; animation: string | null; still: string | null }
 export interface Pack { name: string; title: string; emoji: PackEmoji[] }
 
 interface Sticker {
@@ -189,8 +191,9 @@ export async function resolvePack(name: string): Promise<Pack> {
       fallback: typeof s.emoji === "string" ? s.emoji : "",
       format: s.is_video ? "video" : s.is_animated ? "animated" : "static",
       adaptive: !!s.needs_repainting,
-      preview: previewFileId(s) ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}` : null,
-      animation: s.is_animated && s.file_id ? `/api/emoji-pack/${set.name}/${s.custom_emoji_id}/anim` : null,
+      preview: previewFileId(s) ? emojiFile(set.name, s.custom_emoji_id) : null,
+      animation: s.is_animated && s.file_id ? emojiFile(set.name, s.custom_emoji_id, "anim") : null,
+      still: s.is_video && s.thumbnail?.file_id ? emojiFile(set.name, s.custom_emoji_id, "still") : null,
     });
   }
   return { name: set.name, title: set.title ?? set.name, emoji };
@@ -313,6 +316,15 @@ export async function previewFile(name: string, id: string): Promise<FileBody> {
   const s = await sticker(name, id);
   const fileId = s ? previewFileId(s) : null;
   if (!fileId) throw new ResolverError("NO_PREVIEW", 404, "this emoji has no picture");
+  return download(fileId, TYPES, FILE_MAX);
+}
+
+/** The thumbnail of a video emoji: a still picture to show until it plays. */
+export async function stillFile(name: string, id: string): Promise<FileBody> {
+  if (fixturesOn()) return missing("NO_PREVIEW", "this emoji has no still picture");
+  const s = await sticker(name, id);
+  const fileId = s?.is_video ? s.thumbnail?.file_id : undefined;
+  if (!fileId) throw new ResolverError("NO_PREVIEW", 404, "this emoji has no still picture");
   return download(fileId, TYPES, FILE_MAX);
 }
 

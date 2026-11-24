@@ -5,27 +5,31 @@
 // with everything a bot needs to use it, and similar packs below.
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Bookmark, Play, Search, Star } from "lucide-react";
+import type { CardPack } from "@/lib/emoji-card";
 import type { LibraryEmoji, LibraryPack } from "@/lib/emoji-library";
 import { buttonEmojiField, messageEmojiHtml } from "@/lib/emoji-snippets";
 import { BOT_SLOTS, stripVariation } from "@/lib/emoji-slots";
 import { cn } from "@/lib/utils";
 import { CopyRow } from "./copy-row";
 import { matches, PackCard } from "./library-app";
-import { PremiumEmoji } from "./premium-emoji";
+import { isMouse, PremiumEmoji, useCanHover } from "./premium-emoji";
 import { useSaved } from "./saved";
 
 const FORMAT = { static: { label: "Static", color: "#8e8e93" }, animated: { label: "Animated", color: "#3390ec" }, video: { label: "Video", color: "#34c759" } } as const;
 
-function Tile({ e, selected, all, onSelect }: { e: LibraryEmoji; selected: boolean; all: boolean; onSelect: () => void }) {
+/** An emoji of the grid. A mouse plays it on hover; a touch screen plays the one tapped (picked), so
+ *  a phone runs one or two animations at a time instead of every one a finger passes. */
+function Tile({ e, selected, all, canHover, onSelect }: { e: LibraryEmoji; selected: boolean; all: boolean; canHover: boolean; onSelect: () => void }) {
   const [hot, setHot] = useState(false);
   return (
     <li id={`emoji-${e.id}`} className="scroll-mt-24">
       <button
         id={`e=${e.id}`} type="button" onClick={onSelect} aria-pressed={selected} aria-label={`${FORMAT[e.format].label} ${e.fallback || "emoji"}, custom emoji ID ${e.id}`}
-        onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}
+        onPointerEnter={(ev) => isMouse(ev) && setHot(true)} onPointerLeave={() => setHot(false)}
+        onFocus={(ev) => ev.currentTarget.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
         className={cn("tg-cell flex aspect-square w-full scroll-mt-24 items-center justify-center rounded-xl", selected && "ring-2 ring-[var(--tg-accent)]")}
       >
-        <PremiumEmoji emoji={e} play={all ? "always" : "hover"} active={hot} size={40} />
+        <PremiumEmoji emoji={e} play={all ? "always" : "hover"} active={hot || (!canHover && selected)} size={40} />
       </button>
     </li>
   );
@@ -79,8 +83,9 @@ function ThemePreview({ emoji, pick }: { emoji: LibraryEmoji[]; pick: LibraryEmo
   );
 }
 
-export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: LibraryPack[]; pageUrl: string }) {
+export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: CardPack[]; pageUrl: string }) {
   const { saved, togglePack, toggleEmoji } = useSaved();
+  const canHover = useCanHover();
   const [query, setQuery] = useState("");
   const [all, setAll] = useState(false);
   const [pick, setPick] = useState<LibraryEmoji | null>(emoji[0] ?? null);
@@ -114,7 +119,7 @@ export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_400px]">
         <section aria-labelledby="pack-title" className="tg-glass flex min-w-0 flex-col rounded-3xl">
           <div className="px-4 pt-4 sm:px-5">
             <h1 id="pack-title" className="text-xl font-semibold text-balance">{pack.title}</h1>
@@ -133,11 +138,11 @@ export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack
                 </button>
               ) : null}
             </div>
-            <p className="tg-hint mt-2 text-xs">{hasMotion ? "Hover or focus an emoji to see it move." : "This pack is static."} {shown.length} of {emoji.length} shown.</p>
+            <p className="tg-hint mt-2 text-xs">{hasMotion ? (canHover ? "Hover or focus an emoji to see it move." : "Tap an emoji to see it move.") : "This pack is static."} {shown.length} of {emoji.length} shown.</p>
           </div>
           {shown.length ? (
             <ul className="grid flex-1 grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] content-start gap-1 px-3 py-3 sm:px-4">
-              {shown.map((e) => <Tile key={e.id} e={e} selected={pick?.id === e.id} all={all} onSelect={() => setPick(e)} />)}
+              {shown.map((e) => <Tile key={e.id} e={e} selected={pick?.id === e.id} all={all} canHover={canHover} onSelect={() => setPick(e)} />)}
             </ul>
           ) : (
             <p className="tg-hint flex-1 px-5 py-10 text-center text-sm">No emoji in this pack match. Try the emoji itself.</p>
@@ -223,7 +228,7 @@ export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack
           <h2 id="similar-title" className="mb-2 px-1 text-lg font-semibold">Similar packs</h2>
           <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
             {similar.map((p) => (
-              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={() => togglePack(p.name)} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
+              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={togglePack} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
             ))}
           </div>
         </section>
