@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CHANGELOG_URL, LICENSE_URL, RELEASES_URL, REPO_URL, VERSION } from "@/content/site";
+import { CookieSettingsButton } from "./cookie-settings-button";
 import { Container, GithubMark } from "./section";
 
 const PROJECT = [
@@ -16,6 +17,7 @@ const LEARN = [
   { title: "Capabilities", href: "/#capabilities" },
   { title: "Install", href: "/#install" },
   { title: "FAQ", href: "/#faq" },
+  { title: "Privacy", href: "/privacy" },
 ];
 
 // Adapted from the 21st.dev "Minimal Footer" block.
@@ -61,6 +63,9 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
+            <li>
+              <CookieSettingsButton className="py-1 text-sm" />
+            </li>
           </ul>
         </nav>
       </Container>

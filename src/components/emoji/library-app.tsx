@@ -5,7 +5,7 @@
 // collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
 // screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
-import { memo, startTransition, useCallback, useDeferredValue, useMemo, useState, type ReactNode } from "react";
+import { memo, startTransition, useCallback, useDeferredValue, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection } from "@/lib/emoji-library";
@@ -17,6 +17,7 @@ import { copy, useSaved } from "./saved";
 import { useEmojiSearch } from "./use-emoji-search";
 import type { EmojiHit, SearchResult } from "@/lib/emoji-search";
 import { cn } from "@/lib/utils";
+import { track } from "@/components/site/analytics";
 
 export function matches(search: string, query: string): boolean {
   return query.toLowerCase().split(/\s+/).filter(Boolean).every((t) => search.includes(t));
@@ -152,6 +153,14 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
   const byName = useMemo(() => new Map(packs.map((p) => [p.name, p])), [packs]);
   const { data, loading, failed } = useEmojiSearch(q);
   const searching = !!q.trim();
+  const resultCount = data?.packs.length;
+  // One GA search event per settled query, not one per keystroke.
+  useEffect(() => {
+    const term = q.trim();
+    if (!term || loading) return;
+    const t = setTimeout(() => track("search", { search_term: term, results: resultCount }), 1200);
+    return () => clearTimeout(t);
+  }, [q, loading, resultCount]);
   const order = new Map((data?.packs ?? []).map((p, i) => [p.name, i]));
   const isSaved = (p: CardPack) => saved.packs.includes(p.name);
 

@@ -2,8 +2,9 @@ import type { NextConfig } from "next";
 import { OLD_HOST, SITE_ORIGIN } from "./src/content/site";
 
 // The emoji library draws third-party Lottie as SVG in the page: whatever a pack carries, it can only
-// load pictures, media and data from this site.
-const EMOJI_CSP = "img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
+// load pictures, media and data from this site, plus the Google Analytics hosts the site-wide tag reports to.
+const GA_HOSTS = "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com";
+const EMOJI_CSP = `img-src 'self' data: blob: ${GA_HOSTS}; media-src 'self' blob:; connect-src 'self' ${GA_HOSTS}; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`;
 
 const nextConfig: NextConfig = {
   async headers() {
