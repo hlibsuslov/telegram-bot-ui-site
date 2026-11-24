@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ExpandSummary } from "@/components/emoji/expand-summary";
 import { LibraryApp } from "@/components/emoji/library-app";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { cardPack, getLibrary } from "@/lib/emoji-library";
@@ -29,8 +30,8 @@ export default async function EmojiLibraryPage() {
         <Link className="tg-accent underline" href={EMOJI_API_DOCS_PATH}>Emoji Library JSON API</Link>
       </nav>
       {library.packs.length > 0 && (
-        <details className="tg-glass mt-4 rounded-2xl px-4 py-3 text-sm">
-          <summary className="cursor-pointer font-medium">Pack directory ({library.packs.length})</summary>
+        <details className="tg-glass group mt-4 rounded-2xl px-4 py-3 text-sm">
+          <ExpandSummary count={library.packs.length}>Pack directory</ExpandSummary>
           <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {library.categories.map((category) => (
               <section key={category}>
