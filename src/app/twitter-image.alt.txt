@@ -1,1 +1,1 @@
-Telegram Bot UI. Build a bot with your coding agent. Below the cyborg duck, three ducks show the steps with a task list, a chat menu and a test run.
+Telegram Bot UI, a design skill for coding agents on GitHub at hlibsuslov/telegram-bot-ui. Three ducks show a task list, a chat menu and a test run.
