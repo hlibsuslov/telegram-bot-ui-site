@@ -4,9 +4,10 @@ import { siteUrl } from "./site-url";
 
 const shareImage = {
   url: EMOJI_SHARE_IMAGE_PATH,
+  type: "image/png",
   width: 1200,
   height: 630,
-  alt: "Telegram Emoji Library — Find a pack and copy a custom emoji ID",
+  alt: "Telegram Emoji Library. Find a pack. Copy an emoji ID. A yellow duck with a magnifying glass examines six emoji beside a copy icon.",
 };
 
 export function emojiMetadata(path: string, title: string, description: string, type: "website" | "article" = "website"): Metadata {

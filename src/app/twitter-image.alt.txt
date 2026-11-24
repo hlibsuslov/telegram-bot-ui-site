@@ -1,1 +1,1 @@
-telegram-bot-ui: Telegram bots that feel like real products
+Telegram Bot UI, a design skill for coding agents on GitHub at hlibsuslov/telegram-bot-ui. Three ducks show a task list, a chat menu and a test run.
