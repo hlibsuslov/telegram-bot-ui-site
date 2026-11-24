@@ -12,7 +12,6 @@ export const HOSTS_URL = `${REPO_URL}/blob/main/docs/hosts.md`;
 
 export const VERSION = "3.0.0";
 export const BOT_API = "10.5";
-export const VERIFIED_ON = "2026-11-22";
 
 /** The canonical address of the site. The old telegram-bot-ui-site.vercel.app redirects here (next.config.ts). */
 export const SITE_ORIGIN = "https://telegram-bot-ui.hlixli.com";
