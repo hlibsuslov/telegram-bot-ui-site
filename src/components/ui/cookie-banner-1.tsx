@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Cookie, Shield, Info, X, ChevronDown, ChevronUp, Check } from "lucide-react";
+import { Cookie, Shield, Info, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type Prefs = {
@@ -96,7 +96,7 @@ const CookiePanel = (props: CookiePanelProps) => {
     message = "We use cookies to enhance your experience.",
     acceptText = "Accept all",
     rejectText = "Necessary only",
-    customizeText = "Customize",
+    customizeText = "customize",
     icon = "cookie",
     className,
     privacyHref = "/privacy",
@@ -211,31 +211,26 @@ const CookiePanel = (props: CookiePanelProps) => {
                 Terms & Conditions
               </a>
             </>
-          ) : null}
-          .
-        </p>
-
-        {/* Actions */}
-        <div className="flex flex-wrap items-center gap-2">
+          ) : null}{" "}
+          or{" "}
           <button
             type="button"
             onClick={() => setShowPrefs((p) => !p)}
-            className={cn(
-              "h-11 px-3 sm:h-10 rounded-md border border-border/70 cursor-pointer",
-              "bg-muted text-muted-foreground text-xs",
-              "hover:bg-muted/80 transition-colors flex items-center gap-1"
-            )}
+            className="underline underline-offset-4 hover:text-foreground cursor-pointer"
             aria-expanded={showPrefs}
             aria-controls="cookie-preferences-inline"
           >
             {customizeText}
-            {showPrefs ? <ChevronUp className="size-3" /> : <ChevronDown className="size-3" />}
           </button>
+          .
+        </p>
 
+        {/* Actions: a slim, centered reject and the main accept below it. */}
+        <div className="flex flex-col gap-2">
           <button
             type="button"
             onClick={() => commit(NONE)}
-            className="ml-auto h-11 px-3 sm:h-10 rounded-md border border-border/70 text-xs cursor-pointer hover:bg-muted transition-colors"
+            className="h-9 w-full rounded-md border border-border/60 text-xs text-muted-foreground cursor-pointer hover:bg-muted hover:text-foreground transition-colors"
           >
             {rejectText}
           </button>
