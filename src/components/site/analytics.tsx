@@ -3,14 +3,17 @@
 // Google Analytics 4. Page views (including client-side navigation), outbound links and file downloads come
 // from GA's enhanced measurement; this adds what it can't see: every button/link click with its label and
 // position in the visit (click depth), scroll milestones per page, and time spent before leaving.
-// Nothing loads unless NEXT_PUBLIC_GA_ID is set, so local and preview builds stay clean.
+// Loads on the production deployment (Vercel sets NEXT_PUBLIC_VERCEL_ENV) or wherever NEXT_PUBLIC_GA_ID
+// is set, so local and preview builds don't pollute the reports.
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 // Checked against the GA4 format because it is inlined into the init script.
-const GA_ID = /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA_ID ?? "") ? process.env.NEXT_PUBLIC_GA_ID : undefined;
+const PRODUCTION_GA_ID = "G-1HKSEFE4Q1";
+const configuredId = process.env.NEXT_PUBLIC_GA_ID ?? (process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? PRODUCTION_GA_ID : "");
+const GA_ID = /^G-[A-Z0-9]+$/.test(configuredId) ? configuredId : undefined;
 const SCROLL_MARKS = [25, 50, 75, 100];
 
 type Gtag = (command: "event" | "config" | "consent" | "js", ...args: unknown[]) => void;
