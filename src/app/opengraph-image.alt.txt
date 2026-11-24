@@ -1,1 +1,1 @@
-telegram-bot-ui: Telegram bots that feel like real products
+Telegram Bot UI. Build a bot with your coding agent. Below the cyborg duck, three ducks show the steps with a task list, a chat menu and a test run.
