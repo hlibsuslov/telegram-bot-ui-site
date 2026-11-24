@@ -5,6 +5,7 @@
 // so "cart" finds a custom 🛒.
 import "server-only";
 import { cacheLife } from "next/cache";
+import { CURATED_COLLECTIONS } from "@/content/emoji-collections";
 import tagsText from "@/content/emoji-tags.txt";
 import { toCardEmoji, type CardPack } from "./emoji-card";
 import { resolvePack, type Format, type PackEmoji } from "./emoji-pack";
@@ -165,22 +166,15 @@ function linkSimilar(read: { pack: LibraryPack; fallbacks: Set<string> }[]) {
 
 /** Curated rows for the library's first screen, built from what the packs contain. */
 function collections(packs: LibraryPack[]): Collection[] {
-  const byRank = [...packs].sort((a, b) => a.rank - b.rank);
-  const pick = (list: LibraryPack[]) => list.slice(0, 12).map((p) => p.name);
-  // The file is grouped by category, most popular first inside each: take the top of every
-  // category in turn, so the Popular row is varied.
-  const groups = [...new Set(byRank.map((p) => p.category))].map((c) => byRank.filter((p) => p.category === c));
-  const popular: LibraryPack[] = [];
-  for (let i = 0; popular.length < byRank.length; i++) {
-    for (const g of groups) if (g[i]) popular.push(g[i]);
-  }
+  const byName = new Map(packs.map((p) => [p.name.toLowerCase(), p.name]));
+  const curated = (id: keyof typeof CURATED_COLLECTIONS) =>
+    CURATED_COLLECTIONS[id].map((n) => byName.get(n.toLowerCase())).filter((n): n is string => !!n);
   return [
-    { id: "bot-ui", title: "For bot interfaces", hint: "Most of the meanings a bot needs: home, back, done, cart, settings…",
-      packs: pick([...packs].filter((p) => p.covers.length >= 6).sort((a, b) => b.covers.length - a.covers.length || a.rank - b.rank)) },
-    { id: "popular", title: "Popular", hint: "The packs people share most, across categories", packs: pick(popular) },
-    { id: "animated", title: "Animated", hint: "Packs that move", packs: pick(popular.filter((p) => p.formats.some((f) => f !== "static"))) },
+    { id: "bot-ui", title: "For bot interfaces", hint: "Clear icon sets for menus, buttons and statuses", packs: curated("bot-ui") },
+    { id: "popular", title: "Popular", hint: "Well-known packs people use every day, across categories", packs: curated("popular") },
+    { id: "animated", title: "Animated", hint: "Packs that move: faces, reactions and effects", packs: curated("animated") },
     { id: "adaptive", title: "Light and dark themes", hint: "Drawn in the text colour, like Telegram's own icons: they fit any chat theme",
-      packs: popular.filter((p) => p.adaptiveShare >= 0.5).map((p) => p.name) },
+      packs: curated("adaptive") },
   ].filter((c) => c.packs.length >= 3);
 }
 
