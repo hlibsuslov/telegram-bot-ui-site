@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { REPO_URL, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, VERSION } from "@/content/site";
 import { siteUrl } from "@/lib/site-url";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme";
+import { Analytics } from "@/components/site/analytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );
