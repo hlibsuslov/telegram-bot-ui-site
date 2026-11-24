@@ -9,6 +9,7 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { CookiePanel, type Prefs } from "@/components/ui/cookie-banner-1";
 
 // Checked against the GA4 format because it is inlined into the init script.
 const PRODUCTION_GA_ID = "G-1HKSEFE4Q1";
@@ -94,6 +95,21 @@ function Trackers() {
   return null;
 }
 
+function consentState(prefs: Prefs) {
+  const ads = prefs.marketing ? "granted" : "denied";
+  return {
+    analytics_storage: prefs.analytics ? "granted" : "denied",
+    ad_storage: ads,
+    ad_user_data: ads,
+    ad_personalization: ads,
+  };
+}
+
+// Consent Mode v2: everything is denied until the visitor chooses, so GA only receives cookieless pings.
+// A choice saved on an earlier visit is applied before the config call, so the first page view respects it.
+const CONSENT_BOOT = `try{var p=localStorage.getItem('cookie-consent')&&JSON.parse(localStorage.getItem('cookie-preferences')||'null');
+if(p){var a=p.marketing?'granted':'denied';gtag('consent','update',{analytics_storage:p.analytics?'granted':'denied',ad_storage:a,ad_user_data:a,ad_personalization:a});}}catch(e){}`;
+
 export function Analytics() {
   if (!GA_ID) return null;
   return (
@@ -101,10 +117,15 @@ export function Analytics() {
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
       <Script id="ga-init" strategy="afterInteractive">
         {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
+gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});
+${CONSENT_BOOT}
 gtag('js',new Date());gtag('config','${GA_ID}');`}
       </Script>
       <Trackers />
+      <CookiePanel
+        message="We use Google Analytics cookies to learn which pages and features people use, only if you allow it."
+        onConsent={(prefs) => (window as unknown as { gtag?: Gtag }).gtag?.("consent", "update", consentState(prefs))}
+      />
     </>
   );
 }
