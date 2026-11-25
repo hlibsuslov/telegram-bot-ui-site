@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "<b>Pulloa</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nOrder ahead and skip the line. Your usual is two taps away.",
-      "ru": "<b>Pulloa</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nЗакажите заранее и не стойте в очереди. Ваш обычный заказ в двух нажатиях.",
-      "uk": "<b>Pulloa</b> <tg-emoji emoji-id=\"5350392020785437399\">☕</tg-emoji>\nЗамовте заздалегідь і не стійте в черзі. Ваше звичне замовлення за два натискання."
+      "en": "<b>Pulloa</b> <tg-emoji emoji-id=\"5327768791654868516\">☕️</tg-emoji>\nOrder ahead and skip the line. Your usual is two taps away.",
+      "ru": "<b>Pulloa</b> <tg-emoji emoji-id=\"5327768791654868516\">☕️</tg-emoji>\nЗакажите заранее и не стойте в очереди. Ваш обычный заказ в двух нажатиях.",
+      "uk": "<b>Pulloa</b> <tg-emoji emoji-id=\"5327768791654868516\">☕️</tg-emoji>\nЗамовте заздалегідь і не стійте в черзі. Ваше звичне замовлення за два натискання."
     }
   },
   "keyboard": {
@@ -42,7 +42,7 @@
       "presentation": "edit",
       "style": "primary",
       "icon": {
-        "customEmojiId": "5350392020785437399"
+        "customEmojiId": "5766994197705921104"
       }
     },
     "usual": {
@@ -58,6 +58,9 @@
         "drink": "flat_white",
         "cup.size": "m",
         "milk": "oat"
+      },
+      "icon": {
+        "customEmojiId": "6030657343744644592"
       }
     },
     "order": {
@@ -75,9 +78,9 @@
         "match": "order.status",
         "otherwise": "order.none"
       },
-      "presentation": "edit",
+      "presentation": "send",
       "icon": {
-        "customEmojiId": "5431492767249342908"
+        "customEmojiId": "5775896410780079073"
       }
     },
     "card": {
@@ -90,20 +93,20 @@
       "to": "loyalty.card",
       "presentation": "edit",
       "icon": {
-        "customEmojiId": "5235579393115438657"
+        "customEmojiId": "5773677501825945508"
       }
     },
     "help": {
       "label": {
-        "en": "Support",
-        "ru": "Поддержка",
-        "uk": "Підтримка"
+        "en": "Help",
+        "ru": "Помощь",
+        "uk": "Допомога"
       },
       "type": "navigate",
-      "to": "support.start",
-      "presentation": "send",
+      "to": "support.faq",
+      "presentation": "edit",
       "icon": {
-        "customEmojiId": "5417915203100613993"
+        "customEmojiId": "6030848053177486888"
       }
     }
   }

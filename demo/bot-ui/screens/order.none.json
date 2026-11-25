@@ -26,9 +26,9 @@
   "actions": {
     "menu": {
       "label": {
-        "en": "☕ Open the menu",
-        "ru": "☕ Открыть меню",
-        "uk": "☕ Відкрити меню"
+        "en": "Open the menu",
+        "ru": "Открыть меню",
+        "uk": "Відкрити меню"
       },
       "type": "navigate",
       "to": "menu.categories",

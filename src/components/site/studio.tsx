@@ -30,12 +30,12 @@ export function Studio() {
             <div>
               <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Telegram simulator</h3>
               <p className="mt-2 max-w-md leading-7 text-muted-foreground">
-                Place an order as a customer and watch every update: a Rich receipt, the live order widget, the pickup guide. Retry a declined payment or see what a first-time visitor gets.
+                Place an order as a customer, retry a declined payment or see what a first-time visitor gets.
               </p>
             </div>
             <Image
               src="/studio/simulator.webp"
-              alt={`${DEMO_BOT_NAME}’s order in the Studio’s Telegram simulator: a Rich receipt with a table, the live order-status widget and the pickup guide`}
+              alt={`${DEMO_BOT_NAME}’s coffee menu in the Studio’s Telegram simulator: a Rich message with a price table and buttons inside it`}
               width={500}
               height={620}
               unoptimized
@@ -46,12 +46,12 @@ export function Studio() {
             <div>
               <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Screen editor</h3>
               <p className="mt-2 max-w-lg leading-7 text-muted-foreground">
-                Edit messages, Rich documents with tables and buttons, labels and transitions. See the change in the chat preview and follow its route on the map.
+                Edit messages, button labels and transitions. See the change in the chat preview and follow its route on the map.
               </p>
             </div>
             <Image
               src="/studio/editor.webp"
-              alt="The receipt screen’s Rich message, with a compact table and a copy button, alongside its live chat preview in Studio"
+              alt="The Start screen’s message and keyboard alongside their live chat preview in Studio"
               width={760}
               height={620}
               unoptimized

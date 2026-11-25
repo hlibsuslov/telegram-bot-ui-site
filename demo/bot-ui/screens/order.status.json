@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "☕ <b>Order #{order.no}</b>\nNow: {order.status_text}.",
-      "ru": "☕ <b>Заказ #{order.no}</b>\nСейчас: {order.status_text}.",
-      "uk": "☕ <b>Замовлення #{order.no}</b>\nЗараз: {order.status_text}."
+      "en": "<tg-emoji emoji-id=\"5328227167744565331\">☕️</tg-emoji> <b>Order #{order.no}</b>\nNow: {order.status_text}.",
+      "ru": "<tg-emoji emoji-id=\"5328227167744565331\">☕️</tg-emoji> <b>Заказ #{order.no}</b>\nСейчас: {order.status_text}.",
+      "uk": "<tg-emoji emoji-id=\"5328227167744565331\">☕️</tg-emoji> <b>Замовлення #{order.no}</b>\nЗараз: {order.status_text}."
     }
   },
   "keyboard": {

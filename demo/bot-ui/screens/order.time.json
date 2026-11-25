@@ -1,0 +1,38 @@
+{
+  "id": "order.time",
+  "title": "Pickup time",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<tg-emoji emoji-id=\"5983150113483134607\">⏰️</tg-emoji> <b>Pickup time</b>\nOrder #{order.no} is set for <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>. Pick another free slot if that doesn't suit you.",
+      "ru": "<tg-emoji emoji-id=\"5983150113483134607\">⏰️</tg-emoji> <b>Время самовывоза</b>\nЗаказ #{order.no} будет готов к <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>. Если неудобно, выберите другое свободное время.",
+      "uk": "<tg-emoji emoji-id=\"5983150113483134607\">⏰️</tg-emoji> <b>Час самовивозу</b>\nЗамовлення #{order.no} буде готове о <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>. Якщо незручно, оберіть інший вільний час."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "back": {
+      "label": {
+        "en": "← Back to the order",
+        "ru": "← К заказу",
+        "uk": "← До замовлення"
+      },
+      "type": "back",
+      "fallback": "order.placed",
+      "presentation": "send"
+    }
+  },
+  "widget": {
+    "ref": "pickup-time"
+  }
+}

@@ -31,13 +31,25 @@
       "id": "help",
       "type": "command",
       "command": "help",
-      "screen": "support.start"
+      "screen": "support.faq"
     },
     {
       "id": "order-ready",
       "type": "event",
       "eventKey": "order.ready",
       "screen": "order.ready"
+    },
+    {
+      "id": "picked-up",
+      "type": "event",
+      "eventKey": "order.picked_up",
+      "screen": "order.rate"
+    },
+    {
+      "id": "happy-hour",
+      "type": "event",
+      "eventKey": "promo.happy_hour",
+      "screen": "promo.happy-hour"
     }
   ],
   "contexts": [
@@ -54,6 +66,26 @@
       "source": "data",
       "example": "€6.30"
     },
+    "cart.drink": {
+      "type": "string",
+      "source": "data",
+      "example": "Flat white M, oat milk"
+    },
+    "cart.drink_price": {
+      "type": "string",
+      "source": "data",
+      "example": "€3.90"
+    },
+    "cart.pastry": {
+      "type": "string",
+      "source": "data",
+      "example": "Butter croissant"
+    },
+    "cart.pastry_price": {
+      "type": "string",
+      "source": "data",
+      "example": "€2.40"
+    },
     "order.no": {
       "type": "string",
       "source": "data",
@@ -64,6 +96,11 @@
       "source": "data",
       "example": "8:45"
     },
+    "pickup.unix": {
+      "type": "string",
+      "source": "data",
+      "example": "1794737100"
+    },
     "order.status_text": {
       "type": "string",
       "source": "data",
@@ -73,6 +110,11 @@
       "type": "string",
       "source": "data",
       "example": "7"
+    },
+    "loyalty.left": {
+      "type": "string",
+      "source": "data",
+      "example": "3"
     },
     "drink": {
       "type": "enum",
@@ -149,7 +191,7 @@
   },
   "capabilities": {
     "widgets": true,
-    "richMessages": false,
+    "richMessages": true,
     "customEmoji": "owner_premium"
   },
   "adapter": {

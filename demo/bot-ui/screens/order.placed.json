@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "✅ <b>Order #{order.no} is in</b>\nIt will be ready at {pickup.time}. We'll message you the moment it is.",
-      "ru": "✅ <b>Заказ #{order.no} принят</b>\nБудет готов к {pickup.time}. Напишем, как только он будет готов.",
-      "uk": "✅ <b>Замовлення #{order.no} прийнято</b>\nБуде готове о {pickup.time}. Напишемо, щойно воно буде готове."
+      "en": "<tg-emoji emoji-id=\"5774022692642492953\">✅</tg-emoji> <b>Order #{order.no} is in</b>\nIt will be ready at <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>. We'll message you the moment it is.",
+      "ru": "<tg-emoji emoji-id=\"5774022692642492953\">✅</tg-emoji> <b>Заказ #{order.no} принят</b>\nБудет готов к <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>. Напишем, как только он будет готов.",
+      "uk": "<tg-emoji emoji-id=\"5774022692642492953\">✅</tg-emoji> <b>Замовлення #{order.no} прийнято</b>\nБуде готове о <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>. Напишемо, щойно воно буде готове."
     }
   },
   "keyboard": {
@@ -17,6 +17,10 @@
     "rows": [
       [
         "track"
+      ],
+      [
+        "receipt",
+        "time"
       ],
       [
         "menu"
@@ -37,6 +41,26 @@
       "set": {
         "order.active": true
       }
+    },
+    "receipt": {
+      "label": {
+        "en": "Receipt",
+        "ru": "Чек",
+        "uk": "Чек"
+      },
+      "type": "navigate",
+      "to": "order.receipt",
+      "presentation": "send"
+    },
+    "time": {
+      "label": {
+        "en": "Change time",
+        "ru": "Изменить время",
+        "uk": "Змінити час"
+      },
+      "type": "navigate",
+      "to": "order.time",
+      "presentation": "send"
     },
     "menu": {
       "label": {

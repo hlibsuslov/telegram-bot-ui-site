@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "<b>Your order</b>\n{cart.summary}\nReady at {pickup.time} · total {cart.total}",
-      "ru": "<b>Ваш заказ</b>\n{cart.summary}\nБудет готов к {pickup.time} · итого {cart.total}",
-      "uk": "<b>Ваше замовлення</b>\n{cart.summary}\nБуде готове о {pickup.time} · разом {cart.total}"
+      "en": "<b>Your order</b>\n{cart.summary}\nReady at <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time> · total {cart.total}",
+      "ru": "<b>Ваш заказ</b>\n{cart.summary}\nБудет готов к <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time> · итого {cart.total}",
+      "uk": "<b>Ваше замовлення</b>\n{cart.summary}\nБуде готове о <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time> · разом {cart.total}"
     },
     "states": {
       "loading": {

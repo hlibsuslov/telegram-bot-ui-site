@@ -5,23 +5,16 @@
   "audience": "private",
   "message": {
     "id": "main",
-    "format": "regular.html",
+    "format": "rich.html",
     "text": {
-      "en": "<b>Coffee</b>\nFlat white · €3.90\nCappuccino · €3.60\nIced latte · €4.20",
-      "ru": "<b>Кофе</b>\nФлэт уайт · 3,90 €\nКапучино · 3,60 €\nАйс-латте · 4,20 €",
-      "uk": "<b>Кава</b>\nФлет вайт · 3,90 €\nКапучино · 3,60 €\nАйс-лате · 4,20 €"
+      "en": "<h2><tg-emoji emoji-id=\"5327768791654868516\">☕️</tg-emoji> Coffee</h2>\n<p>Espresso from our <b>house blend</b>, roasted every Monday. Oat and almond milk at <i>no extra cost</i>.</p>\n<table compact>\n<tr><th align=\"left\">Drink</th><th align=\"right\">S</th><th align=\"right\">M</th><th align=\"right\">L</th></tr>\n<tr><td>Flat white</td><td align=\"right\">€3.50</td><td align=\"right\">€3.90</td><td align=\"right\">€4.40</td></tr>\n<tr><td>Cappuccino</td><td align=\"right\">€3.20</td><td align=\"right\">€3.60</td><td align=\"right\">€4.10</td></tr>\n<tr><td>Iced latte</td><td align=\"right\">—</td><td align=\"right\">€4.20</td><td align=\"right\">€4.70</td></tr>\n</table>\n<tg-button-row><tg-button action=\"flat\"></tg-button><tg-button action=\"capp\"></tg-button></tg-button-row>\n<tg-button-row><tg-button action=\"iced\"></tg-button></tg-button-row>\n<p>Can't decide? <tg-button action=\"match\"></tg-button></p>\n<footer>S 250 ml · M 350 ml · L 450 ml. Prices include VAT.</footer>",
+      "ru": "<h2><tg-emoji emoji-id=\"5327768791654868516\">☕️</tg-emoji> Кофе</h2>\n<p>Эспрессо из нашего <b>домашнего бленда</b>, обжарка каждый понедельник. Овсяное и миндальное молоко <i>без доплаты</i>.</p>\n<table compact>\n<tr><th align=\"left\">Напиток</th><th align=\"right\">S</th><th align=\"right\">M</th><th align=\"right\">L</th></tr>\n<tr><td>Флэт уайт</td><td align=\"right\">3,50 €</td><td align=\"right\">3,90 €</td><td align=\"right\">4,40 €</td></tr>\n<tr><td>Капучино</td><td align=\"right\">3,20 €</td><td align=\"right\">3,60 €</td><td align=\"right\">4,10 €</td></tr>\n<tr><td>Айс-латте</td><td align=\"right\">—</td><td align=\"right\">4,20 €</td><td align=\"right\">4,70 €</td></tr>\n</table>\n<tg-button-row><tg-button action=\"flat\"></tg-button><tg-button action=\"capp\"></tg-button></tg-button-row>\n<tg-button-row><tg-button action=\"iced\"></tg-button></tg-button-row>\n<p>Не можете выбрать? <tg-button action=\"match\"></tg-button></p>\n<footer>S 250 мл · M 350 мл · L 450 мл. Цены с НДС.</footer>",
+      "uk": "<h2><tg-emoji emoji-id=\"5327768791654868516\">☕️</tg-emoji> Кава</h2>\n<p>Еспресо з нашого <b>домашнього бленду</b>, обсмажуємо щопонеділка. Вівсяне й мигдальне молоко <i>без доплати</i>.</p>\n<table compact>\n<tr><th align=\"left\">Напій</th><th align=\"right\">S</th><th align=\"right\">M</th><th align=\"right\">L</th></tr>\n<tr><td>Флет вайт</td><td align=\"right\">3,50 €</td><td align=\"right\">3,90 €</td><td align=\"right\">4,40 €</td></tr>\n<tr><td>Капучино</td><td align=\"right\">3,20 €</td><td align=\"right\">3,60 €</td><td align=\"right\">4,10 €</td></tr>\n<tr><td>Айс-лате</td><td align=\"right\">—</td><td align=\"right\">4,20 €</td><td align=\"right\">4,70 €</td></tr>\n</table>\n<tg-button-row><tg-button action=\"flat\"></tg-button><tg-button action=\"capp\"></tg-button></tg-button-row>\n<tg-button-row><tg-button action=\"iced\"></tg-button></tg-button-row>\n<p>Не можете обрати? <tg-button action=\"match\"></tg-button></p>\n<footer>S 250 мл · M 350 мл · L 450 мл. Ціни з ПДВ.</footer>"
     }
   },
   "keyboard": {
     "type": "inline",
     "rows": [
-      [
-        "flat",
-        "capp"
-      ],
-      [
-        "iced"
-      ],
       [
         "back"
       ]
@@ -66,6 +59,17 @@
       "set": {
         "drink": "iced_latte"
       }
+    },
+    "match": {
+      "label": {
+        "en": "Find your drink in 3 questions",
+        "ru": "Подобрать напиток за 3 вопроса",
+        "uk": "Підібрати напій за 3 запитання"
+      },
+      "type": "navigate",
+      "to": "menu.match",
+      "presentation": "send",
+      "style": "link"
     },
     "back": {
       "label": {
