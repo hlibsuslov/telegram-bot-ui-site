@@ -1,7 +1,7 @@
-import { RATE_LIMITS } from "@/lib/emoji-api-contract";
+import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
 import { catalogExport } from "@/lib/emoji-export";
 import { catalogVersion, facetCodes } from "@/lib/emoji-facets";
-import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_LIBRARY_PATH, EMOJI_OPENAPI_PATH } from "@/lib/emoji-links";
+import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_LIBRARY_PATH, EMOJI_MCP_PATH, EMOJI_OPENAPI_PATH } from "@/lib/emoji-links";
 import { siteUrl } from "@/lib/site-url";
 
 export function GET() {
@@ -23,6 +23,7 @@ export function GET() {
     "",
     `- [OpenAPI 3.1 contract](${origin}${EMOJI_OPENAPI_PATH}): every endpoint with parameters, response schemas, error status and code, rate limits, and an example.`,
     `- [Catalog export](${origin}${EMOJI_EXPORT_PATH}): every pack in one gzip NDJSON file, ${file.lines} lines, ${file.bytes} bytes, ETag ${file.etag}.`,
+    `- [Remote MCP server](${origin}${EMOJI_MCP_PATH}): the same library as MCP tools (Streamable HTTP, no key).`,
     "",
     `Read-only GET, no key. Keep emoji ids as strings. Resolve relative paths (pageUrl, preview, animation, still) against ${origin}. ` +
       `Every JSON answer carries the catalog version: taxonomy ${catalogVersion.taxonomy}, generated ${catalogVersion.generated} ` +
@@ -59,10 +60,25 @@ export function GET() {
       "An emoji without its own style or topic takes its pack's. Filter and rank packs locally, then fetch only the packs you use. " +
       "Before downloading again, compare the ETag of a HEAD request with your copy's.",
     "",
+    "### Remote MCP server",
+    "",
+    `${origin}${EMOJI_MCP_PATH} speaks MCP over Streamable HTTP (protocol 2025-11-25; older revisions are negotiated). Stateless, read-only, no key: ` +
+      "POST JSON-RPC with Accept: application/json, text/event-stream; GET and DELETE answer 405. Tools: " +
+      "emoji_search (query with words and facet:value filters, optional pack), emoji_pack (name), emoji_facets (the taxonomy, plus the tags of the packs named), " +
+      "emoji_rank_packs (style, color, palette, topic, mood, role, use, require, motion, theme, top), " +
+      "emoji_pick_family (slots such as home, back, settings, plus the same tags: one pack and its icon map), emoji_by_id (ids). " +
+      "A tool answers what its HTTP endpoint answers, as JSON text; failures are isError results with the same {ok:false, error:{code, message}} body. " +
+      `Answers stay under ${MCP_RESPONSE_MAX / 1024} KB: a larger one keeps the first part of each list and says so in truncated.`,
+    "",
+    `Claude Code: claude mcp add --transport http telegram-emoji ${origin}${EMOJI_MCP_PATH}`,
+    `claude.ai: Settings > Connectors > Add custom connector, name it, paste ${origin}${EMOJI_MCP_PATH}, no OAuth. ` +
+      "On Team and Enterprise plans an owner adds it for the organization first.",
+    "",
     "### Rate limits",
     "",
     `Per client IP, per endpoint and per server instance, per minute: search ${RATE_LIMITS.search}, facets ${RATE_LIMITS.facets}, ` +
-      `pack ${RATE_LIMITS.pack}, by-id ${RATE_LIMITS.ids}, pictures and stills ${RATE_LIMITS.file}, animations ${RATE_LIMITS.anim}. ` +
+      `pack ${RATE_LIMITS.pack}, by-id ${RATE_LIMITS.ids}, pictures and stills ${RATE_LIMITS.file}, animations ${RATE_LIMITS.anim}, ` +
+      `MCP requests ${RATE_LIMITS.mcp} (each MCP tool call also counts against its endpoint: search, pack, by-id, or facets for the tag tools). ` +
       "Over the limit: 429 RATE_LIMITED; wait Retry-After seconds when present, else a minute. CDN-cached answers do not count. " +
       "The OpenAPI document and the export are static and have no limit: prefer the export to many pack or facets requests.",
     "",
