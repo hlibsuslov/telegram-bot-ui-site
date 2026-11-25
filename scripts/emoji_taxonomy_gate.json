@@ -48,8 +48,8 @@
    "hit_rate": 0.86
   },
   "pack.use": {
-   "recall": 0.53,
-   "hit_rate": 0.65
+   "recall": 0.82,
+   "hit_rate": 0.93
   }
  }
 }
