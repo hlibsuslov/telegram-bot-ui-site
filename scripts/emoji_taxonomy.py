@@ -3,7 +3,7 @@
     py -3 scripts/emoji_taxonomy.py fetch --base https://telegram-bot-ui.hlixli.com   # snapshot, ~30 packs/min
     py -3 scripts/emoji_taxonomy.py build --sheets .emoji-sheets --slots <skill>/data/emoji/slots.json
     py -3 scripts/emoji_taxonomy.py eval --gold gold.json                               # accuracy per facet
-    py -3 scripts/emoji_taxonomy.py check                                               # overrides and output valid
+    py -3 scripts/emoji_taxonomy.py check                                               # overrides, taxonomy and output valid
 
 Sources and how much each is trusted (the confidence of a tag):
 * Telegram data (format, needs_repainting), from the library API snapshot: 1.0.
@@ -101,6 +101,12 @@ def stem(word: str) -> str:
     return word[:-1] if len(word) > 3 and word.endswith("s") and not word.endswith("ss") else word
 
 
+def alias_key(alias: str) -> tuple[bool, str]:
+    """An alias as the matcher sees it: (is a phrase, key). A word is matched by its stem, a phrase as text."""
+    a = alias.lower().replace("ё", "е")
+    return (True, a) if " " in a or "-" in a else (False, stem(a))
+
+
 class Vocabulary:
     """Alias -> [(facet, value)], with multi-word aliases matched as phrases."""
 
@@ -114,11 +120,11 @@ class Vocabulary:
         for facet, f in tax["facets"].items():
             for value, v in f["values"].items():
                 for alias in v.get("aliases", []):
-                    a = alias.lower().replace("ё", "е")
-                    if " " in a or "-" in a:
-                        self.phrases.append((a, (facet, value)))
+                    is_phrase, key = alias_key(alias)
+                    if is_phrase:
+                        self.phrases.append((key, (facet, value)))
                     else:
-                        self.single[stem(a)].add((facet, value))
+                        self.single[key].add((facet, value))
 
     def facets_of(self, text: str) -> tuple[set[tuple[str, str]], list[str]]:
         t = text.lower().replace("ё", "е")
@@ -630,18 +636,34 @@ def evaluate(args) -> int:
     return 0
 
 
+def taxonomy_errors(tax: dict) -> list[str]:
+    errors = []
+    owners: dict[tuple[str, bool, str], dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
+    for facet, f in tax["facets"].items():
+        for value, v in f["values"].items():
+            if not v.get("en") or not v.get("ru"):
+                errors.append(f"{facet}:{value} needs en and ru labels")
+            for a in v.get("aliases", []):
+                is_phrase, key = alias_key(a)
+                owners[(facet, is_phrase, key)][value].append(a)
+            if facet == "style":  # rubric for the labeling pass: what the style is and what it is not
+                if not str(v.get("definition", "")).strip():
+                    errors.append(f"{facet}:{value} needs a definition")
+                nots = v.get("not")
+                if not isinstance(nots, list) or not nots or not all(isinstance(x, str) and x.strip() for x in nots):
+                    errors.append(f"{facet}:{value} needs a `not` list of non-empty strings")
+    for (facet, _, _), by_value in owners.items():
+        if len(by_value) > 1:
+            spellings = sorted({a for words in by_value.values() for a in words})
+            errors.append(f"alias {'/'.join(map(repr, spellings))} ({facet}) maps to two values of one facet: "
+                          + ", ".join(f"{facet}:{v}" for v in sorted(by_value)))
+    return errors
+
+
 def check(_args) -> int:
     tax = load_json(TAXONOMY)
     _, errors = parse_overrides(OVERRIDES, tax)
-    aliases: dict[str, list[str]] = defaultdict(list)
-    for facet, f in tax["facets"].items():
-        for value, v in f["values"].items():
-            for a in v.get("aliases", []):
-                aliases[a.lower()].append(f"{facet}:{value}")
-            if not v.get("en") or not v.get("ru"):
-                errors.append(f"{facet}:{value} needs en and ru labels")
-    same_facet = {a: vs for a, vs in aliases.items() if len({x.split(':')[0] for x in vs}) < len(vs)}
-    errors += [f"alias {a!r} maps to two values of one facet: {vs}" for a, vs in same_facet.items()]
+    errors += taxonomy_errors(tax)
     if os.path.isfile(OUT):
         doc = load_json(OUT)
         for name, p in doc["packs"].items():
