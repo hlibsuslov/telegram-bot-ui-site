@@ -144,6 +144,69 @@ class ShippedTaxonomy(unittest.TestCase):
             self.assertIn(want, self.hits(text), text)
 
 
+class ReviewFindings(unittest.TestCase):
+    """Regression tests for the Codex review of taxonomy v2 (task 20261125-164434-review-cc64)."""
+
+    vocab = et.Vocabulary(et.load_json(et.TAXONOMY))
+
+    def hits(self, text: str) -> set:
+        return self.vocab.facets_of(text)[0]
+
+    def test_send_icons_are_actions_not_travel_in_every_spelling(self):
+        for row in ("paper plane, telegram, send, самолетик", "paper airplane, send", "paper plane",
+                    "бумажный самолетик"):
+            with self.subTest(row):
+                got = self.hits(row)
+                self.assertIn(("role", "action"), got)
+                self.assertNotIn(("topic", "travel"), got)
+        self.assertIn(("topic", "travel"), self.hits("airplane, flight"))
+
+    def test_palm_trees_and_computer_mice(self):
+        self.assertNotIn(("topic", "people"), self.hits("palm tree, beach"))
+        self.assertIn(("topic", "nature"), self.hits("palm tree, beach"))
+        self.assertNotIn(("topic", "animals"), self.hits("компьютерная мышь, клик"))
+        self.assertIn(("topic", "people"), self.hits("palm, hand"))
+
+    def test_default_mood_needs_a_neutral_leading_topic(self):
+        def scores(topics, adaptive=False):
+            s = et.Scores()
+            for value, conf in topics:
+                s.add("topic", value, conf, "words")
+            if adaptive:
+                s.add("fit", "adaptive", 1.0, "telegram")
+            return s
+        self.assertIsNone(et.default_mood(scores([("faces", 0.75)], adaptive=True)))
+        self.assertIsNone(et.default_mood(scores([("faces", 0.75), ("interface", 0.4)])))
+        self.assertEqual(et.default_mood(scores([("interface", 0.75)])), "serious")
+        self.assertEqual(et.default_mood(scores([], adaptive=True)), "serious")
+        self.assertIsNone(et.default_mood(scores([])))
+        # a repainting icon that is not a face or a character still reads as serious
+        self.assertEqual(et.default_mood(scores([("decor", 0.6)], adaptive=True)), "serious")
+        self.assertIsNone(et.default_mood(scores([("characters", 0.6)], adaptive=True)))
+        self.assertIsNone(et.default_mood(scores([("decor", 0.6)])))
+
+    def test_a_phrase_alias_may_not_emit_two_values_of_its_facet(self):
+        tax = copy.deepcopy(TAX)
+        tax["facets"]["topic"]["values"]["decor"]["aliases"].append("gold star")
+        self.assertTrue(any("gold star" in e for e in et.taxonomy_errors(tax)), et.taxonomy_errors(tax))
+        tax["masks"] = ["gold star"]
+        self.assertEqual(et.taxonomy_errors(tax), [])
+
+    def test_masks_must_be_a_list_of_phrases(self):
+        for masks in ([""], "hand drawn", None, [3]):
+            with self.subTest(masks):
+                tax = copy.deepcopy(TAX)
+                tax["masks"] = masks
+                self.assertTrue(any("masks" in e for e in et.taxonomy_errors(tax)))
+
+    def test_style_definition_must_be_text(self):
+        for definition in (None, False, {}):
+            with self.subTest(definition):
+                tax = copy.deepcopy(TAX)
+                tax["facets"]["style"]["values"]["flat"]["definition"] = definition
+                self.assertTrue(any("definition" in e for e in et.taxonomy_errors(tax)))
+
+
 CARD = {"style": ["outline"], "line_weight": "thin", "fill": "none", "perspective": "front", "shadows": "none",
         "characters": "none", "drawn": "thin even strokes, no fill", "confidence": 0.9, "unsure": [],
         "source": "vision"}

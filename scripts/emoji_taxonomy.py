@@ -58,6 +58,7 @@ FALLBACK_MOOD = {
     "joyful": "😀😃😄😁😆😊🙂😂🤣🥳🎉", "playful": "😜😝😛😉🤪😋😎", "loving": "😍🥰😘❤💕💖💗😻",
     "sad": "😢😭😞😔🥺💔", "angry": "😡😠🤬👿", "surprised": "😱😮😲🤯😳", "scary": "💀👻🎃☠", "calm": "😐😑😴😌🙏",
 }
+EXPRESSIVE_TOPICS = {"faces", "characters", "love"}  # a repainting face still has a mood of its own
 NEUTRAL_TOPICS = {"interface", "status", "brands", "finance", "letters", "flags", "tech", "travel", "music", "office", "people", "symbols"}
 SOURCE = {"telegram": 1.0, "manual": 1.0, "category": 0.9, "vision": 0.9, "words": 0.75, "fallback": 0.6}
 LOOK = {"line_weight": {"none", "hairline", "thin", "medium", "bold"}, "fill": {"none", "flat", "gradient", "textured", "photo"},
@@ -391,6 +392,20 @@ def apply_style_card(p: "Scores", card: dict) -> None:
         p.add("style", value, round(conf - 0.1 * i, 2), "vision")
 
 
+def default_mood(s: "Scores") -> str | None:
+    """"serious" for an emoji with no emotional cue whose leading topic is neutral (an interface icon, a
+    brand, a letter), or that repaints in the text colour and is not a face, a character or a heart. Those
+    keep no mood rather than a wrong one."""
+    topics = s.d.get("topic", {})
+    adaptive = "adaptive" in s.d.get("fit", {})
+    if not topics:
+        return "serious" if adaptive else None
+    lead = max(topics.items(), key=lambda kv: (kv[1][0], kv[0]))[0]
+    if lead in NEUTRAL_TOPICS or (adaptive and lead not in EXPRESSIVE_TOPICS):
+        return "serious"
+    return None
+
+
 def build(args) -> int:
     tax = load_json(TAXONOMY)
     th = tax["thresholds"]
@@ -504,9 +519,9 @@ def build(args) -> int:
         # repaints in the text colour (an interface icon), reads as "serious"; one with no interface meaning
         # is "decoration". Low confidence, so any real signal wins.
         for s in per_emoji.values():
-            topics_here = set(s.d.get("topic", {}))
-            if not s.d.get("mood") and (topics_here & NEUTRAL_TOPICS or "adaptive" in s.d.get("fit", {})):
-                s.add("mood", "serious", 0.55, "default")
+            mood = None if s.d.get("mood") else default_mood(s)
+            if mood:
+                s.add("mood", mood, 0.55, "default")
             if not s.d.get("role"):
                 s.add("role", "decoration", 0.5, "default")
         meanings = {v for s in per_emoji.values() for v in s.d.get("meaning", {})}
@@ -696,6 +711,10 @@ def evaluate(args) -> int:
 
 def taxonomy_errors(tax: dict) -> list[str]:
     errors = []
+    masks = tax.get("masks", [])
+    masks_ok = isinstance(masks, list) and all(isinstance(m, str) and m.strip() for m in masks)
+    if not masks_ok:
+        errors.append("masks must be a list of non-empty phrases")
     owners: dict[tuple[str, bool, str], dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     for facet, f in tax["facets"].items():
         for value, v in f["values"].items():
@@ -705,11 +724,23 @@ def taxonomy_errors(tax: dict) -> list[str]:
                 is_phrase, key = alias_key(a)
                 owners[(facet, is_phrase, key)][value].append(a)
             if facet == "style":  # rubric for the labeling pass: what the style is and what it is not
-                if not str(v.get("definition", "")).strip():
+                if not isinstance(v.get("definition"), str) or not v["definition"].strip():
                     errors.append(f"{facet}:{value} needs a definition")
                 nots = v.get("not")
                 if not isinstance(nots, list) or not nots or not all(isinstance(x, str) and x.strip() for x in nots):
                     errors.append(f"{facet}:{value} needs a `not` list of non-empty strings")
+    if masks_ok:  # a phrase must not also match another value of its facet through its own words
+        vocab = Vocabulary(tax)
+        for facet, f in tax["facets"].items():
+            for value, v in f["values"].items():
+                for a in v.get("aliases", []):
+                    if not alias_key(a)[0]:
+                        continue
+                    others = sorted(val for fct, val in vocab.facets_of(a)[0] if fct == facet and val != value)
+                    if others:
+                        errors.append(f"phrase alias {a!r} ({facet}:{value}) also matches "
+                                      + ", ".join(f"{facet}:{o}" for o in others)
+                                      + " through its words: add it to masks or drop the word alias")
     for (facet, _, _), by_value in owners.items():
         if len(by_value) > 1:
             spellings = sorted({a for words in by_value.values() for a in words})
