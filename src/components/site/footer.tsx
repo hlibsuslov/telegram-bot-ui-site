@@ -16,6 +16,7 @@ const LEARN = [
   { title: "Capabilities", href: "/#capabilities" },
   { title: "Install", href: "/#install" },
   { title: "FAQ", href: "/#faq" },
+  { title: "Privacy", href: "/privacy" },
 ];
 
 // Adapted from the 21st.dev "Minimal Footer" block.
