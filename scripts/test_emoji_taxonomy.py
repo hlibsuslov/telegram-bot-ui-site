@@ -207,6 +207,43 @@ class ReviewFindings(unittest.TestCase):
                 self.assertTrue(any("definition" in e for e in et.taxonomy_errors(tax)))
 
 
+class Gate(unittest.TestCase):
+    """E3: gold v2, labeler agreement and the accuracy gate CI runs on the committed site output."""
+
+    FACETS = {"packs": {"P": {"facets": {"style": [["flat", 0.9]], "topic": [["symbols", 0.9]],
+                                         "use": [["utility", 0.7]]}}},
+              "emoji": {"P": {"1": {"style": [["flat", 0.72]], "topic": [["symbols", 0.72]]}}}}
+    GOLD = {"packs": {"P": {"style": ["flat"], "topic": ["symbols"], "use": ["utility", "shop"], "unsure": []}},
+            "emoji": {"P/1": {"style": "flat", "topic": "decor", "unsure": []}},
+            "second": {"packs": {"P": {"style": ["outline"], "topic": ["symbols"], "use": ["utility"], "unsure": []}},
+                       "emoji": {"P/1": {"style": "flat", "topic": "decor", "unsure": ["topic"]}}}}
+
+    def test_site_output_decodes_and_inherits_like_the_full_output(self):
+        self.assertEqual(et.decode("c:blue@9,white@6;s:outline@6"),
+                         {"color": [["blue", 0.9], ["white", 0.6]], "style": [["outline", 0.6]]})
+        site = {"packs": self.FACETS["packs"], "emoji": {"P": {"1": ""}}}
+        view = et.site_view(site)
+        self.assertEqual(view["emoji"]["P"]["1"]["style"], [["flat", 0.72]])
+
+    def test_metrics_score_bot_use(self):
+        rows = et.metrics(self.GOLD, self.FACETS, "all")
+        self.assertEqual(rows["pack.use"]["recall"], 0.5)
+        self.assertEqual(rows["pack.style"]["recall"], 1.0)
+        self.assertEqual(rows["emoji.topic"]["recall"], 0.0)
+
+    def test_agreement_skips_unsure_labels(self):
+        agree = et.agreement(self.GOLD)
+        self.assertEqual(agree["pack.style"], {"n": 1, "agree": 0.0})
+        self.assertEqual(agree["pack.topic"], {"n": 1, "agree": 1.0})
+        self.assertNotIn("emoji.topic", agree)
+
+    def test_gate_reports_each_metric_below_its_floor(self):
+        rows = {"pack.style": {"recall": 0.8, "hit_rate": 0.9}, "emoji.role": {"recall": 0.4, "hit_rate": 0.4}}
+        floor = {"pack.style": {"recall": 0.85}, "emoji.role": {"recall": 0.4}, "pack.mood": {"recall": 0.5}}
+        self.assertEqual(et.gate_failures(rows, floor),
+                         ["pack.style recall 0.8 < 0.85", "pack.mood: no result (gold or output lost?)"])
+
+
 CARD = {"style": ["outline"], "line_weight": "thin", "fill": "none", "perspective": "front", "shadows": "none",
         "characters": "none", "drawn": "thin even strokes, no fill", "confidence": 0.9, "unsure": [],
         "source": "vision"}

@@ -1,0 +1,28 @@
+name: emoji taxonomy
+
+# The emoji library's tags: taxonomy, overrides and look cards stay consistent, and the accuracy on the
+# gold v2 holdout does not fall below scripts/emoji_taxonomy_gate.json. Uses only committed files.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  taxonomy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Taxonomy tests
+        run: python -m unittest scripts/test_emoji_taxonomy.py
+
+      - name: Consistency and the accuracy floor (gold v2 holdout)
+        run: python scripts/emoji_taxonomy.py check --gate

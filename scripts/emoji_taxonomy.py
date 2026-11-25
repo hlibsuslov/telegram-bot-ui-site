@@ -650,18 +650,63 @@ def fetch(args) -> int:
     return 0
 
 
-def evaluate(args) -> int:
-    """Precision and recall of the facets against hand labels (scripts/emoji_taxonomy_gold.json)."""
-    gold = load_json(args.gold)
-    if args.split != "all":  # tune = first gold pack of each category, holdout = the rest
-        first: dict[str, str] = {}
-        for name, cat in listed_packs():
-            if name in gold.get("packs", {}) and cat not in first:
-                first[cat] = name
-        keep = set(first.values()) if args.split == "tune" else set(gold.get("packs", {})) - set(first.values())
-        gold = {"packs": {k: v for k, v in gold["packs"].items() if k in keep},
-                "emoji": {k: v for k, v in gold.get("emoji", {}).items() if k.split("/")[0] in keep}}
-    facets = load_json(FULL if os.path.isfile(FULL) else OUT)
+GOLD_V2 = os.path.join(ROOT, "scripts", "emoji_taxonomy_gold_v2.json")
+GATE = os.path.join(ROOT, "scripts", "emoji_taxonomy_gate.json")
+DECODE = {v: k for k, v in CODE.items()}
+PACK_FACETS = ("style", "color", "palette", "topic", "mood", "fit", "use")
+EMOJI_FACETS = ("color", "style", "topic", "mood", "role")
+
+
+def decode(code: str) -> dict[str, list]:
+    """One emoji of the site output ("c:blue@9,white@6;s:outline@6") back to facet -> [[value, confidence]]."""
+    out: dict[str, list] = {}
+    for part in filter(None, (code or "").split(";")):
+        key, _, vals = part.partition(":")
+        if key in DECODE:
+            out[DECODE[key]] = [[v, int(c) / 10] for v, c in (x.split("@", 1) for x in vals.split(",") if "@" in x)]
+    return out
+
+
+def site_view(doc: dict) -> dict:
+    """The committed site output read like facets-full.json, so CI can evaluate without the sheets: emoji codes
+    decoded, and the style and topic an emoji only inherits from its pack filled in the way the build does
+    (pack values of at least 0.5, times 0.8)."""
+    emoji: dict[str, dict] = {}
+    for name, entries in doc.get("emoji", {}).items():
+        pack = (doc.get("packs", {}).get(name) or {}).get("facets", {})
+        emoji[name] = {}
+        for eid, code in entries.items():
+            e = decode(code) if isinstance(code, str) else dict(code)
+            for facet in ("style", "topic"):
+                if not e.get(facet):
+                    inherited = [[v, round(c * 0.8, 2)] for v, c in pack.get(facet, []) if c >= 0.5]
+                    if inherited:
+                        e[facet] = inherited
+            emoji[name][eid] = e
+    return {"packs": doc.get("packs", {}), "emoji": emoji}
+
+
+def split_gold(gold: dict, split: str) -> dict:
+    """tune = the first gold pack of each category, holdout = the rest."""
+    if split == "all":
+        return gold
+    first: dict[str, str] = {}
+    for name, cat in listed_packs():
+        if name in gold.get("packs", {}) and cat not in first:
+            first[cat] = name
+    keep = set(first.values()) if split == "tune" else set(gold.get("packs", {})) - set(first.values())
+    return {"packs": {k: v for k, v in gold["packs"].items() if k in keep},
+            "emoji": {k: v for k, v in gold.get("emoji", {}).items() if k.split("/")[0] in keep}}
+
+
+def _truth(g: dict, facet: str) -> set:
+    v = g.get(facet)
+    return set(v) if isinstance(v, list) else {v} if v else set()
+
+
+def metrics(gold: dict, facets: dict, split: str = "all") -> dict:
+    """Precision, recall and hit rate of the facets against hand labels; labels marked unsure are skipped."""
+    gold = split_gold(gold, split)
     stats: dict[str, Counter] = defaultdict(Counter)
 
     def score(kind: str, facet: str, predicted: set, truth: set, unsure: bool):
@@ -681,8 +726,8 @@ def evaluate(args) -> int:
         p = next((v for k, v in facets["packs"].items() if k.lower() == name.lower()), None)
         if p is None:
             continue
-        for facet in ("style", "color", "palette", "topic", "mood", "fit"):
-            truth = set(g[facet] if isinstance(g.get(facet), list) else [g[facet]] if g.get(facet) else [])
+        for facet in PACK_FACETS:
+            truth = _truth(g, facet)
             pred = top(p["facets"], facet, max(1, len(truth)))
             if facet == "fit":
                 pred = {"both" if v == "adaptive" else v for v in pred}
@@ -693,8 +738,8 @@ def evaluate(args) -> int:
         e = packd.get(eid)
         if e is None:
             continue
-        for facet in ("color", "style", "topic", "mood", "role"):
-            truth = set(g[facet] if isinstance(g.get(facet), list) else [g[facet]] if g.get(facet) else [])
+        for facet in EMOJI_FACETS:
+            truth = _truth(g, facet)
             score("emoji", facet, top(e, facet, max(1, len(truth))), truth, facet in g.get("unsure", []))
     rows = {}
     for key, c in sorted(stats.items()):
@@ -702,11 +747,70 @@ def evaluate(args) -> int:
         rec = c["tp"] / max(1, c["tp"] + c["fn"])
         rows[key] = {"n": c["n"], "precision": round(prec, 2), "recall": round(rec, 2),
                      "hit_rate": round(c["top1"] / max(1, c["n"]), 2)}
+    return rows
+
+
+def agreement(gold: dict) -> dict:
+    """How often the second blind labeler shares at least one value with the first, per facet."""
+    second = gold.get("second") or {}
+    counts: dict[str, Counter] = defaultdict(Counter)
+    for kind, facets in (("packs", PACK_FACETS), ("emoji", EMOJI_FACETS)):
+        for key, b in (second.get(kind) or {}).items():
+            a = gold.get(kind, {}).get(key)
+            if not a:
+                continue
+            for facet in facets:
+                ta, tb = _truth(a, facet), _truth(b, facet)
+                if not ta or not tb or facet in a.get("unsure", []) or facet in b.get("unsure", []):
+                    continue
+                name = f"{kind[:-1] if kind == 'packs' else kind}.{facet}"
+                counts[name]["n"] += 1
+                counts[name]["agree"] += bool(ta & tb)
+    return {k: {"n": c["n"], "agree": round(c["agree"] / c["n"], 2)} for k, c in sorted(counts.items())}
+
+
+def gate_failures(rows: dict, floor: dict) -> list[str]:
+    out = []
+    for metric, mins in floor.items():
+        if metric not in rows:
+            out.append(f"{metric}: no result (gold or output lost?)")
+            continue
+        out += [f"{metric} {k} {rows[metric][k]} < {m}" for k, m in mins.items() if rows[metric][k] < m - 1e-9]
+    return out
+
+
+def _facets_for_eval(from_site: bool) -> dict:
+    if from_site or not os.path.isfile(FULL):
+        return site_view(load_json(OUT))
+    return load_json(FULL)
+
+
+def evaluate(args) -> int:
+    """Precision and recall of the facets against hand labels (gold v2 by default)."""
+    gold = load_json(args.gold)
+    rows = metrics(gold, _facets_for_eval(args.from_site), args.split)
     print(json.dumps(rows, indent=1))
+    if args.agreement:
+        print(json.dumps({"agreement": agreement(gold)}, indent=1))
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:
             json.dump(rows, fh, indent=1)
     return 0
+
+
+def gate(write: bool = False) -> list[str]:
+    """Holdout of gold v2 against the committed site output (what CI sees); the floor only rises by hand."""
+    rows = metrics(load_json(GOLD_V2), site_view(load_json(OUT)), "holdout")
+    if write:
+        floor = {k: {"recall": v["recall"], "hit_rate": v["hit_rate"]} for k, v in rows.items()}
+        with open(GATE, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump({"$comment": "Accuracy floor per facet on the gold v2 holdout, measured on src/content/"
+                                   "emoji-facets.json (`check --gate`). Raise it after an improvement with "
+                                   "`check --write-gate`; never lower it to make a change pass.",
+                       "gold": "scripts/emoji_taxonomy_gold_v2.json", "split": "holdout", "min": floor}, fh, indent=1)
+            fh.write("\n")
+        return []
+    return gate_failures(rows, load_json(GATE)["min"]) if os.path.isfile(GATE) else ["no gate file: run check --write-gate"]
 
 
 def taxonomy_errors(tax: dict) -> list[str]:
@@ -749,7 +853,7 @@ def taxonomy_errors(tax: dict) -> list[str]:
     return errors
 
 
-def check(_args) -> int:
+def check(args) -> int:
     tax = load_json(TAXONOMY)
     _, errors = parse_overrides(OVERRIDES, tax)
     errors += taxonomy_errors(tax)
@@ -765,7 +869,13 @@ def check(_args) -> int:
                 for v, c in vals:
                     if v not in tax["facets"][facet]["values"] or not 0 <= c <= 1:
                         errors.append(f"{name}: {facet}:{v} ({c}) is not in the taxonomy or out of range")
-    print("\n".join(errors) or "OK: taxonomy, overrides and facets consistent")
+    if getattr(args, "write_gate", False):
+        gate(write=True)
+        print(f"wrote {os.path.relpath(GATE, ROOT)}")
+    elif getattr(args, "gate", False):
+        errors += [f"accuracy below the floor: {e}" for e in gate()]
+    print("\n".join(errors) or "OK: taxonomy, overrides and facets consistent"
+          + (" (accuracy at or above the floor)" if getattr(args, "gate", False) else ""))
     return 1 if errors else 0
 
 
@@ -780,10 +890,14 @@ def main(argv=None) -> int:
     b.add_argument("--sheets", action="append", help="contact sheet folder (repeatable)")
     b.add_argument("--slots", help="telegram-bot-ui data/emoji/slots.json (meanings and interface roles)")
     e = sub.add_parser("eval")
-    e.add_argument("--gold", default=os.path.join(ROOT, "scripts", "emoji_taxonomy_gold.json"))
+    e.add_argument("--gold", default=GOLD_V2, help="gold labels (default v2; v1 is scripts/emoji_taxonomy_gold.json)")
     e.add_argument("--out")
     e.add_argument("--split", choices=["all", "tune", "holdout"], default="all")
-    sub.add_parser("check")
+    e.add_argument("--from-site", action="store_true", help="evaluate the committed site output, as CI does")
+    e.add_argument("--agreement", action="store_true", help="also print the two labelers' agreement")
+    c = sub.add_parser("check")
+    c.add_argument("--gate", action="store_true", help="also fail when accuracy falls below scripts/emoji_taxonomy_gate.json")
+    c.add_argument("--write-gate", action="store_true", help="record the current holdout accuracy as the floor")
     a = ap.parse_args(argv)
     return {"fetch": fetch, "build": build, "eval": evaluate, "check": check}[a.cmd](a)
 
