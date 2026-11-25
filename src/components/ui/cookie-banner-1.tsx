@@ -221,7 +221,7 @@ const CookiePanel = (props: CookiePanelProps) => {
             type="button"
             onClick={() => setShowPrefs((p) => !p)}
             className={cn(
-              "h-11 px-3 sm:h-10 rounded-md border border-border/70 cursor-pointer",
+              "px-3 py-1.5 rounded-md border border-border/70 cursor-pointer",
               "bg-muted text-muted-foreground text-xs",
               "hover:bg-muted/80 transition-colors flex items-center gap-1"
             )}
@@ -235,7 +235,7 @@ const CookiePanel = (props: CookiePanelProps) => {
           <button
             type="button"
             onClick={() => commit(NONE)}
-            className="ml-auto h-11 px-3 sm:h-10 rounded-md border border-border/70 text-xs cursor-pointer hover:bg-muted transition-colors"
+            className="ml-auto px-3 py-1.5 rounded-md border border-border/70 text-xs cursor-pointer hover:bg-muted transition-colors"
           >
             {rejectText}
           </button>
@@ -244,7 +244,7 @@ const CookiePanel = (props: CookiePanelProps) => {
             type="button"
             onClick={() => commit(ALL)}
             className={cn(
-              "h-11 w-full px-5 sm:h-10 rounded-md text-sm font-medium cursor-pointer",
+              "px-3 py-1.5 rounded-md text-xs cursor-pointer",
               "bg-primary text-primary-foreground",
               "hover:bg-primary/90 transition-colors"
             )}
