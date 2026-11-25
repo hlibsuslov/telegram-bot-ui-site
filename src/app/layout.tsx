@@ -32,6 +32,12 @@ export const metadata: Metadata = {
     "Cursor",
     "inline keyboard",
     "HTML widgets",
+    "Telegram Mini Apps",
+    "Telegram premium emoji",
+    "custom emoji packs",
+    "MCP server",
+    "Telegram Stars payments",
+    "Rich Messages",
   ],
   authors: [{ name: "hlibsuslov", url: "https://github.com/hlibsuslov" }],
   openGraph: {
@@ -65,6 +71,7 @@ const jsonLd = {
   codeRepository: REPO_URL,
   license: "https://opensource.org/licenses/MIT",
   programmingLanguage: ["Python", "TypeScript"],
+  keywords: "Telegram bot UI, Telegram Mini Apps, premium emoji, MCP server, Agent Skills, Bot API",
   version: VERSION,
   author: { "@type": "Person", name: "hlibsuslov", url: "https://github.com/hlibsuslov" },
 };

@@ -1,38 +1,16 @@
 "use client";
 
 // Layout reference: "Feature List Showcase" by felipemenezes098, found through 21st.dev (a step
-// list that switches a matching visual). The visuals are drawn here: stand-in glyphs, no pack art.
+// list that switches a matching visual). The emoji are real: static SVG frames of library packs.
 import Link from "next/link";
-import { useId, useState, type ComponentType, type SVGProps } from "react";
-import {
-  ArrowLeft, ArrowRight, Bell, Check, Coffee, Gift, Heart, House, Link2, Package, ShoppingCart, Sparkles, Star, Timer,
-} from "lucide-react";
+import { useId, useState } from "react";
+import { ArrowRight, House, Link2, SlidersHorizontal, Star } from "lucide-react";
+import { EMOJI, SHOWCASE_PACKS, type PreviewEmoji } from "@/content/emoji-showcase";
 import { cn } from "@/lib/utils";
+import { EmojiGlyph } from "./emoji-glyph";
 import { Container } from "./section";
 
-type Glyph = ComponentType<SVGProps<SVGSVGElement>>;
-
-/** A premium emoji stand-in: a tinted tile with a glyph, the way a custom emoji pack looks in a grid. */
-function Emoji({ icon: Icon, tone, className }: { icon: Glyph; tone: number; className?: string }) {
-  const tones = [
-    "bg-sky-500 text-white", "bg-amber-400 text-amber-950", "bg-emerald-500 text-white",
-    "bg-rose-500 text-white", "bg-violet-500 text-white", "bg-orange-500 text-white",
-  ];
-  return (
-    <span aria-hidden="true" className={cn("inline-flex size-7 shrink-0 items-center justify-center rounded-lg", tones[tone % tones.length], className)}>
-      <Icon className="size-[60%]" strokeWidth={2.25} />
-    </span>
-  );
-}
-
-const PACK_A: Glyph[] = [House, ShoppingCart, Check, ArrowLeft, Bell, Package, Timer, Star, Gift, Heart, Coffee, Sparkles];
-
 function PacksVisual() {
-  const packs = [
-    { name: "Shop icons", link: "t.me/addemoji/ShopIcons", count: 120, start: 0 },
-    { name: "Status marks", link: "t.me/addemoji/StatusMarks", count: 48, start: 4 },
-    { name: "Coffee set", link: "t.me/addemoji/CoffeeSet", count: 64, start: 8 },
-  ];
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm">
@@ -40,14 +18,14 @@ function PacksVisual() {
         <span className="min-w-0 flex-1 truncate text-muted-foreground">https://t.me/addemoji/…</span>
         <span className="rounded-md bg-brand px-2.5 py-1 text-xs font-medium text-background">Import</span>
       </div>
-      {packs.map((p, i) => (
+      {SHOWCASE_PACKS.slice(0, 3).map((p) => (
         <div key={p.name} className="rounded-lg border border-border bg-background p-3">
           <p className="flex flex-wrap items-baseline gap-x-2 text-sm">
-            <span className="font-medium">{p.name}</span>
-            <span className="text-xs text-muted-foreground">{p.link} · {p.count} emoji</span>
+            <span className="font-medium">{p.title}</span>
+            <span className="text-xs text-muted-foreground">t.me/addemoji/{p.name} · {p.count} emoji</span>
           </p>
           <div className="mt-2 flex gap-1.5">
-            {Array.from({ length: 7 }, (_, k) => <Emoji key={k} icon={PACK_A[(p.start + k) % PACK_A.length]} tone={i * 2 + k} />)}
+            {p.sample.map((e) => <EmojiGlyph key={e.id} emoji={e} />)}
           </div>
         </div>
       ))}
@@ -55,24 +33,57 @@ function PacksVisual() {
   );
 }
 
-function MeaningsVisual() {
-  const icons: [string, Glyph, number][] = [
-    ["home", House, 0], ["cart", ShoppingCart, 5], ["done", Check, 2], ["back", ArrowLeft, 4], ["pending", Timer, 1], ["favorite", Star, 3],
+function TagsVisual() {
+  const facets: [string, string[], number][] = [
+    ["Style", ["outline", "glyph", "native UI", "cartoon"], 2],
+    ["Theme fit", ["adaptive", "both themes", "light"], 0],
+    ["Motion", ["animated", "static"], 0],
   ];
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-3 gap-2">
-        {icons.map(([slot, icon, tone]) => (
+      <div className="space-y-2 rounded-lg border border-border bg-background p-3">
+        {facets.map(([name, values, on]) => (
+          <div key={name} className="flex flex-wrap items-center gap-1.5 text-xs">
+            <span className="w-20 shrink-0 font-medium text-muted-foreground">{name}</span>
+            {values.map((v, i) => (
+              <span key={v} className={cn("rounded-md border px-2 py-0.5", i === on ? "border-brand bg-brand/10 text-foreground" : "border-border text-muted-foreground")}>{v}</span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-3 rounded-lg border border-brand/40 bg-background p-3">
+        <div className="grid shrink-0 grid-cols-3 gap-1">
+          {SHOWCASE_PACKS[0].sample.map((e) => <EmojiGlyph key={e.id} emoji={e} className="size-6" />)}
+        </div>
+        <div className="min-w-0 text-sm">
+          <p className="font-medium">Telegram iOS Icons <span className="text-xs font-normal text-brand">covers 6 of 6 slots</span></p>
+          <p className="mt-0.5 text-xs leading-5 text-muted-foreground">native UI, outline; takes the text colour in both themes</p>
+        </div>
+      </div>
+      <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><SlidersHorizontal aria-hidden="true" className="size-3.5" /> Ranked for the slots your screens use.</p>
+    </div>
+  );
+}
+
+function MeaningsVisual() {
+  const slots: [string, PreviewEmoji][] = [
+    ["settings", EMOJI.settings], ["gift", EMOJI.gift], ["favorite", EMOJI.favorite],
+    ["share", EMOJI.share], ["screen", EMOJI.screen], ["filters", EMOJI.filters],
+  ];
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {slots.map(([slot, emoji]) => (
           <div key={slot} className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2">
-            <Emoji icon={icon} tone={tone} />
+            <EmojiGlyph emoji={emoji} className="size-6" />
             <span className="truncate text-sm font-medium">{slot}</span>
           </div>
         ))}
       </div>
       <div className="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2 text-sm">
-        <span aria-hidden="true">🛒</span>
+        <span aria-hidden="true">🎁</span>
         <ArrowRight aria-hidden="true" className="size-4 text-muted-foreground" />
-        <Emoji icon={ShoppingCart} tone={5} />
+        <EmojiGlyph emoji={EMOJI.gift} className="size-6" />
         <span className="flex-1 text-muted-foreground">Suggested for your screens</span>
         <span className="text-xs font-medium text-brand">Add</span>
       </div>
@@ -90,8 +101,8 @@ function AnywhereVisual() {
       </div>
       <div className="rounded-xl bg-[#d9e6c8] p-3 dark:bg-[#1f2b1f]">
         <div className="max-w-[18rem] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-sm text-[#101828] shadow-sm">
-          <p className="flex items-center gap-1.5 font-semibold"><Emoji icon={Coffee} tone={5} className="size-5" /> Your order is ready</p>
-          <p className="mt-1">Flat white, oat milk · pick it up at the bar <Emoji icon={Check} tone={2} className="size-4 align-[-0.2em]" /></p>
+          <p className="flex items-center gap-1.5 font-semibold"><EmojiGlyph emoji={EMOJI.goldStars} className="size-5" /> Your order is ready</p>
+          <p className="mt-1">Flat white, oat milk · pick it up at the bar <EmojiGlyph emoji={EMOJI.done} className="size-4 align-[-0.2em]" /></p>
         </div>
         <div className="mt-1.5 grid max-w-[18rem] grid-cols-2 gap-1">
           <span className="flex items-center justify-center gap-1.5 rounded-lg bg-[#5a9e4a]/90 px-2 py-1.5 text-xs font-medium text-white"><House className="size-3.5" aria-hidden="true" /> Menu</span>
@@ -104,14 +115,14 @@ function AnywhereVisual() {
 }
 
 function AgentVisual() {
-  const rows = [["home", "5368324170671202286", "🏠"], ["cart", "5370869711888194012", "🛒"], ["done", "5325536405093384220", "✅"]];
+  const rows: [string, PreviewEmoji][] = [["settings", EMOJI.settings], ["gift", EMOJI.gift], ["favorite", EMOJI.favorite]];
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-background font-mono text-xs">
       <p className="border-b border-border px-3 py-2 text-muted-foreground">$ bot-ui emoji brief</p>
       <div className="space-y-1 px-3 py-2.5">
         <p className="text-muted-foreground">## Icon map: place these, by meaning</p>
-        {rows.map(([slot, id, fb]) => (
-          <p key={slot} className="flex gap-3"><span className="w-12 text-brand">{slot}</span><span className="min-w-0 truncate">{id}</span><span>{fb}</span></p>
+        {rows.map(([slot, e]) => (
+          <p key={slot} className="flex items-center gap-3"><span className="w-16 text-brand">{slot}</span><span className="min-w-0 truncate">{e.id}</span><span>{e.fallback}</span></p>
         ))}
         <p className="pt-1 text-muted-foreground">## Rules</p>
         <p>- Use only ids from the icon map; never invent one.</p>
@@ -129,8 +140,13 @@ const STEPS = [
     Visual: PacksVisual,
   },
   {
+    title: "Or let tags pick the pack",
+    text: "The Emoji page filters the whole library by style, colour, theme fit and motion and ranks packs for the slots your screens already use. The single-file snapshot works offline.",
+    Visual: TagsVisual,
+  },
+  {
     title: "Give each emoji a meaning",
-    text: "home, cart, done: one meaning keeps one icon on every screen. Studio suggests premium emoji for the ordinary ones your screens already use.",
+    text: "settings, gift, favorite: one meaning keeps one icon on every screen. Studio suggests premium emoji for the ordinary ones your screens already use.",
     Visual: MeaningsVisual,
   },
   {
@@ -153,7 +169,7 @@ export function EmojiPacks() {
     <section id="emoji" aria-labelledby="emoji-heading" className="py-16 sm:py-20">
       <Container>
         <div className="max-w-2xl">
-          <p className="mb-3 text-sm font-medium text-brand">New in bot-ui Studio</p>
+          <p className="mb-3 text-sm font-medium text-brand">Premium emoji in bot-ui Studio</p>
           <h2 id="emoji-heading" className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">Bring your own premium emoji packs.</h2>
           <p className="mt-4 text-base leading-7 text-pretty text-muted-foreground sm:text-lg">
             Import your custom emoji packs by link, use them in any screen of your bot, and hand the same icon map to your coding agent.
@@ -199,7 +215,6 @@ export function EmojiPacks() {
           <Link href="/emoji" className="inline-flex items-center gap-2 rounded-md font-medium text-brand hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
             Browse the emoji library <ArrowRight aria-hidden="true" className="size-4" />
           </Link>
-          <p className="text-muted-foreground">Telegram shows custom emoji when the bot has a Fragment username or its owner has Premium.</p>
         </div>
       </Container>
     </section>

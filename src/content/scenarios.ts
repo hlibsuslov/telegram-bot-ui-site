@@ -238,23 +238,123 @@ export const STAGES: Stage[] = [
         id: "emoji",
         title: "Add premium emoji to menu buttons",
         prompt:
-          "Import my pack with `bot-ui emoji import https://t.me/addemoji/YourPack`. Pick icons by meaning for the main menu buttons. Use IDs from that pack and keep plain labels for chats where the bot can’t use custom emoji.",
+          "Pick one premium emoji pack for the main menu with `tgui.py emoji library pick --needs home,back,settings,cart --style outline`. Show me the top three with the reason for each, then apply my choice. Keep plain labels where the bot can’t use custom emoji.",
         steps: [
-          "Resolve the pack and map its icons to the existing button meanings.",
+          "Rank packs by how many of the menu’s slots they cover, then by tags and theme fit.",
           "Check the bot’s eligibility and apply the same fallback across the keyboard.",
         ],
-        uses: ["emoji-packs.md", "emoji_packs.py verify", "Recipe 73 · Mixed eligibility"],
+        uses: ["emoji-packs.md", "emoji library pick", "Recipe 73 · Mixed eligibility"],
       },
       {
         id: "api",
         title: "Look up a Bot API capability",
         prompt:
-          "Can a bot send a checklist as a reply in a business chat? Run `tg_api_lookup.py show sendChecklist`. Explain the required context and show a sample request checked with `validate_payload.py`.",
+          "Can a bot send a checklist as a reply in a business chat? Run `tgui.py lookup card sendChecklist`. Explain the required context and show a sample request checked with `validate_payload.py`.",
         steps: [
           "Check the method, required business connection and reply fields in the catalog.",
           "Build an example payload and validate its structure.",
         ],
-        uses: ["api-catalog.md", "business-accounts.md"],
+        uses: ["tgui.py lookup", "api-catalog.md", "business-accounts.md"],
+      },
+    ],
+  },
+  {
+    id: "mini-apps",
+    label: "Mini Apps",
+    scenarios: [
+      {
+        id: "miniapp-decide",
+        title: "Decide: bot screen, widget or Mini App",
+        prompt:
+          "We want a product catalog with filters and a cart. Tell me whether it should be bot messages, an HTML widget or a Mini App, and why. If it is a Mini App, plan the launch points, `startapp` links and what the bot sends after checkout.",
+        steps: [
+          "Weigh the task against the decision table for messages, widgets and Mini Apps.",
+          "Plan the launch, return and confirmation path between the app and the chat.",
+        ],
+        uses: ["mini-apps/decide.md", "mini-apps/launch-and-lifecycle.md"],
+      },
+      {
+        id: "miniapp-rework",
+        title: "Make a web app look native in Telegram",
+        prompt:
+          "Rework `./app` into classic Telegram design. Start with `tgui.py miniapp rework plan app/` and `tgui.py miniapp lint app/ --strict`. Work stage by stage, keep the business logic and show me the acceptance score after each stage.",
+        steps: [
+          "Map colours and type to Telegram theme roles and remove web-style chrome.",
+          "Re-run the lint after each stage and report the 16-item score.",
+        ],
+        uses: ["mini-apps/rework.md", "mini-apps/design-system.md", "mini-apps/anti-slop.md"],
+      },
+      {
+        id: "miniapp-pay",
+        title: "Sell with Stars inside a Mini App",
+        prompt:
+          "Add a Stars checkout to the Mini App: a signed payload bound to the user, a screen for every `invoiceClosed` status, and a My plan screen. Verify `initData` on the server before creating the invoice.",
+        steps: [
+          "Create the invoice on the server from the verified user and the stored order.",
+          "Handle paid, cancelled, failed and pending outcomes in the app and in chat.",
+        ],
+        uses: ["mini-apps/payments.md", "mini-apps/security.md", "payments-pipeline.md"],
+      },
+    ],
+  },
+  {
+    id: "emoji-mcp",
+    label: "Emoji & MCP",
+    scenarios: [
+      {
+        id: "emoji-library",
+        title: "Connect the emoji library to your agent",
+        prompt:
+          "Add the remote MCP server with `claude mcp add --transport http telegram-emoji https://telegram-bot-ui.hlixli.com/api/mcp`. Then use `emoji_pick_family` for the slots home, back, settings, info and money, and show the icon map with real ids.",
+        steps: [
+          "Rank whole packs by slot coverage and the brief’s tags.",
+          "Return one icon map from one pack, with the missing slots named.",
+        ],
+        uses: ["/emoji/api-docs#mcp", "emoji-packs.md"],
+      },
+      {
+        id: "emoji-brand",
+        title: "Match emoji to the brand colours",
+        prompt:
+          "Read our style profile and pick a premium emoji pack that fits the brand accent and works in light and dark themes: `tgui.py emoji library pick --profile style-profile.json --needs home,back,settings`. Explain each candidate in one line.",
+        steps: [
+          "Compare the brand accent with each pack’s measured colours and palette.",
+          "Prefer theme-adaptive packs and say why each pack ranks where it does.",
+        ],
+        uses: ["emoji-packs.md", "style profile", "emoji library pick"],
+      },
+      {
+        id: "own-pack",
+        title: "Use emoji from our own pack",
+        prompt:
+          "Import my pack with `bot-ui emoji import https://t.me/addemoji/YourPack`. Give each icon a meaning, place them in the menu and status texts, and run `bot-ui validate` to catch unknown ids and double icons.",
+        steps: [
+          "Resolve the pack and map its icons to the existing button meanings.",
+          "Validate the map and preview the screens with the real emoji.",
+        ],
+        uses: ["emoji-packs.md", "Recipe 76 · Own emoji pack", "bot-ui validate"],
+      },
+      {
+        id: "local-mcp",
+        title: "Run the skill’s tools over MCP",
+        prompt:
+          "Register the skill’s local MCP server (`scripts/tgui.py mcp` in the installed skill folder) with your agent, using the full path to that folder. Use `validate_request` on every Bot API call you write in this task and `map_snapshot` to screenshot the screens you changed.",
+        steps: [
+          "Check each request against the catalog and Telegram’s keyboard rules before writing it.",
+          "Open the single-file Studio snapshot and screenshot the changed screens.",
+        ],
+        uses: ["tgui.py mcp", "bot-ui-projects.md"],
+      },
+      {
+        id: "commands-menu",
+        title: "Fix the / command menu",
+        prompt:
+          "Run `tgui.py commands audit --root .` and compare the handlers in code with the command menu. Then plan the `setMyCommands` requests per scope and language with `tgui.py commands plan`, without sending them.",
+        steps: [
+          "List missing, dead and shadowed commands and missing translations.",
+          "Show the planned requests for each scope and language for my approval.",
+        ],
+        uses: ["bot-commands.md", "commands audit", "commands plan"],
       },
     ],
   },

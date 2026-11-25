@@ -42,9 +42,9 @@ export const AGENT_PROMPTS = [
 ] as const;
 
 export const SITE_NAME = "Telegram Bot UI";
-export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for the whole Telegram bot interface";
+export const SITE_TITLE = "Telegram Bot UI: Agent Skill for bots, Mini Apps and emoji";
 export const SITE_DESCRIPTION =
-  "An open-source UI/UX skill for coding agents that covers the whole interface of a Telegram bot: screens, texts and keyboards, navigation and states, streaming AI replies with Stop, HTML widgets, premium emoji and channel publishing, plus the local bot-ui Studio to map and edit it. Updated for every Bot API release.";
+  "Open-source Agent Skill for Claude Code, Codex and Cursor: Telegram bot screens, keyboards, streaming replies, widgets, Mini Apps, Stars payments and premium emoji, plus an MCP server and a free emoji library.";
 
 /** Demo video below the hero (web copies of the 16:9 master, 1280x720). */
 export const DEMO_VIDEO = {
@@ -238,6 +238,26 @@ export const COMPARISON = [
     with: "quoted as data; the operator is told",
   },
   {
+    situation: "A Mini App built like a website",
+    without: "its own top bar, purple gradients, emoji as icons",
+    with: "Telegram’s theme roles and native controls, checked by a lint and a 16-item rework score",
+  },
+  {
+    situation: "Icons for the menu",
+    without: "a different emoji style on every button",
+    with: "one premium pack that covers every slot, picked by tags, with plain emoji as fallback",
+  },
+  {
+    situation: "A new Bot API field",
+    without: "invented from memory, rejected by Telegram",
+    with: "looked up in the offline catalog with a checked example, or reported as missing",
+  },
+  {
+    situation: "The / command menu",
+    without: "handlers and setMyCommands drift apart",
+    with: "audited against the code, then planned per scope and language",
+  },
+  {
     situation: "Old SDK",
     without: "new features silently dropped",
     with: "the gap is detected and bridged with an isolated adapter",
@@ -245,6 +265,10 @@ export const COMPARISON = [
 ] as const;
 
 export const FAQ = [
+  {
+    q: "What is Telegram Bot UI?",
+    a: "An open-source Agent Skill: knowledge, recipes and offline tools that teach your coding agent to design and build Telegram bots, Mini Apps and channel posts the way Telegram users expect. It also ships bot-ui Studio, a local MCP server and a free premium emoji library.",
+  },
   {
     q: "Does it change my bot?",
     a: "No. It is knowledge and tools for your agent; the agent edits your bot when you ask.",
@@ -258,20 +282,32 @@ export const FAQ = [
     a: "Any. The skill reasons in Bot API payloads and ships runnable examples in Python and TypeScript, plus adapters for aiogram and grammY.",
   },
   {
+    q: "How do I call it?",
+    a: "Just describe the task, for example “Improve the UX of this Telegram bot.” The skill picks one of its twelve commands on its own. You can also call it by name: /telegram-bot-ui in Claude Code, $telegram-bot-ui in Codex, or the / menu in Cursor and Antigravity.",
+  },
+  {
+    q: "Can I use it as an MCP server?",
+    a: "Yes, two of them. The skill runs a local stdio MCP server with 15 tools (Bot API lookup, request and Rich HTML validation, the bot-ui map, command menu audit, emoji pick): tgui.py mcp. The emoji library is a separate remote MCP server at /api/mcp with six read-only tools and no sign-in.",
+  },
+  {
+    q: "Is the emoji library free? Does it need an API key?",
+    a: "Free, no key and no sign-in. Search 479 packs in the browser, call the JSON API, connect the MCP server or download the whole catalog as one gzip file. Requests are rate-limited per client.",
+  },
+  {
+    q: "Do I need Telegram Premium for custom emoji?",
+    a: "A bot with a Fragment username can use custom emoji everywhere. Owner Premium covers only messages the bot sends to private chats, groups and supergroups, not channel posts. Otherwise the skill falls back to plain emoji for the whole message, never a mix.",
+  },
+  {
+    q: "Does it build Telegram Mini Apps?",
+    a: "Yes, since 3.1. It decides whether you need a Mini App at all, then builds or reworks one with Telegram’s theme roles, native controls, Stars payments and server-side initData verification, and lints the result.",
+  },
+  {
     q: "My bot uses an old SDK.",
     a: "The skill checks what your SDK supports and either suggests an upgrade or adds a small, isolated adapter with a “remove when” note.",
   },
   {
-    q: "Do I need Telegram Premium?",
-    a: "Only for custom emoji icons in a regular bot (or Fragment usernames).",
-  },
-  {
-    q: "How do I call it?",
-    a: "Just describe the task, for example “Improve the UX of this Telegram bot.” The skill activates on its own. You can also call it by name: /telegram-bot-ui in Claude Code, $telegram-bot-ui in Codex, or the / menu in Cursor and Antigravity.",
-  },
-  {
     q: "What is not verified yet?",
-    a: "Agent evals are prepared but not yet run. Cursor, Antigravity, Copilot, Devin, Cline, OpenCode, Grok Build, Hermes Agent and Replit Agent were checked by documentation only. Live calls to Telegram and rendering in the Telegram apps are not part of the offline checks, and the skill tells your agent to say which level of evidence it has.",
+    a: "Live calls to Telegram and rendering in the Telegram apps are not part of the offline checks, and the skill tells your agent which level of evidence it has. Cursor, Antigravity, Copilot, Devin, Cline, OpenCode, Grok Build, Hermes Agent and Replit Agent were checked by documentation only. Agent evals, their runner and the judge are ready, but no full agent run has been published yet.",
   },
   {
     q: "Is this an official Telegram project?",

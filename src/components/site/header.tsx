@@ -8,9 +8,9 @@ import { ThemeToggle } from "./theme-toggle";
 
 // Absolute paths so the same header works on the home page and on /studio.
 const NAV = [
+  { href: "/#whats-new", label: "What’s new" },
   { href: "/studio", label: "Studio" },
   { href: "/emoji", label: "Emoji" },
-  { href: "/#demos", label: "Demos" },
   { href: "/#capabilities", label: "Capabilities" },
   { href: "/#prompts", label: "Prompts" },
   { href: "/#install", label: "Install" },

@@ -16,7 +16,16 @@ export type DuckIconName =
   | "edit-bot"
   | "custom-widgets"
   | "agent-task"
-  | "restraint";
+  | "restraint"
+  | "mcp"
+  | "commands"
+  | "memory"
+  | "evals"
+  | "api-cards"
+  | "payments"
+  | "rich"
+  | "library"
+  | "tags";
 
 export function DuckIcon({ name, className }: { name: DuckIconName; className: string }) {
   return (
