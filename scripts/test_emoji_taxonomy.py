@@ -105,5 +105,44 @@ class Matching(unittest.TestCase):
         self.assertEqual(self.hits("hand drawn hands"), {("style", "hand-drawn"), ("topic", "people")})
 
 
+class ShippedTaxonomy(unittest.TestCase):
+    """Words of the real taxonomy that once matched the wrong thing or nothing."""
+
+    vocab = et.Vocabulary(et.load_json(et.TAXONOMY))
+
+    def hits(self, text: str) -> set:
+        return self.vocab.facets_of(text)[0]
+
+    def test_paper_plane_is_a_send_icon_not_travel(self):
+        got = self.hits("paper plane, telegram, send")
+        self.assertNotIn(("topic", "travel"), got)
+        self.assertIn(("role", "action"), got)
+
+    def test_hand_drawn_is_not_a_hand(self):
+        self.assertNotIn(("topic", "people"), self.hits("heart outline, hand drawn, line art"))
+
+    def test_sports_car_is_travel_not_sport(self):
+        got = self.hits("sports car, black")
+        self.assertIn(("topic", "travel"), got)
+        self.assertNotIn(("topic", "sport"), got)
+
+    def test_hot_dog_is_food_not_an_animal(self):
+        got = self.hits("hot dog, mustard")
+        self.assertIn(("topic", "food"), got)
+        self.assertNotIn(("topic", "animals"), got)
+
+    def test_clear_words_map_to_one_value(self):
+        for text, want in (
+            ("anime girl, long hair, portrait", ("topic", "characters")),
+            ("map pin, red", ("topic", "interface")),
+            ("birthday candle, digit 3", ("topic", "holidays")),
+            ("bat, halloween", ("topic", "animals")),
+            ("alien, green", ("topic", "nature")),
+            ("sunglasses, duck", ("mood", "playful")),
+            ("russian letter, keyboard key", ("topic", "letters")),
+        ):
+            self.assertIn(want, self.hits(text), text)
+
+
 if __name__ == "__main__":
     unittest.main()

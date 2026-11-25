@@ -679,7 +679,12 @@
             "ссылка",
             "notification",
             "cursor",
-            "toggle"
+            "toggle",
+            "pin",
+            "pushpin",
+            "thumbtack",
+            "pinned",
+            "булавка"
           ]
         },
         "status": {
@@ -817,7 +822,9 @@
             "parenthesis",
             "скобка",
             "quote",
-            "кавычки"
+            "кавычки",
+            "russian letter",
+            "русская буква"
           ]
         },
         "faces": {
@@ -871,7 +878,11 @@
             "талисман",
             "doll",
             "кукла",
-            "rukia"
+            "rukia",
+            "hair",
+            "волосы",
+            "portrait",
+            "портрет"
           ]
         },
         "animals": {
@@ -935,7 +946,11 @@
             "turtle",
             "penguin",
             "cow",
-            "sheep"
+            "sheep",
+            "bat",
+            "мышь",
+            "мыши",
+            "мышка"
           ]
         },
         "food": {
@@ -987,7 +1002,11 @@
             "toast",
             "pie",
             "леденец",
-            "banana"
+            "banana",
+            "hot dog",
+            "hotdog",
+            "хот-дог",
+            "хотдог"
           ]
         },
         "nature": {
@@ -1039,7 +1058,10 @@
             "mountain",
             "forest",
             "sky",
-            "wind"
+            "wind",
+            "alien",
+            "пришелец",
+            "пришельцы"
           ]
         },
         "holidays": {
@@ -1075,7 +1097,9 @@
             "подарок",
             "подарки",
             "день рождения",
-            "xmas"
+            "xmas",
+            "candle",
+            "свеча"
           ]
         },
         "love": {
@@ -1106,7 +1130,9 @@
             "city",
             "map",
             "флаг",
-            "страна"
+            "страна",
+            "location",
+            "геолокация"
           ]
         },
         "games": {
@@ -1346,7 +1372,8 @@
             "бизнес",
             "worker",
             "employee",
-            "manager"
+            "manager",
+            "paper clip"
           ]
         },
         "people": {
@@ -1522,7 +1549,8 @@
             "ухмылка",
             "crazy",
             "derp",
-            "подмигивает"
+            "подмигивает",
+            "sunglasses"
           ]
         },
         "loving": {
@@ -1718,7 +1746,8 @@
             "save",
             "плюс",
             "минус",
-            "minus"
+            "minus",
+            "paper plane"
           ]
         },
         "status": {
@@ -1847,7 +1876,8 @@
             "caption",
             "плашка",
             "ярлык",
-            "inscription"
+            "inscription",
+            "russian letter"
           ]
         },
         "decoration": {
@@ -2060,6 +2090,11 @@
     "hand-painted",
     "sports car",
     "sport car",
-    "comic sans"
+    "comic sans",
+    "paper plane",
+    "russian letter",
+    "русская буква",
+    "hot dog",
+    "хот-дог"
   ]
 }
