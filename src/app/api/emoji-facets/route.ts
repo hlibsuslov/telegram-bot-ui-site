@@ -4,16 +4,12 @@
 // Static data built by scripts/emoji_taxonomy.py; no Telegram call.
 import { allow, clientKey, errorResponse, ResolverError } from "@/lib/emoji-pack";
 import { RATE_LIMITS } from "@/lib/emoji-api-contract";
-import { allPackFacets, facetsMeta, taxonomy } from "@/lib/emoji-facets";
+import { facetsAnswer } from "@/lib/emoji-answers";
 
 export async function GET(req: Request) {
   try {
     if (!allow(`facets:${clientKey(req)}`, RATE_LIMITS.facets)) throw new ResolverError("RATE_LIMITED", 429, "too many requests; retry in a minute", 60);
-    const facets = Object.fromEntries(Object.entries(taxonomy.facets).map(([id, f]) => [id, {
-      label: f.label, measured: !!f.measured, scope: f.scope,
-      values: Object.fromEntries(Object.entries(f.values).map(([v, d]) => [v, { en: d.en, ru: d.ru }])),
-    }]));
-    return Response.json({ ok: true, ...facetsMeta, taxonomy: { version: taxonomy.version, facets }, packs: allPackFacets() }, {
+    return Response.json(facetsAnswer(), {
       headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800", "X-Content-Type-Options": "nosniff" },
     });
   } catch (err) {
