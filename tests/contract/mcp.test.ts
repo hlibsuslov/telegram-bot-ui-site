@@ -314,7 +314,12 @@ describe("MCP Origin check", () => {
 describe("MCP limits", () => {
   test("a tool call counts against its endpoint's limit, shared with the HTTP route", async () => {
     const ip = client();
-    for (let i = 0; i < RATE_LIMITS.pack; i++) await pack.GET(request("/api/emoji-pack/checkified", ip), params({ name: "checkified" }));
+    const viaMcp = Math.ceil(RATE_LIMITS.pack / 2);
+    for (let i = 0; i < viaMcp; i++) assert.equal((await tool("emoji_pack", { name: "checkified" }, ip)).ok, true);
+    for (let i = viaMcp; i < RATE_LIMITS.pack; i++) {
+      assert.equal((await pack.GET(request("/api/emoji-pack/checkified", ip), params({ name: "checkified" }))).status, 200, `HTTP call ${i + 1}`);
+    }
+    assert.equal((await pack.GET(request("/api/emoji-pack/checkified", ip), params({ name: "checkified" }))).status, 429, "the MCP calls used the HTTP route's quota");
     const { json } = await toolError("emoji_pack", { name: "checkified" }, ip);
     assert.equal(json!.error!.code, "RATE_LIMITED");
     assert.equal(json!.retryAfter, 60);
