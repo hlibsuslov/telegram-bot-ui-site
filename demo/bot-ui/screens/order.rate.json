@@ -1,0 +1,38 @@
+{
+  "id": "order.rate",
+  "title": "Rate your drink",
+  "kind": "notification",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<tg-emoji emoji-id=\"6028338546736107668\">⭐️</tg-emoji> <b>Order #{order.no} picked up</b>\nRate your drink: it takes five seconds and goes straight to the barista.",
+      "ru": "<tg-emoji emoji-id=\"6028338546736107668\">⭐️</tg-emoji> <b>Заказ #{order.no} получен</b>\nОцените напиток: это пять секунд, и оценка сразу уйдёт баристе.",
+      "uk": "<tg-emoji emoji-id=\"6028338546736107668\">⭐️</tg-emoji> <b>Замовлення #{order.no} отримано</b>\nОцініть напій: це п'ять секунд, і оцінка одразу піде баристі."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "menu"
+      ]
+    ]
+  },
+  "actions": {
+    "menu": {
+      "label": {
+        "en": "Main menu",
+        "ru": "В меню",
+        "uk": "У меню"
+      },
+      "type": "navigate",
+      "to": "entry.start",
+      "presentation": "send"
+    }
+  },
+  "widget": {
+    "ref": "rate-drink"
+  }
+}

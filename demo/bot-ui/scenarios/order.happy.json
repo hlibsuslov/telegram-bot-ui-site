@@ -1,6 +1,6 @@
 {
   "scenarioId": "order.happy",
-  "title": "Coffee ordered and paid on the first try, pickup",
+  "title": "Coffee from the menu, a pastry and a note, paid on the first try, receipt and pickup",
   "locale": "en",
   "context": {
     "chat": "private",
@@ -9,10 +9,16 @@
   "data": {
     "cart.summary": "Flat white M, oat milk · Butter croissant",
     "cart.total": "€6.30",
+    "cart.drink": "Flat white M, oat milk",
+    "cart.drink_price": "€3.90",
+    "cart.pastry": "Butter croissant",
+    "cart.pastry_price": "€2.40",
     "order.no": "218",
     "pickup.time": "8:45",
+    "pickup.unix": "1794737100",
     "order.status_text": "brewing",
-    "loyalty.stamps": "7"
+    "loyalty.stamps": "7",
+    "loyalty.left": "3"
   },
   "handlers": {
     "checkout.pay": [
@@ -35,6 +41,11 @@
       "press": "coffee"
     },
     {
+      "expect": {
+        "screen": "menu.coffee"
+      }
+    },
+    {
       "press": "flat"
     },
     {
@@ -42,6 +53,25 @@
     },
     {
       "press": "oat"
+    },
+    {
+      "expect": {
+        "screen": "checkout.review"
+      }
+    },
+    {
+      "press": "pastry"
+    },
+    {
+      "expect": {
+        "screen": "menu.bakery"
+      }
+    },
+    {
+      "press": "croissant"
+    },
+    {
+      "press": "checkout"
     },
     {
       "expect": {
@@ -65,6 +95,15 @@
     {
       "expect": {
         "screen": "order.placed"
+      }
+    },
+    {
+      "press": "receipt"
+    },
+    {
+      "expect": {
+        "screen": "order.receipt",
+        "contains": "218"
       }
     },
     {

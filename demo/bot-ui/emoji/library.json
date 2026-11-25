@@ -2,1295 +2,2147 @@
   "format": "bot-ui-emoji/v1",
   "bot": "",
   "packs": {
-    "Topics": {
-      "title": "Topics",
-      "link": "https://t.me/addemoji/Topics",
-      "importedAt": "2026-11-23",
+    "tgiosicons": {
+      "title": "Telegram iOS Icons",
+      "link": "https://t.me/addemoji/tgiosicons",
+      "importedAt": "2026-11-25",
       "formats": [
         "animated"
       ],
       "emoji": [
         {
-          "id": "5434144690511290129",
-          "fallback": "📰",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312536423851630001",
-          "fallback": "💡",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312016608254762256",
-          "fallback": "⚡️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377544228505134960",
-          "fallback": "🎙",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5418085807791545980",
-          "fallback": "🔝",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5370870893004203704",
-          "fallback": "🗣",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5420216386448270341",
-          "fallback": "🆒",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5379748062124056162",
-          "fallback": "❗️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5373251851074415873",
-          "fallback": "📝",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5433614043006903194",
-          "fallback": "📆",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357315181649076022",
-          "fallback": "📁",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309965701241379366",
-          "fallback": "🔎",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309984423003823246",
-          "fallback": "📣",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312241539987020022",
-          "fallback": "🔥",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312138559556164615",
-          "fallback": "❤️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377316857231450742",
-          "fallback": "❓",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350305691942788490",
-          "fallback": "📈",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350713563512052787",
-          "fallback": "📉",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309958691854754293",
-          "fallback": "💎",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350452584119279096",
-          "fallback": "💰",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309929258443874898",
-          "fallback": "💸",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377690785674175481",
-          "fallback": "🪙",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310107765874632305",
-          "fallback": "💱",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377438129928020693",
-          "fallback": "⁉️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309950797704865693",
-          "fallback": "🎮",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350554349074391003",
-          "fallback": "💻",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5409357944619802453",
-          "fallback": "📱",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312322066328853156",
-          "fallback": "🚗",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312486108309757006",
-          "fallback": "🏠",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310029292527164639",
-          "fallback": "💘",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310228579009699834",
-          "fallback": "🎉",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377498341074542641",
-          "fallback": "‼️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312315739842026755",
-          "fallback": "🏆",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5408906741125490282",
-          "fallback": "🏁",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5368653135101310687",
-          "fallback": "🎬",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310045076531978942",
-          "fallback": "🎵",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5420331611830886484",
-          "fallback": "🔞",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350481781306958339",
-          "fallback": "📚",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357107601584693888",
-          "fallback": "👑",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5375159220280762629",
-          "fallback": "⚽️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5384327463629233871",
-          "fallback": "🏀",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350513667144163474",
-          "fallback": "📺",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357121491508928442",
-          "fallback": "👀",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357185426392096577",
-          "fallback": "🫦",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310157398516703416",
-          "fallback": "🍓",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310262535021142850",
-          "fallback": "💄",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5368741306484925109",
-          "fallback": "👠",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5348436127038579546",
+          "id": "6028346797368283073",
           "fallback": "✈️",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5357120306097956843",
-          "fallback": "🧳",
+          "id": "5775870512127283512",
+          "fallback": "🍏",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5310303848311562896",
-          "fallback": "🏖",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350424168615649565",
-          "fallback": "⛅️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5413625003218313783",
-          "fallback": "🦄",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350699789551935589",
-          "fallback": "🛍",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377478880577724584",
-          "fallback": "👜",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5431492767249342908",
-          "fallback": "🛒",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350497316203668441",
-          "fallback": "🚂",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350422527938141909",
-          "fallback": "🛥",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5418196338774907917",
-          "fallback": "🏔",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350648297189023928",
-          "fallback": "🏕",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309832892262654231",
-          "fallback": "🤖",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350751634102166060",
-          "fallback": "🪩",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377624166436445368",
-          "fallback": "🎟",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5386395194029515402",
-          "fallback": "🏴‍☠️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350387571199319521",
-          "fallback": "🗳",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357419403325481346",
-          "fallback": "🎓",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5368585403467048206",
-          "fallback": "🔭",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377580546748588396",
-          "fallback": "🔬",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377317729109811382",
-          "fallback": "🎶",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5382003830487523366",
-          "fallback": "🎤",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357298525765902091",
-          "fallback": "🕺",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357370526597653193",
-          "fallback": "💃",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357188789351490453",
-          "fallback": "🪖",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5348227245599105972",
-          "fallback": "💼",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5411138633765757782",
-          "fallback": "🧪",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5386435923204382258",
-          "fallback": "👨‍👩‍👧‍👦",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377675010259297233",
-          "fallback": "👶",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5386609083400856174",
-          "fallback": "🤰",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5368808634392257474",
-          "fallback": "💅",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350548830041415279",
-          "fallback": "🏛",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5355127101970194557",
-          "fallback": "🧮",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5386379624773066504",
-          "fallback": "🖨",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377494501373780436",
-          "fallback": "👮‍♂️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350307998340226571",
-          "fallback": "🩺",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310094636159607472",
-          "fallback": "💊",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310139157790596888",
-          "fallback": "💉",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5377468357907849200",
-          "fallback": "🧼",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5418115271267197333",
-          "fallback": "🪪",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5372819184658949787",
-          "fallback": "🛃",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350344462612570293",
-          "fallback": "🍽",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5384574037701696503",
-          "fallback": "🐟",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310039132297242441",
-          "fallback": "🎨",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350658016700013471",
-          "fallback": "🎭",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5357504778685392027",
-          "fallback": "🎩",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350367161514732241",
-          "fallback": "🔮",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350520238444126134",
-          "fallback": "🍹",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5310132165583840589",
-          "fallback": "🎂",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350392020785437399",
-          "fallback": "☕️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350406176997646350",
-          "fallback": "🍣",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350403544182694064",
-          "fallback": "🍔",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5350444672789519765",
-          "fallback": "🍕",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312424913615723286",
-          "fallback": "🦠",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5417915203100613993",
-          "fallback": "💬",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5312054580060625569",
-          "fallback": "🎄",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5309744892677727325",
-          "fallback": "🎃",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5238156910363950406",
-          "fallback": "✍️",
-          "format": "animated",
-          "adaptive": false
-        },
-        {
-          "id": "5235579393115438657",
+          "id": "6028338546736107668",
           "fallback": "⭐️",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5237699328843200968",
+          "id": "5767199127775481841",
+          "fallback": "⭐️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5773677501825945508",
+          "fallback": "🎁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035162669948867129",
+          "fallback": "🔣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5942734685976138521",
+          "fallback": "🖥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5904258298764334001",
+          "fallback": "⚙️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032742198179532882",
+          "fallback": "⚙",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5850309953293653168",
+          "fallback": "⚙️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5850332476102153487",
+          "fallback": "⚙️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5850392884817172292",
+          "fallback": "⚙️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5850224242926295392",
+          "fallback": "⚙️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5924722061288150929",
+          "fallback": "⚙️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5776424837786374634",
+          "fallback": "🎛",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5771449289972650710",
+          "fallback": "🎛",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5895519358871932592",
+          "fallback": "📰",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5893444447286334441",
+          "fallback": "📰",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5886437972647088483",
+          "fallback": "📰",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5893236738372932548",
+          "fallback": "📰",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5893057118545646106",
+          "fallback": "📰",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5920046907782074235",
+          "fallback": "📝",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5922693616953725714",
+          "fallback": "📝",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5766994197705921104",
+          "fallback": "🗂",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5893316448670978477",
+          "fallback": "↔️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5895534923833413814",
+          "fallback": "↔️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5960671702059848143",
+          "fallback": "⬅️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030657343744644592",
+          "fallback": "🔁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5938437708635443119",
+          "fallback": "⏫",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039779802741739617",
+          "fallback": "✏️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039614175917903752",
+          "fallback": "✏",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030757850274336631",
+          "fallback": "❌",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039404727542747508",
+          "fallback": "⌨",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039451237743595514",
+          "fallback": "📎",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5962952497197748583",
+          "fallback": "🔧",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5940433880585605708",
+          "fallback": "🔨",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035130900075777681",
+          "fallback": "🚪",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032850693348399258",
+          "fallback": "🔎",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5888620056551625531",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5886285355279193209",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884050696679986441",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884090188904272855",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5886473311637999700",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5888880224195581055",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884491244360438851",
+          "fallback": "🏷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5895507195524550741",
+          "fallback": "↩️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039539366177541657",
+          "fallback": "⬅️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5895383238473421210",
+          "fallback": "➡️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037622221625626773",
+          "fallback": "➡️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039391078136681499",
+          "fallback": "📺",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6028171274939797252",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030864215139422409",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5776078972659962594",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5778455936410588193",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5895364284782743985",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5769289093221454192",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5766902139376898645",
+          "fallback": "🔗",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032924188828767321",
+          "fallback": "➕",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6028435952299413210",
+          "fallback": "ℹ",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030848053177486888",
+          "fallback": "❓",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030563507299160824",
+          "fallback": "❗️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5773626993010546707",
+          "fallback": "▶️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5850346984501680054",
+          "fallback": "▶️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5774077015388852135",
+          "fallback": "❌",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5774022692642492953",
           "fallback": "✅",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5238027455754680851",
-          "fallback": "🎖",
+          "id": "6028205772117118673",
+          "fallback": "⬆️",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5238234236955148254",
-          "fallback": "🤡",
+          "id": "6037496202990194718",
+          "fallback": "🔓",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5237889595894414384",
-          "fallback": "🧠",
+          "id": "6037249452824072506",
+          "fallback": "🔒",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5237999392438371490",
-          "fallback": "🦮",
+          "id": "6030466823290360017",
+          "fallback": "🖼",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
         },
         {
-          "id": "5235912661102773458",
-          "fallback": "🐈",
+          "id": "6035128606563241721",
+          "fallback": "🖼",
           "format": "animated",
-          "adaptive": false
+          "adaptive": true
+        },
+        {
+          "id": "6030400221232501136",
+          "fallback": "🤖",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030425896546996257",
+          "fallback": "⭐️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030680867280522811",
+          "fallback": "⭐️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037475557082403885",
+          "fallback": "📁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5904219717073114606",
+          "fallback": "📁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6034969813032374911",
+          "fallback": "📄",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039522349517115015",
+          "fallback": "🗑",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037364759811068375",
+          "fallback": "🎶",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037460610596212193",
+          "fallback": "🎶",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037397706505195857",
+          "fallback": "👁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037243349675544634",
+          "fallback": "👁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884097155341226387",
+          "fallback": "👁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5935757052042285202",
+          "fallback": "👁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037157012242960559",
+          "fallback": "⬇️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884218166044791498",
+          "fallback": "⬇️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039802767931871481",
+          "fallback": "⬇️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6028115612163641653",
+          "fallback": "☁",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032745346390560408",
+          "fallback": "⬇️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5963103826075456248",
+          "fallback": "⬆️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5963087934696459905",
+          "fallback": "⬇️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039391666547201160",
+          "fallback": "⬆️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039573425268201570",
+          "fallback": "📤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5776288820467077551",
+          "fallback": "⬆️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030537007350944596",
+          "fallback": "🛡",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032636795387121097",
+          "fallback": "🛡",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030445631921721471",
+          "fallback": "🛡",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039630677182254664",
+          "fallback": "📂",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039800856671424701",
+          "fallback": "📂",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037373985400819577",
+          "fallback": "📂",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039348811363520645",
+          "fallback": "📂",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6041730074376410123",
+          "fallback": "📥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039400853482246862",
+          "fallback": "📥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039420807900303010",
+          "fallback": "📥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6043874504302661409",
+          "fallback": "📤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6021418126061605425",
+          "fallback": "📢",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6021681257232994766",
+          "fallback": "📢",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039381989985882045",
+          "fallback": "📢",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039450962865688331",
+          "fallback": "📣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039422865189638057",
+          "fallback": "📣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039454987250044861",
+          "fallback": "🔊",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039505337151655702",
+          "fallback": "🔇",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039853100653612987",
+          "fallback": "🔈",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039486778597970865",
+          "fallback": "🔔",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039569594157371705",
+          "fallback": "🔕",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039636621416993073",
+          "fallback": "🔔",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039677157318332604",
+          "fallback": "🔔",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030506650522096180",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030506384234123289",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5944753741512052670",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5944969250086063864",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6048390817033228573",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6048808236314791508",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6048896442058150625",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5778549588172477436",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5944777041709633960",
+          "fallback": "🎞",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5945123916153360580",
+          "fallback": "🎞",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037533152593842454",
+          "fallback": "❤️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035127296598217030",
+          "fallback": "❤️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037286673010660132",
+          "fallback": "📖",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039584437564347225",
+          "fallback": "📖",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039519841256214245",
+          "fallback": "⬅️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5767117162619605573",
+          "fallback": "📷",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5904340783611254165",
+          "fallback": "🖼",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035231690073314447",
+          "fallback": "5️⃣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6034847960515219908",
+          "fallback": "2️⃣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5850317551090800862",
+          "fallback": "⏰",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5775896410780079073",
+          "fallback": "🕓",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5843679481566335204",
+          "fallback": "👣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5843596438373667352",
+          "fallback": "✅️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037268453759389862",
+          "fallback": "⏲️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5983150113483134607",
+          "fallback": "⏰️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5769230088960741619",
+          "fallback": "⏲️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037428784888549034",
+          "fallback": "🥇",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5940515192906456099",
+          "fallback": "1️⃣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5940420518942347102",
+          "fallback": "2️⃣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5886579539064132088",
+          "fallback": "🎥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884252508603289902",
+          "fallback": "🎥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5884351885556585857",
+          "fallback": "🎥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030722571412967168",
+          "fallback": "🎤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030467682283818947",
+          "fallback": "🎙",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5933678317935791830",
+          "fallback": "🎤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039605143601680423",
+          "fallback": "📞",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037418554276452311",
+          "fallback": "📞",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6039398100408209720",
+          "fallback": "☎️",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5983580310292402968",
+          "fallback": "🤖",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030784887093464891",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030622631818956594",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030833407339008632",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030329749409108167",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030512294109122096",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030776052345737530",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6034831751308644168",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5891120964468480450",
+          "fallback": "💡",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037421444789440735",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5904248647972820334",
+          "fallback": "💭",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6037254263187443802",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035305550625902723",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6021618194228187816",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5983401171501454028",
+          "fallback": "💤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5778208881301787450",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5767244474040192942",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5767388406984216738",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5776182936638329359",
+          "fallback": "📥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5843918217323484232",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5936035091045159318",
+          "fallback": "💬",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5776227595708273495",
+          "fallback": "🔒",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5778570255555105942",
+          "fallback": "🔒",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5922610170034132416",
+          "fallback": "🔞",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5920137394153067262",
+          "fallback": "🔞",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030399199030284183",
+          "fallback": "📍",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6030418144131026917",
+          "fallback": "📍",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032994772321309200",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032693626394382504",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5767278056389480519",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5766915217552315762",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035084557378654059",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5893192487324880883",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6035191085452497972",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6033108709213736873",
+          "fallback": "➕",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5891207662678317861",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032653721853234759",
+          "fallback": "🗣",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032609071373226027",
+          "fallback": "👥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5879905000972358125",
+          "fallback": "👥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6033125983572201397",
+          "fallback": "👥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032594876506312598",
+          "fallback": "👥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6041685260687642937",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032608126480421344",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "6032949275732742941",
+          "fallback": "🎯",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5938196735200333756",
+          "fallback": "👥",
+          "format": "animated",
+          "adaptive": true
+        },
+        {
+          "id": "5778145208411624388",
+          "fallback": "👤",
+          "format": "animated",
+          "adaptive": true
         }
       ],
       "source": "resolver"
     },
-    "NewsEmoji": {
-      "title": "News Emoji",
-      "link": "https://t.me/addemoji/NewsEmoji",
-      "importedAt": "2026-11-23",
+    "DeliciousFoodEmoji": {
+      "title": "Food",
+      "link": "https://t.me/addemoji/DeliciousFoodEmoji",
+      "importedAt": "2026-11-25",
       "formats": [
-        "animated"
+        "static"
       ],
       "emoji": [
         {
-          "id": "5210956306952758910",
-          "fallback": "👀",
-          "format": "animated",
+          "id": "5328265667831407848",
+          "fallback": "🥗",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5461117441612462242",
-          "fallback": "🙂",
-          "format": "animated",
+          "id": "5327767309891149854",
+          "fallback": "🥗",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5456140674028019486",
-          "fallback": "⚡️",
-          "format": "animated",
+          "id": "5330040047670403201",
+          "fallback": "🥗",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5224607267797606837",
-          "fallback": "☄️",
-          "format": "animated",
+          "id": "5328187997642825997",
+          "fallback": "🥗",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5229064374403998351",
-          "fallback": "🛍",
-          "format": "animated",
+          "id": "5330155732614519858",
+          "fallback": "🥚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5260293700088511294",
-          "fallback": "⛔️",
-          "format": "animated",
+          "id": "5328065681269203890",
+          "fallback": "🥓",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5240241223632954241",
-          "fallback": "🚫",
-          "format": "animated",
+          "id": "5328211031552434309",
+          "fallback": "🍳",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5274099962655816924",
-          "fallback": "❗️",
-          "format": "animated",
+          "id": "5328070233934537459",
+          "fallback": "🥚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5440660757194744323",
-          "fallback": "‼️",
-          "format": "animated",
+          "id": "5327877368428110988",
+          "fallback": "🥘",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5314504236132747481",
-          "fallback": "⁉️",
-          "format": "animated",
+          "id": "5330434274128567042",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5436113877181941026",
-          "fallback": "❓",
-          "format": "animated",
+          "id": "5327889493120788463",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5447644880824181073",
-          "fallback": "⚠️",
-          "format": "animated",
+          "id": "5327941943261405328",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5420323339723881652",
-          "fallback": "⚠️",
-          "format": "animated",
+          "id": "5330124662821101387",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5447410659077661506",
-          "fallback": "🌐",
-          "format": "animated",
+          "id": "5327960927016853442",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5443038326535759644",
-          "fallback": "💬",
-          "format": "animated",
+          "id": "5327972948630313755",
+          "fallback": "🥬",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5467538555158943525",
-          "fallback": "💭",
-          "format": "animated",
+          "id": "5458562928208782152",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5452069934089641166",
-          "fallback": "❓",
-          "format": "animated",
+          "id": "5330020741792407072",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5231200819986047254",
-          "fallback": "📊",
-          "format": "animated",
+          "id": "5327787474762604183",
+          "fallback": "🍜",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5449683594425410231",
-          "fallback": "🔼",
-          "format": "animated",
+          "id": "5327965526926828833",
+          "fallback": "🥡",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5447183459602669338",
-          "fallback": "🔽",
-          "format": "animated",
+          "id": "5328084304247397982",
+          "fallback": "🍝",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5451882707875276247",
-          "fallback": "🕯",
-          "format": "animated",
+          "id": "5328170298082599005",
+          "fallback": "🥡",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5244837092042750681",
-          "fallback": "📈",
-          "format": "animated",
+          "id": "5327977681684276147",
+          "fallback": "🍚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5246762912428603768",
-          "fallback": "📉",
-          "format": "animated",
+          "id": "5327981023168832861",
+          "fallback": "🍚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5206607081334906820",
-          "fallback": "✔️",
-          "format": "animated",
+          "id": "5327917900034481742",
+          "fallback": "🍚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5210952531676504517",
-          "fallback": "❌",
-          "format": "animated",
+          "id": "5330035705458465512",
+          "fallback": "🍝",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5222079954421818267",
-          "fallback": "🆒",
-          "format": "animated",
+          "id": "5424672896054206311",
+          "fallback": "🍲",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5458603043203327669",
-          "fallback": "🔔",
-          "format": "animated",
+          "id": "5424650609468907758",
+          "fallback": "🍲",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5391112412445288650",
-          "fallback": "🥸",
-          "format": "animated",
+          "id": "5330426568957238141",
+          "fallback": "🍚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5269531045165816230",
-          "fallback": "🤡",
-          "format": "animated",
+          "id": "5327912222087716135",
+          "fallback": "🍚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5395444514028529554",
-          "fallback": "🫦",
-          "format": "animated",
+          "id": "5330034313889063648",
+          "fallback": "🍣",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5397782960512444700",
-          "fallback": "📌",
-          "format": "animated",
+          "id": "5330132556970992634",
+          "fallback": "🍣",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5409048419211682843",
-          "fallback": "💵",
-          "format": "animated",
+          "id": "5328106217170542911",
+          "fallback": "🍣",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5233326571099534068",
-          "fallback": "💸",
-          "format": "animated",
+          "id": "5327762864599999655",
+          "fallback": "🍣",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5231449120635370684",
-          "fallback": "💸",
-          "format": "animated",
+          "id": "5327778438151413481",
+          "fallback": "🍣",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5278751923338490157",
-          "fallback": "💸",
-          "format": "animated",
+          "id": "5328119918116217709",
+          "fallback": "🍚",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5290017777174722330",
-          "fallback": "💸",
-          "format": "animated",
+          "id": "5330252279184368338",
+          "fallback": "🍣",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5231005931550030290",
-          "fallback": "💸",
-          "format": "animated",
+          "id": "5330214393277848254",
+          "fallback": "🫓",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5402186569006210455",
-          "fallback": "💱",
-          "format": "animated",
+          "id": "5328035668037737687",
+          "fallback": "🥟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5264919878082509254",
-          "fallback": "▶️",
-          "format": "animated",
+          "id": "5328101982332789070",
+          "fallback": "🥟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5411225014148014586",
-          "fallback": "🔴",
-          "format": "animated",
+          "id": "5328285854177698553",
+          "fallback": "🥟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5416081784641168838",
-          "fallback": "🟢",
-          "format": "animated",
+          "id": "5328127447193888182",
+          "fallback": "🥟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5416117059207572332",
-          "fallback": "➡️",
-          "format": "animated",
+          "id": "5330449929284364006",
+          "fallback": "🥟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5424972470023104089",
-          "fallback": "🔥",
-          "format": "animated",
+          "id": "5328233026079957815",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5276032951342088188",
-          "fallback": "💥",
-          "format": "animated",
+          "id": "5328093903499305675",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5294339927318739359",
-          "fallback": "🎙",
-          "format": "animated",
+          "id": "5328197442275910471",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5224736245665511429",
-          "fallback": "🎤",
-          "format": "animated",
+          "id": "5328286511307695373",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5424818078833715060",
-          "fallback": "📣",
-          "format": "animated",
+          "id": "5330455486972042531",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5431609822288033666",
-          "fallback": "🤫",
-          "format": "animated",
+          "id": "5328069744308264572",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5449875686837726134",
-          "fallback": "👎",
-          "format": "animated",
+          "id": "5328281636519813015",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5460795800101594035",
-          "fallback": "🗣️",
-          "format": "animated",
+          "id": "5327760549612628001",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5231012545799666522",
-          "fallback": "🔍",
-          "format": "animated",
+          "id": "5328144317825426455",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5251203410396458957",
-          "fallback": "🛡",
-          "format": "animated",
+          "id": "5327794522803936653",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5271604874419647061",
-          "fallback": "🔗",
-          "format": "animated",
+          "id": "5463213334113296354",
+          "fallback": "🍢",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5282843764451195532",
-          "fallback": "🖥",
-          "format": "animated",
+          "id": "5332376909311384483",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5323442290708985472",
-          "fallback": "©",
-          "format": "animated",
+          "id": "5330327969393025617",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5334544901428229844",
-          "fallback": "ℹ️",
-          "format": "animated",
+          "id": "5330258575606423796",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5337080053119336309",
-          "fallback": "👍",
-          "format": "animated",
+          "id": "5332463998363245663",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5348125953090403204",
-          "fallback": "▶️",
-          "format": "animated",
+          "id": "5330473663273640882",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5359543311897998264",
-          "fallback": "⏸",
-          "format": "animated",
+          "id": "5330072225565385790",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5341498088408234504",
-          "fallback": "💯",
-          "format": "animated",
+          "id": "5332671118866128144",
+          "fallback": "🥩",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5375338737028841420",
-          "fallback": "🔄",
-          "format": "animated",
+          "id": "5327774126004248288",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5415655814079723871",
-          "fallback": "🔝",
-          "format": "animated",
+          "id": "5328094998715967162",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5382357040008021292",
-          "fallback": "🆕",
-          "format": "animated",
+          "id": "5327954664954536969",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5440621591387980068",
-          "fallback": "🔜",
-          "format": "animated",
+          "id": "5330282558703802987",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5391032818111363540",
-          "fallback": "📍",
-          "format": "animated",
+          "id": "5327966149697084850",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5397916757333654639",
-          "fallback": "➕",
-          "format": "animated",
+          "id": "5328076813824433901",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5427168083074628963",
-          "fallback": "💎",
-          "format": "animated",
+          "id": "5327832906926664235",
+          "fallback": "🐟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5438496463044752972",
-          "fallback": "⭐️",
-          "format": "animated",
+          "id": "5332789380790623957",
+          "fallback": "🦐",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5325547803936572038",
-          "fallback": "✨",
-          "format": "animated",
+          "id": "5327848665161669473",
+          "fallback": "🦐",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5217822164362739968",
-          "fallback": "👑",
-          "format": "animated",
+          "id": "5330280690393029614",
+          "fallback": "🦐",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5445267414562389170",
-          "fallback": "🗑",
-          "format": "animated",
+          "id": "5327839594190741599",
+          "fallback": "🦐",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5222444124698853913",
-          "fallback": "🔖",
-          "format": "animated",
+          "id": "5327762031376342514",
+          "fallback": "🦪",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5253742260054409879",
-          "fallback": "✉️",
-          "format": "animated",
+          "id": "5330285419152022158",
+          "fallback": "🦪",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5296369303661067030",
-          "fallback": "🔒",
-          "format": "animated",
+          "id": "5328192494473583797",
+          "fallback": "🦪",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5303479226882603449",
-          "fallback": "😮",
-          "format": "animated",
+          "id": "5328168983822605967",
+          "fallback": "🦔",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5305265301917549162",
-          "fallback": "📎",
-          "format": "animated",
+          "id": "5327760742886154335",
+          "fallback": "🦔",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5341715473882955310",
-          "fallback": "⚙️",
-          "format": "animated",
+          "id": "5330048135093821669",
+          "fallback": "🍕",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5361741454685256344",
-          "fallback": "🎮",
-          "format": "animated",
+          "id": "5330239742174830168",
+          "fallback": "🍕",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5388632425314140043",
-          "fallback": "🔈",
-          "format": "animated",
+          "id": "5330434566186345375",
+          "fallback": "🧀",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5386367538735104399",
-          "fallback": "⌛",
-          "format": "animated",
+          "id": "5332813089010097889",
+          "fallback": "🧀",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5406745015365943482",
-          "fallback": "⬇️",
-          "format": "animated",
+          "id": "5332562499143212451",
+          "fallback": "🥖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5402477260982731644",
-          "fallback": "☀️",
-          "format": "animated",
+          "id": "5330369291273380558",
+          "fallback": "🍞",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5399913388845322366",
-          "fallback": "🌧",
-          "format": "animated",
+          "id": "5330124357878423990",
+          "fallback": "🍞",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5449569374065152798",
-          "fallback": "🌛",
-          "format": "animated",
+          "id": "5330233145105064635",
+          "fallback": "🥐",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5449449325434266744",
-          "fallback": "❄️",
-          "format": "animated",
+          "id": "5330063811724452592",
+          "fallback": "🧆",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5409109841538994759",
-          "fallback": "🌈",
-          "format": "animated",
+          "id": "5330413520846594388",
+          "fallback": "🧆",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5393512611968995988",
-          "fallback": "💧",
-          "format": "animated",
+          "id": "5330083572868979930",
+          "fallback": "🍔",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5413879192267805083",
-          "fallback": "🗓",
-          "format": "animated",
+          "id": "5328302741989106808",
+          "fallback": "🍔",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5422439311196834318",
-          "fallback": "💡",
-          "format": "animated",
+          "id": "5327909700941914132",
+          "fallback": "🍔",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5440539497383087970",
-          "fallback": "🥇",
-          "format": "animated",
+          "id": "5330094701129243124",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5447203607294265305",
-          "fallback": "🥈",
-          "format": "animated",
+          "id": "5328221691661263542",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5453902265922376865",
-          "fallback": "🥉",
-          "format": "animated",
+          "id": "5330572048089488651",
+          "fallback": "🍖",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5463107823946717464",
-          "fallback": "🎵",
-          "format": "animated",
+          "id": "5330100825752610243",
+          "fallback": "🍟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5406756500108501710",
-          "fallback": "🆓",
-          "format": "animated",
+          "id": "5327927134214169196",
+          "fallback": "🍟",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5395444784611480792",
-          "fallback": "✏️",
-          "format": "animated",
+          "id": "5460837873601226259",
+          "fallback": "🌯",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5395695537687123235",
-          "fallback": "🚨",
-          "format": "animated",
+          "id": "5332708626815524760",
+          "fallback": "🌯",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5406683434124859552",
-          "fallback": "🛍",
-          "format": "animated",
+          "id": "5330218452021945208",
+          "fallback": "🌯",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5416041192905265756",
-          "fallback": "🏠",
-          "format": "animated",
+          "id": "5330255547654479741",
+          "fallback": "🌯",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5460755126761312667",
-          "fallback": "🚩",
-          "format": "animated",
+          "id": "5330402186427899486",
+          "fallback": "🌭",
+          "format": "static",
           "adaptive": false
         },
         {
-          "id": "5461151367559141950",
-          "fallback": "🎉",
-          "format": "animated",
+          "id": "5328053526511755551",
+          "fallback": "🍟",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328166338122753713",
+          "fallback": "🥔",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330533694031535872",
+          "fallback": "🍿",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5361542855397481284",
+          "fallback": "🫑",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328005607561634990",
+          "fallback": "🍓",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327941994801011947",
+          "fallback": "🍓",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327862473481528776",
+          "fallback": "🫐",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330410617448700241",
+          "fallback": "🍒",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327843395236799170",
+          "fallback": "🫐",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5440513688924595008",
+          "fallback": "🍉",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5438252135240182463",
+          "fallback": "🍎",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5447235750829501663",
+          "fallback": "🍍",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5438192770202215793",
+          "fallback": "🧺",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5438247539625174675",
+          "fallback": "🍉",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5438301377040229451",
+          "fallback": "📦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5440877408230057497",
+          "fallback": "📦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328005053510852978",
+          "fallback": "🍩",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327856189944372938",
+          "fallback": "🍩",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328314879566683422",
+          "fallback": "🍪",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330387385970597178",
+          "fallback": "🎂",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327985696093250531",
+          "fallback": "🍰",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328184402755198802",
+          "fallback": "🍫",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327795935848177084",
+          "fallback": "🍫",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327817934670668037",
+          "fallback": "🍫",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5217803455485193089",
+          "fallback": "🍫",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328120437807260060",
+          "fallback": "🍦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330125362900769862",
+          "fallback": "🍦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328034645835521435",
+          "fallback": "🍦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327939714173378012",
+          "fallback": "🍵",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328236814241112908",
+          "fallback": "🫖",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327885709254598634",
+          "fallback": "🍵",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328304288177332788",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328227167744565331",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330462586552982371",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328140263376298617",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328315180214395332",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330258773174917595",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327768791654868516",
+          "fallback": "☕️",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328154909214777871",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330390710275284471",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327790949391146380",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327906213428470732",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327884712822185935",
+          "fallback": "🥛",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327829900449554091",
+          "fallback": "🍌",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328233902253285230",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328192692042080444",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328191506631104901",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5327832138127516025",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328183105675077628",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328002326206619721",
+          "fallback": "🧃",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328077415119857214",
+          "fallback": "💦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328147612065342483",
+          "fallback": "💦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328154754595955417",
+          "fallback": "💦",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5330278392585525697",
+          "fallback": "😋",
+          "format": "static",
+          "adaptive": false
+        },
+        {
+          "id": "5328111877937438773",
+          "fallback": "🍽",
+          "format": "static",
           "adaptive": false
         }
       ],
@@ -1298,45 +2150,117 @@
     }
   },
   "icons": {
-    "coffee": {
-      "id": "5350392020785437399",
-      "set": "Topics",
-      "fallback": "☕️",
+    "menu": {
+      "id": "5766994197705921104",
+      "set": "tgiosicons",
+      "fallback": "🗂",
       "animated": true,
-      "adaptive": false,
-      "note": "the menu, drinks"
+      "adaptive": true,
+      "note": "Menu button on the start screen"
     },
-    "cart": {
-      "id": "5431492767249342908",
-      "set": "Topics",
-      "fallback": "🛒",
+    "repeat": {
+      "id": "6030657343744644592",
+      "set": "tgiosicons",
+      "fallback": "🔁",
       "animated": true,
-      "adaptive": false,
-      "note": "the current order"
+      "adaptive": true,
+      "note": "Repeat my usual"
     },
-    "star": {
-      "id": "5235579393115438657",
-      "set": "Topics",
-      "fallback": "⭐️",
+    "order": {
+      "id": "5775896410780079073",
+      "set": "tgiosicons",
+      "fallback": "🕓",
       "animated": true,
-      "adaptive": false,
-      "note": "loyalty card, rewards"
+      "adaptive": true,
+      "note": "My order: the current order and its status"
+    },
+    "gift": {
+      "id": "5773677501825945508",
+      "set": "tgiosicons",
+      "fallback": "🎁",
+      "animated": true,
+      "adaptive": true,
+      "note": "Loyalty card, free drinks"
     },
     "support": {
-      "id": "5417915203100613993",
-      "set": "Topics",
+      "id": "6034831751308644168",
+      "set": "tgiosicons",
       "fallback": "💬",
       "animated": true,
-      "adaptive": false,
-      "note": "support, questions"
+      "adaptive": true,
+      "note": "Support and questions"
     },
-    "home": {
-      "id": "5312486108309757006",
-      "set": "Topics",
-      "fallback": "🏠",
+    "location": {
+      "id": "6030399199030284183",
+      "set": "tgiosicons",
+      "fallback": "📍",
       "animated": true,
-      "adaptive": false,
-      "note": "back to the start"
+      "adaptive": true,
+      "note": "Pickup address, Open in Maps"
+    },
+    "copy": {
+      "id": "6034969813032374911",
+      "set": "tgiosicons",
+      "fallback": "📄",
+      "animated": true,
+      "adaptive": true,
+      "note": "copy_text buttons"
+    },
+    "notifications": {
+      "id": "6039486778597970865",
+      "set": "tgiosicons",
+      "fallback": "🔔",
+      "animated": true,
+      "adaptive": true,
+      "note": "Order ready notice"
+    },
+    "done": {
+      "id": "5774022692642492953",
+      "set": "tgiosicons",
+      "fallback": "✅",
+      "animated": true,
+      "adaptive": true,
+      "note": "Order placed, message sent"
+    },
+    "warning": {
+      "id": "6030563507299160824",
+      "set": "tgiosicons",
+      "fallback": "❗️",
+      "animated": true,
+      "adaptive": true,
+      "note": "Payment declined"
+    },
+    "help": {
+      "id": "6030848053177486888",
+      "set": "tgiosicons",
+      "fallback": "❓",
+      "animated": true,
+      "adaptive": true,
+      "note": "Questions and answers"
+    },
+    "discount": {
+      "id": "5886285355279193209",
+      "set": "tgiosicons",
+      "fallback": "🏷",
+      "animated": true,
+      "adaptive": true,
+      "note": "Happy hour offer"
+    },
+    "clock": {
+      "id": "5983150113483134607",
+      "set": "tgiosicons",
+      "fallback": "⏰️",
+      "animated": true,
+      "adaptive": true,
+      "note": "Pickup time"
+    },
+    "stars": {
+      "id": "6028338546736107668",
+      "set": "tgiosicons",
+      "fallback": "⭐️",
+      "animated": true,
+      "adaptive": true,
+      "note": "Rate your drink"
     }
   }
 }

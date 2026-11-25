@@ -1,0 +1,68 @@
+{
+  "scenarioId": "order.pickup-time",
+  "title": "The usual, paid, then a later pickup time in the widget",
+  "locale": "uk",
+  "context": {
+    "chat": "private",
+    "delivery.method": "pickup"
+  },
+  "data": {
+    "cart.summary": "Флет вайт M, вівсяне молоко · Вершковий круасан",
+    "cart.total": "6,30 €",
+    "cart.drink": "Флет вайт M, вівсяне молоко",
+    "cart.drink_price": "3,90 €",
+    "cart.pastry": "Вершковий круасан",
+    "cart.pastry_price": "2,40 €",
+    "order.no": "218",
+    "pickup.time": "8:45",
+    "pickup.unix": "1794737100",
+    "order.status_text": "brewing",
+    "loyalty.stamps": "7",
+    "loyalty.left": "3"
+  },
+  "handlers": {
+    "checkout.pay": [
+      "ok"
+    ]
+  },
+  "steps": [
+    {
+      "command": "start"
+    },
+    {
+      "press": "usual"
+    },
+    {
+      "press": "pay"
+    },
+    {
+      "expect": {
+        "screen": "order.placed"
+      }
+    },
+    {
+      "press": "time"
+    },
+    {
+      "expect": {
+        "screen": "order.time"
+      }
+    },
+    {
+      "press": "back"
+    },
+    {
+      "expect": {
+        "screen": "order.placed"
+      }
+    },
+    {
+      "press": "track"
+    },
+    {
+      "expect": {
+        "screen": "order.status"
+      }
+    }
+  ]
+}

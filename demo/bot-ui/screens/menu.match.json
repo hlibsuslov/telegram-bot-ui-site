@@ -1,0 +1,38 @@
+{
+  "id": "menu.match",
+  "title": "Find your drink",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Find your drink</b>\nThree quick questions: hot or iced, which milk, how strong.",
+      "ru": "<b>Подберём напиток</b>\nТри коротких вопроса: горячий или холодный, какое молоко, насколько крепкий.",
+      "uk": "<b>Підберемо напій</b>\nТри короткі запитання: гарячий чи холодний, яке молоко, наскільки міцний."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "back": {
+      "label": {
+        "en": "← Coffee menu",
+        "ru": "← К кофе",
+        "uk": "← До кави"
+      },
+      "type": "back",
+      "fallback": "menu.coffee",
+      "presentation": "send"
+    }
+  },
+  "widget": {
+    "ref": "drink-match"
+  }
+}

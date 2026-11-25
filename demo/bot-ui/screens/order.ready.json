@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "🔔 <b>Order #{order.no} is ready</b>\nPick it up at the counter while it's hot.",
-      "ru": "🔔 <b>Заказ #{order.no} готов</b>\nЗаберите на стойке, пока горячий.",
-      "uk": "🔔 <b>Замовлення #{order.no} готове</b>\nЗаберіть на стійці, поки гаряче."
+      "en": "<tg-emoji emoji-id=\"6039486778597970865\">🔔</tg-emoji> <b>Order #{order.no} is ready</b>\nPick it up at the counter while it's hot.",
+      "ru": "<tg-emoji emoji-id=\"6039486778597970865\">🔔</tg-emoji> <b>Заказ #{order.no} готов</b>\nЗаберите на стойке, пока горячий.",
+      "uk": "<tg-emoji emoji-id=\"6039486778597970865\">🔔</tg-emoji> <b>Замовлення #{order.no} готове</b>\nЗаберіть на стійці, поки гаряче."
     }
   },
   "keyboard": {

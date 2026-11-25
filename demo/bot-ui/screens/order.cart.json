@@ -1,0 +1,52 @@
+{
+  "id": "order.cart",
+  "title": "Cart",
+  "kind": "form",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<b>Your cart</b>\n{cart.summary}\nTotal {cart.total}",
+      "ru": "<b>Ваша корзина</b>\n{cart.summary}\nИтого {cart.total}",
+      "uk": "<b>Ваш кошик</b>\n{cart.summary}\nРазом {cart.total}"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "checkout"
+      ],
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "checkout": {
+      "label": {
+        "en": "Review order",
+        "ru": "К заказу",
+        "uk": "До замовлення"
+      },
+      "type": "navigate",
+      "to": "checkout.review",
+      "presentation": "send",
+      "style": "primary"
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "menu.categories",
+      "presentation": "send"
+    }
+  },
+  "widget": {
+    "ref": "cart"
+  }
+}
