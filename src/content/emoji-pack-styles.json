@@ -1,0 +1,7578 @@
+{
+ "$comment": "Look cards from the vision pass over the contact sheets (task E1): style ids from the taxonomy rubric, line weight, fill, perspective, shadows, characters and one line on how the pack is drawn. Curated: scripts/emoji_taxonomy.py reads it and never writes it; fix a card here by hand.",
+ "rubric": "emoji-taxonomy v2",
+ "packs": {
+  "ABCEmoji": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Rounded bold Latin letters, digits, punctuation in blue gradient with faint diagonal sheen and thin darker rim",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AdaptHDEMOJIGRAY": {
+   "style": [
+    "glyph",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "one-colour white/pale silhouettes: robot faces, Cyrillic and Latin stencil letters, digits, brand logos, UI symbols",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "AdaptiveAnimals": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "White one-colour animal silhouettes, mostly side view, inner detail cut as negative-space gaps; no faces, repaintable",
+   "confidence": 0.95,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "AdaptiveGamesEmojiKtr": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Solid black game logo silhouettes with cut-out detail, repaintable; two coloured exceptions",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AdaptiveHearts": {
+   "style": [
+    "hand-drawn",
+    "glyph"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "monochrome black hearts: brush-stroke outline hearts of varying width plus solid silhouette and striped hearts",
+   "confidence": 0.75,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "AdaptiveMemesEmoji": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Black rage-comic meme faces in rough pen lines, some solid black hair or hatching; last 3 cells promo cards",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AdaptivePixelEmoji": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "monochrome pixel icons (star, heart, crown, trophy, folder, dino), black pixel outline, white-to-grey fill",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Ai_by_rrzbot": {
+   "style": [
+    "emoji-like",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Mixed: Apple-like shaded gems, hearts, crowns plus flat brand/crypto logos, ticker badges; tiny share pills, blanks",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "Ai_Complex": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "AI service app logos (ChatGPT, Canva, Notion, Suno...) as white or colour marks on rounded-square brand tiles",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AIByVolodya": {
+   "style": [
+    "pixel",
+    "native-ui"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: pixel-art AI mascots and orange pixel crab on black tiles, plus flat AI brand logos; cell 24 blank white",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "aipack_1": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "AI-tool brand logos as plain marks: black glyph logos, flat colour shapes, a few gradient marks; mascot logos",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Aj7ASzceAAA": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Minecraft block textures, plants, slabs, glass in 16px pixel art; cell 2 blank, cells 3-6 split MINECRAFT logo",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Alan_Fonts": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "rounded sans Cyrillic and Latin capitals with blue-to-purple gradient fill on black square tiles",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "alarmemoji": {
+   "style": [
+    "realistic",
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "three-quarter",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "mixed: photo glowing beacon lamps in many colours plus a few flat emoji sirens, mostly on white square tiles",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "AlejandroEmojis": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Brand and app logos (social, Google, dev, crypto, payments) mostly on brand-colour circles; flat fills, a few gradients",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "All_Space": {
+   "style": [
+    "cartoon",
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Very mixed space set: outlined cartoon rockets/aliens/astronauts, watercolour planets, doodle astronauts, two photos",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "alphabet_ru_mini": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Russian alphabet A-Ya in bold rounded letters, candy colours with jelly highlights and bevel, light drop shadow",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "alphabet_telemoji": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "bold red sans Latin and Cyrillic letters and digits with a soft bevel; odd stray cells: Nyan Cat, black objects, photo",
+   "confidence": 0.8,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "AlphabetEmoji": {
+   "style": [
+    "lettering",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Sans-serif Latin letters, digits and punctuation in white with an even black outline; 12 blank spacer cells",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AlphabetFonts": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "hard",
+   "characters": "none",
+   "drawn": "Carnival display letters and digits, flat multicolour fills with dots, swirls, stripes and a hard offset shadow",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Amir4ekBigLogoPack": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "brand and app logos in official colours, many on circles or rounded tiles, a few stray signs and hearts",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AndroidEmojiAytustt": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Google Noto-style round yellow smiley faces with soft gradient shading and simple features",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AndroidIconsEmoji": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Android app icons on squircle tiles: Google, Samsung, browser and media logos in flat brand colours",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AndrPlush_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Chibi dark-blue hedgehog character on white squares, dark outlines, flat fills, varied expressions; 4 near-empty cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "angelspack_by_TgEmojiBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "White/silver aesthetic photo cut-outs: angel statues, wings, metal hearts, bows, eyes, lips; many faint/blank cells",
+   "confidence": 0.78,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AnimalHearts": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Photoreal animal portraits (cats, birds, fish, wildlife) cropped into heart shapes with natural backgrounds",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AnimatedAsianEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "round yellow smiley faces with exaggerated kawaii expressions, soft gradient shading, thin outline; hands and objects",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "animatedemojii": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple system emoji: yellow smileys, devils, hands, food, hearts, skull, flowers; soft gradient shading",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AnimatedIcon9": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Every frame shows only a tiny green dot on empty canvas; artwork not visible in captured frame",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "AnimatedIconsEmoji": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "iOS-blue SF-Symbols-like stroke icons (circle, bulb, smiley, pen, arrow); about 20 cells blank mid-animation",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "AnimatedReactions": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Google Noto-style reaction emoji: yellow smileys, hands, hearts, fire, monkeys, people; cell 51 cropped",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AnimatedReactionsAdaptive": {
+   "style": [
+    "outline",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "monochrome adaptive versions of standard emoji: black stroke smileys, hands, hearts, a few grey-shaded areas",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AnimatedUIEmoji": {
+   "style": [
+    "glossy",
+    "3d"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "glow",
+   "characters": "some",
+   "drawn": "game UI icons on black tiles: piles of gems, coins, credits and glowing rank badges with skull faces, bevelled shine",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "animeted_car_emoji_z1vert1k": {
+   "style": [
+    "native-ui",
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Black one-colour car brand logos (BMW, Ferrari, Toyota...) centred on white rounded-square tiles with a soft edge",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ApplicationEmoji": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Real app-store brand icons on rounded-square tiles, flat brand colours, a few gradient logos; cell 112 blank",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AppLogosEmoji": {
+   "style": [
+    "glossy",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "App/brand logos on bevelled rounded-square tiles with glossy top highlight and gradient body, white glyphs",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AppsIconsWB": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "real app-store icons on rounded-square tiles, brand colours, some brand gradients; few mascots (Duolingo, panda)",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "AppsPremByMunks": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Streaming and creative app logos on round brand-colour discs, white or colour marks, a few gradient discs",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ArrowsPublic": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed arrows: flat colour arrows and chevrons, purple gradient arrows, yellow road-sign arrows, plain black/pink arrows",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "AttractivePack": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Mixed: coloured verified badges, dots, squares, toggles, 0-9 digits in 4 colours, glossy stars; 6 blank cells",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "AutoEmoji": {
+   "style": [
+    "glossy",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed car brand badges: chrome bevelled emblems with metallic reflections plus flat colour logos and crests",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "autumn1_by_TgEmojiBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed cut-out autumn photos (leaves, pumpkins, sweaters, books) plus a few cartoon stills; promo tiles",
+   "confidence": 0.7,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Autumn2024emoji": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Autumn vector clipart: leaves, pumpkins, umbrellas, boots, mushrooms; flat fills with some soft gradient shading",
+   "confidence": 0.75,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "babysbirds": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "photo cutouts of real birds (owls, penguins, parrots, flamingos); some cells are cropped tiles of larger bird photos",
+   "confidence": 0.85,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "BalloonyEmoji": {
+   "style": [
+    "cartoon",
+    "glossy"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Balloon-shaped emotive faces with dark outlines, shiny gradient fills and specular highlights, tied strings",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "BasicinterfaceEmoji": {
+   "style": [
+    "outline",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Interface line icons (arrows, media, text, chat) in pink/green/blue/purple strokes on pastel gradient circles",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Beige_sm_emoji_gray": {
+   "style": [
+    "emoji-like",
+    "lettering"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed, beige-gold tint: emoji faces with soft gradient, outlined Cyrillic letters and digits, app tiles; 2 promo tiles",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "BetterDancingLetters": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Red extruded alphabet and digits with cartoon gloved arms and legs, dark outlines, on white squares; one blank",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "birthdaycardsemoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "cropped anime card portraits of girls, big eyes, thin line art, soft painted shading, flowery backgrounds",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "BirthdayCollection": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Telegram-emoji-style birthday set: number candles, yellow hands, gifts, cake, balloons; soft shading, thin outlines",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "BiscuitEmojis": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "chibi grey-white kitten with huge glossy eyes, dark outlines, soft shading, lively poses and props",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Bitcoinmoji": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed: Bitcoin and wallet brand logos on discs/tiles, stroke-outlined word badges (HODL, ATH), bold slogan words",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "blob_buddies_TIKTOK": {
+   "style": [
+    "gradient",
+    "cartoon"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "bright gradient blob creatures with googly eyes and small faces, no outlines, on black square tiles",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "BloodyFontEmoji": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Latin letters, digits and symbols in dripping blood-red glossy font, dark outline, white specular highlights",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "borahaeicons1Emoji": {
+   "style": [
+    "native-ui",
+    "glyph"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "App icons (Instagram, Spotify, Telegram) in one purple, then one pink, with darker same-hue edge and sparkle dots",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "brands_jaba": {
+   "style": [
+    "3d",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "App/brand logos on puffy bevelled rounded-square tiles over black squares; blank and 'Your emoji' placeholder cells",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "BrandsPack": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "brand and app logos (many Ukrainian) on brand-colour circles and rounded-square app tiles",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "BratzPackAirDsgn": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "cut-out photos of Bratz dolls' heads and figures with glossy doll skin, plus logo, glitter, sunglasses, shoes",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "BrawlAnimatedEmojis": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Brawl Stars round faces in yellow/blue/red with thick black outlines and dot eyes on white square tiles; two thumb icons",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "BubbleEmoji": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "comic word stickers (YES, WOW, LOL): rounded bold letters with dark outline over bright splash, burst and bubble shapes",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CandyFontEmoji": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Candy-cane alphabet: rounded tube letters, digits, symbols with red-white stripes and thin dark outline",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CapooEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Blue Bugcat Capoo with dark outline, flat fills, blush, kawaii faces; cells 13-14, 20-21, 27-28 are cut body fragments",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "car_emoji_z1vert1k": {
+   "style": [
+    "glyph",
+    "native-ui"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Black one-colour car brand logos on a white shield badge with thin grey rim and faint grey bottom gradient",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CarBrandsemoji": {
+   "style": [
+    "glossy",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Car brand emblems, mixed: about half chrome badges with metallic highlights, half flat one- or two-colour logos",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "CarBrandsPack": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Car brand badges rendered as chrome/metal emblems with reflections and bevels; a few flat colour logos",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "carspack_by_TgEmojiBot": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Photos of sports and luxury cars on black, each car cut across 2-3 tiles with stepped edges; 2 promo cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CatFontEmoji": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Latin letters and digits shaped by colourful cartoon cats with dark outlines and soft shading; cat-themed symbols",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CatPawsEmoji": {
+   "style": [
+    "emoji-like",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Cat paws doing hand gestures and holding objects; soft gradient fills, thin darker edges, white/purple/brown/yellow",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CatsHDAdaptEMOJIGRAY": {
+   "style": [
+    "hand-drawn",
+    "glyph"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: white one-colour cat doodles with wobbly lines plus solid cat silhouettes, a few cat-food objects; 2 promo tiles",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "line_weight",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "Catz5Emoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Chubby cat heads with bold dark outlines, big eyes, cel-shaded orange/blue/purple fills; a few props (heart, paw, poop)",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "cdefood_adaptive": {
+   "style": [
+    "hand-drawn",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Coloured marker-like line doodles of fruit, veg, animals, symbols; slightly wobbly; white adaptive cells barely visible",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CelesteHeartsCountries_2_by_TgEmodziBot": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Pixel hearts filled with country flags, stepped black pixel outline, white pixel highlight, on white squares",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CenterOfEmoji13204691": {
+   "style": [
+    "3d",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "mixed: rendered in-game items (coins, gold bars, rank badges, crates), game and payment logos, white A-Z",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "CenterOfEmoji33658028": {
+   "style": [
+    "gradient",
+    "neon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed badges on black tiles: bright coloured ring arrows and +REP/NEW/YES labels, gradient stars, hearts, bolts",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "CenterOfEmoji62973425": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "some",
+   "drawn": "Mixed icons on black tiles: flat arrows, hearts, dots, badges, some glowing neon arrows/words, a few emoji; black blanks",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "CenterOfEmoji715083": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "crypto coin and social app logos in flat colour circles, word pills (GEM, SCAM), verified badges, a few mascots",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CenterOfEmoji84229831": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed space set on white/black tiles: pastel planets, UFOs, aliens, rockets, chibi astronauts; few pixel/photo",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "CenterOfEmoji900533": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "stock business icons: solid multi-colour shapes, light two-tone shading, people avatars, arrows, sale badges",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CenterOfEmoji98095669": {
+   "style": [
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Two-tone blue and mint even-stroke line icons (users, business, finance, space), occasional faint tint",
+   "confidence": 0.93,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CenterOfEmoji_4": {
+   "style": [
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "straight and bent arrows as even thin strokes in white, black and blue, no fill",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CenterOfPacks12672606": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Telegram Premium feature icons: white glyphs on pink-violet gradient rounded tiles, gradient line icons, gold stars",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CenterOfPacks36320996": {
+   "style": [
+    "flat",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Reactions (thumbs, fire, heart, bolt, OK, handshake, clap) in 8 colours; two-tone fills, darker same-hue outline",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "check_marks_kotletovv": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Scalloped verified badges with white check in many gradient colours; first row flat blue badges with icons",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CheckAnimated": {
+   "style": [
+    "flat",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Verified-badge seals with check marks in many flat colours; a few gradient, glowing or black-tile variants",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CheckIcons": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Check marks on circles, scalloped badges and shields; mostly flat colour, some gradient, glow or glossy stars",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "checkified": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "white scalloped verified badges with brand and tool logos cut out as negative space, one colour",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "chentsnba": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "NBA and G-League team logos, round badges and crests, solid team colours, outlined mascots (bull, bear, wolf)",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ChickEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "White chick head with red comb, soft gradient shading, no outline, system-emoji faces; some white wing-hand gestures",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ChicklingEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Round yellow chick with dark outlines, big eyes, soft-shaded fills, exaggerated expressions; few props (heart, +1)",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ChristmasEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "round Christmas character heads (snowman, elf, ornaments, santa) with dark outline, gradient shine, kawaii faces",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "ChristmasIcons": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black solid Christmas icons: bauble, tree, snowman, gingerbread, gift, sleigh; detail cut as white gaps",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ChristmasLine_xkysluv": {
+   "style": [
+    "cartoon",
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed Christmas stickers on black tiles: Santa, reindeer, kawaii cats, gifts, wreaths; greetings split",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "ClassicMemesEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "rage-comic and meme faces redrawn as outlined cartoon stickers with soft shading; 3 watermark placeholder cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Cloti_f068_by_fStikBot": {
+   "style": [
+    "realistic",
+    "cartoon"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Mixed: square crops of FF7 CGI screenshots, cosplay photos and anime fan art of Cloud and Tifa, many in B/W",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CloudyAlp": {
+   "style": [
+    "lettering",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Latin A-Z formed from photoreal grey-white cloud/smoke puffs; soft edges, low contrast on light ground",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ClownEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Round pale clown faces with red nose and hair, emoji expressions, gradient shading; white glove hands, heart, tent",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CocoCat_Emoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "kawaii white chibi cat, thin grey outline, pink blush, closed-eye faces; plus hearts, stars, sweets, pastel tiles",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Coin2IconsEmoji": {
+   "style": [
+    "gradient",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Crypto coin logos in white on colour hexagon tiles, most with smooth two-tone gradients; Shiba and tiger logo faces",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CoinIconsEmoji": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "crypto coin and payment-service logos on brand-colour circles, some with a small network badge",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ColoBrush_Icons_by_fStikBot": {
+   "style": [
+    "glossy",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Vista/XP-era glossy desktop icons (folders, drives, VLC cone, Firefox fox) with reflections, glass and 3/4 depth",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ColorfulFontEmoji": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "bold",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "looping script letters as thick rainbow-gradient tube strokes over soft pastel blobs, plus a few symbols",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "comicsansemoji": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Black Comic Sans letters, digits and symbols with a thin white rim; one blank space cell",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CookieEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "cookie mascot with big emoji faces and props, soft gradient shading, thin darker outline; a few glove hands",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CounterStrikeFont": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Grey embossed squared techno letters, Latin, Cyrillic, digits, gamer tag plates; very low contrast, many blank spacers",
+   "confidence": 0.75,
+   "unsure": [
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "CountrySymbols": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Rectangular national flags in solid colours, no shading or wave; two duplicates",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "creativefood_by_TgEmojis_bot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Kawaii food characters (burger, pretzel, avocado) with tiny faces, thin dark outline, soft shading",
+   "confidence": 0.8,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "creatvisual": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Mixed: Cyrillic alphabet and digits in pink-green gradient script, pink decor icons, then photo portraits and collages",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CreepyEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple-style emoji parts remixed into cursed combos: gradient yellow faces, people, animals, food; one painting photo",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CrownMojis": {
+   "style": [
+    "flat",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed crowns and tiaras: flat clipart, black-outlined, photo and 3D crowns on white or black squares; ~6 blank cells",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "CryptachEmoji": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Crypto and social-app logos in brand-colour circles/tiles, badges, currency signs; a few memes (Pepe, doge)",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CryptachEmoji4": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Crypto, exchange and social brand logos on dark rounded-square tiles, flat brand colours; arrows, shields, badges",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "crypto_alion": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Crypto token/project logos, mostly on solid circles, flat brand colours, a few gradients; mascots (fox, shiba, frog)",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Crypto_animation": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "solid colour squares, white checkmarks in boxes, small squares and arrows on black tiles; frames look mid-animation",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Crypto_istkr": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Crypto coin logos as flat brand-colour discs with white or colour marks; cell 41 is a tiny strip of coins",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CryptoBotReactions": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "white glyphs (plus, heart, arrows, thumbs, bolt) on flat rounded-square colour tiles; word pills FAKE, KYC",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Cryptohamster2022": {
+   "style": [
+    "glyph",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: one-colour social logos, bells, flames, gifts, info/warning signs in 5 colours, chunky digits, hamster photo",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CryptoIcons": {
+   "style": [
+    "native-ui",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: crypto coin logos on circles inside black squares, app tiles, then ~20 photo avatars of people; 1 blank cell",
+   "confidence": 0.75,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "cryptoner": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Black solid crypto logos (BTC, ETH, TON, Shiba) floating above a soft grey ellipse shadow",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CryptoScroogeDuck": {
+   "style": [
+    "mosaic",
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: Russian text banners split across tiles, blue one-colour TON icons, dark chat bubbles, outline labels",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "currency_euro": {
+   "style": [
+    "realistic",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Mixed: photo euro coins and banknotes, glossy plastic math signs, bold black digits with white edge",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CustomArrows": {
+   "style": [
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "straight and bent arrows as even thin strokes with open heads, in white, black and blue sets",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "cutecatspack_by_TgEmojiBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "Cut-out photos of real kittens with pink bow stickers and props; a few cartoon/3D cats and 4 text promo tiles at end",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "CuteChristmasEmojis": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Kawaii white bunny and cat with thin brown outline, dot eyes, pastel pink fills, holding Christmas props",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "cutekeyboard_1_of_9_Emoji": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "grey keycaps with dark outline and bevel, Cyrillic/Latin letters, digits, icons in thin rounded font; wide keys split",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "cycuaaa_by_EmojiRu_Bot": {
+   "style": [
+    "3d",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "soft CGI emoji-style renders in beige and pink: animals with fur, bows, drinks, flowers, bags, cars, people",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "CyGroteskKoylliEmoji": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Wide heavy grotesk Cyrillic and Latin letters, digits, signs in magenta-to-violet gradient; cells 34, 38, 66 blank",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DancingSakura": {
+   "style": [
+    "lettering",
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "pink dry-brush Cyrillic and Latin letters and digits, rough stroke ends, some with falling petals",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DarkEmojis": {
+   "style": [
+    "pixel",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed horror set: pixel skulls and eyes, cartoon Bendy and Sans faces, knives, sketches; several near-blank cells",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "DCMoji": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "App, crypto and payment brand logos on rounded-square tiles; currency and digit tiles; 3 shaded star/gem/plane at end",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DeadDeathEmojis": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Grim reaper in purple hood with skull face, dark outlines, flat fills, poses with scythe, coffee, wine",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Decoration_Pack": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed grab-bag on black tiles: flat icons, pixel and glowing text labels, hearts, crowns; several empty dark tiles",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "Decoration_Pack2": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "some",
+   "drawn": "Mixed icons on black tiles: flat arrows, hearts, dots, badges, some glowing neon arrows/words, a few emoji; black blanks",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "Decoration_Pack5": {
+   "style": [
+    "cartoon",
+    "3d"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed bag on black tiles: game-art icons (chest, cup, gems), cartoon avatars, app logos; one blank cell",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "DecorationEmojiPack": {
+   "style": [
+    "flat",
+    "native-ui"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Very mixed: flat arrows, dots, warning signs, social logos, pixel hearts, photo siren lights, 3D gems, outline words",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "line_weight",
+    "fill",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "decorations_kotletovv": {
+   "style": [
+    "mosaic",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Divider segments and flourishes meant to join across tiles: silver bevelled bars and swirls, copper-brown scrolls",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "DeFlagsEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "German state flags as Apple-style waving flags with soft fold shading and small coats of arms",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DeliciousFoodEmoji": {
+   "style": [
+    "flat",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Food and drink icons: even dark outline around flat pastel colour fills, one-tone shading bands, simple geometry",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DemandEmoji": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed: payment brand logos (Apple Pay, PayPal, SEPA, Venmo, WU) and gradient/metallic finance icons; cell 13 blank",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "Dervit": {
+   "style": [
+    "glyph",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Verified-badge rosettes with logos and symbols cut out as negative space; 6 blue/black, rest white repaintable",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DMJflags": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "hairline",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Apple-style waving flags in football club colours (checkered, stripes, crests) with wave shading; last cell is a logo",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DMJHalloweenEmoji": {
+   "style": [
+    "emoji-like",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple-style pumpkin, zombie, ghost, many shown as cropped pieces of a bigger emoji; author logo cells",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "DMJTGCheck": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Telegram and third-party client app icons in circles with blue gradients, plus three portrait photo badges",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DMJTGStarsEmoji": {
+   "style": [
+    "glossy",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Telegram Stars icon: gold gradient star with orange edge and bevel highlight, motion trails, coins, neon-outline stars",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "DMJUnigramAnimationEmoji": {
+   "style": [
+    "native-ui",
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: Fluent-style app icons (gear, bell, folder, shield) with soft gradients, flat typing-dot glyphs, stars, a pepe",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "DMJValentinesDayEmoji": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "solid black Valentine pictograms: hearts, envelopes, rings, gifts, locks, negative-space detail; last cell a logo",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "DogeEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Shiba doge heads with dark outline, big eyes, soft gradient shading in many moods; a few hands and props",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "doodlepack_by_TgEmojiBot": {
+   "style": [
+    "hand-drawn",
+    "mosaic"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Crayon/pencil doodles, pastel textured fills, wobbly edges: bears, food, hearts; some sliced pictures, promo cells",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "dopamineemojis_by_TgEmodziBot": {
+   "style": [
+    "glossy",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "faceted crystal gems shaped as hearts, flowers, stars, butterflies, moons in pink, violet, blue, green, gold",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "DuckEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "round yellow duck heads copying Apple emoji expressions, soft gradient shading, thin outline; also hands, props",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "dzner_hearts": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "hearts with uneven brush and marker edges, scribble fills, wobbly black-outlined hearts, soft watercolour blobs",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "e26102616421163719_by_lemurkka_emoji_bot": {
+   "style": [
+    "hand-drawn",
+    "cartoon"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Cute Halloween illustrations: pumpkins, ghosts, frogs, witches, cats; flat fills with grainy brush texture, no outline",
+   "confidence": 0.72,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "e26110310291a1cb7e_by_lemurkka_emoji_bot": {
+   "style": [
+    "hand-drawn",
+    "lettering"
+   ],
+   "line_weight": "medium",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Monochrome grey/beige grainy pencil-texture drawings: icons, faces, animals, Russian word labels, digits; 2 black cells",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "e261108201322beae9_by_lemurkka_emoji_bot": {
+   "style": [
+    "hand-drawn",
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "textured",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: punk stickers, B/W engraving-hatched skulls, rats, boots plus grainy bold-outline cartoons, cut-out words",
+   "confidence": 0.72,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Easter_by_emoji_gray": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "hard",
+   "characters": "some",
+   "drawn": "pink serif Cyrillic alphabet over lilac strokes, digits on blobs, greeting cut into tiles; flat eggs, twigs, angel",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Edamax_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Food items with thick dark outlines, saturated cel-shaded fills and small Russian slang captions",
+   "confidence": 0.75,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "EffectEmoji": {
+   "style": [
+    "cartoon",
+    "outline"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "comic effect marks (sparkles, swirls, sweat drops, zzz, hearts) in thick navy strokes, some with flat bright fills",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "EffectsMinecraft": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Minecraft status-effect and item icons on a coarse pixel grid: hearts, swords, shields, potions, sparkles",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "EmoFood": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "mixed: Apple-style food and drink emoji; first 32 are cartoon food characters with faces, limbs, outlines",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "emoji_1804c_by_TgEmodziBot": {
+   "style": [
+    "cartoon",
+    "mosaic"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Anime game art of one character: chibi stickers, painted portraits, many cropped fragments; some near-empty cells",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "emoji_21a33_by_TgEmodziBot": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pusheen-style kawaii food (buns, cakes, drinks) with grey cat faces, thin brown outline, flat pastel fills",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "emoji_bf3a7_by_TgEmodziBot": {
+   "style": [
+    "cartoon",
+    "mosaic"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Rick and Morty show frames: cel-shaded characters, dark outlines; title and portals split across tiles, some near-empty",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Emoji_BlackCat": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black cat with yellow eyes and a calico cat on black square tiles; flat fills, thin grey contours, some paw cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Emoji_IOS_generation_by_Any": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Apple-style yellow faces with hands, glossy hearts, food and objects; a few painted lighthouse and alien scenes",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "emoji_Office_by_TgEmodziBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "TV-series screenshot crops: people in an office, reaction faces, Halloween costumes; one blurry empty frame",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "emojiadaptive_8a06f_by_TgEmodziBot": {
+   "style": [
+    "cartoon",
+    "mosaic"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: monochrome anime manga line art, solid Geass sigils, title and big panels cut into tiles; many fragments",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "emojibrands": {
+   "style": [
+    "glyph",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Fashion and sportswear brand logos and wordmarks, mostly solid black silhouettes, a few red/blue/gold coloured ones",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "EmojiLetters": {
+   "style": [
+    "lettering",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Three A-Z alphabets: red patterned serif letters with perched birds, letters of photo roses, letters of autumn leaves",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "EmojiNutrokStore": {
+   "style": [
+    "native-ui",
+    "mosaic"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "mixed: white glyph icons and pay logos on dark-red rounded tiles with soft edge glow; banner words cut across tiles",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "emojipack_sm": {
+   "style": [
+    "gradient",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Purple-pink-blue gradient icons: arrows, rings, heart, hands, plus a few volumetric objects (books, cap, cat, rocket)",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "EmojisBinance": {
+   "style": [
+    "glyph",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed: black glyph icons on white rounded tiles, yellow Binance logo glyphs, yellow word banners cut across tiles",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "EmojiStatus": {
+   "style": [
+    "outline",
+    "native-ui"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Telegram-like status: grey outlined number badges, gradient premium stars, checks, line icons; ~14 blank/tiny cells",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "EmojiTechPack": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "app, OS, payment and crypto logos as rounded app tiles and circles, iOS system app icons; 2 blank cells",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "EmojiTechPack2": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: app/brand logo tiles (Adobe, Telegram, KFC) and gradient Fluent-like tech icons; cell 150 blank",
+   "confidence": 0.75,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "EmoticonEmoji": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Black sans-serif text emoticons (:D, ^_^, o/) typed in one typeface, filling the cell, no imagery",
+   "confidence": 0.8,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "EndCrypto": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "crypto and social app logos in coloured circles on black square tiles; flat marks, a few mascot or photo badges",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ENLettersAndNumbers": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "dark red italic serif capitals A-Z, one per black square tile",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "EredivisieTeams": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Dutch football club crests and badges as flat vector logos with thin rims and club colours",
+   "confidence": 0.8,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "esotericsastroneokult": {
+   "style": [
+    "realistic",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: photoreal Egyptian gods, crystals, candles; painted tarot/witch items; gold letters; black zodiac symbols",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "FaceEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "round yellow smileys with glossy gradient and highlights, props (glasses, books, cars); a few objects",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "fatanimalsEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "round chubby kawaii animals, dark outlines, flat fills with cel shading, tiny dot eyes and blush",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FestiveFlags": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Bunting pennants with bold white A-Z, 0-9 and punctuation over bright striped/dotted patterns; thin darker rims",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FestiveFontEmoji": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Gold foil balloon letters, digits and symbols with crinkled seams and bright specular highlights",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FinanceAnimations": {
+   "style": [
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Finance line icons: coins, charts, calculators, money bags; even black strokes, teal accents; last cell promo text",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FinanceEmoji": {
+   "style": [
+    "emoji-like",
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "money and finance objects with soft gradient shading, gloss highlights, thin dark edges; a few animals",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Fire_Text": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Yellow-to-orange gradient rounded letters, digits and words with thin dark-orange edge; some fire-tinted hand gestures",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FireFont": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Blackletter metal-style letters, digits, symbols in dark red with yellow edge over gradient flame shapes",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FireFontEmoji": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "dark-red blackletter metal-style letters, digits, symbols with gold edge, set on orange gradient flames",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FlagHearts": {
+   "style": [
+    "glossy",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Country flags as hearts, shiny gold-rimmed medals with laurels/crowns, and flat squares, mostly on black tiles",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "FlagMojis": {
+   "style": [
+    "flat",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: flat flags framed as gold badges, banners and postage stamps on black tiles, then white line-drawn cats on flags",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "FlagOfWorld": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Rectangular national flags in solid colours, no outline or wave; last cell is a 'By Brill' promo tile",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Flags_by_iEmojicBot": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Waving national flags with cloth folds and natural light shading, each on a black square tile",
+   "confidence": 0.7,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "Flags_kotletovv": {
+   "style": [
+    "glossy",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Brand/app/game logos on bevelled shield badges with glossy highlight and gradient; a few mascots",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FlagsEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Apple-style waving country flags with soft fold shading; white, black, pirate, chequered and pride flags first",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FlagsEmoji2024": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Country flags as flat colours on wavy rounded sticker shapes with white border and soft drop shadow",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FlameEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "flame mascot with emoji faces, orange-red outline, warm gradient fills; a few hands and objects",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "FlippingCoins": {
+   "style": [
+    "flat",
+    "native-ui"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Round coins with thin rim carrying crypto/app logos in brand colours; gold hamster coin, a photo face, anime avatar",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "floflowEmoji": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Vector flowers, leaves, sprigs and bouquets in solid pastel and bright fills, no outlines or shading",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Flower2_by_EmojicBot": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "muted pastel flowers, sprigs and leaves with pencil-like fine lines and soft watercolour texture",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FlowersFontEmoji": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Pale lavender outlined serif letters and digits overgrown with bright flat flowers and leaves, thin outlines",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "flowersmax_by_TgEmodziBot": {
+   "style": [
+    "3d",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Bouquets in boxes and vases, smooth painterly volume shading, idealised petals, no outline; last cell promo badge",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Flowerss_by_e4zybot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "photo cutouts of single flowers, roses, bouquets and flower baskets, no outlines",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FluentEmojiSet1": {
+   "style": [
+    "emoji-like",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Microsoft Fluent 3D emoji on white square tiles: glossy round smileys, cat/monkey/robot faces, hearts, speech bubbles",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "food_comfort": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: muted flat food and kitchen vectors without outlines, hand-written Cyrillic alphabet, banner text cut into tiles",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "FoodIcon": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Mixed food icons: fast food with thin dark outlines, sushi flat no-outline, later cells soft gradients; few blanks",
+   "confidence": 0.7,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "FoodPremStik_by_TgEmodziBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "cut-out product photos of food and grocery packs (sweets, bread, dairy, fruit, dishes) on transparent ground",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "froggy_emojis": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Chibi pale-green frog with dark brown outline, blush cheeks, dot eyes in many poses; a few YES/NO/OK text props",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "FunnyFacesEmj": {
+   "style": [
+    "3d",
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "rendered yellow ball faces with soft shading, pink blush, small beaks, some hats and costumes",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Galaxy_Sky": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "sans capitals and digits filled with violet starry galaxy texture, thin dark blue edge, on black tiles",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "game_emoji_z1vert1k": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "game studio, store and hardware brand logos on rounded-square app tiles; few mascots (Among Us, creeper)",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "game_icons_Emoji": {
+   "style": [
+    "glossy",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "mixed: casual-game glossy gems, hearts, potions, stars; blurred particle FX; cut UI bar/divider pieces",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "GeorgiPrem_by_TgEmodziBot": {
+   "style": [
+    "realistic",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed Georgia set: flags and crosses as flat marks, photos of footballers, food, wine, people; cartoon men",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "GhostEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Pale-blue ghost mascot with blue outline, soft gradient, big glossy eyes, system-emoji expressions; some hands and eyes",
+   "confidence": 0.82,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "gifts_emoji_by_gifts_changes_bot": {
+   "style": [
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Rendered Telegram gift objects: teddy bears, trophies, rings, hats, cakes, with material shading and highlights",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "GlowingFont": {
+   "style": [
+    "lettering",
+    "neon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "Neon-sign letters, digits, symbols: coloured glass tubes with white cores, glow, marquee bulbs; rainbow colours",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Gold_coins": {
+   "style": [
+    "flat",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Gold coins with embossed currency signs, two-tone orange rim and diagonal flat highlight stripes",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Golden_Icons": {
+   "style": [
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "gold metallic icons with shine and orange grid lines on black square tiles: logos, arrows, hearts, currency",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "GoldUtyaEmoji": {
+   "style": [
+    "cartoon",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "yellow Utya duck mascot with soft gradient shading, no dark outline, many props, phones, cars and sign boards",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "google_nws_emoji": {
+   "style": [
+    "native-ui",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: flat Google app logos, photo renders of Pixel phones, wordmark split across cells; Android robot heads",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "greenhalloween": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "mixed: green-purple photos of plush toys, mugs, figurines, spooky scenes; words and shapes cut across tiles",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "GTA6_2026": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: blocky white GTA-style alphabet with black outline, green digits, GTA logos and comic-style character portraits",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "GWENTIcons1GwentnewsUa": {
+   "style": [
+    "3d"
+   ],
+   "line_weight": "medium",
+   "fill": "textured",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Gwent game icons: bronze embossed faction emblems, painted barrels, scrolls, shields, masks, gems; bevels, dark edges",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Halloween2023emoji": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "White one-colour Halloween silhouettes (pumpkins, bats, skulls, witches, cats); HALLOWEEN word split across cells",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "HalloweenAdaptiveEmoji": {
+   "style": [
+    "hand-drawn",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black monochrome doodles: skulls, ghosts, candy, graves, pumpkin faces; slightly uneven strokes, few solid parts",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HalloweenAdaptiveXkysluv": {
+   "style": [
+    "glyph",
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black Halloween silhouettes (bats, pumpkins, witches, skulls) plus inky line drawings of varying width; few red",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HalloweenEmoji2024": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed clip-art: cartoon jack-o-lanterns, witches, vampires, ghosts, black silhouettes, sticker blobs; banner cut in 4",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "halloweenFont2026": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "orange cartoon pumpkins each carved with a dark brown Cyrillic or Latin letter, digit or symbol",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "HalloweenHD_Emoji_Gray": {
+   "style": [
+    "cartoon",
+    "lettering"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: outlined Halloween cartoons, black-tile pumpkins, dripping purple Cyrillic alphabet; 2 promo tiles",
+   "confidence": 0.62,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HalloweenIcons": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "solid black Halloween silhouettes (pumpkin, ghost, skull, bat, witch) with cut-out details",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "hamstertt_by_TgEmojiBot": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Crude wobbly pen sketch of a white blob hamster meme, dot eyes, pink nose; few colour or photo cells, 2 promo cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "HandDrawnEmoji": {
+   "style": [
+    "cartoon",
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Round orange smileys with uneven broken brown-orange outlines, big glossy eyes, red blush; a few hands and objects",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HandEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "Yellow emoji hands with cartoon faces, thin orange outline, soft gradient shading, props like phone, burger",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HappyNewYearEmojiCuteDecorFiri": {
+   "style": [
+    "hand-drawn",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: first row kawaii flat icons with brown outlines, rest pastel watercolour/pencil bunnies, bears, sweets, decor",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HDSpace": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed cartoon space: planets, aliens, astronauts, UFOs, rockets, moons; dark outlines; some images split over 2 cells",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "HearLetters_by_TgEmodziBot": {
+   "style": [
+    "pixel",
+    "lettering"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Red pixel-art hearts with stepped black 1-px outline, each carrying one black Cyrillic capital letter",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "HeartNewz": {
+   "style": [
+    "emoji-like",
+    "hand-drawn"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Mixed hearts: system-emoji style hearts and roses, fire hearts, crayon-scribble hearts some with faces; promo cell",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "HeartRainbow": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "Mixed, mostly on black tiles: flat arrows, dots, rings, some glowing arrows/dots, word cells; one black blank",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "HeartsEm": {
+   "style": [
+    "glossy",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed hearts: glossy glass, chrome and marbled hearts, flat solid hearts, pixel hearts, scribbles; some near-blank",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "Here_KittyKitty": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Kawaii kittens with thin dark outlines and flat white/grey/calico fills on black square tiles; few props",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "holodnoenovogodnee": {
+   "style": [
+    "hand-drawn",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "watercolour winter items, ornaments, animals, a painted Cyrillic alphabet and digits; some photo cats, split greeting",
+   "confidence": 0.75,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "horror_fd778_by_TgEmodziBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Grayscale square photo/video frames of Ghostface, Jason and FNAF animatronics; several almost black cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "hryaki726": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "AI photoreal round fat pigs with wrinkled skin texture, costumes and props, real lighting, some full scenes",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Icon_2023": {
+   "style": [
+    "gradient",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: bright gradient/halftone signs, words (+REP, NEW, YES) and arrows on dark navy rounded tiles with coloured rim",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Icon_TGS": {
+   "style": [
+    "mosaic",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Mixed: bevelled glossy coin/currency badges and gradient tickers, then word buttons sliced across 2-4 cells",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "IconsEmoji": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Bank, payment, crypto and social app icons on rounded tiles; first cells are a split promo banner, cell 8 blank",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "IconsPack2": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Rounded UI icons (solid and stroke arrows, docs, people, smileys) filled with pink-to-orange gradient",
+   "confidence": 0.75,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "iconspublic": {
+   "style": [
+    "outline",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "UI line icons (check, bookmark, mail, heart, lock, gear) with even strokes in a magenta-to-cyan gradient",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ilove_meal": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Heart-shaped photoreal foods (pizza, waffle, avocado, pie, fries) with a white sticker rim",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ilovemaresemoji": {
+   "style": [
+    "cartoon",
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pony fan-art heads with big round eyes and blush, slightly wobbly dark outlines, flat pastel fills",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "InterfaceElements": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "iOS/macOS UI parts: grey SF-style glyphs, outlined keyboard keys, toggles, cursors, badges, battery; few pixel arrows",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "InvisVPNBot": {
+   "style": [
+    "gradient",
+    "native-ui"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "orange-to-black gradient glyphs with white sticker rim: IV logo, app-tile icons, digits, money, a few characters",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "IOS27icons8": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black solid icons8 glyphs of pop-culture: famous faces, pixel monsters, cards, game logos, comic BAM/WOW bursts",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ItsHalloween": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed kawaii Halloween art on black tiles: pumpkins, ghosts, skulls, mummies, witch girl; many near-empty dark tiles",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "ItsJustFood": {
+   "style": [
+    "gradient",
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Japanese-style food illustrations: soft gradients, shine highlights, sparkles, thin brown edge; some black tiles",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Jenskiye_shtuki": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Detailed fashion and beauty objects (shoes, bags, lipstick, dresses) with dark outline, white sticker rim, soft shading",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "jujutskaisen_by_TgEmodziBot": {
+   "style": [
+    "cartoon",
+    "mosaic"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "painted anime fan-art crops of Jujutsu Kaisen characters, some greyscale manga; pairs of tiles split one picture",
+   "confidence": 0.7,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "JustWhiteCatEmoji": {
+   "style": [
+    "hand-drawn",
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Doodle white blob cat with thick slightly wobbly black marker outline, dot eyes, tiny mouth; one yellow chick",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "keyboardtyping": {
+   "style": [
+    "lettering",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Black keyboard keycaps in slight perspective with white Latin, Cyrillic, digit and punctuation glyphs, sheen gradient",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "khl_animation": {
+   "style": [
+    "flat",
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "KHL club logos; cartoon gloved hands hold a 'LET'S GO!' sign under logos; about half the cells blank mid-animation",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "KimiShinu_by_MoiStikiBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Square anime screenshot frames of a pink-haired schoolgirl and friends, cel-shaded with backgrounds",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Kish_emoji_gray": {
+   "style": [
+    "mosaic",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: black Old-Slavonic Cyrillic font, white lyric lines cut across tiles, black punk glyph icons; promo cell",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "KorysnostiFinanceIcons": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: flat crypto/payment logos, teal circle number badges, outlined numerals, split pill digit tiles",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "KorysnostiIcons": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "full-colour app, OS, brand, bank and UI icons in official colours, many on circles or tiles; 1 promo, 1 QR",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "kotikemoji": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "square photo crops of one real tabby-white cat in rooms, hats and costumes",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "KOTIKI_by_PackMakerAI": {
+   "style": [
+    "glyph",
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Mixed: one-colour orange cats, first third wobbly line doodles, rest solid silhouettes with cut-out eyes; credit cell",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "Kotprizrak_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Pale-blue ghost cat sticker scenes, dark outlines, soft shading, big yellow eyes, red Russian captions",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "KotyaEmojiVK": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "chibi cream-and-brown cat with brown outlines, pink blush, flat fills, props; last 3 cells are credit tiles",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "kovvvalenkstop": {
+   "style": [
+    "lettering",
+    "hand-drawn"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Hot-pink scribbled marker Cyrillic letters and digits made of messy overlapping strokes",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ledscreen_by_TgEmodziBot": {
+   "style": [
+    "lettering",
+    "neon"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "LED dot-matrix panel: glowing orange dots on a dark dot grid forming letters, digits, symbols; cell 27 an empty panel",
+   "confidence": 0.8,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "LedScreenEmoji": {
+   "style": [
+    "lettering",
+    "pixel"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "Dot-matrix LED board: letters, digits, symbols and pictograms in glowing orange dots on a dark grid; one empty",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "LettersAndNumbers": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "hairline",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "tiny dark sans-serif letters A-Z, digits and :) centred on plain white square tiles; glyphs very small",
+   "confidence": 0.65,
+   "unsure": [
+    "line_weight",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "lgbtprideflags": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Pride flags as plain horizontal stripe rectangles filling the cell, solid colours, no outline",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "LingvoFlags": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed hearts: flat flag hearts with thick black outline, plain and gradient hearts, photo-texture hearts; 1 promo tile",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "LittleFlameEmojis": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "small flame mascot with red-orange outline, flat warm fills, tiny face, props and scenes; 3 credit tiles",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Loading_by_TgEmojis_bot": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed loading indicators: dots, rings, spinners, rainbow and hypnotic spirals, yin-yang; many tiny or blank frames",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "LoadingEmoji": {
+   "style": [
+    "flat",
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Loader frames: single dots, rings, spinners, gears, infinity loops in flat colour; many cells near-blank",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "characters",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "logoskirnel": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Real app-store icons (social, banks, shops, Russian services) as squircle tiles with brand colours and marks",
+   "confidence": 0.96,
+   "unsure": [],
+   "source": "vision"
+  },
+  "logoskirnel_finance": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Bank, payment and crypto app icons as squircle tiles in brand colours; yellow currency-sign tiles",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "love_rain_z1vert1k": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "White Latin/Cyrillic letters, digits, symbols in rounded bold font on glossy pink hearts with highlight",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "LoveByAles": {
+   "style": [
+    "lettering",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: silver Cyrillic/Latin letters on dark glitter hearts, alternating with black-and-white film photo cut into tiles",
+   "confidence": 0.65,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "LoveDayEmoji": {
+   "style": [
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "pink Valentine objects (calendar, potion, ring box, locks, dice), thin darker outline, gradient fills, white highlights",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "LyagunyaEMOJIGRAY2": {
+   "style": [
+    "flat",
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pale-green dancing frog silhouette, white belly, on black square tile; features cut as gaps; 2 promo tiles",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "m_pixel": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Super Mario sprites on a visible pixel grid: Mario, Luigi, Peach, Bowser, enemies, plus blocks, coins and items",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MacOSiOSepack": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "SF Symbols-like blue stroke icons with even rounded lines (folder, phone, trash, gear); cell 110 blank",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MadEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple-style yellow smiley mashups with soft gradient shading, extra props and swapped features",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "madk1d_27554_by_TgEmodziBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Phone photos and video stills of a young musician, selfies, concerts, a few meme captions and a logo",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "magiccult_adaptiveEmoji": {
+   "style": [
+    "outline",
+    "glyph"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black mystic line art: eyes, moons, hands, potions, cats, feathers; solid rune stones and silhouettes",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "main_by_emojicreationbot": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black solid silhouettes (hands, bags, watches, bears) with white 'emc' logo, white inner lines and sticker rim",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MajorEmojis": {
+   "style": [
+    "emoji-like",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "mixed: shiny gold stars and coins, duck mascot, outlined MAJOR letters, app tiles, car and rocket",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "manualdecorEmoji": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "doodle decor: leaves, flowers, stars, hearts, crowns, bubbles, swirls; wobbly dark lines, offset pastel fills, 8 colours",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Mario_8bit_emoji": {
+   "style": [
+    "pixel",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "NES Mario sprites, goombas, coins, bricks, pipes on sky-blue or black squares; hills, pipes, castles split across cells",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MasksEmoji": {
+   "style": [
+    "glyph",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "black mask silhouettes (Guy Fawkes, Scream, Batman, oni, plague doctor) with grey gradient sheen and cut-out eyes",
+   "confidence": 0.7,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "mei_mei_e2641_by_TgEmodziBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Photos of a snow leopard cub in rounded tiles, colour filters, stickers and edited meme eyes; cell 8 nearly blank",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MemeBundle": {
+   "style": [
+    "emoji-like",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "blue gradient TON diamond coin combined with Apple-style emoji hands, faces and props",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MemeEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Rage-comic meme faces as bald peach heads, thin brown outline, soft gradient shading, props and hands",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MemePumpkinsEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Orange pumpkins with rage-comic meme faces, dark outlines, soft gradient shading, green leaf hands",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Memes_by_iEmojicBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "photo cutouts of meme cats, dogs and people on black tiles, banana and apple cat memes on white; some cells blank",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "memetop_by_TgEmojiBot": {
+   "style": [
+    "cartoon",
+    "realistic"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed memes: Pepe frog cartoons, photo cats/dogs/people, Hello Kitty, Sailor Moon on square tiles; promo cells",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "MendeleevEmoji": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "line_weight": "hairline",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Periodic-table element tiles: pastel squares with coloured symbol, number, RU/Latin names; blank spacer cells 92-97, 113",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "MerchantsPay": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "White UI glyphs cut out of solid black irregular hexagon blobs, one colour, no shading",
+   "confidence": 0.9,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "MichaelScottAirDsgn": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "cut-out TV stills of the same man in a suit: faces, gestures, reactions, transparent ground",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Minecraft_mikiSt_by_fStikBot": {
+   "style": [
+    "3d",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: grass-block textured Cyrillic and Latin letters, then blocky voxel renders of Minecraft mobs, players, blocks",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "minecraft_textures": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Minecraft 16px item textures (tools, food, ores) and mob face tiles, hard stepped edges",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MinecraftEmojiCute": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Minecraft item sprites (ores, tools, swords, food) with pixel shading; a few 3D-rendered blocks; mob heads",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MiscMojis": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: gradient stars, moons, hearts, gems, wings; kawaii animals; flat UI badges and a few pixel cells on black",
+   "confidence": 0.55,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "MizkifPepe": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Chubby Pepe frog in a blue shirt with dark outline and soft shading on black square tiles; one starry photo",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "mochizukihonamicharmyavv": {
+   "style": [
+    "mosaic",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "One pink-tinted anime girl illustration with lilies cut into 200 tiles; many tiles are fragments or near-empty",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MoneyUsir": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Photos of USD, TRY, RUB, UAH, IRR banknotes and coins, plus rounded flag tiles of the same countries",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MoonEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Grey new-moon-face emoji in many moods with gradient shading, white gloved hands; a few objects (house, suitcase)",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MotoPackAirDsgn": {
+   "style": [
+    "realistic",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: flat motorcycle brand logos, then photo cutouts of helmets, sport bikes and stunt riders",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "MovingEmojis": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "bold",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "hard",
+   "characters": "none",
+   "drawn": "rounded Latin letters, digits and symbols with blue-pink-orange gradient, black outline and offset, on white tiles",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "MovingIcons": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Icons on black square tiles: flat colour shapes with black outlines (objects, weather, food); some frames empty (75)",
+   "confidence": 0.72,
+   "unsure": [
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "Muay_by_EmojicBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Kawaii cats, dark outlines, flat fills with light shading, round faces and poses; mixed sub-sets, a few paws",
+   "confidence": 0.8,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "MysoulStickBlackGold": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black glitter hearts with gold rims holding gold Cyrillic/Latin letters and digits; first cells gold smileys, bears",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "mysoulstickcandle": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "birthday-candle letters and digits: glossy striped bubble glyphs with icing and wick; bunting flags, string lights",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NatureEmojis": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Solid black silhouettes of leaves, trees, flowers, sun, moon, clouds, snowflake; detail cut as negative space",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "neon_alphabet": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "green tube-like sans capitals A-Z with bright inner highlight and soft shadow on light ground; 1 blank, 1 overview tile",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "NeonEmojis": {
+   "style": [
+    "neon"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "some",
+   "drawn": "Glowing neon tube doodles (hearts, stars, pumpkins, animals) on black tiles; middle rows are pastel filled glow blobs",
+   "confidence": 0.9,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "NeonFont": {
+   "style": [
+    "lettering",
+    "neon"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "Italic Latin and Cyrillic letters as green neon double tubes with soft glow; first cell blank",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NeonTxT2": {
+   "style": [
+    "lettering",
+    "neon"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "Green neon-tube italic outline letters, Cyrillic, Latin and digits, soft green glow, two empty space cells",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "nevalyashka_db1fb_by_TgEmodziBot": {
+   "style": [
+    "cartoon",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Red roly-poly doll character with big-eyed face, smooth gradient-shaded body, thin outlines, props and scenes",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "newemojis_car": {
+   "style": [
+    "flat",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: car brand logos (flat and chrome), then flat colour icons: siren, police, road, map, planes, van",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "NewsEmoji": {
+   "style": [
+    "glossy"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Shiny sticker icons: dark outline, saturated gradient fills, white highlight spots; signs, currency, arrows, word badges",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "newStatus": {
+   "style": [
+    "emoji-like",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple-style emoji objects plus SF-Symbol status glyphs in white, blue, colour; ~30 blank or tiny cells",
+   "confidence": 0.65,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NeyroEmodzi": {
+   "style": [
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "AI-rendered clay/plastic monster faces and blobs with big mouths and eyes, yellow/teal/red; a few furry guinea pigs",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ninecandles": {
+   "style": [
+    "glyph",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "solid black glyph icons (books, arrows, smileys, bull, bear) plus black sans-serif trading words BUY, SELL, HODL",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "normtipEmoji": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "cut-out photos of puppies, many photoshopped into suits, hoodies, hats; a few added emoji hearts",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NotoColorEmojis": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Google Noto smileys, hands, hearts, objects on white square tiles; cells 94, 104, 118 blank white, 116 dark square",
+   "confidence": 0.93,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NutritionFood": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "Cut-out photos of fruit, vegetables, grains, dishes and drinks; last cell is a promo portrait photo",
+   "confidence": 0.95,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "Nutritionist_by_EmojicBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "none",
+   "drawn": "cut-out photos of fruit, vegetables, greens, nuts, grains, spices, dishes and drinks; last cell a tiger logo",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NyaEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Anime chibi girl head, blue cat-ear hair, dark outlines, big shiny eyes, cel shading; some face-objects (sun, heart)",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "NyankoEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "kawaii chibi kittens with dark outlines, cel fills and blush on black square tiles; some props, hearts, paws",
+   "confidence": 0.85,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "OliverEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "calico cat mascot with bell collar, thin dark outline, soft gradient shading, big expressive eyes; paw-hand gestures",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "OneUI_Icons": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Samsung One UI app icons: white symbols on colour squircle tiles, flat fills with slight gradients",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "oooemojiAI": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: AI tool logos on circles and tiles, many gradient marks, a few 3D avatars, mascots and photo portraits",
+   "confidence": 0.7,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "OrderFlagsKotletovv": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Shield badges with thin rim carrying brand, app, game and zodiac logos on gradient brand-colour fields; a few mascots",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "osennii3Emoji": {
+   "style": [
+    "gradient",
+    "hand-drawn"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "AI-style painted autumn art in orange/purple: objects, animals, girls, then many leaf sprigs; 6 blank cells",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "OutlineEmoji": {
+   "style": [
+    "outline",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "black even-stroke emoji faces and symbols, some with light grey shading inside; a few word signs",
+   "confidence": 0.8,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "pack_Energy_Drinks_Logos_by_SozdaiStickeriBot": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "White one-colour energy-drink logos and wordmarks (Monster, Red Bull, Burn) with no tile; skull and piranha emblems",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "pack_Myth_Mask_by_by_EmojiRu_Bot": {
+   "style": [
+    "3d",
+    "cartoon"
+   ],
+   "line_weight": "hairline",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Game-item style masks (Batman, kitsune, Guy Fawkes, Scream, tiki) with painted volume, metal and leather shading",
+   "confidence": 0.75,
+   "unsure": [
+    "style",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "pack_nu_pogodi_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "square frames from the Soviet cel cartoon: wolf and hare with dark outlines, flat cel colours, painted backgrounds",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "pack_Pastel_goth_by_TgEmodziBot": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed pastel-goth set: photo crops, picture strips cut into tiles, Pusheen-like cartoon cats, a few pixel bits",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "PandaEmoji": {
+   "style": [
+    "emoji-like",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Round panda faces with Apple-style expressions, plus hearts, sparkles, rainbow, gift; soft gradient shading, no outline",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PeachGomaCatEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "white and grey round kawaii cats, thin brown outlines, flat fills, blush; cells sit on black or white square backgrounds",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PeepoPepeEmojis": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pepe/Peepo green frog in blue shirt, dark outlines, flat fills, meme poses; one near-blank and five tiny cells",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PencilEmoji": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "pastel crayon/pencil doodles with visible grain: fruit, hearts, arrows, animals, words YES/NO, digit tiles",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Pepe_Collection": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pepe frog meme variants with dark outlines, flat green fills, props and costumes on black tiles; a few pixel",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Pepe_Head": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pepe frog heads with bold black outlines, flat green fills, red lips, in many emotes and hats, square backdrops",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PepeEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Green Pepe frog head with red lips, dark outline, soft gradient shading, emoji reactions; some hands and objects",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PepeEmojiPack": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pepe frog stream emotes: dark outlines, flat green and blue fills, exaggerated faces, signs and props",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PigEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Pink pig heads with dark outlines, googly eyes, gradient shading and highlights; a few objects (thumb, wifi)",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PinkMixHDEMOJIGRAY": {
+   "style": [
+    "glyph",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed hot-pink set: Cyrillic letters, words split across tiles, one-colour icons, some glossy hearts/numbers",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "PixelEmoji": {
+   "style": [
+    "pixel",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Purple stair-stepped blob smileys with pixel-grid faces but smooth anti-aliased edges, gradient fill, dark rim",
+   "confidence": 0.65,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "PixelPigeonEmoji": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Blue pigeon blob on a visible pixel grid, dark 1-px outline, stepped edges, flat shades; plus pixel hands, fire, 100",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PkmnTCGP_01": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "round crops of Pokemon card art: anime creatures and trainers, painted shading and colourful backgrounds",
+   "confidence": 0.75,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "pogoda_734a6_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "sun, cloud and moon characters with big faces and limbs, thin dark outline, gradient shading, weather props",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Poke_Emoji": {
+   "style": [
+    "pixel",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Pokemon sprites on white tiles; mostly low-res pixel sprites with dark 1px outlines, some smoother art; a Poke Ball",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "PokeBall_Emoji": {
+   "style": [
+    "flat",
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Poke Ball variants: two-colour spheres, thin dark edge, white gloss spot, each on a white square tile",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "prem_BLOODY_by_MoiStikiBot": {
+   "style": [
+    "lettering",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Blood-dripping red Cyrillic letters, barbed-wire and drip border pieces, words sliced across cells, few realistic props",
+   "confidence": 0.7,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "Premium_Icon": {
+   "style": [
+    "gradient",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Telegram Premium stars in blue-pink gradients, white feature glyphs on gradient squircle tiles, seasonal star masks",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "premiumappsbyjaxclein": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Square app logo tiles of streaming and productivity services, flat brand colours and wordmarks",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "PremiumIcons": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Telegram Premium feature tiles with white glyphs, gradient stars, sparkly stars, coins; star characters; one blank",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "premiumstatuses": {
+   "style": [
+    "glossy",
+    "pixel"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "mixed: glossy chrome, glass and marbled hearts, faceted gems, pastel butterflies; a block of pixel hearts",
+   "confidence": 0.75,
+   "unsure": [
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "projpack_emoji": {
+   "style": [
+    "glyph",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "solid black UI glyphs on white rounded tiles, then brand and payment logos on app tiles; a few empty tiles",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "PulpFictionEmojiFTS": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Pulp Fiction film stills, close-ups of actors in natural cinematic light; one cropped fragment, last cell a logo",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "pulsar_pulse_by_PulsarMarketBot": {
+   "style": [
+    "glyph",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "none",
+   "drawn": "Black solid UI glyphs (chart, rocket, lock) edged by a purple-to-blue gradient rim with soft glow and a white spark dot",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "PumpkinEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "jack-o-lantern mascot with emoji faces, dark-orange outline, gradient shading; a few hands and objects",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "pusheen1_by_TgEmojiBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Pusheen grey cat, thin brown outlines, flat pastel fills, some on white/black tiles; last cells are text promo",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "qip_status": {
+   "style": [
+    "pixel"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Classic QIP messenger status icons in pixel art: green clover flowers, faces, phone, food; 1px dark outlines",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ragemojis": {
+   "style": [
+    "hand-drawn",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Black-and-white rage-comic meme faces (troll, me gusta, forever alone); rough uneven lines, white fill, few colour bits",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Rainbow_Light": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "slab-serif letters, digits, heart, note in holographic rainbow-gradient outline, dark interior, black tiles",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RansomNote": {
+   "style": [
+    "lettering",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Ransom-note alphabet: letters, digits, signs cut from magazine scraps in mixed typefaces, torn paper edges; few icons",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "readtheroom_by_fStikBot": {
+   "style": [
+    "realistic",
+    "hand-drawn"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Aesthetic photo cut-outs: bows, candles, books, coffee, notes, film stills; some soft blurred hearts, doodle arrows",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ReaperSkullEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Hooded grim-reaper skull mascot, dark blue outline, gradient shading, yellow eyes, emoji expressions; bony hands, props",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RedeSociais": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Official social/app/brand logos, flat brand colours, some on rounded tiles, some bare wordmarks",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RestrictedEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple-style system emoji: yellow smiley faces, cat faces, hands, body parts and people, soft gradient shading",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RetroEmoji": {
+   "style": [
+    "emoji-like",
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Old-school ICQ/kolobok yellow smileys with hair tuft, arms and props, thin orange outline, glossy gradient shading",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RetroFontEmoji": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "80s chrome italic letters and digits: blue-to-pink gradient, bevel edge and star glints",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RGBHearts": {
+   "style": [
+    "emoji-like",
+    "gradient"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Apple-style heart emoji in 35 colours and two-tone blends; soft gradient shading, thin darker rim",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "robinastralcharmy": {
+   "style": [
+    "cartoon",
+    "mosaic"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Blue duotone anime art of one girl cut into fragments, plus wings, bows, gems with white rim; some near-empty",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "RobloxFac_by_TgEmodziBot": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Round yellow gradient heads carrying Roblox face decals: thin black eyes, mouths, a few with lashes or braces",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RoboEmoji": {
+   "style": [
+    "glossy",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "square robot head with white glossy bevelled casing and dark screen showing cyan glyph face expressions",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "RROfficialEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Chunky game-unit heroes with dark outlines, painterly gradient shading; portrait tiles and items at end",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "rubrands_z1vert1k": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Russian brand and app logos on rounded-square tiles, solid brand colours, few gradients; dodo and dino mascots",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Samsungemoji14": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Samsung system smileys, cats, monkeys and hearts: round yellow faces, soft gradient shading, no outline",
+   "confidence": 0.97,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SamsungEmojii_by_fStikBot": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Samsung One UI round yellow smileys with gradient shading, plus ghost, alien, robot, cat; last cell is a photo",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SantaEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Santa heads with dark outlines, pale-blue beard, rosy cheeks, gradient shading and big expressions; a few props",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SeaCreaturesHD": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "kawaii sea animals, even dark-brown outline, flat pastel fills, dot eyes, tiny blush, round simple bodies",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "seavibe1_by_TgEmojiBot": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Photo cut-outs of shells, pearls, starfish, coral, fish, jellyfish, waves; some glassy 3D hearts; 4 promo tiles",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SegnaliStradaliItaliani": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Italian road signs as flat vectors: red-rim triangles and discs, blue panels, black pictograms and numbers",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SharkEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Teal triangular shark-head mascot with dark outline, soft gradient shading, emoji expressions; some hands, paws, props",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "ShibaInuEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "round orange shiba heads with emoji expressions, gradient shading, thin orange outline; a few hands/arms",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "shpargalka_blogera": {
+   "style": [
+    "lettering",
+    "glyph"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed black-and-white blogger kit: sans and script Cyrillic alphabets, black glyphs, meme photos, colour app icons",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "SignsEmoji": {
+   "style": [
+    "glossy",
+    "glyph"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Warning and road signs (triangles, diamonds, circles) with bevel and shine, black pictogram people inside, dark rims",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "sincerityinfo_by_TgEmodziBot": {
+   "style": [
+    "native-ui",
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: grey one-colour bank logos on circles, white letters and labels, medals, faint pale icons; many blank cells",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "skeletik_6e932_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Skeleton in pink cap and lime hoodie, bold black outlines, flat fills, comic poses, some framed scene tiles",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SlimeFontEmoji": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Green slime A-Z, digits, symbols with drips and bubbles; dark green outline, lighter highlights",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SmiliesVKEmoji": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "old VK yellow round and square smileys, thin outline, pale gradient, meme faces, thumbs-up hands, white-hair variants",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Snfb_hand": {
+   "style": [
+    "lettering",
+    "hand-drawn"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "bubbly hand-lettered Cyrillic and Latin letters, digits, punctuation: white fill, thick black slightly wobbly outline",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SocialEmojis": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Social and app brand logos, some on rounded tiles, some free marks; brand colours, few gradients (Instagram)",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "socialss": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "social/payment app icons on rounded-square tiles recoloured gold, blue, green, purple, pink, red gradients; extra logos",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "soyonagasak1_by_fStikBot": {
+   "style": [
+    "cartoon",
+    "realistic"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Greyscale square crops of an anime girl's screencaps and manga panels, plus b/w photos and plain typed text cards",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "spamset": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Apple-style system emoji (faces, poop, finger, lips, moai, heart) each repeated ~11 times; 3 text promo tiles",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SparklesEmoji": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Standard emoji silhouettes (heart, lips, poop, 100) filled with a pink/red/gold sequin-dot confetti texture",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "sparrowcodeemoji": {
+   "style": [
+    "native-ui",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Apple dev icons: Swift, Xcode, SDK tiles, isometric framework stacks, blue device circles; one photo avatar",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SPermStatus": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Telegram-style verified badges and premium stars recoloured in many solid and gradient tints; split IOS ANDROID text",
+   "confidence": 0.8,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "SpikyEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Grey spiky-haired cat character, dark outlines, soft shaded fills, exaggerated expressions; 3 promo cards",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SpookyLetters": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Colourful Halloween letters and digits with eyeballs, bats, bones, brooms; thin dark outline and gradient shading",
+   "confidence": 0.82,
+   "unsure": [],
+   "source": "vision"
+  },
+  "spoonofsappyemoji": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Black ink doodles of white cats, rabbits, frogs, birds with handwritten Russian captions; wobbly pen lines",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SportsClubs": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Football club crests as flat vector logos; second half are two crests spliced diagonally into one badge",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SpritzEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Chubby orange shiba/hamster in meme poses, thin brown outline, cel shading, white sticker edge; 3 faded promo cards",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "star_alphabet": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Latin A-Z each in a flat coloured star with thin edge; several stars faint or translucent, last cell blank",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "starspack_by_TgEmojiBot": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "tiny four-point sparkles and stars in flat pastel colours on white tiles; many cells faint or blank",
+   "confidence": 0.5,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "StaticReactions": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "System-style reaction emoji: yellow smileys, hands, heart, fire, poo, animals, objects; soft shading, thin edges",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "status_1d8ed40_by_LoveEmojiBot": {
+   "style": [
+    "glossy"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "same pink heart with dark outline, gradient and white gloss highlight, each carrying a white Russian first name",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "StatusEmoji": {
+   "style": [
+    "emoji-like",
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "7 status icons (zzz, no entry, palm, wave, briefcase, cutlery) in blue gradient, Apple-emoji colour and white glyph sets",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "StatusEmojiStickerAwwww": {
+   "style": [
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Gradient verified badges, sparkle stars, paper-plane and lightning glyphs in many hues; split divider row, cell 56 blank",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Steam_games_logos": {
+   "style": [
+    "realistic",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: tiny game icons upscaled with visible pixel blocks; painted key-art faces plus flat game logos",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "Steel_Theme": {
+   "style": [
+    "mosaic",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Dark tiles carrying cut pieces of a blue scratched-metal frame, many tiles plain dark; a few flat icons",
+   "confidence": 0.65,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "sti_6a1c4_by_TgEmodziBot": {
+   "style": [
+    "hand-drawn",
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "black-and-white rage-comic meme faces: uneven MS-Paint style lines, trollface, smileys, hair in solid black",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "sti_Dogs_dogs_by_TgEmodziBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "real dog photographs cropped into rounded-square tiles, natural light and backgrounds",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "sticks_d47f2_by_TgEmojisBot": {
+   "style": [
+    "glyph",
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed esoteric set: black silhouettes, thin line art, zodiac signs and constellations, some gold statues and pink icons",
+   "confidence": 0.55,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "sticks_e6810_by_TgEmodziBot": {
+   "style": [
+    "glyph",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: black one-colour silhouettes and anime/Rick&Morty line art, some tan; film strip, text split in cells",
+   "confidence": 0.55,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "stik_43e94_by_TgEmodziBot": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Noto-style food, drink and plant emoji each given a pleading face with big glossy eyes; soft shading, no outline",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "StrawberryEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Strawberry face character, big eyes, dark red outlines, gradient shading; purple hand gestures and props",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "streaming_emojis": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Streaming app-store tiles (Netflix, Spotify, HBO Max, YouTube) as rounded squares in brand colours, some with gradients",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "strikethrough_line": {
+   "style": [
+    "mosaic",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Solid flat colour bar segments (left cap, middle, right cap, wavy ends) in 7 colours that join into a line",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SunEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Yellow sun face with ray crown and meme expressions, big googly eyes, gradient shading, thin orange outlines",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "SupernaturalAirDsgn": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Cut-out photos of Supernatural actors (heads and half-figures) with natural lighting",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Swicon": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Social, payment and dating app logos on rounded-square tiles in flat brand colours, a few gradients",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Sylvanian_Families_III_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Chibi animal figures in costumes and dresses, thin brown outlines, flat pastel fills, tiny dot eyes",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TableFontEmoji": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "split-flap board: white bold sans letters, digits, symbols on dark-grey gradient flap tiles with hinge line",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TattooEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "bold",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Old-school tattoo flash: bold black outlines, saturated shaded fills; hearts, roses, skulls, knuckles, pin-up faces",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "teploevesennee_by_TgEmodziBot": {
+   "style": [
+    "hand-drawn",
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "watercolour spring plants, food, hearts, arrows, painted Cyrillic alphabet and digits; some photo cats and faces",
+   "confidence": 0.75,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "Tes_new_by_TgEmodziBot": {
+   "style": [
+    "native-ui",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "some",
+   "drawn": "White UI glyphs on dark rounded tiles with glowing green bevelled rim; a word sliced across 4 cells",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "TF2_Font_by_TgEmodziBot": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Solid black TF2 game typeface, Latin and Cyrillic letters, digits, punctuation; 10 shaded TF2 item icons",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "tfpmtmtewhocares_by_TgEmodziBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Transformers fan art: chibi robots with outlines and flat colour, plus comic/animation screencaps; one lotus",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "tg_forks_by_fStikBot": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Telegram client app icons: paper planes and letter logos on round or rounded-square tiles, some soft gradients",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TgAndroidIcons": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Telegram Android UI icons, white even-stroke outlines with rounded ends, few solid variants, on adaptive ground",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TgIos_by_e4zybot": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Telegram iOS interface icons as even blue rounded strokes on no fill; last row a few black and white variants",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "tgiosicons": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "white Telegram iOS interface line icons on rounded grid: gear, link, lock, bell, camera, people; few solid",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "tgmacicons": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Telegram iOS/macOS UI line icons in even blue strokes, some black; rounded geometry; a few white cells nearly invisible",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TgPremiumIcons": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Telegram Premium feature icons: white glyphs on purple-pink gradient tiles, gradient line icons, gold stars",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "tgramuxui": {
+   "style": [
+    "native-ui",
+    "mosaic"
+   ],
+   "line_weight": "medium",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Mixed: red/blue banner words split over 24 cells, white Telegram glyphs (many blank), blue SF-style line icons",
+   "confidence": 0.6,
+   "unsure": [
+    "fill",
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Thematic46": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed vampire collage: photo cut-outs, actors, gothic objects, vintage pulp art, silhouettes; many cells cropped tiles",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "thevectorlogos": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "iOS-style squircle app tiles with subtle gradient, white/brand glyphs, wordmarks and digits 0-9",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TONEmoji": {
+   "style": [
+    "cartoon",
+    "gradient"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Illustrated objects with gold TON coins (wallet, safe, rocket, map) with dark outlines and gradient shading, 3/4 views",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "TONjettons": {
+   "style": [
+    "native-ui",
+    "cartoon"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: TON token logos in circles, flat brand marks plus a few illustrated cartoon avatars (shark, mascots)",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "tonmonitoringemoji": {
+   "style": [
+    "outline",
+    "flat"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "glow",
+   "characters": "some",
+   "drawn": "Mixed: white icons with bold black contours, flat blue gems, a glossy gem, Pepe; orange glow under each",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "TONWHALES": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "three-quarter",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "blue whale mascot, darker-blue line art, soft gradient shading, big expressive faces, props and outfits",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Topics": {
+   "style": [
+    "emoji-like"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Apple system emoji objects and people: newspaper, bulb, money, gadgets, food, animals; soft gradient shading",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Tornado_Emoji": {
+   "style": [
+    "3d",
+    "glossy"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "Rendered blue glossy smiley spheres, specular highlights, white cartoon hands, soft contact shadow",
+   "confidence": 0.88,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TotalWarWarhammerFTS1": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "line_weight": "thin",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "game faction emblems on painted shields, banners and metal rings, worn fabric and metal texture, skulls and beasts",
+   "confidence": 0.6,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "TrashboxTech": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "tech company and OS app icons (Apple, Google, Microsoft, Android), rounded tiles or bare logos, some gradients",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwemojiAnimals": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Twemoji-style animals, plants and flowers: solid flat colour shapes, no outlines, simple dot eyes, side and front views",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwemojiEmoji": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: Twemoji-style flat people in wheelchairs, food, objects; plus OS app icons and a few game characters",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "TwemojiFoods": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Twemoji food and drink set: flat solid-colour fruit, dishes, sweets, drinks, cutlery; a few sea creatures",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwemojiHands": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Twemoji hands and body parts: yellow gestures, ears, organs, lips, blue people busts; flat solid fills, no outline",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwemojiSmileys": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Twemoji set: flat yellow smiley and cat faces, monkeys, hearts and comic symbols, no gradients or outlines",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwemojiTimeWeather": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Twemoji clocks, moon phases, suns, clouds, umbrellas, snowmen: solid flat colours, no outlines",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwemojiTravel": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Twemoji travel and places: buildings, vehicles, landscapes as flat colour shapes, no outlines or gradients",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "TwitchAbuse": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "hard",
+   "characters": "some",
+   "drawn": "Cyrillic slang words on purple, lime and black sticker plates, thick black outline, offset shadow; arrows",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "typical_adaptive_emoji": {
+   "style": [
+    "glyph"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Black postage-stamp shapes with white cut-out icons, digits and sliced Russian words; one colour, adaptive",
+   "confidence": 0.85,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "UIBrawlStarsEmoji": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "bold",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "hard",
+   "characters": "some",
+   "drawn": "Brawl Stars game UI icons: thick black outline, bright two-tone fills, hard offset shadow; skulls, badges, coins, gems",
+   "confidence": 0.75,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "UnicornEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Round yellow unicorn face, rainbow mane, big glossy eyes, soft gradients, thin outline; plus hearts, crown, cake",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "Unigram_Icons": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Windows Fluent-style colour icons with soft gradients (at, gear, shield, folder), then black dots and +1/x2 badges",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "UntimateHalloweenFontPack": {
+   "style": [
+    "lettering",
+    "cartoon"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Halloween alphabets: dripping slime, bones, mummy bandages, pumpkins, cobweb orange, bat-winged grey letters",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "useless_emotes_by_fStikBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "mixed: low-res meme stills (cats, people, anime, frogs) and pixelated old-forum yellow smiley GIFs on black",
+   "confidence": 0.68,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "VajbkodimHttpstmeZEWopnLV4Ig5Njky": {
+   "style": [
+    "pixel",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "mixed: orange pixel-art crab mascot in many poses and props, plus flat AI and dev-tool brand logos",
+   "confidence": 0.7,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "VariousAnimations9": {
+   "style": [
+    "emoji-like",
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "mixed: gradient emoji objects (star, gem, heart), app/brand logos, premium stars, owls; several blank or dot frames",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "shadows"
+   ],
+   "source": "vision"
+  },
+  "veritylover_by_photocropperbot": {
+   "style": [
+    "mosaic",
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: video frames of a 3D yellow smiley (Minecraft, rooms) plus many cropped tile fragments of larger images",
+   "confidence": 0.55,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "vkusnyashki_26e6a_by_MoiStikiBot": {
+   "style": [
+    "realistic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Photoreal cut-out desserts and drinks (cupcakes, cake slices, bubble tea, cookies, jelly fruit), 3/4 views",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Wallet_Emoji_Pack": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "three-quarter",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "Orange wallet mascot with cash, rubber magenta limbs, thin dark outline, light cel shading, expressive faces; one safe",
+   "confidence": 0.88,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "watercolorautumn": {
+   "style": [
+    "hand-drawn"
+   ],
+   "line_weight": "none",
+   "fill": "textured",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Watercolour autumn leaves, flowers, fruit, pumpkins, feathers, cosy items; visible bleed and paper texture",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "WeatherEmoji": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Weather-app style multicolour symbols: grey clouds, yellow sun and moon, blue drops and snowflakes, thermometers",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "weeeather": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "mixed weather clip-art: photoreal clouds, moon, cat photo, glowing sun, glitter rainbow, rendered umbrellas, snowmen",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "fill"
+   ],
+   "source": "vision"
+  },
+  "WideABC": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Lowercase a-z in white sans-serif stretched wide on dark navy rounded tiles; blurry low-res upscale with edge artefacts",
+   "confidence": 0.75,
+   "unsure": [],
+   "source": "vision"
+  },
+  "WINTER2026byAles": {
+   "style": [
+    "lettering",
+    "3d"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "blue extruded Cyrillic and Latin letters and digits with snow caps; low-poly icy figures (Santa, horse, bear)",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "worldcup_z1vert1k": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Football federation crests on rounded-square app tiles with subtle gradient; flat emblem art",
+   "confidence": 0.75,
+   "unsure": [
+    "characters"
+   ],
+   "source": "vision"
+  },
+  "worldroundflags1_by_fStikBot": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "country and region flags as flat circles, solid colours, simplified emblems; last cell a text label",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "worldroundflags2_by_fStikBot": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Country flags as flat-colour circles, no outline or shading; last cell is a small text label",
+   "confidence": 0.95,
+   "unsure": [],
+   "source": "vision"
+  },
+  "Xmas_emodji": {
+   "style": [
+    "flat"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "red and green flat gifts, stockings, candy canes, hearts, stars and bows with thin dark outline and simple patterns",
+   "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "XmasNewYear": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "Mixed: Cyrillic letters on baubles, flat Xmas icons, 'Happy 2023' lettering, cartoon Santa stickers; 5 blanks",
+   "confidence": 0.6,
+   "unsure": [
+    "style",
+    "line_weight"
+   ],
+   "source": "vision"
+  },
+  "YGAlphabet": {
+   "style": [
+    "lettering"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Yellow monospace Cyrillic and Latin letters, digits and symbols with an even dark-grey outline",
+   "confidence": 0.92,
+   "unsure": [],
+   "source": "vision"
+  },
+  "yolksemoji": {
+   "style": [
+    "glossy",
+    "emoji-like"
+   ],
+   "line_weight": "thin",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "all",
+   "drawn": "Orange ball smileys with thin dark rim, glossy top highlight, cast shadow below, expressive faces and props",
+   "confidence": 0.8,
+   "unsure": [
+    "style"
+   ],
+   "source": "vision"
+  },
+  "zeeeeexexexesexcc_by_fStikBot": {
+   "style": [
+    "cartoon"
+   ],
+   "line_weight": "thin",
+   "fill": "flat",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "all",
+   "drawn": "cut-out anime and manga images of one dark-haired girl character, cel-shaded and black-white panels",
+   "confidence": 0.85,
+   "unsure": [],
+   "source": "vision"
+  },
+  "zhelezo_28919_by_TgEmodziBot": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "line_weight": "none",
+   "fill": "photo",
+   "perspective": "mixed",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Cut-out photos of chrome objects (keys, pins, lockets, knives); words and tribal shapes split across cells",
+   "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  }
+ }
+}
