@@ -3,12 +3,16 @@ import { catalogExport } from "@/lib/emoji-export";
 import { catalogVersion, facetCodes } from "@/lib/emoji-facets";
 import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_LIBRARY_PATH, EMOJI_MCP_PATH, EMOJI_OPENAPI_PATH } from "@/lib/emoji-links";
 import { siteUrl } from "@/lib/site-url";
+import skillDocs from "@/content/agents-llms.txt";
+
+/** The library section sits under the skill's own llms.txt (synced from the skill), one heading level down. */
+const demote = (text: string) => text.replace(/^(#{1,5}) /gm, "#$1 ");
 
 export function GET() {
   const origin = siteUrl();
   const file = catalogExport();
   const codes = Object.entries(facetCodes).map(([code, facet]) => `${code}=${facet}`).join(", ");
-  const body = [
+  const library = [
     "# Telegram Emoji Library",
     "",
     "> Find Telegram premium emoji packs, resolve custom emoji IDs, and copy snippets for bot messages and buttons.",
@@ -83,6 +87,7 @@ export function GET() {
       "The OpenAPI document and the export are static and have no limit: prefer the export to many pack or facets requests.",
     "",
   ].join("\n");
+  const body = `${skillDocs.replace(/\r\n/g, "\n").trimEnd()}\n\n${demote(library)}`;
 
   return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }

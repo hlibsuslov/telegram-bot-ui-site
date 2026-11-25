@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-transform-types --disable-warning=ExperimentalWarning --import ./tests/contract/register.mjs --test \"tests/**/*.test.ts\""
+    "test": "node --experimental-transform-types --disable-warning=ExperimentalWarning --import ./tests/contract/register.mjs --test \"tests/**/*.test.ts\" scripts/agent_docs.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

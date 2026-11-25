@@ -2,6 +2,7 @@
 // CHANGELOG, docs/hosts.md). Update this file together with a skill release.
 
 import type { BrandKey } from "@/components/site/brand-icon";
+import agents from "./agents.generated.json";
 
 export const REPO = "hlibsuslov/telegram-bot-ui";
 export const REPO_URL = `https://github.com/${REPO}`;
@@ -10,12 +11,35 @@ export const CHANGELOG_URL = `${REPO_URL}/blob/main/CHANGELOG.md`;
 export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`;
 export const HOSTS_URL = `${REPO_URL}/blob/main/docs/hosts.md`;
 
-export const VERSION = "3.2.0";
-export const BOT_API = "10.5";
+// Version, Bot API and the agent install commands come from the skill's generated docs/agents/ (scripts/sync_agent_docs.py).
+export const VERSION = agents.version;
+export const BOT_API = agents.botApi;
+export const VERIFIED_ON = agents.verified;
+export const AGENT_HOSTS = agents.hosts;
+export const AGENT_COMMANDS = agents.commands;
 
 /** The canonical address of the site. The old telegram-bot-ui-site.vercel.app redirects here (next.config.ts). */
 export const SITE_ORIGIN = "https://telegram-bot-ui.hlixli.com";
 export const OLD_HOST = "telegram-bot-ui-site.vercel.app";
+
+/** The one sentence a person pastes into their agent (shown on /agents). It points the agent at /agents.md. */
+export const AGENT_PROMPTS = [
+  {
+    code: "en",
+    label: "EN",
+    text: `Install the telegram-bot-ui skill following ${SITE_ORIGIN}/agents.md, check the install by asking whether the skill is up to date, then run it in this project with no request. Don't publish or send anything to Telegram without my confirmation.`,
+  },
+  {
+    code: "ru",
+    label: "RU",
+    text: `Установи скилл telegram-bot-ui по инструкции ${SITE_ORIGIN}/agents.md, проверь установку вопросом, свежий ли скилл, и затем запусти его в этом проекте без задачи. Ничего не публикуй и не отправляй в Telegram без моего подтверждения.`,
+  },
+  {
+    code: "uk",
+    label: "UK",
+    text: `Встанови скіл telegram-bot-ui за інструкцією ${SITE_ORIGIN}/agents.md, перевір встановлення питанням, чи скіл актуальний, і потім запусти його в цьому проєкті без завдання. Нічого не публікуй і не надсилай у Telegram без мого підтвердження.`,
+  },
+] as const;
 
 export const SITE_NAME = "Telegram Bot UI";
 export const SITE_TITLE = "Telegram Bot UI: an Agent Skill for the whole Telegram bot interface";
