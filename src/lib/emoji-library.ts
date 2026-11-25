@@ -13,6 +13,7 @@ import { listedPacks, OTHER, type ListedPack } from "./emoji-pack-list";
 import { emojiSearchText, type SearchSource } from "./emoji-search";
 import { slotEmoji } from "./emoji-slots";
 import { telegramPackUrl } from "./emoji-links";
+import { emojiFacets, facetTokens, facetWords, packFacets, taxonomy } from "./emoji-facets";
 
 const SAMPLE = 16; // two rows of 8 on a pack card
 
@@ -139,8 +140,18 @@ export async function getLibrary(): Promise<Library> {
   const packs = read.map((r) => r.pack);
   const categories = [...new Set(packs.map((p) => p.category))].sort((a, b) => Number(a === OTHER) - Number(b === OTHER));
   const body = {
-    packs: packs.map((p) => ({ name: p.name, title: p.title, category: p.category, rank: p.rank, tags: p.tags })),
-    emoji: read.flatMap((r, p) => r.emoji.map((e) => ({ p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, pv: !!e.preview, st: !!e.still, tags: e.tags }))),
+    packs: packs.map((p) => {
+      const pf = packFacets(p.name)?.facets ?? {};
+      return { name: p.name, title: p.title, category: p.category, rank: p.rank, tags: p.tags,
+        fc: facetTokens(pf, taxonomy.thresholds.pack), fw: facetWords(pf, taxonomy.thresholds.show) };
+    }),
+    emoji: read.flatMap((r, p) => r.emoji.map((e) => {
+      const ef = emojiFacets(r.pack.name, e.id);
+      return { p, id: e.id, f: e.fallback, fmt: e.format, ad: e.adaptive, pv: !!e.preview, st: !!e.still, tags: e.tags,
+        // motion and adaptivity straight from Telegram's data: fresher than the tag snapshot
+        fc: [...facetTokens(ef, taxonomy.thresholds.emoji), `motion:${e.format}`, ...(e.adaptive ? ["fit:adaptive"] : [])],
+        fw: facetWords(ef, taxonomy.thresholds.show) };
+    })),
   };
   const source: SearchSource = { ...body, revision: revisionOf(JSON.stringify(body)) };
   return { packs, categories, collections: collections(packs), listed: list.length, unavailable, source };

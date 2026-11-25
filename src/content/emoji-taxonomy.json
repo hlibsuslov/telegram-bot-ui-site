@@ -1,0 +1,1235 @@
+{
+  "$comment": "Normalized tag taxonomy of the emoji library. One source of truth for scripts/emoji_taxonomy.py (tagging), lib/emoji-facets.ts (search, filters, API) and the telegram-bot-ui skill (pack picking through the API). Each value has an English and a Russian label and aliases: words found in the free-text tags of emoji-tags.txt that mean this value. Facets marked measured come from Telegram data or pixels, not from words.",
+  "version": 1,
+  "facets": {
+    "motion": {
+      "label": {
+        "en": "Motion",
+        "ru": "Движение"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "static": {
+          "en": "Static",
+          "ru": "Статичные",
+          "aliases": []
+        },
+        "animated": {
+          "en": "Animated",
+          "ru": "Анимированные",
+          "aliases": []
+        },
+        "video": {
+          "en": "Video",
+          "ru": "Видео",
+          "aliases": []
+        }
+      }
+    },
+    "fit": {
+      "label": {
+        "en": "Theme fit",
+        "ru": "Темы"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "adaptive": {
+          "en": "Adaptive (repainted in the text colour)",
+          "ru": "Адаптивные (цвет текста)",
+          "aliases": []
+        },
+        "both": {
+          "en": "Light and dark themes",
+          "ru": "Светлая и тёмная темы",
+          "aliases": []
+        },
+        "light": {
+          "en": "Light theme only",
+          "ru": "Только светлая тема",
+          "aliases": []
+        },
+        "dark": {
+          "en": "Dark theme only",
+          "ru": "Только тёмная тема",
+          "aliases": []
+        }
+      }
+    },
+    "color": {
+      "label": {
+        "en": "Colour",
+        "ru": "Цвет"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "red": {
+          "en": "Red",
+          "ru": "Красный",
+          "aliases": [
+            "red",
+            "crimson",
+            "scarlet",
+            "maroon",
+            "красный",
+            "красная",
+            "красное",
+            "червоний"
+          ]
+        },
+        "orange": {
+          "en": "Orange",
+          "ru": "Оранжевый",
+          "aliases": [
+            "orange",
+            "оранжевый",
+            "оранжевая",
+            "помаранчевий"
+          ]
+        },
+        "yellow": {
+          "en": "Yellow",
+          "ru": "Жёлтый",
+          "aliases": [
+            "yellow",
+            "lemon",
+            "желтый",
+            "желтая",
+            "жовтий"
+          ]
+        },
+        "gold": {
+          "en": "Gold",
+          "ru": "Золотой",
+          "aliases": [
+            "gold",
+            "golden",
+            "золотой",
+            "золотая",
+            "золотий"
+          ]
+        },
+        "green": {
+          "en": "Green",
+          "ru": "Зелёный",
+          "aliases": [
+            "green",
+            "lime",
+            "mint",
+            "olive",
+            "зеленый",
+            "зеленая",
+            "зелений"
+          ]
+        },
+        "teal": {
+          "en": "Teal",
+          "ru": "Бирюзовый",
+          "aliases": [
+            "teal",
+            "turquoise",
+            "cyan",
+            "aqua",
+            "бирюзовый",
+            "голубой",
+            "блакитний"
+          ]
+        },
+        "blue": {
+          "en": "Blue",
+          "ru": "Синий",
+          "aliases": [
+            "blue",
+            "navy",
+            "azure",
+            "синий",
+            "синяя",
+            "синій"
+          ]
+        },
+        "purple": {
+          "en": "Purple",
+          "ru": "Фиолетовый",
+          "aliases": [
+            "purple",
+            "violet",
+            "lilac",
+            "lavender",
+            "фиолетовый",
+            "фиолетовая",
+            "фіолетовий"
+          ]
+        },
+        "pink": {
+          "en": "Pink",
+          "ru": "Розовый",
+          "aliases": [
+            "pink",
+            "magenta",
+            "rose",
+            "розовый",
+            "розовая",
+            "рожевий"
+          ]
+        },
+        "brown": {
+          "en": "Brown",
+          "ru": "Коричневый",
+          "aliases": [
+            "brown",
+            "beige",
+            "tan",
+            "коричневый",
+            "бежевый",
+            "коричневий"
+          ]
+        },
+        "black": {
+          "en": "Black",
+          "ru": "Чёрный",
+          "aliases": [
+            "black",
+            "черный",
+            "черная",
+            "чорний"
+          ]
+        },
+        "white": {
+          "en": "White",
+          "ru": "Белый",
+          "aliases": [
+            "white",
+            "белый",
+            "белая",
+            "білий"
+          ]
+        },
+        "gray": {
+          "en": "Grey",
+          "ru": "Серый",
+          "aliases": [
+            "gray",
+            "grey",
+            "silver",
+            "серый",
+            "серая",
+            "серебряный",
+            "сірий"
+          ]
+        }
+      }
+    },
+    "palette": {
+      "label": {
+        "en": "Palette",
+        "ru": "Палитра"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "monochrome": {
+          "en": "Monochrome",
+          "ru": "Монохром",
+          "aliases": [
+            "monochrome",
+            "mono",
+            "монохром",
+            "монохромный"
+          ]
+        },
+        "muted": {
+          "en": "Muted",
+          "ru": "Приглушённая",
+          "aliases": [
+            "muted",
+            "pastel",
+            "soft",
+            "пастельный",
+            "пастельная"
+          ]
+        },
+        "vivid": {
+          "en": "Vivid",
+          "ru": "Яркая",
+          "aliases": [
+            "vivid",
+            "bright",
+            "saturated",
+            "яркий",
+            "яркая"
+          ]
+        },
+        "multicolor": {
+          "en": "Multicolour",
+          "ru": "Разноцветная",
+          "aliases": [
+            "colorful",
+            "colourful",
+            "rainbow",
+            "multicolor",
+            "разноцветный",
+            "радужный"
+          ]
+        }
+      }
+    },
+    "style": {
+      "label": {
+        "en": "Style",
+        "ru": "Стиль"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "outline": {
+          "en": "Outline",
+          "ru": "Контурный",
+          "aliases": [
+            "outline",
+            "outlined",
+            "line",
+            "lines",
+            "stroke",
+            "contour",
+            "контур",
+            "контурный",
+            "линейный"
+          ]
+        },
+        "glyph": {
+          "en": "Solid glyph",
+          "ru": "Заливка, глиф",
+          "aliases": [
+            "glyph",
+            "solid",
+            "filled",
+            "silhouette",
+            "силуэт",
+            "заливка"
+          ]
+        },
+        "flat": {
+          "en": "Flat",
+          "ru": "Плоский",
+          "aliases": [
+            "flat",
+            "плоский",
+            "flat icon",
+            "flat style"
+          ]
+        },
+        "3d": {
+          "en": "3D",
+          "ru": "3D",
+          "aliases": [
+            "3d",
+            "volumetric",
+            "объемный",
+            "объёмный",
+            "3d render",
+            "clay",
+            "plastic"
+          ]
+        },
+        "glossy": {
+          "en": "Glossy",
+          "ru": "Глянцевый",
+          "aliases": [
+            "glossy",
+            "shiny",
+            "glass",
+            "glassy",
+            "глянцевый",
+            "блестящий",
+            "стеклянный"
+          ]
+        },
+        "gradient": {
+          "en": "Gradient",
+          "ru": "Градиент",
+          "aliases": [
+            "gradient",
+            "градиент",
+            "градиентный"
+          ]
+        },
+        "neon": {
+          "en": "Neon",
+          "ru": "Неон",
+          "aliases": [
+            "neon",
+            "glow",
+            "glowing",
+            "неон",
+            "неоновый",
+            "светящийся"
+          ]
+        },
+        "pixel": {
+          "en": "Pixel art",
+          "ru": "Пиксель-арт",
+          "aliases": [
+            "pixel",
+            "pixelated",
+            "8bit",
+            "minecraft",
+            "пиксель",
+            "пиксельный"
+          ]
+        },
+        "hand-drawn": {
+          "en": "Hand-drawn",
+          "ru": "Рисованный",
+          "aliases": [
+            "doodle",
+            "sketch",
+            "hand-drawn",
+            "handdrawn",
+            "drawn",
+            "scribble",
+            "рисованный",
+            "скетч",
+            "дудл",
+            "watercolor",
+            "watercolour",
+            "crayon",
+            "акварель"
+          ]
+        },
+        "cartoon": {
+          "en": "Cartoon",
+          "ru": "Мультяшный",
+          "aliases": [
+            "cartoon",
+            "anime",
+            "chibi",
+            "kawaii",
+            "мультяшный",
+            "аниме"
+          ]
+        },
+        "realistic": {
+          "en": "Realistic",
+          "ru": "Реалистичный",
+          "aliases": [
+            "realistic",
+            "photo",
+            "photorealistic",
+            "реалистичный",
+            "фото",
+            "collage",
+            "photos",
+            "коллаж"
+          ]
+        },
+        "native-ui": {
+          "en": "Native app icons",
+          "ru": "Как в приложении",
+          "aliases": [
+            "ios",
+            "android",
+            "macos",
+            "sf symbols",
+            "material",
+            "app icon",
+            "interface",
+            "ui"
+          ]
+        },
+        "lettering": {
+          "en": "Letters and fonts",
+          "ru": "Буквы и шрифты",
+          "aliases": [
+            "font",
+            "fonts",
+            "uppercase",
+            "lowercase",
+            "typeface",
+            "alphabet font",
+            "шрифт",
+            "шрифты"
+          ]
+        },
+        "emoji-like": {
+          "en": "Emoji style",
+          "ru": "Как эмодзи",
+          "aliases": [
+            "emoji style",
+            "smiley",
+            "смайлик"
+          ]
+        },
+        "mosaic": {
+          "en": "Mosaic tiles",
+          "ru": "Мозаика",
+          "aliases": [
+            "mosaic",
+            "piece",
+            "fragment",
+            "part of",
+            "мозаика",
+            "часть"
+          ]
+        }
+      }
+    },
+    "topic": {
+      "label": {
+        "en": "Topic",
+        "ru": "Тематика"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "interface": {
+          "en": "Interface",
+          "ru": "Интерфейс",
+          "aliases": [
+            "icon",
+            "button",
+            "arrow",
+            "settings",
+            "menu",
+            "интерфейс",
+            "иконка",
+            "кнопка",
+            "стрелка"
+          ]
+        },
+        "status": {
+          "en": "Status and signs",
+          "ru": "Статусы и знаки",
+          "aliases": [
+            "check",
+            "checkmark",
+            "cross",
+            "warning",
+            "verified",
+            "badge",
+            "sign",
+            "mark",
+            "галочка",
+            "крестик",
+            "знак"
+          ]
+        },
+        "brands": {
+          "en": "Brands and logos",
+          "ru": "Бренды и логотипы",
+          "aliases": [
+            "logo",
+            "brand",
+            "app",
+            "google",
+            "telegram",
+            "apple",
+            "steam",
+            "логотип",
+            "бренд"
+          ]
+        },
+        "finance": {
+          "en": "Money and crypto",
+          "ru": "Деньги и крипта",
+          "aliases": [
+            "money",
+            "coin",
+            "dollar",
+            "bank",
+            "payment",
+            "crypto",
+            "token",
+            "bitcoin",
+            "ton",
+            "card",
+            "деньги",
+            "монета",
+            "крипта",
+            "оплата"
+          ]
+        },
+        "letters": {
+          "en": "Letters and numbers",
+          "ru": "Буквы и цифры",
+          "aliases": [
+            "letter",
+            "digit",
+            "number",
+            "font",
+            "cyrillic",
+            "latin",
+            "буква",
+            "цифра",
+            "число"
+          ]
+        },
+        "faces": {
+          "en": "Faces and emotions",
+          "ru": "Лица и эмоции",
+          "aliases": [
+            "face",
+            "smile",
+            "smiley",
+            "eyes",
+            "mouth",
+            "лицо",
+            "улыбка"
+          ]
+        },
+        "characters": {
+          "en": "Characters and memes",
+          "ru": "Персонажи и мемы",
+          "aliases": [
+            "pepe",
+            "meme",
+            "character",
+            "girl",
+            "boy",
+            "man",
+            "woman",
+            "anime",
+            "пепе",
+            "мем",
+            "персонаж"
+          ]
+        },
+        "animals": {
+          "en": "Animals",
+          "ru": "Животные",
+          "aliases": [
+            "cat",
+            "dog",
+            "duck",
+            "bird",
+            "bear",
+            "bunny",
+            "rabbit",
+            "hamster",
+            "frog",
+            "pig",
+            "animal",
+            "paw",
+            "кот",
+            "кошка",
+            "собака",
+            "утка",
+            "животное"
+          ]
+        },
+        "food": {
+          "en": "Food and drink",
+          "ru": "Еда и напитки",
+          "aliases": [
+            "food",
+            "drink",
+            "cup",
+            "coffee",
+            "cake",
+            "candy",
+            "fruit",
+            "еда",
+            "напиток",
+            "кофе"
+          ]
+        },
+        "nature": {
+          "en": "Nature and weather",
+          "ru": "Природа и погода",
+          "aliases": [
+            "flower",
+            "flowers",
+            "leaf",
+            "leaves",
+            "tree",
+            "sun",
+            "moon",
+            "cloud",
+            "snow",
+            "rain",
+            "weather",
+            "planet",
+            "цветок",
+            "лист",
+            "погода"
+          ]
+        },
+        "holidays": {
+          "en": "Holidays",
+          "ru": "Праздники",
+          "aliases": [
+            "christmas",
+            "halloween",
+            "pumpkin",
+            "new year",
+            "easter",
+            "party",
+            "birthday",
+            "gift",
+            "рождество",
+            "хэллоуин",
+            "праздник"
+          ]
+        },
+        "love": {
+          "en": "Love",
+          "ru": "Любовь",
+          "aliases": [
+            "heart",
+            "hearts",
+            "love",
+            "kiss",
+            "couple",
+            "сердце",
+            "любовь"
+          ]
+        },
+        "flags": {
+          "en": "Flags and places",
+          "ru": "Флаги и места",
+          "aliases": [
+            "flag",
+            "country",
+            "city",
+            "map",
+            "флаг",
+            "страна"
+          ]
+        },
+        "games": {
+          "en": "Games",
+          "ru": "Игры",
+          "aliases": [
+            "game",
+            "games",
+            "minecraft",
+            "pokemon",
+            "controller",
+            "dice",
+            "игра"
+          ]
+        },
+        "tech": {
+          "en": "Tech and AI",
+          "ru": "Техника и ИИ",
+          "aliases": [
+            "ai",
+            "robot",
+            "phone",
+            "keyboard",
+            "computer",
+            "laptop",
+            "code",
+            "chip",
+            "ии",
+            "робот"
+          ]
+        },
+        "travel": {
+          "en": "Travel and transport",
+          "ru": "Путешествия и транспорт",
+          "aliases": [
+            "car",
+            "plane",
+            "train",
+            "travel",
+            "машина",
+            "самолет"
+          ]
+        },
+        "music": {
+          "en": "Music and media",
+          "ru": "Музыка и медиа",
+          "aliases": [
+            "music",
+            "note",
+            "play",
+            "video",
+            "camera",
+            "музыка"
+          ]
+        },
+        "decor": {
+          "en": "Effects and decor",
+          "ru": "Эффекты и декор",
+          "aliases": [
+            "sparkle",
+            "sparkles",
+            "glitter",
+            "frame",
+            "swirl",
+            "bow",
+            "ribbon",
+            "блеск",
+            "декор"
+          ]
+        }
+      }
+    },
+    "mood": {
+      "label": {
+        "en": "Mood",
+        "ru": "Настроение"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "joyful": {
+          "en": "Joyful",
+          "ru": "Радостное",
+          "aliases": [
+            "happy",
+            "smiling",
+            "laughing",
+            "joy",
+            "excited",
+            "party",
+            "радость",
+            "смех",
+            "веселый"
+          ]
+        },
+        "playful": {
+          "en": "Playful",
+          "ru": "Игривое",
+          "aliases": [
+            "funny",
+            "cute",
+            "tongue",
+            "wink",
+            "silly",
+            "смешной",
+            "милый",
+            "игривый"
+          ]
+        },
+        "loving": {
+          "en": "Loving",
+          "ru": "Нежное",
+          "aliases": [
+            "love",
+            "kiss",
+            "hearts",
+            "blush",
+            "нежный",
+            "любовь"
+          ]
+        },
+        "sad": {
+          "en": "Sad",
+          "ru": "Грустное",
+          "aliases": [
+            "sad",
+            "crying",
+            "tears",
+            "грустный",
+            "плачет"
+          ]
+        },
+        "angry": {
+          "en": "Angry",
+          "ru": "Злое",
+          "aliases": [
+            "angry",
+            "rage",
+            "mad",
+            "злой",
+            "гнев"
+          ]
+        },
+        "surprised": {
+          "en": "Surprised",
+          "ru": "Удивлённое",
+          "aliases": [
+            "shocked",
+            "surprised",
+            "wow",
+            "удивлен",
+            "шок"
+          ]
+        },
+        "scary": {
+          "en": "Spooky",
+          "ru": "Жуткое",
+          "aliases": [
+            "skull",
+            "ghost",
+            "witch",
+            "scary",
+            "horror",
+            "череп",
+            "призрак"
+          ]
+        },
+        "calm": {
+          "en": "Calm",
+          "ru": "Спокойное",
+          "aliases": [
+            "calm",
+            "sleeping",
+            "neutral",
+            "relaxed",
+            "спокойный",
+            "спит"
+          ]
+        },
+        "serious": {
+          "en": "Neutral and business-like",
+          "ru": "Нейтральное, деловое",
+          "aliases": [
+            "icon",
+            "logo",
+            "badge",
+            "business",
+            "official",
+            "деловой"
+          ]
+        }
+      }
+    },
+    "role": {
+      "label": {
+        "en": "Role in an interface",
+        "ru": "Роль в интерфейсе"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "navigation": {
+          "en": "Navigation",
+          "ru": "Навигация",
+          "slot_groups": [
+            "navigation"
+          ],
+          "aliases": [
+            "arrow",
+            "back",
+            "next",
+            "home",
+            "menu"
+          ]
+        },
+        "action": {
+          "en": "Actions",
+          "ru": "Действия",
+          "slot_groups": [
+            "actions",
+            "files",
+            "media"
+          ],
+          "aliases": [
+            "add",
+            "plus",
+            "delete",
+            "edit",
+            "copy",
+            "share",
+            "download"
+          ]
+        },
+        "status": {
+          "en": "Status and feedback",
+          "ru": "Статус и отклик",
+          "slot_groups": [
+            "status",
+            "warnings"
+          ],
+          "aliases": [
+            "check",
+            "checkmark",
+            "cross",
+            "warning",
+            "exclamation",
+            "question",
+            "loading"
+          ]
+        },
+        "commerce": {
+          "en": "Shop and money",
+          "ru": "Магазин и деньги",
+          "slot_groups": [
+            "commerce",
+            "finance"
+          ],
+          "aliases": [
+            "cart",
+            "money",
+            "coin",
+            "card",
+            "payment",
+            "store"
+          ]
+        },
+        "communication": {
+          "en": "Chat and people",
+          "ru": "Общение и люди",
+          "slot_groups": [
+            "communication",
+            "people"
+          ],
+          "aliases": [
+            "chat",
+            "bubble",
+            "message",
+            "phone",
+            "mail"
+          ]
+        },
+        "settings": {
+          "en": "Settings and data",
+          "ru": "Настройки и данные",
+          "slot_groups": [
+            "settings",
+            "analytics",
+            "time",
+            "ai"
+          ],
+          "aliases": [
+            "settings",
+            "gear",
+            "lock",
+            "key",
+            "shield",
+            "chart",
+            "clock",
+            "calendar"
+          ]
+        },
+        "content": {
+          "en": "Content marks",
+          "ru": "Метки в тексте",
+          "slot_groups": [
+            "post"
+          ],
+          "aliases": [
+            "flag",
+            "letter",
+            "logo",
+            "number"
+          ]
+        },
+        "decoration": {
+          "en": "Decoration",
+          "ru": "Украшение",
+          "slot_groups": [],
+          "aliases": [
+            "sparkle",
+            "sparkles",
+            "heart",
+            "flower",
+            "frame",
+            "bow",
+            "decor"
+          ]
+        }
+      }
+    },
+    "use": {
+      "label": {
+        "en": "Fits bots for",
+        "ru": "Подходит ботам"
+      },
+      "scope": [
+        "pack"
+      ],
+      "values": {
+        "utility": {
+          "en": "Tools and monitoring",
+          "ru": "Утилиты и мониторинг",
+          "needs": [
+            "navigation",
+            "status",
+            "settings"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "shop": {
+          "en": "Shops and payments",
+          "ru": "Магазины и оплата",
+          "needs": [
+            "commerce",
+            "navigation",
+            "status"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat",
+            "3d",
+            "glossy"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "finance": {
+          "en": "Finance and crypto",
+          "ru": "Финансы и крипта",
+          "needs": [
+            "commerce",
+            "status"
+          ],
+          "topics": [
+            "finance"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat",
+            "3d"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "support": {
+          "en": "Support and AI assistants",
+          "ru": "Поддержка и ИИ-ассистенты",
+          "needs": [
+            "communication",
+            "status",
+            "navigation"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "content": {
+          "en": "Channels and media",
+          "ru": "Каналы и медиа",
+          "needs": [
+            "content"
+          ],
+          "topics": [
+            "brands",
+            "letters",
+            "flags",
+            "decor",
+            "nature",
+            "holidays"
+          ]
+        },
+        "community": {
+          "en": "Communities and fun",
+          "ru": "Сообщества и развлечения",
+          "needs": [],
+          "topics": [
+            "faces",
+            "characters",
+            "animals",
+            "love",
+            "holidays"
+          ],
+          "moods": [
+            "joyful",
+            "playful",
+            "loving"
+          ]
+        },
+        "games": {
+          "en": "Games",
+          "ru": "Игры",
+          "needs": [],
+          "topics": [
+            "games",
+            "characters"
+          ],
+          "styles": [
+            "pixel",
+            "cartoon",
+            "3d"
+          ]
+        },
+        "education": {
+          "en": "Learning",
+          "ru": "Обучение",
+          "needs": [
+            "status"
+          ],
+          "topics": [
+            "letters",
+            "tech"
+          ]
+        }
+      }
+    }
+  },
+  "thresholds": {
+    "emoji": 0.5,
+    "pack": 0.3,
+    "show": 0.55
+  }
+}

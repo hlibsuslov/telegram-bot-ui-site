@@ -9,6 +9,7 @@ import { cardPack, getLibrary, getLibraryPack, type LibraryPack } from "@/lib/em
 import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { emojiBreadcrumbs, emojiMetadata } from "@/lib/emoji-metadata";
 import { siteUrl } from "@/lib/site-url";
+import { labelled, packFacets } from "@/lib/emoji-facets";
 
 // Keep real packs on demand. Prerendering every pack in separate workers floods Telegram.
 // Cache Components needs one build-time parameter, so validate with an unlisted name.
@@ -43,6 +44,7 @@ export default async function EmojiPackPage({ params }: PageProps<"/emoji/[name]
         <ChevronLeft aria-hidden="true" className="size-5" /> Emoji Library
       </Link>
       <PackSheet pack={pack} emoji={emoji} similar={similar} pageUrl={`${siteUrl()}${path}`} />
+      <PackFacets name={pack.name} />
       <details className="tg-glass group mt-5 rounded-2xl px-4 py-3 text-sm">
         <ExpandSummary count={pack.count}>Custom emoji IDs in this pack</ExpandSummary>
         <div className="mt-3 overflow-x-auto">
@@ -67,5 +69,40 @@ export default async function EmojiPackPage({ params }: PageProps<"/emoji/[name]
         <a className="tg-accent underline" href={`/api/emoji-pack/${pack.name}`}>This pack as JSON</a>
       </nav>
     </>
+  );
+}
+
+/** The pack's faceted tags (scripts/emoji_taxonomy.py) with how sure the tagger is, and packs drawn alike. */
+function PackFacets({ name }: { name: string }) {
+  const data = packFacets(name);
+  if (!data) return null;
+  const groups = labelled(data.facets);
+  if (!groups.length) return null;
+  return (
+    <section aria-labelledby="pack-tags" className="tg-glass mt-5 rounded-2xl px-4 py-3 text-sm">
+      <h2 id="pack-tags" className="mb-2 font-semibold">Tags</h2>
+      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5">
+        {groups.map((g) => (
+          <div key={g.facet} className="contents">
+            <dt className="tg-hint">{g.label}</dt>
+            <dd className="flex flex-wrap gap-1.5">
+              {g.values.map((v) => (
+                <Link key={v.id} href={`/emoji?q=${encodeURIComponent(`${g.facet}:${v.id}`)}`} title={`Confidence ${Math.round(v.confidence * 100)}%`}
+                  className="rounded-full bg-[var(--tg-sep)] px-2 py-0.5 text-[13px] hover:underline">{v.label}</Link>
+              ))}
+            </dd>
+          </div>
+        ))}
+        {data.compatible.length > 0 && (
+          <div className="contents">
+            <dt className="tg-hint">Mixes well with</dt>
+            <dd className="flex flex-wrap gap-1.5">
+              {data.compatible.map(([n]) => <Link key={n} href={emojiPackPath(n)} className="tg-accent hover:underline">{n}</Link>)}
+            </dd>
+          </div>
+        )}
+      </dl>
+      <p className="tg-hint mt-2 text-xs">Tagged automatically from Telegram data, the pictures and their descriptions; hover a tag for its confidence.</p>
+    </section>
   );
 }

@@ -1,0 +1,9 @@
+# Manual corrections of the automatic emoji tags (scripts/emoji_taxonomy.py reads this file last and
+# never writes it, so a correction survives every rebuild). Confidence of an added tag is 1.0.
+#
+#   <pack> <facet>: +value, -value              a whole pack
+#   <pack>/<custom emoji id> <facet>: +value    one emoji
+#
+# Facets and values: src/content/emoji-taxonomy.json (ids, not labels). Example:
+#   tgiosicons style: +outline, -glyph
+# `py -3 scripts/emoji_taxonomy.py check` validates every line.

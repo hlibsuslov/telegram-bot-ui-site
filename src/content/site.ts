@@ -10,7 +10,7 @@ export const CHANGELOG_URL = `${REPO_URL}/blob/main/CHANGELOG.md`;
 export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`;
 export const HOSTS_URL = `${REPO_URL}/blob/main/docs/hosts.md`;
 
-export const VERSION = "3.0.0";
+export const VERSION = "3.2.0";
 export const BOT_API = "10.5";
 
 /** The canonical address of the site. The old telegram-bot-ui-site.vercel.app redirects here (next.config.ts). */

@@ -33,7 +33,7 @@ export default function EmojiApiDocs() {
 
         <div className="mt-5">
           <h3 id="search"><code>GET /api/emoji-search</code></h3>
-          <p>Pass <code>q</code> with words or a fallback emoji. Add <code>pack</code> to restrict matches to a catalog pack’s short name, case-insensitively. The query is clipped to 100 characters and uses up to six word tokens. Results contain up to 60 emoji, or up to 200 with a pack filter. <code>total</code> counts emoji matches before truncation. Pack matches and suggestions are returned separately. A blank query or unknown pack filter returns empty matches with HTTP 200.</p>
+          <p>Pass <code>q</code> with words or a fallback emoji. Add <code>pack</code> to restrict matches to a catalog pack’s short name, case-insensitively. The query is clipped to 160 characters and uses up to six word tokens. Tag filters narrow the matches: <code>style:outline</code>, <code>fit:adaptive</code>, <code>motion:static</code>, <code>color:blue</code>, <code>use:shop</code> (any facet and value from <code>/api/emoji-facets</code>, by id or label); the answer lists the filters it applied in <code>filters</code> and the ones it could not read in <code>unknownFilters</code>. Every match carries its <code>facets</code>. Results contain up to 60 emoji, or up to 200 with a pack filter. <code>total</code> counts emoji matches before truncation. Pack matches and suggestions are returned separately. A blank query or unknown pack filter returns empty matches with HTTP 200.</p>
           <p className="mt-2"><a href={CHECKMARK.search}>Run this checkmark search</a></p>
           <EmojiCode>{JSON.stringify({
             ok: true, query: "checkmark",
@@ -45,12 +45,18 @@ export default function EmojiApiDocs() {
 
         <div className="mt-5">
           <h3 id="pack"><code>GET /api/emoji-pack/[name]</code></h3>
-          <p>Use the short name from a Telegram <code>t.me/addemoji/…</code> link. Names use 1–64 ASCII letters, digits, or underscores. The response contains the original pack title and up to 200 emoji. Each entry has a string <code>id</code>, a Unicode <code>fallback</code>, a <code>format</code> of <code>static</code>, <code>animated</code> (TGS), or <code>video</code> (WebM), an <code>adaptive</code> flag for text-color repainting, and relative media paths or <code>null</code>. <code>pageUrl</code> is <code>null</code> for a pack outside this catalog.</p>
+          <p>Use the short name from a Telegram <code>t.me/addemoji/…</code> link. Names use 1–64 ASCII letters, digits, or underscores. The response contains the original pack title and up to 200 emoji. Each entry has a string <code>id</code>, a Unicode <code>fallback</code>, a <code>format</code> of <code>static</code>, <code>animated</code> (TGS), or <code>video</code> (WebM), an <code>adaptive</code> flag for text-color repainting, and relative media paths or <code>null</code>. <code>pageUrl</code> is <code>null</code> for a pack outside this catalog. For a catalog pack, <code>facets</code> and each emoji’s <code>facets</code> hold its tags, and <code>compatible</code> names packs drawn alike.</p>
           <p className="mt-2"><a href={CHECKMARK.api}>Get the full checkified pack</a>. This excerpt shows its checkmark.</p>
           <EmojiCode>{JSON.stringify({
             ok: true, name: CHECKMARK.name, title: CHECKMARK.title, emoji: [sample],
             pageUrl: emojiPackPath(CHECKMARK.name), telegramUrl: CHECKMARK.telegramUrl,
           }, null, 2)}</EmojiCode>
+        </div>
+
+        <div className="mt-5">
+          <h3 id="facets"><code>GET /api/emoji-facets</code></h3>
+          <p>The tag taxonomy (style, colour, palette, theme fit, motion, topic, mood, role in an interface, bot category) with English and Russian labels, and every catalog pack’s tags as <code>[value, confidence]</code> pairs from 0 to 1, plus <code>compatible</code> packs. Tags are built from Telegram’s data, the emoji pictures and their descriptions; corrections made by hand win. One request is enough to rank packs for a bot.</p>
+          <p className="mt-2"><a href="/api/emoji-facets">Get the taxonomy and all pack tags</a></p>
         </div>
 
         <div className="mt-5">
