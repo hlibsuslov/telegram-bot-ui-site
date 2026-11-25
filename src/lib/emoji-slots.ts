@@ -10,6 +10,8 @@ export const BOT_SLOTS: [string, string[]][] = [
   ["chat", ["💬"]], ["link", ["🔗"]], ["delete", ["🗑"]], ["edit", ["✏", "📝", "🖊"]],
 ];
 
+export const SLOT_NAMES = BOT_SLOTS.map(([slot]) => slot);
+
 export const stripVariation = (s: string) => s.replace(/[︎️]/g, "");
 
 /** The first emoji of `fallbacks` that stands for each slot the set covers. */

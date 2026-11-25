@@ -101,6 +101,11 @@ const VALUE_INDEX = (() => {
   return m;
 })();
 
+/** The value id a word names in a facet: the id itself, its English or Russian label, or an alias. */
+export function facetValueId(facet: string, word: string): string | undefined {
+  return VALUE_INDEX.get(`${facet}:${word.toLowerCase().replace(/ё/g, "е")}`);
+}
+
 /** Splits `facet:value` filters from the words of a query. Unknown facets or values are kept as words. */
 export function parseFilters(query: string): { filters: string[]; rest: string; unknown: string[] } {
   const filters: string[] = [];
@@ -108,7 +113,7 @@ export function parseFilters(query: string): { filters: string[]; rest: string; 
   const rest = query.replace(/(?:^|\s)([a-z]+):([^\s]+)/giu, (whole, facet: string, raw: string) => {
     const f = facet.toLowerCase();
     if (f === "meaning") { filters.push(`meaning:${raw.toLowerCase()}`); return " "; }
-    const id = VALUE_INDEX.get(`${f}:${raw.toLowerCase().replace(/ё/g, "е")}`);
+    const id = facetValueId(f, raw);
     if (id) { filters.push(`${f}:${id}`); return " "; }
     if (taxonomy.facets[f]) { unknown.push(`${f}:${raw}`); return " "; }
     return whole;
