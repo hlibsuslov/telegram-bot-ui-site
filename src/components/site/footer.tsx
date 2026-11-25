@@ -13,6 +13,7 @@ const PROJECT = [
 const LEARN = [
   { title: "Demos", href: "/#demos" },
   { title: "Studio", href: "/studio" },
+  { title: "For agents", href: "/agents" },
   { title: "Capabilities", href: "/#capabilities" },
   { title: "Install", href: "/#install" },
   { title: "FAQ", href: "/#faq" },

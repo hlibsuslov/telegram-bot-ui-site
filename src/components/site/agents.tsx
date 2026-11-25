@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { HOSTS_URL } from "@/content/site";
 import { BrandIcon, type BrandKey } from "./brand-icon";
 import { Section } from "./section";
@@ -31,6 +32,10 @@ export function Agents() {
           <a href={HOSTS_URL} className="text-brand underline underline-offset-4 hover:no-underline">
             See how each host loads it
           </a>
+          , or{" "}
+          <Link href="/agents" className="text-brand underline underline-offset-4 hover:no-underline">
+            hand it to your agent in one sentence
+          </Link>
           .
         </>
       }
