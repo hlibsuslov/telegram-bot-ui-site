@@ -85,12 +85,12 @@ export function fitAnswer(answer: Record<string, unknown>, max = MCP_RESPONSE_MA
 
 /** One tool call: the client's limit for `bucket` first, then the work. Every failure, ours or
  *  Telegram's, is an isError result with the HTTP API's error body; never a protocol error. */
-async function run(client: string, bucket: keyof typeof RATE_LIMITS, work: () => unknown): Promise<CallToolResult> {
+async function runTool(client: string, bucket: keyof typeof RATE_LIMITS, work: () => unknown, max?: number): Promise<CallToolResult> {
   try {
     if (!allow(`${bucket}:${client}`, RATE_LIMITS[bucket], RATE_WINDOW_SECONDS * 1000)) {
       throw new ResolverError("RATE_LIMITED", 429, "too many requests; retry in a minute", RATE_WINDOW_SECONDS);
     }
-    return { content: [{ type: "text", text: fitAnswer(await work() as Record<string, unknown>) }] };
+    return { content: [{ type: "text", text: fitAnswer(await work() as Record<string, unknown>, max) }] };
   } catch (err) {
     const res = errorResponse(err);
     const body = await res.json() as { ok: false; error: { code: string; message: string } };
@@ -101,8 +101,11 @@ async function run(client: string, bucket: keyof typeof RATE_LIMITS, work: () =>
 
 // ------------------------------------------------------------------ server
 
-/** A fresh server for one request of one client (`client` keys its rate limits). */
-export function emojiMcpServer(client: string): McpServer {
+/** A fresh server for one request of one client (`client` keys its rate limits). `messages`: how many
+ *  JSON-RPC messages the request batches; their answers share MCP_RESPONSE_MAX. */
+export function emojiMcpServer(client: string, { messages = 1 } = {}): McpServer {
+  const max = Math.floor(MCP_RESPONSE_MAX / Math.max(1, messages)) - ENVELOPE;
+  const run = (c: string, bucket: keyof typeof RATE_LIMITS, work: () => unknown) => runTool(c, bucket, work, max);
   const server = new McpServer({ name: "telegram-emoji-library", title: "Telegram Emoji Library", version: "1.0.0" }, { instructions: INSTRUCTIONS });
 
   server.registerTool("emoji_search", {

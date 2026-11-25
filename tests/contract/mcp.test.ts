@@ -266,6 +266,28 @@ describe("MCP tools for choosing packs", () => {
   });
 });
 
+describe("MCP batches", () => {
+  const search = (id: number) => ({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "emoji_search", arguments: { query: "heart" } } });
+  test("a 2025-03-26 batch is answered within the 100 KB limit as a whole, each answer cut with its note", async () => {
+    const res = await post([search(1), search(2)], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    assert.equal(res.status, 200);
+    assert.ok(res.bytes <= MCP_RESPONSE_MAX, `${res.bytes} bytes`);
+    const answers = res.body as unknown as { id: number; result: ToolResult }[];
+    assert.deepEqual(answers.map((a) => a.id).sort(), [1, 2]);
+    for (const a of answers) {
+      assert.ok(!a.result.isError);
+      assert.match((JSON.parse(a.result.content[0].text).truncated as { note: string }).note, /100 KB/);
+    }
+  });
+  test("a revision that sends one message per POST gets a batch refused", async () => {
+    for (const version of ["2025-06-18", "2025-11-25", "2024-11-05"]) {
+      const res = await post([search(1), search(2)], { headers: { "Mcp-Protocol-Version": version } });
+      assert.equal(res.status, 400, version);
+      assert.equal(res.body!.error!.code, -32600, version);
+    }
+  });
+});
+
 describe("MCP Origin check", () => {
   const ping = (headers: Record<string, string>, ip?: string) => post({ jsonrpc: "2.0", id: 1, method: "ping" }, { ip, headers });
   test("a browser page of this site, or a client that sends no Origin (native apps, CLIs), is served", async () => {
