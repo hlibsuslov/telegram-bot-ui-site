@@ -57,7 +57,7 @@ FALLBACK_MOOD = {
     "joyful": "😀😃😄😁😆😊🙂😂🤣🥳🎉", "playful": "😜😝😛😉🤪😋😎", "loving": "😍🥰😘❤💕💖💗😻",
     "sad": "😢😭😞😔🥺💔", "angry": "😡😠🤬👿", "surprised": "😱😮😲🤯😳", "scary": "💀👻🎃☠", "calm": "😐😑😴😌🙏",
 }
-NEUTRAL_TOPICS = {"interface", "status", "brands", "finance", "letters", "flags", "tech", "travel", "music"}
+NEUTRAL_TOPICS = {"interface", "status", "brands", "finance", "letters", "flags", "tech", "travel", "music", "office", "people", "symbols"}
 SOURCE = {"telegram": 1.0, "manual": 1.0, "category": 0.9, "words": 0.75, "fallback": 0.6}
 
 
@@ -108,6 +108,9 @@ class Vocabulary:
         self.tax = tax
         self.single: dict[str, set[tuple[str, str]]] = defaultdict(set)
         self.phrases: list[tuple[str, tuple[str, str]]] = []
+        # Phrases whose words mean something else on their own ("hand drawn" is not a hand): cut out of
+        # the text once the phrase aliases have matched, before the words are looked up.
+        self.masks = [m.lower().replace("ё", "е") for m in tax.get("masks", [])]
         for facet, f in tax["facets"].items():
             for value, v in f["values"].items():
                 for alias in v.get("aliases", []):
@@ -123,6 +126,8 @@ class Vocabulary:
         for phrase, fv in self.phrases:
             if phrase in t:
                 hits.add(fv)
+        for mask in self.masks:
+            t = t.replace(mask, " ")
         unknown = []
         for w in re.findall(r"[\w]+", t, re.U):
             got = self.single.get(stem(w))
@@ -434,11 +439,12 @@ def build(args) -> int:
                     for value, (c, _) in p.d.get(facet, {}).items():
                         if c >= 0.5:
                             s.add(facet, value, round(c * 0.8, 2), "pack")
-        # Defaults the taxonomy defines: an emoji with no emotional cue in a neutral topic reads as
-        # "serious"; one with no interface meaning is "decoration". Low confidence, so any real signal wins.
+        # Defaults the taxonomy defines: an emoji with no emotional cue in a neutral topic, or one that
+        # repaints in the text colour (an interface icon), reads as "serious"; one with no interface meaning
+        # is "decoration". Low confidence, so any real signal wins.
         for s in per_emoji.values():
             topics_here = set(s.d.get("topic", {}))
-            if not s.d.get("mood") and topics_here & NEUTRAL_TOPICS:
+            if not s.d.get("mood") and (topics_here & NEUTRAL_TOPICS or "adaptive" in s.d.get("fit", {})):
                 s.add("mood", "serious", 0.55, "default")
             if not s.d.get("role"):
                 s.add("role", "decoration", 0.5, "default")

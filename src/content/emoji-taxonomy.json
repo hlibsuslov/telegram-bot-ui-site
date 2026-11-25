@@ -1,6 +1,6 @@
 {
-  "$comment": "Normalized tag taxonomy of the emoji library. One source of truth for scripts/emoji_taxonomy.py (tagging), lib/emoji-facets.ts (search, filters, API) and the telegram-bot-ui skill (pack picking through the API). Each value has an English and a Russian label and aliases: words found in the free-text tags of emoji-tags.txt that mean this value. Facets marked measured come from Telegram data or pixels, not from words.",
-  "version": 1,
+  "$comment": "Normalized tag taxonomy of the emoji library. One source of truth for scripts/emoji_taxonomy.py (tagging), lib/emoji-facets.ts (search, filters, API) and the telegram-bot-ui skill (pack picking through the API). Each value has an English and a Russian label and aliases: words found in the free-text tags of emoji-tags.txt that mean this value. Facets marked measured come from Telegram data or pixels, not from words. Style values also carry a `definition` and a `not` list: rubric text for the human or vision labeling pass, not read by code. `masks` are phrases cut out of a tag before its single words are matched, so \"hand drawn\" is not a hand.",
+  "version": 2,
   "facets": {
     "motion": {
       "label": {
@@ -192,7 +192,9 @@
             "tan",
             "коричневый",
             "бежевый",
-            "коричневий"
+            "коричневий",
+            "bronze",
+            "бронза"
           ]
         },
         "black": {
@@ -248,7 +250,11 @@
             "monochrome",
             "mono",
             "монохром",
-            "монохромный"
+            "монохромный",
+            "greyscale",
+            "grayscale",
+            "bw",
+            "black and white"
           ]
         },
         "muted": {
@@ -309,7 +315,16 @@
             "contour",
             "контур",
             "контурный",
-            "линейный"
+            "линейный",
+            "wireframe",
+            "linear"
+          ],
+          "definition": "Shapes are drawn as strokes only: one even line weight (about 1.5 to 3 px on a 24 px grid), open or closed contours, no solid fill (at most a faint tint), flat frontal view, no cast or inner shadows, no gradients. Clean vector rendering.",
+          "not": [
+            "Solid filled shapes with no contour line (that is glyph)",
+            "Line weight that varies or wobbles like a pen stroke (that is hand-drawn)",
+            "Shading, gradient or lighting inside the shape (that is flat, gradient or 3d)",
+            "A thin edge around a coloured cartoon fill (that is cartoon or flat)"
           ]
         },
         "glyph": {
@@ -322,6 +337,13 @@
             "silhouette",
             "силуэт",
             "заливка"
+          ],
+          "definition": "A solid one-colour silhouette: shapes are filled, interior detail is cut out as negative space or thin gaps, no stroke-only parts, a single flat colour (often monochrome or repaintable), frontal view, no shadows, no gradient.",
+          "not": [
+            "Hollow stroke-only shapes (that is outline)",
+            "Several colours or colour regions (that is flat)",
+            "Shading, highlights or gradients (that is gradient, glossy or 3d)",
+            "Platform or brand app tiles (that is native-ui)"
           ]
         },
         "flat": {
@@ -331,7 +353,18 @@
             "flat",
             "плоский",
             "flat icon",
-            "flat style"
+            "flat style",
+            "vector",
+            "minimal",
+            "minimalist"
+          ],
+          "definition": "Several colours as solid fills with no gradient, texture, highlight or shading. Contours are absent or thin and uniform. Geometry is simplified, seen from the front or side without perspective, at most one hard offset one-tone shadow. Vector rendering.",
+          "not": [
+            "Soft gradients, glow or highlights (that is gradient or glossy)",
+            "Volume from shading, bevels or perspective (that is 3d)",
+            "One colour only (that is glyph or outline)",
+            "Thick dark outlines with exaggerated proportions (that is cartoon)",
+            "Wobbly hand-made edges (that is hand-drawn)"
           ]
         },
         "3d": {
@@ -344,7 +377,18 @@
             "объёмный",
             "3d render",
             "clay",
-            "plastic"
+            "plastic",
+            "embossed",
+            "рельеф",
+            "isometric",
+            "plasticine"
+          ],
+          "definition": "Rendered volume: objects have depth, perspective or an isometric view, one consistent light source with soft cast and contact shadows, bevels and material shading (matte, plastic, clay), smooth gradients across curved surfaces. Looks like CGI or a clay model.",
+          "not": [
+            "A flat shape with only a drop shadow (that is flat)",
+            "A gloss highlight on a 2D shape with no real form shading (that is glossy)",
+            "Photographs or photo textures (that is realistic)",
+            "Extruded letters or numbers as the subject (that is lettering)"
           ]
         },
         "glossy": {
@@ -358,6 +402,13 @@
             "глянцевый",
             "блестящий",
             "стеклянный"
+          ],
+          "definition": "Glass or plastic shine on an icon: specular highlights and reflections, a bright glare band across the top, translucent or candy-coloured fills, soft glow, often a bevel. The shape stays a 2D icon with a light-to-dark gradient and a light drop shadow, not a full 3D model.",
+          "not": [
+            "Matte shapes with no highlight (that is flat)",
+            "A gradient fill without highlight or reflection (that is gradient)",
+            "A full 3D form with perspective and a cast shadow (that is 3d)",
+            "Light glow of tubes or lines on a dark ground (that is neon)"
           ]
         },
         "gradient": {
@@ -366,7 +417,17 @@
           "aliases": [
             "gradient",
             "градиент",
-            "градиентный"
+            "градиентный",
+            "holographic",
+            "iridescent",
+            "ombre"
+          ],
+          "definition": "Smooth colour transitions carry the form: fills blend between two or more hues (linear, radial or mesh) on frontal shapes, no highlights or reflections, no outline or a very thin one, at most a soft shadow.",
+          "not": [
+            "Solid single-tone fills (that is flat)",
+            "Specular highlights, reflections or a glass look (that is glossy)",
+            "Volume, bevels or perspective (that is 3d)",
+            "Light emission on a dark background (that is neon)"
           ]
         },
         "neon": {
@@ -379,6 +440,13 @@
             "неон",
             "неоновый",
             "светящийся"
+          ],
+          "definition": "A light-emitting look: bright saturated lines or fills with an outer glow or bloom and often a white inner core, made for dark backgrounds. Thin to medium tube-like strokes, no shaded solid body, dark or empty space around the shape.",
+          "not": [
+            "A coloured outline with no glow (that is outline)",
+            "Pastel or muted colours with a soft shadow (that is flat or gradient)",
+            "Gloss on a solid body (that is glossy)",
+            "A glow added to a photo or 3D render (the base look decides)"
           ]
         },
         "pixel": {
@@ -391,6 +459,13 @@
             "minecraft",
             "пиксель",
             "пиксельный"
+          ],
+          "definition": "Built on a visible square pixel grid: hard stair-stepped edges without anti-aliasing, a limited palette, one-pixel outlines or none, dithering instead of smooth shading, flat frontal or side view, typically 8 to 32 pixels per side scaled up.",
+          "not": [
+            "Smooth vector edges, even if the shapes are blocky (that is flat)",
+            "A large picture cut into tiles (that is mosaic)",
+            "A blurry low-resolution photo or JPEG artefacts (that is realistic)",
+            "A pixel-style typeface only (that is lettering)"
           ]
         },
         "hand-drawn": {
@@ -409,7 +484,21 @@
             "watercolor",
             "watercolour",
             "crayon",
-            "акварель"
+            "акварель",
+            "drawing",
+            "painting",
+            "paint",
+            "painted",
+            "hand drawn",
+            "hand painted",
+            "hand-painted"
+          ],
+          "definition": "Marks made by hand: uneven or wobbly lines of changing width, imperfect closed shapes, visible pen, pencil, crayon, marker or brush texture, scribbled or hatched shading, watercolour bleed, small differences between repeated parts.",
+          "not": [
+            "Perfectly even vector strokes (that is outline)",
+            "Clean solid-colour shapes (that is flat or cartoon)",
+            "Smooth digital painting that looks like a photo (that is realistic)",
+            "Handwriting only, with no drawing (that is lettering)"
           ]
         },
         "cartoon": {
@@ -421,7 +510,21 @@
             "chibi",
             "kawaii",
             "мультяшный",
-            "аниме"
+            "аниме",
+            "comic",
+            "комикс",
+            "manga",
+            "манга",
+            "cartoonish",
+            "toon"
+          ],
+          "definition": "Expressive character drawing: bold dark outlines, exaggerated proportions and big eyes or faces, saturated colours with simple cel shading or one-tone shadows, a lively pose, frontal or three-quarter view. Anime and chibi count.",
+          "not": [
+            "No outline and geometric simplified shapes (that is flat)",
+            "Real anatomy, fur or skin texture (that is realistic)",
+            "Wobbly pencil or marker lines (that is hand-drawn)",
+            "A visible pixel grid (that is pixel)",
+            "A generic round system-emoji face (that is emoji-like)"
           ]
         },
         "realistic": {
@@ -435,7 +538,20 @@
             "фото",
             "collage",
             "photos",
-            "коллаж"
+            "коллаж",
+            "selfie",
+            "polaroid",
+            "snapshot",
+            "photograph",
+            "фотография",
+            "realism"
+          ],
+          "definition": "Photographic or photoreal rendering: real textures (fur, skin, metal, fabric), natural lighting, true proportions, subtle shadows and depth of field, no outlines. A photo, a photo collage or a painting that copies a photo.",
+          "not": [
+            "A smooth CGI or clay look with idealised shapes (that is 3d)",
+            "Outlines and exaggerated proportions (that is cartoon)",
+            "Flat or gradient vector fills (that is flat or gradient)",
+            "A standard system-emoji face (that is emoji-like)"
           ]
         },
         "native-ui": {
@@ -450,6 +566,13 @@
             "app icon",
             "interface",
             "ui"
+          ],
+          "definition": "Icons that match a real app or operating-system icon set (SF Symbols, Material, app-store tiles, brand app logos): uniform stroke or fill weight, rounded-corner grid geometry, one colour or a brand colour often on a rounded-square tile, simple flat or lightly shaded rendering, no characters or scene detail.",
+          "not": [
+            "Free-form line icons with irregular weight (that is outline or hand-drawn)",
+            "Character, scene or illustrated artwork (that is cartoon or realistic)",
+            "Strong bevel, glass or depth effects (that is glossy or 3d)",
+            "Decorative letters or words (that is lettering)"
           ]
         },
         "lettering": {
@@ -463,7 +586,19 @@
             "typeface",
             "alphabet font",
             "шрифт",
-            "шрифты"
+            "шрифты",
+            "italic",
+            "capital",
+            "alphabet",
+            "wordmark",
+            "typography",
+            "comic sans"
+          ],
+          "definition": "Letters, digits or words are the subject: a typeface or hand-lettered alphabet drawn consistently across a set, glyphs fill the frame, stroke weight and fill follow the typeface. Effects such as outline, extrusion, gradient or glow are applied to the letterform and get their own style tag.",
+          "not": [
+            "An icon or picture that only contains one letter or a word, such as a logo with a wordmark (that is flat or native-ui)",
+            "A caption, banner or label placed on an illustration (the illustration decides the style)",
+            "A symbol or sign that is not part of an alphabet or number set (that is glyph or outline)"
           ]
         },
         "emoji-like": {
@@ -473,6 +608,13 @@
             "emoji style",
             "smiley",
             "смайлик"
+          ],
+          "definition": "Looks like a standard system emoji set (Apple, Google Noto, Twemoji, Samsung): round or simple object glyphs, soft gradient shading, thin darker outline or none, centred and symmetric, simple friendly faces, a subtle drop shadow, square canvas with even padding.",
+          "not": [
+            "A character or mascot with its own proportions (that is cartoon)",
+            "Monochrome interface icons (that is outline or glyph)",
+            "Photos or photoreal faces (that is realistic)",
+            "Pixel or hand-drawn marks (that is pixel or hand-drawn)"
           ]
         },
         "mosaic": {
@@ -484,7 +626,17 @@
             "fragment",
             "part of",
             "мозаика",
-            "часть"
+            "часть",
+            "фрагмент",
+            "обрывок",
+            "part"
+          ],
+          "definition": "One larger picture or pattern is cut into a grid of equal tiles. Each emoji is a fragment that makes sense only beside the others: edges are cropped straight and seams line up across the set.",
+          "not": [
+            "A single complete picture that stands on its own (any other style)",
+            "One small image built on a pixel grid (that is pixel)",
+            "A set where every emoji repeats the same motif and nothing is cut (that is flat)",
+            "A collage of unrelated photos (that is realistic)"
           ]
         }
       }
@@ -511,7 +663,23 @@
             "интерфейс",
             "иконка",
             "кнопка",
-            "стрелка"
+            "стрелка",
+            "chevron",
+            "меню",
+            "настройки",
+            "loading",
+            "загрузка",
+            "spinner",
+            "user",
+            "avatar",
+            "profile",
+            "поиск",
+            "search",
+            "link",
+            "ссылка",
+            "notification",
+            "cursor",
+            "toggle"
           ]
         },
         "status": {
@@ -528,7 +696,24 @@
             "mark",
             "галочка",
             "крестик",
-            "знак"
+            "знак",
+            "значок",
+            "значки",
+            "verification",
+            "верификация",
+            "verify",
+            "done",
+            "success",
+            "alert",
+            "siren",
+            "тревога",
+            "stop",
+            "ban",
+            "prohibited",
+            "запрет",
+            "запрещено",
+            "information",
+            "информация"
           ]
         },
         "brands": {
@@ -543,7 +728,28 @@
             "apple",
             "steam",
             "логотип",
-            "бренд"
+            "бренд",
+            "лого",
+            "emblem",
+            "wordmark",
+            "гугл",
+            "microsoft",
+            "adobe",
+            "youtube",
+            "ютуб",
+            "instagram",
+            "twitter",
+            "твиттер",
+            "эппл",
+            "android",
+            "андроид",
+            "телеграм",
+            "whatsapp",
+            "facebook",
+            "tiktok",
+            "bmw",
+            "mercedes",
+            "tesla"
           ]
         },
         "finance": {
@@ -563,7 +769,27 @@
             "деньги",
             "монета",
             "крипта",
-            "оплата"
+            "оплата",
+            "wallet",
+            "кошелек",
+            "cash",
+            "banknote",
+            "купюра",
+            "currency",
+            "валюта",
+            "exchange",
+            "euro",
+            "евро",
+            "доллар",
+            "биткоин",
+            "ethereum",
+            "binance",
+            "бинанс",
+            "btc",
+            "bnb",
+            "usdt",
+            "stablecoin",
+            "nft"
           ]
         },
         "letters": {
@@ -578,7 +804,20 @@
             "latin",
             "буква",
             "цифра",
-            "число"
+            "число",
+            "надпись",
+            "надписи",
+            "inscription",
+            "caption",
+            "alphabet",
+            "italic",
+            "capital",
+            "капс",
+            "bracket",
+            "parenthesis",
+            "скобка",
+            "quote",
+            "кавычки"
           ]
         },
         "faces": {
@@ -591,7 +830,16 @@
             "eyes",
             "mouth",
             "лицо",
-            "улыбка"
+            "улыбка",
+            "глаза",
+            "emoticon",
+            "эмоции",
+            "lips",
+            "губы",
+            "teeth",
+            "зубы",
+            "nose",
+            "ears"
           ]
         },
         "characters": {
@@ -608,7 +856,22 @@
             "anime",
             "пепе",
             "мем",
-            "персонаж"
+            "персонаж",
+            "девушка",
+            "девушку",
+            "парень",
+            "мужчина",
+            "женщина",
+            "rick",
+            "morty",
+            "рик",
+            "морти",
+            "pusheen",
+            "mascot",
+            "талисман",
+            "doll",
+            "кукла",
+            "rukia"
           ]
         },
         "animals": {
@@ -631,7 +894,48 @@
             "кошка",
             "собака",
             "утка",
-            "животное"
+            "животное",
+            "wolf",
+            "волк",
+            "puppy",
+            "щенок",
+            "pony",
+            "пони",
+            "kitten",
+            "котенок",
+            "fish",
+            "рыба",
+            "кролик",
+            "лягушка",
+            "spider",
+            "паук",
+            "owl",
+            "fox",
+            "horse",
+            "лошадь",
+            "lion",
+            "whale",
+            "shark",
+            "panda",
+            "monkey",
+            "обезьяна",
+            "chicken",
+            "chick",
+            "butterfly",
+            "бабочка",
+            "hedgehog",
+            "ежик",
+            "мишка",
+            "медведь",
+            "хомяк",
+            "птица",
+            "tiger",
+            "elephant",
+            "snake",
+            "turtle",
+            "penguin",
+            "cow",
+            "sheep"
           ]
         },
         "food": {
@@ -647,7 +951,43 @@
             "fruit",
             "еда",
             "напиток",
-            "кофе"
+            "кофе",
+            "торт",
+            "ice cream",
+            "мороженое",
+            "chocolate",
+            "шоколад",
+            "cookie",
+            "печенье",
+            "pizza",
+            "пицца",
+            "burger",
+            "sushi",
+            "суши",
+            "bread",
+            "хлеб",
+            "dessert",
+            "cupcake",
+            "кекс",
+            "strawberry",
+            "клубника",
+            "peach",
+            "яблоко",
+            "berries",
+            "vegetable",
+            "овощ",
+            "egg",
+            "яйцо",
+            "mushroom",
+            "гриб",
+            "wine",
+            "champagne",
+            "tea",
+            "чай",
+            "toast",
+            "pie",
+            "леденец",
+            "banana"
           ]
         },
         "nature": {
@@ -668,7 +1008,38 @@
             "planet",
             "цветок",
             "лист",
-            "погода"
+            "погода",
+            "луна",
+            "луны",
+            "луну",
+            "солнце",
+            "облако",
+            "облака",
+            "планета",
+            "sea",
+            "ocean",
+            "море",
+            "water",
+            "grass",
+            "branch",
+            "ветка",
+            "petals",
+            "bouquet",
+            "букет",
+            "sakura",
+            "цветы",
+            "листья",
+            "galaxy",
+            "космос",
+            "cosmos",
+            "ufo",
+            "нло",
+            "astronaut",
+            "космонавт",
+            "mountain",
+            "forest",
+            "sky",
+            "wind"
           ]
         },
         "holidays": {
@@ -685,7 +1056,26 @@
             "gift",
             "рождество",
             "хэллоуин",
-            "праздник"
+            "праздник",
+            "тыква",
+            "тыкву",
+            "хеллоуин",
+            "новый год",
+            "новогодний",
+            "санта",
+            "santa",
+            "елка",
+            "елки",
+            "снеговик",
+            "snowman",
+            "balloon",
+            "confetti",
+            "celebration",
+            "carnival",
+            "подарок",
+            "подарки",
+            "день рождения",
+            "xmas"
           ]
         },
         "love": {
@@ -698,7 +1088,13 @@
             "kiss",
             "couple",
             "сердце",
-            "любовь"
+            "любовь",
+            "поцелуй",
+            "поцелуи",
+            "сердечки",
+            "сердечко",
+            "влюблен",
+            "разбитое"
           ]
         },
         "flags": {
@@ -723,7 +1119,18 @@
             "pokemon",
             "controller",
             "dice",
-            "игра"
+            "игра",
+            "покемон",
+            "покебол",
+            "pokeball",
+            "gaming",
+            "mario",
+            "марио",
+            "gta",
+            "joystick",
+            "gamepad",
+            "chess",
+            "шахматы"
           ]
         },
         "tech": {
@@ -739,7 +1146,44 @@
             "code",
             "chip",
             "ии",
-            "робот"
+            "робот",
+            "browser",
+            "network",
+            "mobile",
+            "server",
+            "wifi",
+            "wi-fi",
+            "usb",
+            "bluetooth",
+            "battery",
+            "screen",
+            "monitor",
+            "display",
+            "vpn",
+            "bot",
+            "gpt",
+            "chatgpt",
+            "openai",
+            "neural",
+            "нейросеть",
+            "телефон",
+            "ноутбук",
+            "компьютер",
+            "клавиатура",
+            "смартфон",
+            "processor",
+            "cpu",
+            "gpu",
+            "software",
+            "program",
+            "программа",
+            "data",
+            "database",
+            "binary",
+            "cyber",
+            "hacker",
+            "microchip",
+            "circuit"
           ]
         },
         "travel": {
@@ -751,7 +1195,41 @@
             "train",
             "travel",
             "машина",
-            "самолет"
+            "самолет",
+            "sports car",
+            "sport car",
+            "airplane",
+            "самолетик",
+            "bus",
+            "taxi",
+            "ship",
+            "корабль",
+            "boat",
+            "лодка",
+            "passport",
+            "паспорт",
+            "ticket",
+            "билет",
+            "hotel",
+            "отель",
+            "airport",
+            "аэропорт",
+            "suitcase",
+            "luggage",
+            "чемодан",
+            "road",
+            "дорога",
+            "helicopter",
+            "bike",
+            "bicycle",
+            "motorcycle",
+            "автомобиль",
+            "поезд",
+            "путешествие",
+            "vacation",
+            "journey",
+            "trip",
+            "вокзал"
           ]
         },
         "music": {
@@ -763,7 +1241,199 @@
             "play",
             "video",
             "camera",
-            "музыка"
+            "музыка",
+            "headphones",
+            "наушники",
+            "microphone",
+            "микрофон",
+            "guitar",
+            "гитара",
+            "piano",
+            "speaker",
+            "sound",
+            "звук",
+            "song",
+            "песня",
+            "radio",
+            "podcast",
+            "streaming",
+            "cinema",
+            "movie",
+            "film",
+            "фильм",
+            "audio",
+            "volume",
+            "vinyl",
+            "melody"
+          ]
+        },
+        "sport": {
+          "en": "Sport",
+          "ru": "Спорт",
+          "aliases": [
+            "sport",
+            "спорт",
+            "football",
+            "soccer",
+            "футбол",
+            "hockey",
+            "хоккей",
+            "basketball",
+            "баскетбол",
+            "volleyball",
+            "tennis",
+            "теннис",
+            "baseball",
+            "golf",
+            "boxing",
+            "бокс",
+            "rugby",
+            "gym",
+            "fitness",
+            "фитнес",
+            "dumbbell",
+            "гантель",
+            "medal",
+            "медаль",
+            "trophy",
+            "трофей",
+            "champion",
+            "чемпион",
+            "olympic",
+            "running",
+            "swimming",
+            "skiing",
+            "skating",
+            "bowling",
+            "billiards",
+            "whistle",
+            "stadium",
+            "стадион"
+          ]
+        },
+        "office": {
+          "en": "Office and work",
+          "ru": "Офис и работа",
+          "aliases": [
+            "office",
+            "офис",
+            "desk",
+            "document",
+            "документ",
+            "folder",
+            "папка",
+            "file",
+            "файл",
+            "briefcase",
+            "портфель",
+            "paperclip",
+            "скрепка",
+            "clipboard",
+            "stapler",
+            "printer",
+            "принтер",
+            "notepad",
+            "блокнот",
+            "calendar",
+            "календарь",
+            "meeting",
+            "встреча",
+            "report",
+            "отчет",
+            "presentation",
+            "презентация",
+            "business",
+            "бизнес",
+            "worker",
+            "employee",
+            "manager"
+          ]
+        },
+        "people": {
+          "en": "People and gestures",
+          "ru": "Люди и жесты",
+          "aliases": [
+            "hand",
+            "рука",
+            "руку",
+            "рук",
+            "ладонь",
+            "finger",
+            "палец",
+            "пальцы",
+            "thumb",
+            "fist",
+            "кулак",
+            "palm",
+            "gesture",
+            "жест",
+            "handshake",
+            "рукопожатие",
+            "clapping",
+            "person",
+            "people",
+            "human",
+            "человек",
+            "люди",
+            "family",
+            "baby",
+            "kid",
+            "child",
+            "ребенок"
+          ]
+        },
+        "symbols": {
+          "en": "Symbols and shapes",
+          "ru": "Символы и фигуры",
+          "aliases": [
+            "star",
+            "starry",
+            "звезда",
+            "звездочка",
+            "звездный",
+            "crown",
+            "корона",
+            "корону",
+            "fire",
+            "flame",
+            "огонь",
+            "огня",
+            "огонек",
+            "огоньки",
+            "пламя",
+            "gem",
+            "gemstone",
+            "jewel",
+            "diamond",
+            "crystal",
+            "алмаз",
+            "бриллиант",
+            "кристалл",
+            "самоцвет",
+            "lightning",
+            "bolt",
+            "thunderbolt",
+            "молния",
+            "circle",
+            "круг",
+            "кружок",
+            "square",
+            "квадрат",
+            "triangle",
+            "треугольник",
+            "hexagon",
+            "octagon",
+            "pentagon",
+            "polygon",
+            "rhombus",
+            "cube",
+            "infinity",
+            "spiral",
+            "dot",
+            "точка",
+            "точку",
+            "ring",
+            "shape"
           ]
         },
         "decor": {
@@ -778,7 +1448,23 @@
             "bow",
             "ribbon",
             "блеск",
-            "декор"
+            "декор",
+            "ornament",
+            "ornate",
+            "divider",
+            "разделитель",
+            "flourish",
+            "border",
+            "garland",
+            "украшение",
+            "декорация",
+            "рамка",
+            "spark",
+            "искра",
+            "бант",
+            "бантик",
+            "decoration",
+            "decorative"
           ]
         }
       }
@@ -805,7 +1491,16 @@
             "party",
             "радость",
             "смех",
-            "веселый"
+            "веселый",
+            "grin",
+            "grinning",
+            "dancing",
+            "dance",
+            "танец",
+            "радостный",
+            "celebration",
+            "cheerful",
+            "весело"
           ]
         },
         "playful": {
@@ -819,7 +1514,15 @@
             "silly",
             "смешной",
             "милый",
-            "игривый"
+            "игривый",
+            "cool",
+            "крутой",
+            "smirk",
+            "smug",
+            "ухмылка",
+            "crazy",
+            "derp",
+            "подмигивает"
           ]
         },
         "loving": {
@@ -831,7 +1534,13 @@
             "hearts",
             "blush",
             "нежный",
-            "любовь"
+            "любовь",
+            "поцелуй",
+            "влюблен",
+            "hug",
+            "hugging",
+            "обнимашки",
+            "blushing"
           ]
         },
         "sad": {
@@ -842,7 +1551,14 @@
             "crying",
             "tears",
             "грустный",
-            "плачет"
+            "плачет",
+            "грусть",
+            "грустно",
+            "плач",
+            "sobbing",
+            "upset",
+            "lonely",
+            "одиночество"
           ]
         },
         "angry": {
@@ -853,7 +1569,12 @@
             "rage",
             "mad",
             "злой",
-            "гнев"
+            "гнев",
+            "злость",
+            "annoyed",
+            "grumpy",
+            "rude",
+            "злится"
           ]
         },
         "surprised": {
@@ -864,7 +1585,13 @@
             "surprised",
             "wow",
             "удивлен",
-            "шок"
+            "шок",
+            "крик",
+            "screaming",
+            "scream",
+            "удивление",
+            "dizzy",
+            "шокирован"
           ]
         },
         "scary": {
@@ -877,7 +1604,21 @@
             "scary",
             "horror",
             "череп",
-            "призрак"
+            "призрак",
+            "привидение",
+            "скелет",
+            "skeleton",
+            "zombie",
+            "зомби",
+            "vampire",
+            "devil",
+            "дьявол",
+            "demon",
+            "creepy",
+            "bloody",
+            "blood",
+            "mummy",
+            "grim"
           ]
         },
         "calm": {
@@ -889,7 +1630,18 @@
             "neutral",
             "relaxed",
             "спокойный",
-            "спит"
+            "спит",
+            "tired",
+            "sleepy",
+            "sleep",
+            "zzz",
+            "сон",
+            "cozy",
+            "meh",
+            "bored",
+            "peaceful",
+            "спокойствие",
+            "усталый"
           ]
         },
         "serious": {
@@ -901,7 +1653,11 @@
             "badge",
             "business",
             "official",
-            "деловой"
+            "деловой",
+            "serious",
+            "formal",
+            "strict",
+            "серьезный"
           ]
         }
       }
@@ -927,7 +1683,15 @@
             "back",
             "next",
             "home",
-            "menu"
+            "menu",
+            "forward",
+            "chevron",
+            "вправо",
+            "влево",
+            "вверх",
+            "вниз",
+            "назад",
+            "вперед"
           ]
         },
         "action": {
@@ -945,7 +1709,16 @@
             "edit",
             "copy",
             "share",
-            "download"
+            "download",
+            "send",
+            "search",
+            "cancel",
+            "refresh",
+            "upload",
+            "save",
+            "плюс",
+            "минус",
+            "minus"
           ]
         },
         "status": {
@@ -962,7 +1735,17 @@
             "warning",
             "exclamation",
             "question",
-            "loading"
+            "loading",
+            "done",
+            "success",
+            "alert",
+            "siren",
+            "stop",
+            "info",
+            "information",
+            "notification",
+            "тревога",
+            "загрузка"
           ]
         },
         "commerce": {
@@ -978,7 +1761,18 @@
             "coin",
             "card",
             "payment",
-            "store"
+            "store",
+            "wallet",
+            "shopping",
+            "shop",
+            "cash",
+            "buy",
+            "pay",
+            "basket",
+            "кошелек",
+            "магазин",
+            "покупки",
+            "купюра"
           ]
         },
         "communication": {
@@ -993,7 +1787,18 @@
             "bubble",
             "message",
             "phone",
-            "mail"
+            "mail",
+            "speech",
+            "чат",
+            "сообщение",
+            "messenger",
+            "envelope",
+            "письмо",
+            "email",
+            "call",
+            "телефон",
+            "megaphone",
+            "announcement"
           ]
         },
         "settings": {
@@ -1013,7 +1818,15 @@
             "shield",
             "chart",
             "clock",
-            "calendar"
+            "calendar",
+            "time",
+            "timer",
+            "часы",
+            "календарь",
+            "настройки",
+            "график",
+            "graph",
+            "analytics"
           ]
         },
         "content": {
@@ -1026,7 +1839,15 @@
             "flag",
             "letter",
             "logo",
-            "number"
+            "number",
+            "label",
+            "banner",
+            "надпись",
+            "надписи",
+            "caption",
+            "плашка",
+            "ярлык",
+            "inscription"
           ]
         },
         "decoration": {
@@ -1231,5 +2052,14 @@
     "emoji": 0.5,
     "pack": 0.3,
     "show": 0.55
-  }
+  },
+  "masks": [
+    "hand drawn",
+    "hand-drawn",
+    "hand painted",
+    "hand-painted",
+    "sports car",
+    "sport car",
+    "comic sans"
+  ]
 }
