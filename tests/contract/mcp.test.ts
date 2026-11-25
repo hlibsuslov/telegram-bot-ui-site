@@ -79,7 +79,7 @@ describe("MCP protocol", () => {
     assert.equal(res.headers.get("mcp-session-id"), null);
     const r = res.body!.result!;
     assert.equal(r.protocolVersion, "2025-11-25");
-    assert.ok((r.capabilities as Obj).tools);
+    assert.deepEqual((r.capabilities as Obj).tools, { listChanged: false });
     assert.equal((r.serverInfo as Obj).name, "telegram-emoji-library");
     assert.match(String(r.instructions), /custom/);
   });

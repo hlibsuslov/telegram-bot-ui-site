@@ -188,5 +188,7 @@ export function emojiMcpServer(client: string): McpServer {
     annotations: TELEGRAM,
   }, ({ ids }) => run(client, "ids", () => byIdAnswer(ids.join(","))));
 
+  // The tool list is fixed, and a stateless server has no stream to announce changes on.
+  server.server.registerCapabilities({ tools: { listChanged: false } });
   return server;
 }
