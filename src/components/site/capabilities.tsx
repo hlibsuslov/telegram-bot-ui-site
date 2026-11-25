@@ -1,3 +1,4 @@
+import { BOT_API } from "@/content/site";
 import { DuckIcon, type DuckIconName } from "./duck-icon";
 import { Section } from "./section";
 
@@ -12,8 +13,7 @@ const FEATURES: Feature[] = [
   {
     title: "Build bot interfaces",
     icon: "interfaces",
-    description:
-      "Texts, menus, inline and reply keyboards, colored and disabled buttons, forms, navigation, streaming answers with Stop, Rich Messages, tables, localization, and the bot’s own settings from code (Bot API 10.5).",
+    description: `Texts, menus, inline and reply keyboards, colored and disabled buttons, forms, navigation, streaming answers with Stop, Rich Messages, tables, localization, and the bot’s own settings from code (Bot API ${BOT_API}).`,
   },
   {
     title: "Product flows",
