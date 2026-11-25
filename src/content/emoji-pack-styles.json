@@ -141,6 +141,23 @@
    "unsure": [],
    "source": "vision"
   },
+  "AIActions": {
+   "style": [
+    "glyph",
+    "outline"
+   ],
+   "line_weight": "medium",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "AI action icons in the text colour, each solid and as a line: thought, brain, search, mic, image, code, sparkles",
+   "confidence": 0.85,
+   "unsure": [
+    "fill"
+   ],
+   "source": "vision"
+  },
   "AIByVolodya": {
    "style": [
     "pixel",
@@ -7245,6 +7262,21 @@
    "characters": "none",
    "drawn": "Windows Fluent-style colour icons with soft gradients (at, gear, shield, folder), then black dots and +1/x2 badges",
    "confidence": 0.8,
+   "unsure": [],
+   "source": "vision"
+  },
+  "UnigramIcons": {
+   "style": [
+    "native-ui",
+    "outline"
+   ],
+   "line_weight": "thin",
+   "fill": "none",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "none",
+   "drawn": "Unigram client line icons in the text colour: people, camera, folder, formatting, charts, bell, mic, chat; few solid",
+   "confidence": 0.9,
    "unsure": [],
    "source": "vision"
   },

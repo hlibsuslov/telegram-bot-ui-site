@@ -4,6 +4,15 @@
     py -3 scripts/emoji_taxonomy.py build --sheets .emoji-sheets --slots <skill>/data/emoji/slots.json
     py -3 scripts/emoji_taxonomy.py eval --gold gold.json                               # accuracy per facet
     py -3 scripts/emoji_taxonomy.py check                                               # overrides, taxonomy and output valid
+    py -3 scripts/emoji_taxonomy.py add t.me/addemoji/<name> [--category "Animals"]     # one new pack, whole chain
+    py -3 scripts/emoji_taxonomy.py apply-pending                                       # merge filled work items
+
+`add` is safe to repeat; each step keeps what it finds: (1) the link goes under its ## category in
+emoji-packs.txt (a category is suggested from the name, title and tags; --category or an answer at the
+prompt confirms it), (2) a snapshot from the site, (3) a contact sheet in .emoji-sheets, (4) build with
+the sheet folders and slots of the last build, (5) a work item .emoji-taxonomy/work/pending/<pack>.json
+for the look card and the en/ru/uk description, which need eyes on the sheet (an agent fills it, then
+runs `apply-pending`), (6) check, which names every pack still waiting for its card or description.
 
 Sources and how much each is trusted (the confidence of a tag):
 * Telegram data (format, needs_repainting), from the library API snapshot: 1.0.
@@ -24,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import colorsys
+import glob
 import json
 import math
 import os
@@ -53,6 +63,9 @@ WORK = os.path.join(ROOT, ".emoji-taxonomy")
 FULL = os.path.join(WORK, "facets-full.json")  # every tag with its sources, for eval and review
 CODE = {"color": "c", "palette": "p", "fit": "f", "style": "s", "topic": "t", "mood": "m", "role": "r"}
 SNAP = os.path.join(WORK, "snapshot")
+PENDING = os.path.join(WORK, "work", "pending")  # `add` writes a work item per pack still without card/description
+DONE = os.path.join(WORK, "work", "done")  # `apply-pending` moves applied items here
+SHEETS_OUT = os.path.join(ROOT, ".emoji-sheets")  # where `add` draws a new pack's contact sheet
 LINK = re.compile(r"(?:t\.me|telegram\.me)/addemoji/([A-Za-z0-9_]{1,64})", re.I)
 VS = re.compile("[︎️]")
 CATEGORY_TOPIC = {
@@ -273,31 +286,36 @@ def sheet_titles(dirs: list[str]) -> dict[str, str]:
 
 
 def measure_sheets(dirs: list[str]) -> dict[str, dict[str, dict]]:
-    """pack name (lower) -> emoji id -> measurement."""
+    """pack name (lower) -> emoji id -> measurement. The first folder with a pack's sheet wins; a fill sheet
+    (<pack>.fill.png, emoji_sheets.py --gaps) then measures the emoji that sheet left empty."""
     out: dict[str, dict[str, dict]] = {}
     try:
         from PIL import Image
     except ImportError:
         print("Pillow is missing: colours are taken from words only", file=sys.stderr)
         return out
-    for d in dirs:
-        if not os.path.isdir(d):
-            continue
-        for f in sorted(os.listdir(d)):
-            if not f.endswith(".json") or f.lower()[:-5] in out:
-                continue
-            png = os.path.join(d, f[:-5] + ".png")
-            if not os.path.isfile(png):
-                continue
-            raw = load_json(os.path.join(d, f))
-            cells = raw["emoji"] if isinstance(raw.get("emoji"), dict) else raw  # newer sheets nest the index
-            img = Image.open(png).convert("RGB")
-            got = {}
-            for num, (eid, _fb) in cells.items():
-                m = measure_cell(img, int(num) - 1)
-                if m:
-                    got[str(eid)] = m
-            out[f.lower()[:-5]] = got
+
+    def cells_of(d: str, f: str) -> dict[str, dict]:
+        raw = load_json(os.path.join(d, f))
+        cells = raw["emoji"] if isinstance(raw.get("emoji"), dict) else raw  # newer sheets nest the index
+        img = Image.open(os.path.join(d, f[:-5] + ".png")).convert("RGB")
+        got = {}
+        for num, (eid, _fb) in cells.items():
+            m = measure_cell(img, int(num) - 1)
+            if m:
+                got[str(eid)] = m
+        return got
+
+    sheets = [(d, f) for d in dirs if os.path.isdir(d) for f in sorted(os.listdir(d))
+              if f.endswith(".json") and os.path.isfile(os.path.join(d, f[:-5] + ".png"))]
+    for d, f in sheets:
+        if not f.endswith(".fill.json") and f.lower()[:-5] not in out:
+            out[f.lower()[:-5]] = cells_of(d, f)
+    for d, f in sheets:
+        if f.endswith(".fill.json"):
+            got = out.setdefault(f.lower()[: -len(".fill.json")], {})
+            for eid, m in cells_of(d, f).items():
+                got.setdefault(eid, m)
     return out
 
 
@@ -403,12 +421,28 @@ def style_card_errors(doc: dict, tax: dict, listed: set[str]) -> list[str]:
     return errors
 
 
+def pending_hint(name: str) -> str:
+    """Where the missing look card and description of a pack come from."""
+    item = os.path.join(PENDING, f"{name}.json")
+    if os.path.isfile(item):
+        return (f"fill {os.path.relpath(item, ROOT)} from its contact sheet, then run "
+                "`py -3 scripts/emoji_taxonomy.py apply-pending`")
+    return f"run `py -3 scripts/emoji_taxonomy.py add {name}` for a work item, fill it, then run `apply-pending`"
+
+
+def missing_card_errors(doc: dict, listed: set[str]) -> list[str]:
+    """Listed packs without a look card (build works without one; check does not)."""
+    have = {n.lower() for n in doc.get("packs") or {}}
+    return [f"emoji-pack-styles.json: {n}: no look card; {pending_hint(n)}" for n in sorted(listed) if n.lower() not in have]
+
+
 def description_errors(doc: dict, listed: set[str]) -> list[str]:
     """Problems in emoji-pack-descriptions.json: every listed pack described in en/ru/uk, plain and short."""
     errors = []
     packs = doc.get("packs") or {}
     by_lower = {n.lower() for n in packs}
-    errors += [f"emoji-pack-descriptions.json: {n}: no description" for n in sorted(listed) if n.lower() not in by_lower]
+    errors += [f"emoji-pack-descriptions.json: {n}: no description; {pending_hint(n)}"
+               for n in sorted(listed) if n.lower() not in by_lower]
     known = {n.lower() for n in listed}
     for name, desc in packs.items():
         at = f"emoji-pack-descriptions.json: {name}"
@@ -526,7 +560,10 @@ def build(args) -> int:
     cards = {k.lower(): v for k, v in cards.items()}
     unknown_words: Counter = Counter()
     report = {"packs": 0, "emoji": 0, "measured_emoji": 0, "packs_without_snapshot": [], "packs_without_sheet": [],
-              "duplicate_free_tags": 0, "duplicate_emoji_ids": [], "overrides_applied": 0}
+              "duplicate_free_tags": 0, "duplicate_emoji_ids": [], "overrides_applied": 0,
+              "unmeasured": {},  # pack -> {id: [format, fallback]}: emoji_sheets.py --gaps draws them again
+              "inputs": {"sheets": [os.path.abspath(d) for d in args.sheets or []],
+                         "slots": os.path.abspath(args.slots) if args.slots else None}}
     seen_ids: dict[str, str] = {}
     out_packs, out_emoji, site_emoji = {}, {}, {}
     pack_vectors = {}
@@ -556,7 +593,9 @@ def build(args) -> int:
                 s.add("fit", "adaptive", 1.0, "telegram")
             elif m:
                 s.add("fit", m["fit"], m["fit_conf"], "pixels")
-            if m:
+            if not m:
+                report["unmeasured"].setdefault(name, {})[eid] = [fmt, e.get("fallback") or ""]
+            else:
                 report["measured_emoji"] += 1
                 for fam, share in sorted(m["shares"].items(), key=lambda x: -x[1]):
                     if share >= 0.18 and not (e.get("adaptive") and fam in ("black", "white", "gray")):
@@ -679,8 +718,9 @@ def build(args) -> int:
     os.makedirs(WORK, exist_ok=True)
     with open(os.path.join(WORK, "report.json"), "w", encoding="utf-8") as fh:
         json.dump(report, fh, ensure_ascii=False, indent=1)
-    print(json.dumps({k: (v if not isinstance(v, list) else len(v)) for k, v in report.items() if k != "unknown_words_top"},
-                     ensure_ascii=False))
+    shown = {k: len(v) if isinstance(v, list) else v for k, v in report.items()
+             if k not in ("unknown_words_top", "unmeasured", "inputs")}
+    print(json.dumps(shown, ensure_ascii=False))
     print(f"wrote {os.path.relpath(OUT, ROOT)} ({os.path.getsize(OUT) // 1024} KB)")
     return 0
 
@@ -706,30 +746,41 @@ def coverage(packs: dict, emoji: dict) -> dict:
 
 
 # ------------------------------------------------------------------ fetch, eval, check
+def fetch_pack(base: str, name: str) -> dict | None:
+    """The site's /api/emoji-pack/<name> answer (it waits out a 429), or {"ok": false, ...} or None."""
+    for _ in range(4):
+        try:
+            req = urllib.request.Request(f"{base.rstrip('/')}/api/emoji-pack/{name}", headers={"User-Agent": "emoji-taxonomy"})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except urllib.error.HTTPError as err:
+            if err.code == 429:
+                time.sleep(int(err.headers.get("Retry-After") or 60))
+                continue
+            try:
+                return {"ok": False, "status": err.code, **json.loads(err.read().decode("utf-8"))}
+            except ValueError:
+                return {"ok": False, "status": err.code}
+        except (urllib.error.URLError, TimeoutError, ValueError):
+            time.sleep(5)
+    return None
+
+
+def write_snapshot(name: str, body: dict) -> None:
+    os.makedirs(SNAP, exist_ok=True)
+    with open(os.path.join(SNAP, f"{name.lower()}.json"), "w", encoding="utf-8") as fh:
+        json.dump({"name": body.get("name"), "emoji": [{k: e.get(k) for k in ("id", "fallback", "format", "adaptive")}
+                                                      for e in body.get("emoji", [])]}, fh, ensure_ascii=False)
+
+
 def fetch(args) -> int:
     os.makedirs(SNAP, exist_ok=True)
     todo = [n for n, _ in listed_packs() if args.force or not os.path.isfile(os.path.join(SNAP, f"{n.lower()}.json"))]
     print(f"{len(todo)} pack(s) to fetch", file=sys.stderr)
     for i, name in enumerate(todo, 1):
-        for attempt in range(4):
-            try:
-                req = urllib.request.Request(f"{args.base.rstrip('/')}/api/emoji-pack/{name}", headers={"User-Agent": "emoji-taxonomy"})
-                with urllib.request.urlopen(req, timeout=60) as r:
-                    body = json.loads(r.read().decode("utf-8"))
-                break
-            except urllib.error.HTTPError as err:
-                if err.code == 429:
-                    time.sleep(int(err.headers.get("Retry-After") or 60))
-                    continue
-                body = {"ok": False, "status": err.code}
-                break
-            except (urllib.error.URLError, TimeoutError, ValueError):
-                time.sleep(5)
-                body = None
+        body = fetch_pack(args.base, name)
         if body and body.get("ok"):
-            with open(os.path.join(SNAP, f"{name.lower()}.json"), "w", encoding="utf-8") as fh:
-                json.dump({"name": body.get("name"), "emoji": [{k: e.get(k) for k in ("id", "fallback", "format", "adaptive")}
-                                                              for e in body.get("emoji", [])]}, fh, ensure_ascii=False)
+            write_snapshot(name, body)
         else:
             print(f"skip {name}: {body}", file=sys.stderr)
         if i % 25 == 0:
@@ -941,14 +992,17 @@ def taxonomy_errors(tax: dict) -> list[str]:
     return errors
 
 
-def check(args) -> int:
+def check_errors() -> list[str]:
+    """Everything `check` reports except the accuracy gate."""
     tax = load_json(TAXONOMY)
     _, errors = parse_overrides(OVERRIDES, tax)
     errors += taxonomy_errors(tax)
+    listed = {n for n, _ in listed_packs()}
     if os.path.isfile(STYLES):
-        errors += style_card_errors(load_json(STYLES), tax, {n for n, _ in listed_packs()})
+        styles = load_json(STYLES)
+        errors += style_card_errors(styles, tax, listed) + missing_card_errors(styles, listed)
     if os.path.isfile(DESCRIPTIONS):
-        errors += description_errors(load_json(DESCRIPTIONS), {n for n, _ in listed_packs()})
+        errors += description_errors(load_json(DESCRIPTIONS), listed)
         if os.path.isfile(OUT):
             errors += stale_descriptions(load_json(DESCRIPTIONS), load_json(OUT))
     if os.path.isfile(OUT):
@@ -961,6 +1015,11 @@ def check(args) -> int:
                 for v, c in vals:
                     if v not in tax["facets"][facet]["values"] or not 0 <= c <= 1:
                         errors.append(f"{name}: {facet}:{v} ({c}) is not in the taxonomy or out of range")
+    return errors
+
+
+def check(args) -> int:
+    errors = check_errors()
     if getattr(args, "write_gate", False):
         gate(write=True)
         print(f"wrote {os.path.relpath(GATE, ROOT)}")
@@ -969,6 +1028,278 @@ def check(args) -> int:
     print("\n".join(errors) or "OK: taxonomy, overrides and facets consistent"
           + (" (accuracy at or above the floor)" if getattr(args, "gate", False) else ""))
     return 1 if errors else 0
+
+
+# ------------------------------------------------------------------ add a pack, apply the vision pass
+WORDS = re.compile(r"[A-Z]?[a-z]+|[A-Z]+(?![a-z])|[а-яёіїєґА-ЯЁІЇЄҐ]+")
+BOT_SUFFIX = re.compile(r"_by_\w+$", re.I)
+CARD_TEMPLATE = {"style": [], "line_weight": "", "fill": "", "perspective": "", "shadows": "", "characters": "",
+                 "drawn": "", "confidence": None, "unsure": [], "source": "vision"}
+
+
+def pack_name(arg: str) -> str | None:
+    m = LINK.search(arg)
+    name = m.group(1) if m else arg.strip().strip("/")
+    return name if re.fullmatch(r"[A-Za-z0-9_]{1,64}", name) else None
+
+
+def categories() -> list[str]:
+    with open(PACKS, encoding="utf-8") as fh:
+        return [raw.strip()[3:].strip() for raw in fh if raw.strip().startswith("## ")]
+
+
+def suggest_category(name: str, title: str, tags: list[str]) -> tuple[str | None, list[str]]:
+    """The category whose topic the pack's name, title and free tags name most often, and the words that named
+    it. None when they name no category's topic: the caller then has to be told, never guessed for."""
+    vocab = Vocabulary(load_json(TAXONOMY))
+    by_topic = {t: c for c, t in CATEGORY_TOPIC.items()}
+    chunks = WORDS.findall(BOT_SUFFIX.sub("", name)) + re.findall(r"[^\W\d_]+", title) + list(tags)
+    votes: Counter = Counter()
+    why: dict[str, list[str]] = defaultdict(list)
+    for chunk in chunks:
+        for facet, value in vocab.facets_of(chunk)[0]:
+            if facet == "topic" and value in by_topic:
+                votes[by_topic[value]] += 1
+                why[by_topic[value]].append(chunk.lower())
+    if not votes:
+        return None, []
+    order = categories()
+    best = max(votes, key=lambda c: (votes[c], -order.index(c) if c in order else -99))
+    return best, sorted(set(why[best]))
+
+
+def interactive() -> bool:
+    return sys.stdin.isatty()
+
+
+def choose_category(given: str | None, suggestion: str | None, evidence: list[str]) -> str | None:
+    cats = categories()
+    by_lower = {c.lower(): c for c in cats}
+    print(f"   suggested category: {suggestion} (from: {', '.join(evidence)})" if suggestion
+          else "   no category suggested: the name, title and tags name no category's topic")
+    if given:
+        if given.strip().lower() in by_lower:
+            return by_lower[given.strip().lower()]
+        print(f"   unknown category {given!r}; one of: {'; '.join(cats)}")
+        return None
+    try:
+        answer = input(f"   category [{suggestion or ''}]: ").strip() or (suggestion or "") if interactive() else None
+    except EOFError:  # NUL on Windows passes for a terminal
+        print()
+        answer = None
+    if answer is None:
+        print(f"   confirm it: rerun with --category \"{suggestion or '<category>'}\" (one of: {'; '.join(cats)})")
+        return None
+    if answer.lower() in by_lower:
+        return by_lower[answer.lower()]
+    print(f"   unknown category {answer!r}; one of: {'; '.join(cats)}")
+    return None
+
+
+def add_to_list(name: str, category: str) -> None:
+    """The link goes at the end of its category's block (the Popular row follows the order of the list)."""
+    with open(PACKS, encoding="utf-8", newline="") as fh:
+        text = fh.read()
+    eol = "\r\n" if "\r\n" in text else "\n"
+    lines = text.split(eol)
+    head = next(i for i, l in enumerate(lines) if l.strip() == f"## {category}")
+    end = next((i for i in range(head + 1, len(lines)) if lines[i].strip().startswith("## ")), len(lines))
+    last = max(i for i in range(head, end) if lines[i].strip())
+    lines.insert(last + 1, f"https://t.me/addemoji/{name}")
+    with open(PACKS, "w", encoding="utf-8", newline="") as fh:
+        fh.write(eol.join(lines))
+
+
+def make_sheet(base: str, name: str, out: str, body: dict) -> str:
+    import emoji_sheets  # Pillow, and rlottie-python for a TGS without a thumbnail
+    os.makedirs(out, exist_ok=True)
+    return emoji_sheets.sheet(base.rstrip("/"), name, out, pack=body)
+
+
+def find_sheet(name: str, dirs: list[str]) -> str | None:
+    for d in dirs:
+        if os.path.isdir(d):
+            hit = next((f for f in os.listdir(d) if f.lower() == f"{name.lower()}.png"), None)
+            if hit:
+                return os.path.join(d, hit)
+    return None
+
+
+def build_inputs(args) -> tuple[list[str], str | None] | None:
+    """The sheet folders and slots file of the last build (report.json), unless given: a build without them
+    would drop every colour and meaning from the site output."""
+    last = (load_json(os.path.join(WORK, "report.json")).get("inputs") or {}) \
+        if os.path.isfile(os.path.join(WORK, "report.json")) else {}
+    sheets = args.sheets or last.get("sheets")
+    slots = args.slots or last.get("slots")
+    if not sheets:
+        return None
+    if not any(os.path.abspath(d) == os.path.abspath(SHEETS_OUT) for d in sheets):
+        sheets = [*sheets, SHEETS_OUT]
+    return sheets, slots
+
+
+def work_item(name: str, title: str, category: str, png: str) -> dict:
+    """What the vision pass needs to write the look card and the en/ru/uk description of one pack."""
+    tax = load_json(TAXONOMY)
+    styles = (load_json(STYLES) if os.path.isfile(STYLES) else {}).get("packs", {})
+    descs = (load_json(DESCRIPTIONS) if os.path.isfile(DESCRIPTIONS) else {}).get("packs", {})
+    measured = (load_json(OUT)["packs"].get(name) if os.path.isfile(OUT) else None) or {}
+    example = next((n for n, c in listed_packs() if c == category and n in styles and n in descs), None) \
+        or next((n for n in styles if n in descs), None)
+    return {
+        "pack": name, "title": title, "category": category,
+        "sheet": os.path.relpath(png, ROOT), "sheet_index": os.path.relpath(png[:-4] + ".json", ROOT),
+        "measured": {k: measured[k] for k in ("count", "facets") if k in measured},
+        "how": ["Open the sheet: every emoji of the pack on a numbered grid (an empty cell has no still picture).",
+                "Fill `card` by rubric.card, with style ids from rubric.style and look values from rubric.look.",
+                "Fill `description` by rubric.description in en, ru and uk; `measured` has the count and motion.",
+                "Leave every other field as it is, then run: py -3 scripts/emoji_taxonomy.py apply-pending"],
+        "rubric": {
+            "card": "style: 1-2 ids from rubric.style, the leading one first, chosen by each style's definition "
+                    "and `not` list. line_weight, fill, perspective, shadows, characters: one value each from "
+                    "rubric.look. drawn: one line of at most 120 characters on how the pack is drawn. confidence "
+                    f"in (0, 1]: how sure the style is ({SURE_CARD} or more replaces the styles guessed from words). "
+                    "unsure: the field names the sheet does not settle. source stays \"vision\".",
+            "style": {v: {"definition": s.get("definition"), "not": s.get("not")}
+                      for v, s in tax["facets"]["style"]["values"].items()},
+            "look": {k: sorted(v) for k, v in LOOK.items()},
+            "description": {
+                "languages": list(DESC_LANGS), "max_characters": DESC_LIMITS,
+                "fields": {"what": "what the pack is: how many, what they show, how they are drawn",
+                           "for": "the bots and messages it suits", "not_for": "where it fits badly"},
+                "rules": "Plain words that describe, not sell: no exclamation marks and none of these stems: "
+                         + ", ".join(MARKETING) + ". The ru and uk texts say what the en text says."},
+        },
+        "example": {"pack": example, "card": styles.get(example), "description": descs.get(example)} if example else None,
+        "card": dict(CARD_TEMPLATE),
+        "description": {lang: {"what": "", "for": "", "not_for": ""} for lang in DESC_LANGS},
+    }
+
+
+def has_curated(name: str) -> tuple[bool, bool]:
+    def has(path: str) -> bool:
+        return os.path.isfile(path) and name.lower() in {n.lower() for n in load_json(path).get("packs", {})}
+    return has(STYLES), has(DESCRIPTIONS)
+
+
+def add(args) -> int:
+    """List a pack and run the whole chain; safe to repeat (every step keeps what it finds)."""
+    name = pack_name(args.pack)
+    if not name:
+        print(f"{args.pack!r} is not t.me/addemoji/<name> or a pack name")
+        return 2
+    listed = {n.lower(): (n, c) for n, c in listed_packs()}
+    body = None
+
+    def site_pack() -> dict | None:
+        nonlocal body
+        if body is None:
+            body = fetch_pack(args.base, name)
+        if not body or not body.get("ok") or not body.get("emoji"):
+            print(f"{name}: the site cannot read this pack: {body}")
+            return None
+        return body
+
+    if name.lower() in listed:
+        name, category = listed[name.lower()]
+        print(f"1. list: {name} is already listed under {category}")
+    else:
+        if not site_pack():
+            return 2
+        name = body.get("name") or name
+        print(f"1. list: {name} ({body.get('title')}, {len(body['emoji'])} emoji)")
+        suggestion, evidence = suggest_category(name, body.get("title") or "", free_tags().get(name.lower(), []))
+        category = choose_category(args.category, suggestion, evidence)
+        if not category:
+            return 2
+        add_to_list(name, category)
+        print(f"   added to {os.path.relpath(PACKS, ROOT)} under {category}")
+    if os.path.isfile(os.path.join(SNAP, f"{name.lower()}.json")):
+        print("2. snapshot: kept")
+    else:
+        if not site_pack():
+            return 2
+        write_snapshot(name, body)
+        print(f"2. snapshot: {len(body['emoji'])} emoji")
+    inputs = build_inputs(args)
+    if not inputs:
+        print("3. no sheet folders known: pass --sheets (and --slots) as for build once; later runs reuse them")
+        return 2
+    sheets, slots = inputs
+    png = find_sheet(name, sheets)
+    if png:
+        print(f"3. sheet: kept {os.path.relpath(png, ROOT)}")
+    else:
+        if not site_pack():
+            return 2
+        print(f"3. sheet: {make_sheet(args.base, name, SHEETS_OUT, body)}")
+        png = os.path.join(SHEETS_OUT, f"{name}.png")
+    print("4. build")
+    code = build(argparse.Namespace(sheets=sheets, slots=slots))
+    if code:
+        return code
+    item = os.path.join(PENDING, f"{name}.json")
+    if all(has_curated(name)):
+        print("5. look card and description: present")
+    elif os.path.isfile(item):
+        print(f"5. work item: kept {os.path.relpath(item, ROOT)}")
+    else:
+        os.makedirs(PENDING, exist_ok=True)
+        title = (body or {}).get("title") or name
+        with open(item, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(work_item(name, title, category, png), fh, ensure_ascii=False, indent=1)
+            fh.write("\n")
+        print(f"5. work item: {os.path.relpath(item, ROOT)}")
+    if not all(has_curated(name)):
+        print(f"   The look card and the description need eyes on the sheet; this script has no model.\n"
+              f"   Agent: open {os.path.relpath(png, ROOT)}, fill `card` and `description` in "
+              f"{os.path.relpath(item, ROOT)} by its `rubric` (`example` shows the house style), then run\n"
+              f"   py -3 scripts/emoji_taxonomy.py apply-pending")
+    errors = check_errors()
+    waiting = [e for e in errors if ": no look card; " in e or ": no description; " in e]  # any pack's vision pass
+    others = [e for e in errors if e not in waiting]
+    print("6. check: " + ("OK" if not errors else f"{len(waiting)} waiting for apply-pending, {len(others)} other"))
+    for e in others + waiting:
+        print("   " + e)
+    return 1 if others else 0
+
+
+def apply_pending(args) -> int:
+    """Validate the filled work items and merge them into the two curated files; a bad item stays pending."""
+    items = sorted(glob.glob(os.path.join(PENDING, "*.json")))
+    if not items:
+        print("nothing pending")
+        return 0
+    tax = load_json(TAXONOMY)
+    listed = {n for n, _ in listed_packs()}
+    styles, descs = load_json(STYLES), load_json(DESCRIPTIONS)
+    applied, failed = [], 0
+    for path in items:
+        item = load_json(path)
+        name = next((n for n in listed if n.lower() == str(item.get("pack", "")).lower()), item.get("pack"))
+        card, desc = item.get("card"), item.get("description")
+        errors = style_card_errors({"packs": {name: card}}, tax, listed) \
+            + description_errors({"packs": {name: desc}}, {name})
+        if errors:
+            failed += 1
+            print(f"{os.path.relpath(path, ROOT)}: not applied")
+            print("\n".join("  " + e for e in dict.fromkeys(errors)))
+            continue
+        for doc, value in ((styles, {k: card[k] for k in CARD_TEMPLATE if k in card}), (descs, desc)):
+            packs = {k: v for k, v in doc["packs"].items() if k.lower() != name.lower()}
+            packs[name] = value
+            doc["packs"] = dict(sorted(packs.items(), key=lambda kv: kv[0].lower()))
+        applied.append((name, path))
+    if applied:
+        for path, doc in ((STYLES, styles), (DESCRIPTIONS, descs)):
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
+        os.makedirs(DONE, exist_ok=True)
+        for name, path in applied:
+            os.replace(path, os.path.join(DONE, os.path.basename(path)))
+            print(f"applied {name}: rebuild and check with `py -3 scripts/emoji_taxonomy.py add {name}`")
+    return 1 if failed else 0
 
 
 def main(argv=None) -> int:
@@ -990,8 +1321,16 @@ def main(argv=None) -> int:
     c = sub.add_parser("check")
     c.add_argument("--gate", action="store_true", help="also fail when accuracy falls below scripts/emoji_taxonomy_gate.json")
     c.add_argument("--write-gate", action="store_true", help="record the current holdout accuracy as the floor")
+    n = sub.add_parser("add", help="list a pack and run the whole chain; safe to repeat")
+    n.add_argument("pack", help="t.me/addemoji/<name> or the pack name")
+    n.add_argument("--category", help="its ## category in emoji-packs.txt (asked when interactive)")
+    n.add_argument("--base", default="https://telegram-bot-ui.hlixli.com")
+    n.add_argument("--sheets", action="append", help="as for build; default: the last build's")
+    n.add_argument("--slots", help="as for build; default: the last build's")
+    sub.add_parser("apply-pending", help="merge filled work items into the look cards and descriptions")
     a = ap.parse_args(argv)
-    return {"fetch": fetch, "build": build, "eval": evaluate, "check": check}[a.cmd](a)
+    return {"fetch": fetch, "build": build, "eval": evaluate, "check": check, "add": add,
+            "apply-pending": apply_pending}[a.cmd](a)
 
 
 if __name__ == "__main__":

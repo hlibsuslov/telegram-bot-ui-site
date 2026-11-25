@@ -159,6 +159,23 @@
     "not_for": "Емоційні реакції та декор поза зв'язком із цими брендами"
    }
   },
+  "AIActions": {
+   "en": {
+    "what": "48 animated AI action icons in the text colour, each solid and as a line: thinking, search, brain, voice, image, video, code, sparkles.",
+    "for": "AI bot status lines, thinking placeholders, tool buttons",
+    "not_for": "Festive posts, reactions or anything that needs colour"
+   },
+   "ru": {
+    "what": "48 анимированных иконок действий ИИ в цвете текста, каждая сплошной и контуром: раздумье, поиск, мозг, голос, картинка, видео, код, искры.",
+    "for": "Статусы ИИ-ботов, плашки «думаю», кнопки инструментов",
+    "not_for": "Праздничные посты, реакции и всё, где нужен цвет"
+   },
+   "uk": {
+    "what": "48 анімованих іконок дій ШІ в кольорі тексту, кожна суцільною й контуром: роздуми, пошук, мозок, голос, зображення, відео, код, іскри.",
+    "for": "Статуси ШІ-ботів, плашки «думаю», кнопки інструментів",
+    "not_for": "Святкові дописи, реакції та все, де потрібен колір"
+   }
+  },
   "AIByVolodya": {
    "en": {
     "what": "41 video emoji: pixel-art AI mascots and an orange pixel crab on black tiles, plus flat AI service logos; one blank cell.",
@@ -7909,6 +7926,23 @@
     "what": "Кольорові іконки в стилі Windows Fluent з м'яким градієнтом: равлик, шестірня, щит, тека, мітки +1 і x2. Анімовані, не перефарбовуються.",
     "for": "Меню налаштувань і довідка в сервісних ботах і підтримці",
     "not_for": "Жартівливі чати, мультяшні дописи та святковий декор"
+   }
+  },
+  "UnigramIcons": {
+   "en": {
+    "what": "119 animated thin line icons from the Unigram client that take the text colour: people, camera, files, text formatting, charts, chat.",
+    "for": "Bot menus, settings, editor toolbars and status lines",
+    "not_for": "Festive or playful posts that need colour and characters"
+   },
+   "ru": {
+    "what": "119 анимированных тонких контурных иконок клиента Unigram, перекрашиваются в цвет текста: люди, камера, файлы, форматирование, графики, чат.",
+    "for": "Меню ботов, настройки, панели редактора и строки статуса",
+    "not_for": "Праздничные и шуточные посты, где нужны цвет и персонажи"
+   },
+   "uk": {
+    "what": "119 анімованих тонких контурних іконок клієнта Unigram, перефарбовуються в колір тексту: люди, камера, файли, форматування, графіки, чат.",
+    "for": "Меню ботів, налаштування, панелі редактора й рядки статусу",
+    "not_for": "Святкові та жартівливі дописи, де потрібні колір і персонажі"
    }
   },
   "UntimateHalloweenFontPack": {

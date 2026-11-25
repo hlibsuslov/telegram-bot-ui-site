@@ -1,8 +1,15 @@
 """Guards of `emoji_taxonomy.py check`: py -3 -m unittest discover -s scripts -p "test_*.py"."""
+import contextlib
 import copy
+import gzip
+import io
+import json
 import os
+import shutil
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import emoji_taxonomy as et  # noqa: E402
@@ -422,6 +429,204 @@ class Titles(unittest.TestCase):
             json.dump({"pack": "abcemoji", "title": "Other", "emoji": {}}, open(os.path.join(b, "abcemoji.json"), "w"))
             open(os.path.join(b, "Notes.tags.txt"), "w").close()
             self.assertEqual(et.sheet_titles([a, b]), {"abcemoji": "ABC Emoji"})  # first folder wins
+
+try:
+    from PIL import Image
+except ImportError:  # CI runs without Pillow: the sheet tests skip, the chain runs with a fake sheet
+    Image = None
+
+
+def slurp(path: str) -> bytes:
+    with open(path, "rb") as fh:
+        return fh.read()
+
+
+def text_of(path: str) -> str:
+    return slurp(path).decode("utf-8").replace("\r\n", "\n")
+
+
+class AddChain(unittest.TestCase):
+    """E4: `add` lists a pack and runs the chain on a fixture library, without network; `apply-pending`
+    merges the vision pass; `check` names the packs still waiting for it."""
+
+    NEW = {"ok": True, "name": "NewCats", "title": "Cute cats", "emoji": [
+        {"id": "9001", "fallback": "🐱", "format": "static", "adaptive": False,
+         "preview": "/api/emoji-pack/NewCats/9001", "animation": None, "still": None},
+        {"id": "9002", "fallback": "😺", "format": "animated", "adaptive": False,
+         "preview": None, "animation": "/api/emoji-pack/NewCats/9002/anim", "still": None}]}
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, True)
+        content = os.path.join(self.root, "src", "content")
+        work = os.path.join(self.root, ".emoji-taxonomy")
+        os.makedirs(content)
+        paths = {"ROOT": self.root, "PACKS": os.path.join(content, "emoji-packs.txt"),
+                 "TAGS": os.path.join(content, "emoji-tags.txt"), "OVERRIDES": os.path.join(content, "none.txt"),
+                 "STYLES": os.path.join(content, "emoji-pack-styles.json"),
+                 "DESCRIPTIONS": os.path.join(content, "emoji-pack-descriptions.json"),
+                 "OUT": os.path.join(content, "emoji-facets.json"), "WORK": work,
+                 "FULL": os.path.join(work, "facets-full.json"), "SNAP": os.path.join(work, "snapshot"),
+                 "PENDING": os.path.join(work, "work", "pending"), "DONE": os.path.join(work, "work", "done"),
+                 "SHEETS_OUT": os.path.join(self.root, ".emoji-sheets")}
+        patcher = mock.patch.multiple(et, **paths, fetch_pack=self.fake_fetch, make_sheet=self.fake_sheet,
+                                      interactive=lambda: False)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.fetches = 0
+        with open(et.PACKS, "w", encoding="utf-8") as fh:
+            fh.write("# packs\n## Interface & icons\nhttps://t.me/addemoji/OldPack\n\n## Animals\n"
+                     "https://t.me/addemoji/CatPack\n\n## Effects & decor\n")
+        open(et.TAGS, "w", encoding="utf-8").close()
+        for path, value in ((et.STYLES, CARD), (et.DESCRIPTIONS, DESC)):
+            self.write_json(path, {"packs": {"CatPack": value, "OldPack": value}})
+        os.makedirs(et.SNAP)
+        for name, eid in (("oldpack", "1001"), ("catpack", "1002")):
+            self.write_json(os.path.join(et.SNAP, f"{name}.json"), {"name": name, "emoji": [
+                {"id": eid, "fallback": "⭐", "format": "static", "adaptive": False}]})
+
+    @staticmethod
+    def write_json(path, doc):
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
+
+    def fake_fetch(self, base, name):
+        self.fetches += 1
+        return copy.deepcopy(self.NEW) if name.lower() == "newcats" else {"ok": False, "status": 404}
+
+    def fake_sheet(self, base, name, out, body):
+        os.makedirs(out, exist_ok=True)
+        with open(os.path.join(out, f"{name}.json"), "w", encoding="utf-8") as fh:
+            json.dump({"pack": name, "emoji": {str(i + 1): [e["id"], e["fallback"]] for i, e in enumerate(body["emoji"])}}, fh)
+        if Image:
+            Image.new("RGB", (12 * 92, 92), (214, 214, 218)).save(os.path.join(out, f"{name}.png"))
+        else:
+            open(os.path.join(out, f"{name}.png"), "wb").close()
+        return f"{name}: {len(body['emoji'])} emoji"
+
+    def run_cli(self, *argv) -> tuple[int, str]:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            code = et.main(list(argv))
+        return code, out.getvalue()
+
+    def tree(self) -> dict:
+        return {os.path.relpath(os.path.join(d, f), self.root): slurp(os.path.join(d, f))
+                for d, _, files in os.walk(self.root) for f in files}
+
+    def add_new(self) -> tuple[int, str]:
+        return self.run_cli("add", "https://t.me/addemoji/NewCats", "--category", "animals", "--sheets", et.SHEETS_OUT)
+
+    def test_add_runs_the_chain_and_a_second_run_changes_nothing(self):
+        code, out = self.add_new()
+        self.assertEqual(code, 0, out)
+        packs = text_of(et.PACKS)
+        self.assertIn("## Animals\nhttps://t.me/addemoji/CatPack\nhttps://t.me/addemoji/NewCats\n\n## Effects", packs)
+        self.assertTrue(os.path.isfile(os.path.join(et.SNAP, "newcats.json")))
+        self.assertIn("NewCats", et.load_json(et.OUT)["packs"])
+        item = et.load_json(os.path.join(et.PENDING, "NewCats.json"))
+        self.assertEqual(item["sheet"], os.path.join(".emoji-sheets", "NewCats.png"))
+        self.assertIn("outline", item["rubric"]["style"])
+        self.assertEqual(item["example"]["pack"], "CatPack")
+        self.assertIn("apply-pending", out)
+        before, fetches = self.tree(), self.fetches
+        code, out = self.run_cli("add", "NewCats")  # no --category, no --sheets: kept and remembered
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.fetches, fetches, "a repeat must not fetch again")
+        after = self.tree()
+        self.assertEqual(sorted(after), sorted(before))
+        self.assertEqual([p for p in before if before[p] != after[p]], [])
+        self.assertEqual(packs.count("NewCats"), 1)
+
+    def test_a_new_pack_needs_a_confirmed_category(self):
+        before = self.tree()
+        code, out = self.run_cli("add", "NewCats", "--sheets", et.SHEETS_OUT)
+        self.assertEqual(code, 2)
+        self.assertIn("suggested category: Animals (from: cats)", out)
+        self.assertIn('--category "Animals"', out)
+        self.assertEqual(self.tree(), before, "nothing is written before the category is confirmed")
+        code, out = self.run_cli("add", "NewCats", "--category", "Pets", "--sheets", et.SHEETS_OUT)
+        self.assertEqual(code, 2)
+        self.assertIn("unknown category 'Pets'", out)
+        self.assertEqual(self.tree(), before)
+
+    def test_the_prompt_confirms_the_suggestion(self):
+        with mock.patch.object(et, "interactive", lambda: True), mock.patch("builtins.input", return_value=""):
+            code, out = self.run_cli("add", "NewCats", "--sheets", et.SHEETS_OUT)
+        self.assertEqual(code, 0, out)
+        self.assertIn("addemoji/CatPack\nhttps://t.me/addemoji/NewCats", text_of(et.PACKS))
+
+    def test_check_names_the_packs_waiting_for_the_vision_pass(self):
+        self.add_new()
+        errors = et.check_errors()
+        waiting = [e for e in errors if "NewCats" in e]
+        self.assertEqual(len(waiting), 2, errors)
+        self.assertTrue(any("no look card" in e for e in waiting), waiting)
+        self.assertTrue(any("no description" in e for e in waiting), waiting)
+        self.assertTrue(all("apply-pending" in e and "NewCats.json" in e for e in waiting), waiting)
+        self.assertEqual(self.run_cli("check")[0], 1)
+
+    def test_apply_pending_rejects_a_bad_card_and_merges_a_good_one(self):
+        self.add_new()
+        path = os.path.join(et.PENDING, "NewCats.json")
+        styles = slurp(et.STYLES)
+        item = et.load_json(path)
+        self.write_json(path, {**item, "card": {**CARD, "style": ["oil-painting"]}, "description": DESC})
+        code, out = self.run_cli("apply-pending")
+        self.assertEqual(code, 1)
+        self.assertIn("unknown style 'oil-painting'", out)
+        self.assertEqual(slurp(et.STYLES), styles)
+        self.assertTrue(os.path.isfile(path))
+        self.write_json(path, {**item, "card": {**CARD, "unsure": ["fill"]}, "description": DESC})
+        code, out = self.run_cli("apply-pending")
+        self.assertEqual(code, 0, out)
+        self.assertEqual(list(et.load_json(et.STYLES)["packs"]), ["CatPack", "NewCats", "OldPack"])
+        self.assertEqual(et.load_json(et.STYLES)["packs"]["NewCats"]["unsure"], ["fill"])
+        self.assertEqual(et.load_json(et.DESCRIPTIONS)["packs"]["NewCats"], DESC)
+        self.assertFalse(os.path.exists(path))
+        self.assertTrue(os.path.isfile(os.path.join(et.DONE, "NewCats.json")))
+        # the card and description are in; the generated output still carries the old text until the rebuild
+        self.assertEqual([e for e in et.check_errors() if "NewCats" in e],
+                         ["NewCats: description in emoji-facets.json differs from emoji-pack-descriptions.json (run build)"])
+        code, out = self.run_cli("add", "NewCats")
+        self.assertEqual(code, 0, out)
+        self.assertIn("look card and description: present", out)
+        self.assertEqual([e for e in et.check_errors() if "NewCats" in e], [])
+
+
+@unittest.skipUnless(Image, "needs Pillow")
+class FillSheets(unittest.TestCase):
+    """An emoji the pack's sheet left empty is measured from its fill sheet (emoji_sheets.py --gaps)."""
+
+    def test_a_fill_sheet_measures_the_empty_cells_only(self):
+        import emoji_sheets as es
+        d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, True)
+        red, blue = (Image.new("RGBA", (64, 64), c) for c in ((220, 30, 30, 255), (30, 60, 220, 255)))
+        emoji = [{"id": "1", "fallback": "x"}, {"id": "2", "fallback": "y"}]
+        with contextlib.redirect_stdout(io.StringIO()):
+            es.draw(emoji, [red, None], d, "Pack", "t")
+            es.draw(emoji, [blue, blue], d, "Pack.fill", None)
+        got = et.measure_sheets([d])
+        self.assertEqual(set(got), {"pack"})
+        self.assertIn("red", got["pack"]["1"]["shares"])  # the pack's own sheet wins
+        self.assertIn("blue", got["pack"]["2"]["shares"])
+
+    def test_a_tgs_without_a_thumbnail_is_drawn_from_its_first_frame(self):
+        import emoji_sheets as es
+        try:
+            import rlottie_python  # noqa: F401
+        except ImportError:
+            self.skipTest("needs rlottie-python")
+        tf = {"a": 0, "k": 0}
+        lottie = {"v": "5.5.2", "fr": 30, "ip": 0, "op": 30, "w": 100, "h": 100, "layers": [
+            {"ty": 1, "sc": "#2050e0", "sw": 100, "sh": 100, "ip": 0, "op": 30, "st": 0, "ks": {
+                "o": {"a": 0, "k": 100}, "r": tf, "p": {"a": 0, "k": [50, 50, 0]}, "a": {"a": 0, "k": [50, 50, 0]},
+                "s": {"a": 0, "k": [100, 100, 100]}}}]}
+        img = es.picture("application/x-tgsticker", gzip.compress(json.dumps(lottie).encode()))
+        self.assertIsNotNone(img)
+        r, g, b, a = img.getpixel((img.width // 2, img.height // 2))
+        self.assertEqual(et.colour_family(r, g, b), "blue")
 
 
 if __name__ == "__main__":
