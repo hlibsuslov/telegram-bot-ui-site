@@ -144,5 +144,54 @@ class ShippedTaxonomy(unittest.TestCase):
             self.assertIn(want, self.hits(text), text)
 
 
+CARD = {"style": ["outline"], "line_weight": "thin", "fill": "none", "perspective": "front", "shadows": "none",
+        "characters": "none", "drawn": "thin even strokes, no fill", "confidence": 0.9, "unsure": [],
+        "source": "vision"}
+
+
+class StyleCards(unittest.TestCase):
+    """src/content/emoji-pack-styles.json: one look card per pack from the vision pass (E1)."""
+
+    def errors(self, packs: dict, listed=("tgiosicons",)) -> list:
+        return et.style_card_errors({"packs": packs}, TAX, set(listed))
+
+    def test_a_valid_card_passes(self):
+        self.assertEqual(self.errors({"tgiosicons": CARD}), [])
+
+    def test_each_broken_rule_is_reported(self):
+        cases = {
+            "not in emoji-packs.txt": ({"nosuchpack": CARD}, None),
+            "unknown style": ({"tgiosicons": {**CARD, "style": ["oil-painting"]}}, None),
+            "1-2 style ids": ({"tgiosicons": {**CARD, "style": ["outline", "flat", "outline"]}}, None),
+            "line_weight": ({"tgiosicons": {**CARD, "line_weight": "chunky"}}, None),
+            "drawn": ({"tgiosicons": {**CARD, "drawn": "x" * 200}}, None),
+            "confidence": ({"tgiosicons": {**CARD, "confidence": 1.5}}, None),
+            "source": ({"tgiosicons": {**CARD, "source": "words"}}, None),
+            "unknown field": ({"tgiosicons": {**CARD, "mood": "calm"}}, None),
+        }
+        for expected, (packs, _) in cases.items():
+            with self.subTest(expected):
+                found = self.errors(packs)
+                self.assertTrue(any(expected in e for e in found), found)
+
+    def test_a_sure_card_replaces_word_styles(self):
+        p = et.Scores()
+        p.add("style", "flat", 0.75, "words")
+        et.apply_style_card(p, {**CARD, "style": ["outline", "flat"]})
+        self.assertEqual(p.d["style"]["outline"], [0.9, {"vision"}])
+        self.assertEqual(p.d["style"]["flat"][1], {"words", "vision"})
+        p = et.Scores()
+        p.add("style", "glossy", 0.75, "words")
+        et.apply_style_card(p, CARD)
+        self.assertNotIn("glossy", p.d["style"])
+
+    def test_an_unsure_card_only_adds(self):
+        p = et.Scores()
+        p.add("style", "glossy", 0.75, "words")
+        et.apply_style_card(p, {**CARD, "confidence": 0.6})
+        self.assertIn("glossy", p.d["style"])
+        self.assertEqual(p.d["style"]["outline"][0], 0.6)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -40,6 +40,7 @@ TAXONOMY = os.path.join(CONTENT, "emoji-taxonomy.json")
 PACKS = os.path.join(CONTENT, "emoji-packs.txt")
 TAGS = os.path.join(CONTENT, "emoji-tags.txt")
 OVERRIDES = os.path.join(CONTENT, "emoji-tag-overrides.txt")
+STYLES = os.path.join(CONTENT, "emoji-pack-styles.json")  # curated look cards from the vision pass; never generated
 OUT = os.path.join(CONTENT, "emoji-facets.json")
 WORK = os.path.join(ROOT, ".emoji-taxonomy")
 FULL = os.path.join(WORK, "facets-full.json")  # every tag with its sources, for eval and review
@@ -58,7 +59,12 @@ FALLBACK_MOOD = {
     "sad": "😢😭😞😔🥺💔", "angry": "😡😠🤬👿", "surprised": "😱😮😲🤯😳", "scary": "💀👻🎃☠", "calm": "😐😑😴😌🙏",
 }
 NEUTRAL_TOPICS = {"interface", "status", "brands", "finance", "letters", "flags", "tech", "travel", "music", "office", "people", "symbols"}
-SOURCE = {"telegram": 1.0, "manual": 1.0, "category": 0.9, "words": 0.75, "fallback": 0.6}
+SOURCE = {"telegram": 1.0, "manual": 1.0, "category": 0.9, "vision": 0.9, "words": 0.75, "fallback": 0.6}
+LOOK = {"line_weight": {"none", "hairline", "thin", "medium", "bold"}, "fill": {"none", "flat", "gradient", "textured", "photo"},
+        "perspective": {"front", "three-quarter", "isometric", "mixed"}, "shadows": {"none", "soft", "hard", "glow"},
+        "characters": {"none", "some", "all"}}
+CARD_FIELDS = {"style", "drawn", "confidence", "unsure", "source", *LOOK}
+SURE_CARD = 0.7  # a card at least this sure replaces the styles guessed from words
 
 
 # ------------------------------------------------------------------ inputs
@@ -342,6 +348,49 @@ def apply_overrides(scores: Scores, ops: list[tuple[str, str, str]]):
             scores.d[facet][value] = [1.0, {"manual"}]
 
 
+def style_card_errors(doc: dict, tax: dict, listed: set[str]) -> list[str]:
+    """Problems in emoji-pack-styles.json: a card per listed pack, taxonomy styles, the look enums."""
+    errors = []
+    styles = tax["facets"]["style"]["values"]
+    by_lower = {n.lower() for n in listed}
+    for name, card in (doc.get("packs") or {}).items():
+        at = f"emoji-pack-styles.json: {name}"
+        if name.lower() not in by_lower:
+            errors.append(f"{at}: not in emoji-packs.txt")
+        if not isinstance(card, dict):
+            errors.append(f"{at}: card must be an object")
+            continue
+        errors += [f"{at}: unknown field {k!r}" for k in sorted(set(card) - CARD_FIELDS)]
+        style = card.get("style")
+        if not isinstance(style, list) or not 1 <= len(style) <= 2 or len(set(style)) != len(style):
+            errors.append(f"{at}: style must be 1-2 style ids")
+        else:
+            errors += [f"{at}: unknown style {v!r}" for v in style if v not in styles]
+        for key, allowed in LOOK.items():
+            if card.get(key) not in allowed:
+                errors.append(f"{at}: {key} must be one of {', '.join(sorted(allowed))}")
+        if not isinstance(card.get("drawn"), str) or not card["drawn"].strip() or len(card["drawn"]) > 120:
+            errors.append(f"{at}: drawn must be one line of at most 120 characters")
+        conf = card.get("confidence")
+        if not isinstance(conf, (int, float)) or not 0 < conf <= 1:
+            errors.append(f"{at}: confidence must be in (0, 1]")
+        if card.get("source") != "vision":
+            errors.append(f"{at}: source must be \"vision\"")
+    return errors
+
+
+def apply_style_card(p: "Scores", card: dict) -> None:
+    """The look card of the vision pass: its styles at up to 0.9 (second one 0.1 lower). A sure card drops
+    the styles that only the pack's words or its emoji suggested; an unsure one only adds."""
+    conf = min(SOURCE["vision"], float(card.get("confidence", SOURCE["vision"])))
+    wanted = card.get("style", [])[:2]
+    if conf >= SURE_CARD:
+        for value in [v for v in p.d.get("style", {}) if v not in wanted]:
+            del p.d["style"][value]
+    for i, value in enumerate(wanted):
+        p.add("style", value, round(conf - 0.1 * i, 2), "vision")
+
+
 def build(args) -> int:
     tax = load_json(TAXONOMY)
     th = tax["thresholds"]
@@ -352,9 +401,12 @@ def build(args) -> int:
     mood_of = {VS.sub("", ch): mood for mood, chars in FALLBACK_MOOD.items() for ch in chars}
     measured = measure_sheets(args.sheets or [])
     overrides, errors = parse_overrides(OVERRIDES, tax)
+    cards = (load_json(STYLES) if os.path.isfile(STYLES) else {}).get("packs", {})
+    errors += style_card_errors({"packs": cards}, tax, {n for n, _ in listed_packs()})
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 2
+    cards = {k.lower(): v for k, v in cards.items()}
     unknown_words: Counter = Counter()
     report = {"packs": 0, "emoji": 0, "measured_emoji": 0, "packs_without_snapshot": [], "packs_without_sheet": [],
               "duplicate_free_tags": 0, "duplicate_emoji_ids": [], "overrides_applied": 0}
@@ -438,6 +490,9 @@ def build(args) -> int:
                 p.add(facet, value, 0.8, "words")
         if category in CATEGORY_TOPIC:
             p.add("topic", CATEGORY_TOPIC[category], SOURCE["category"], "category")
+        card = cards.get(name.lower())
+        if card:
+            apply_style_card(p, card)
         # an emoji with no style or topic of its own takes the pack's (a pack is drawn in one hand)
         for s in per_emoji.values():
             for facet in ("style", "topic"):
@@ -478,6 +533,9 @@ def build(args) -> int:
         report["overrides_applied"] += len(overrides.get(name.lower(), []))
         out_packs[name] = {"category": category, "count": n, "meanings": len(meanings),
                            "facets": p.compact(th["pack"], LIMITS_PACK, prefer={"topic": CATEGORY_TOPIC.get(category, "")})}
+        if card:  # how the pack is drawn, for descriptions and the API
+            out_packs[name]["look"] = {k: card[k] for k in ("line_weight", "fill", "perspective", "shadows", "characters",
+                                                            "drawn")}
         prefer = {"topic": CATEGORY_TOPIC.get(category, "")}
         out_emoji[name] = {eid: s.compact(th["emoji"], LIMITS_EMOJI, prefer=prefer) for eid, s in per_emoji.items()}
         site_emoji[name] = {eid: encode(s.compact(th["emoji"], LIMITS_EMOJI, frozenset({"pack"}), prefer=prefer))
@@ -664,6 +722,8 @@ def check(_args) -> int:
     tax = load_json(TAXONOMY)
     _, errors = parse_overrides(OVERRIDES, tax)
     errors += taxonomy_errors(tax)
+    if os.path.isfile(STYLES):
+        errors += style_card_errors(load_json(STYLES), tax, {n for n, _ in listed_packs()})
     if os.path.isfile(OUT):
         doc = load_json(OUT)
         for name, p in doc["packs"].items():
