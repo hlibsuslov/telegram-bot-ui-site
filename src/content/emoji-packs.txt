@@ -50,14 +50,12 @@ https://t.me/addemoji/MovingIcons
 https://t.me/addemoji/PremiumIcons
 https://t.me/addemoji/Premium_Icon
 https://t.me/addemoji/Decoration_Pack
-https://t.me/addemoji/Decoration_Pack2
 https://t.me/addemoji/Decoration_Pack5
 https://t.me/addemoji/Icon_2023
 https://t.me/addemoji/OutlineEmoji
 https://t.me/addemoji/Swicon
 https://t.me/addemoji/KorysnostiIcons
 https://t.me/addemoji/ColoBrush_Icons_by_fStikBot
-https://t.me/addemoji/CenterOfEmoji62973425
 https://t.me/addemoji/CenterOfEmoji33658028
 https://t.me/addemoji/MiscMojis
 https://t.me/addemoji/AnimatedReactions
@@ -68,6 +66,8 @@ https://t.me/addemoji/CenterOfEmoji98095669
 https://t.me/addemoji/DemandEmoji
 https://t.me/addemoji/CenterOfEmoji900533
 https://t.me/addemoji/CenterOfPacks12672606
+https://t.me/addemoji/AIActions
+https://t.me/addemoji/UnigramIcons
 
 ## Status & signs
 https://t.me/addemoji/NewsEmoji
@@ -85,7 +85,6 @@ https://t.me/addemoji/StatusEmoji
 https://t.me/addemoji/qip_status
 https://t.me/addemoji/SegnaliStradaliItaliani
 https://t.me/addemoji/Loading_by_TgEmojis_bot
-https://t.me/addemoji/DMJTGCheck
 https://t.me/addemoji/check_marks_kotletovv
 https://t.me/addemoji/CustomArrows
 https://t.me/addemoji/CenterOfEmoji_4
@@ -185,7 +184,6 @@ https://t.me/addemoji/cutekeyboard_1_of_9_Emoji
 https://t.me/addemoji/WINTER2026byAles
 https://t.me/addemoji/prem_BLOODY_by_MoiStikiBot
 https://t.me/addemoji/MysoulStickBlackGold
-https://t.me/addemoji/creatvisual
 https://t.me/addemoji/DancingSakura
 https://t.me/addemoji/TF2_Font_by_TgEmodziBot
 https://t.me/addemoji/Snfb_hand
@@ -204,7 +202,6 @@ https://t.me/addemoji/SlimeFontEmoji
 https://t.me/addemoji/SpookyLetters
 https://t.me/addemoji/AlphabetFonts
 https://t.me/addemoji/AlphabetEmoji
-https://t.me/addemoji/alphabet_telemoji
 https://t.me/addemoji/neon_alphabet
 https://t.me/addemoji/CloudyAlp
 https://t.me/addemoji/WideABC
@@ -237,7 +234,6 @@ https://t.me/addemoji/PencilEmoji
 https://t.me/addemoji/angelspack_by_TgEmojiBot
 https://t.me/addemoji/blob_buddies_TIKTOK
 https://t.me/addemoji/zhelezo_28919_by_TgEmodziBot
-https://t.me/addemoji/e26110310291a1cb7e_by_lemurkka_emoji_bot
 https://t.me/addemoji/MajorEmojis
 https://t.me/addemoji/Emoji_IOS_generation_by_Any
 https://t.me/addemoji/SmiliesVKEmoji
@@ -265,7 +261,6 @@ https://t.me/addemoji/OliverEmoji
 https://t.me/addemoji/GhostEmoji
 https://t.me/addemoji/RoboEmoji
 https://t.me/addemoji/MasksEmoji
-https://t.me/addemoji/memetop_by_TgEmojiBot
 https://t.me/addemoji/Kish_emoji_gray
 https://t.me/addemoji/emoji_Office_by_TgEmodziBot
 https://t.me/addemoji/pack_nu_pogodi_by_TgEmodziBot
@@ -273,7 +268,6 @@ https://t.me/addemoji/emojiadaptive_8a06f_by_TgEmodziBot
 https://t.me/addemoji/AndrPlush_by_TgEmodziBot
 https://t.me/addemoji/pack_Myth_Mask_by_by_EmojiRu_Bot
 https://t.me/addemoji/SupernaturalAirDsgn
-https://t.me/addemoji/zeeeeexexexesexcc_by_fStikBot
 https://t.me/addemoji/BratzPackAirDsgn
 https://t.me/addemoji/veritylover_by_photocropperbot
 https://t.me/addemoji/PulpFictionEmojiFTS
@@ -453,11 +447,9 @@ https://t.me/addemoji/CelesteHeartsCountries_2_by_TgEmodziBot
 https://t.me/addemoji/OrderFlagsKotletovv
 https://t.me/addemoji/worldroundflags1_by_fStikBot
 https://t.me/addemoji/FlagsEmoji2024
-https://t.me/addemoji/GeorgiPrem_by_TgEmodziBot
 https://t.me/addemoji/worldroundflags2_by_fStikBot
 https://t.me/addemoji/worldcup_z1vert1k
 https://t.me/addemoji/LingvoFlags
-https://t.me/addemoji/Flags_kotletovv
 https://t.me/addemoji/FlagsEmoji
 https://t.me/addemoji/FlagHearts
 https://t.me/addemoji/CountrySymbols
@@ -504,7 +496,6 @@ https://t.me/addemoji/BubbleEmoji
 https://t.me/addemoji/doodlepack_by_TgEmojiBot
 https://t.me/addemoji/dopamineemojis_by_TgEmodziBot
 https://t.me/addemoji/pack_Pastel_goth_by_TgEmodziBot
-https://t.me/addemoji/e261108201322beae9_by_lemurkka_emoji_bot
 https://t.me/addemoji/spamset
 https://t.me/addemoji/LoadingEmoji
 https://t.me/addemoji/SparklesEmoji

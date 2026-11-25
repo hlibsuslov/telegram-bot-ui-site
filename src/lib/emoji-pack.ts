@@ -14,6 +14,7 @@
 // retry_after is running.
 import "server-only";
 import { request } from "node:https";
+import type { ErrorCode } from "./emoji-api-contract";
 import { emojiFile, type Format } from "./emoji-card";
 import { fixtureAnimation, fixturePack, fixturePreview, fixturesOn } from "./emoji-fixtures";
 import { PACK_NAME } from "./emoji-pack-list";
@@ -47,12 +48,12 @@ interface Sticker {
 interface StickerSet { name: string; title?: string; sticker_type?: string; stickers?: Sticker[] }
 
 export class ResolverError extends Error {
-  constructor(readonly code: string, readonly status: number, message: string, readonly retryAfter?: number) {
+  constructor(readonly code: ErrorCode, readonly status: number, message: string, readonly retryAfter?: number) {
     super(message);
   }
 }
 
-function missing(code: string, message: string): never {
+function missing(code: ErrorCode, message: string): never {
   throw new ResolverError(code, 404, message);
 }
 
@@ -339,12 +340,21 @@ export async function animationFile(name: string, id: string): Promise<FileBody>
 // ------------------------------------------------------------------ per-client limit, errors
 
 // A fixed window per key: two numbers per client instead of a list of timestamps.
+// When the table is full, expired windows are dropped; if every window is live, new clients of an endpoint
+// share one overflow counter. Live counters are never reset, so a flood of new keys cannot refill anyone's limit.
 const hits = new Map<string, { start: number; n: number }>();
+const KEYS_MAX = 20_000;
 export function allow(key: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now();
   let w = hits.get(key);
+  if (!w && hits.size >= KEYS_MAX) {
+    for (const [k, v] of hits) if (now - v.start >= windowMs) hits.delete(k);
+    if (hits.size >= KEYS_MAX) {
+      key = `${key.slice(0, key.indexOf(":") + 1)}overflow`;
+      w = hits.get(key);
+    }
+  }
   if (!w || now - w.start >= windowMs) {
-    if (!w && hits.size > 20_000) hits.clear();
     w = { start: now, n: 0 };
     hits.set(key, w);
   }

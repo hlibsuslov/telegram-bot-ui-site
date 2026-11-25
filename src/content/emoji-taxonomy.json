@@ -1,0 +1,2115 @@
+{
+  "$comment": "Normalized tag taxonomy of the emoji library. One source of truth for scripts/emoji_taxonomy.py (tagging), lib/emoji-facets.ts (search, filters, API) and the telegram-bot-ui skill (pack picking through the API). Each value has an English and a Russian label and aliases: words found in the free-text tags of emoji-tags.txt that mean this value. Facets marked measured come from Telegram data or pixels, not from words. Style values also carry a `definition` and a `not` list: rubric text for the human or vision labeling pass, not read by code. `masks` are phrases cut out of a tag before its single words are matched, so \"hand drawn\" is not a hand. Use values (bot kinds) carry the inputs of their score: `needs` (interface roles), `lead`, `topics`, `styles`, `moods` and `avoid_topics`; facets.use.rule says how they combine.",
+  "version": 2,
+  "facets": {
+    "motion": {
+      "label": {
+        "en": "Motion",
+        "ru": "Движение"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "static": {
+          "en": "Static",
+          "ru": "Статичные",
+          "aliases": []
+        },
+        "animated": {
+          "en": "Animated",
+          "ru": "Анимированные",
+          "aliases": []
+        },
+        "video": {
+          "en": "Video",
+          "ru": "Видео",
+          "aliases": []
+        }
+      }
+    },
+    "fit": {
+      "label": {
+        "en": "Theme fit",
+        "ru": "Темы"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "adaptive": {
+          "en": "Adaptive (repainted in the text colour)",
+          "ru": "Адаптивные (цвет текста)",
+          "aliases": []
+        },
+        "both": {
+          "en": "Light and dark themes",
+          "ru": "Светлая и тёмная темы",
+          "aliases": []
+        },
+        "light": {
+          "en": "Light theme only",
+          "ru": "Только светлая тема",
+          "aliases": []
+        },
+        "dark": {
+          "en": "Dark theme only",
+          "ru": "Только тёмная тема",
+          "aliases": []
+        }
+      }
+    },
+    "color": {
+      "label": {
+        "en": "Colour",
+        "ru": "Цвет"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "red": {
+          "en": "Red",
+          "ru": "Красный",
+          "aliases": [
+            "red",
+            "crimson",
+            "scarlet",
+            "maroon",
+            "красный",
+            "красная",
+            "красное",
+            "червоний"
+          ]
+        },
+        "orange": {
+          "en": "Orange",
+          "ru": "Оранжевый",
+          "aliases": [
+            "orange",
+            "оранжевый",
+            "оранжевая",
+            "помаранчевий"
+          ]
+        },
+        "yellow": {
+          "en": "Yellow",
+          "ru": "Жёлтый",
+          "aliases": [
+            "yellow",
+            "lemon",
+            "желтый",
+            "желтая",
+            "жовтий"
+          ]
+        },
+        "gold": {
+          "en": "Gold",
+          "ru": "Золотой",
+          "aliases": [
+            "gold",
+            "golden",
+            "золотой",
+            "золотая",
+            "золотий"
+          ]
+        },
+        "green": {
+          "en": "Green",
+          "ru": "Зелёный",
+          "aliases": [
+            "green",
+            "lime",
+            "mint",
+            "olive",
+            "зеленый",
+            "зеленая",
+            "зелений"
+          ]
+        },
+        "teal": {
+          "en": "Teal",
+          "ru": "Бирюзовый",
+          "aliases": [
+            "teal",
+            "turquoise",
+            "cyan",
+            "aqua",
+            "бирюзовый",
+            "голубой",
+            "блакитний"
+          ]
+        },
+        "blue": {
+          "en": "Blue",
+          "ru": "Синий",
+          "aliases": [
+            "blue",
+            "navy",
+            "azure",
+            "синий",
+            "синяя",
+            "синій"
+          ]
+        },
+        "purple": {
+          "en": "Purple",
+          "ru": "Фиолетовый",
+          "aliases": [
+            "purple",
+            "violet",
+            "lilac",
+            "lavender",
+            "фиолетовый",
+            "фиолетовая",
+            "фіолетовий"
+          ]
+        },
+        "pink": {
+          "en": "Pink",
+          "ru": "Розовый",
+          "aliases": [
+            "pink",
+            "magenta",
+            "rose",
+            "розовый",
+            "розовая",
+            "рожевий"
+          ]
+        },
+        "brown": {
+          "en": "Brown",
+          "ru": "Коричневый",
+          "aliases": [
+            "brown",
+            "beige",
+            "tan",
+            "коричневый",
+            "бежевый",
+            "коричневий",
+            "bronze",
+            "бронза"
+          ]
+        },
+        "black": {
+          "en": "Black",
+          "ru": "Чёрный",
+          "aliases": [
+            "black",
+            "черный",
+            "черная",
+            "чорний"
+          ]
+        },
+        "white": {
+          "en": "White",
+          "ru": "Белый",
+          "aliases": [
+            "white",
+            "белый",
+            "белая",
+            "білий"
+          ]
+        },
+        "gray": {
+          "en": "Grey",
+          "ru": "Серый",
+          "aliases": [
+            "gray",
+            "grey",
+            "silver",
+            "серый",
+            "серая",
+            "серебряный",
+            "сірий"
+          ]
+        }
+      }
+    },
+    "palette": {
+      "label": {
+        "en": "Palette",
+        "ru": "Палитра"
+      },
+      "measured": true,
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "monochrome": {
+          "en": "Monochrome",
+          "ru": "Монохром",
+          "aliases": [
+            "monochrome",
+            "mono",
+            "монохром",
+            "монохромный",
+            "greyscale",
+            "grayscale",
+            "bw",
+            "black and white"
+          ]
+        },
+        "muted": {
+          "en": "Muted",
+          "ru": "Приглушённая",
+          "aliases": [
+            "muted",
+            "pastel",
+            "soft",
+            "пастельный",
+            "пастельная"
+          ]
+        },
+        "vivid": {
+          "en": "Vivid",
+          "ru": "Яркая",
+          "aliases": [
+            "vivid",
+            "bright",
+            "saturated",
+            "яркий",
+            "яркая"
+          ]
+        },
+        "multicolor": {
+          "en": "Multicolour",
+          "ru": "Разноцветная",
+          "aliases": [
+            "colorful",
+            "colourful",
+            "rainbow",
+            "multicolor",
+            "разноцветный",
+            "радужный"
+          ]
+        }
+      }
+    },
+    "style": {
+      "label": {
+        "en": "Style",
+        "ru": "Стиль"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "outline": {
+          "en": "Outline",
+          "ru": "Контурный",
+          "aliases": [
+            "outline",
+            "outlined",
+            "line",
+            "lines",
+            "stroke",
+            "contour",
+            "контур",
+            "контурный",
+            "линейный",
+            "wireframe",
+            "linear"
+          ],
+          "definition": "Shapes are drawn as strokes only: one even line weight (about 1.5 to 3 px on a 24 px grid), open or closed contours, no solid fill (at most a faint tint), flat frontal view, no cast or inner shadows, no gradients. Clean vector rendering.",
+          "not": [
+            "Solid filled shapes with no contour line (that is glyph)",
+            "Line weight that varies or wobbles like a pen stroke (that is hand-drawn)",
+            "Shading, gradient or lighting inside the shape (that is flat, gradient or 3d)",
+            "A thin edge around a coloured cartoon fill (that is cartoon or flat)"
+          ]
+        },
+        "glyph": {
+          "en": "Solid glyph",
+          "ru": "Заливка, глиф",
+          "aliases": [
+            "glyph",
+            "solid",
+            "filled",
+            "silhouette",
+            "силуэт",
+            "заливка"
+          ],
+          "definition": "A solid one-colour silhouette: shapes are filled, interior detail is cut out as negative space or thin gaps, no stroke-only parts, a single flat colour (often monochrome or repaintable), frontal view, no shadows, no gradient.",
+          "not": [
+            "Hollow stroke-only shapes (that is outline)",
+            "Several colours or colour regions (that is flat)",
+            "Shading, highlights or gradients (that is gradient, glossy or 3d)",
+            "Platform or brand app tiles (that is native-ui)"
+          ]
+        },
+        "flat": {
+          "en": "Flat",
+          "ru": "Плоский",
+          "aliases": [
+            "flat",
+            "плоский",
+            "flat icon",
+            "flat style",
+            "vector",
+            "minimal",
+            "minimalist"
+          ],
+          "definition": "Several colours as solid fills with no gradient, texture, highlight or shading. Contours are absent or thin and uniform. Geometry is simplified, seen from the front or side without perspective, at most one hard offset one-tone shadow. Vector rendering.",
+          "not": [
+            "Soft gradients, glow or highlights (that is gradient or glossy)",
+            "Volume from shading, bevels or perspective (that is 3d)",
+            "One colour only (that is glyph or outline)",
+            "Thick dark outlines with exaggerated proportions (that is cartoon)",
+            "Wobbly hand-made edges (that is hand-drawn)"
+          ]
+        },
+        "3d": {
+          "en": "3D",
+          "ru": "3D",
+          "aliases": [
+            "3d",
+            "volumetric",
+            "объемный",
+            "объёмный",
+            "3d render",
+            "clay",
+            "plastic",
+            "embossed",
+            "рельеф",
+            "isometric",
+            "plasticine"
+          ],
+          "definition": "Rendered volume: objects have depth, perspective or an isometric view, one consistent light source with soft cast and contact shadows, bevels and material shading (matte, plastic, clay), smooth gradients across curved surfaces. Looks like CGI or a clay model.",
+          "not": [
+            "A flat shape with only a drop shadow (that is flat)",
+            "A gloss highlight on a 2D shape with no real form shading (that is glossy)",
+            "Photographs or photo textures (that is realistic)",
+            "Extruded letters or numbers as the subject (that is lettering)"
+          ]
+        },
+        "glossy": {
+          "en": "Glossy",
+          "ru": "Глянцевый",
+          "aliases": [
+            "glossy",
+            "shiny",
+            "glass",
+            "glassy",
+            "глянцевый",
+            "блестящий",
+            "стеклянный"
+          ],
+          "definition": "Glass or plastic shine on an icon: specular highlights and reflections, a bright glare band across the top, translucent or candy-coloured fills, soft glow, often a bevel. The shape stays a 2D icon with a light-to-dark gradient and a light drop shadow, not a full 3D model.",
+          "not": [
+            "Matte shapes with no highlight (that is flat)",
+            "A gradient fill without highlight or reflection (that is gradient)",
+            "A full 3D form with perspective and a cast shadow (that is 3d)",
+            "Light glow of tubes or lines on a dark ground (that is neon)"
+          ]
+        },
+        "gradient": {
+          "en": "Gradient",
+          "ru": "Градиент",
+          "aliases": [
+            "gradient",
+            "градиент",
+            "градиентный",
+            "holographic",
+            "iridescent",
+            "ombre"
+          ],
+          "definition": "Smooth colour transitions carry the form: fills blend between two or more hues (linear, radial or mesh) on frontal shapes, no highlights or reflections, no outline or a very thin one, at most a soft shadow.",
+          "not": [
+            "Solid single-tone fills (that is flat)",
+            "Specular highlights, reflections or a glass look (that is glossy)",
+            "Volume, bevels or perspective (that is 3d)",
+            "Light emission on a dark background (that is neon)"
+          ]
+        },
+        "neon": {
+          "en": "Neon",
+          "ru": "Неон",
+          "aliases": [
+            "neon",
+            "glow",
+            "glowing",
+            "неон",
+            "неоновый",
+            "светящийся"
+          ],
+          "definition": "A light-emitting look: bright saturated lines or fills with an outer glow or bloom and often a white inner core, made for dark backgrounds. Thin to medium tube-like strokes, no shaded solid body, dark or empty space around the shape.",
+          "not": [
+            "A coloured outline with no glow (that is outline)",
+            "Pastel or muted colours with a soft shadow (that is flat or gradient)",
+            "Gloss on a solid body (that is glossy)",
+            "A glow added to a photo or 3D render (the base look decides)"
+          ]
+        },
+        "pixel": {
+          "en": "Pixel art",
+          "ru": "Пиксель-арт",
+          "aliases": [
+            "pixel",
+            "pixelated",
+            "8bit",
+            "minecraft",
+            "пиксель",
+            "пиксельный"
+          ],
+          "definition": "Built on a visible square pixel grid: hard stair-stepped edges without anti-aliasing, a limited palette, one-pixel outlines or none, dithering instead of smooth shading, flat frontal or side view, typically 8 to 32 pixels per side scaled up.",
+          "not": [
+            "Smooth vector edges, even if the shapes are blocky (that is flat)",
+            "A large picture cut into tiles (that is mosaic)",
+            "A blurry low-resolution photo or JPEG artefacts (that is realistic)",
+            "A pixel-style typeface only (that is lettering)"
+          ]
+        },
+        "hand-drawn": {
+          "en": "Hand-drawn",
+          "ru": "Рисованный",
+          "aliases": [
+            "doodle",
+            "sketch",
+            "hand-drawn",
+            "handdrawn",
+            "drawn",
+            "scribble",
+            "рисованный",
+            "скетч",
+            "дудл",
+            "watercolor",
+            "watercolour",
+            "crayon",
+            "акварель",
+            "drawing",
+            "painting",
+            "paint",
+            "painted",
+            "hand drawn",
+            "hand painted",
+            "hand-painted"
+          ],
+          "definition": "Marks made by hand: uneven or wobbly lines of changing width, imperfect closed shapes, visible pen, pencil, crayon, marker or brush texture, scribbled or hatched shading, watercolour bleed, small differences between repeated parts.",
+          "not": [
+            "Perfectly even vector strokes (that is outline)",
+            "Clean solid-colour shapes (that is flat or cartoon)",
+            "Smooth digital painting that looks like a photo (that is realistic)",
+            "Handwriting only, with no drawing (that is lettering)"
+          ]
+        },
+        "cartoon": {
+          "en": "Cartoon",
+          "ru": "Мультяшный",
+          "aliases": [
+            "cartoon",
+            "anime",
+            "chibi",
+            "kawaii",
+            "мультяшный",
+            "аниме",
+            "comic",
+            "комикс",
+            "manga",
+            "манга",
+            "cartoonish",
+            "toon"
+          ],
+          "definition": "Expressive character drawing: bold dark outlines, exaggerated proportions and big eyes or faces, saturated colours with simple cel shading or one-tone shadows, a lively pose, frontal or three-quarter view. Anime and chibi count.",
+          "not": [
+            "No outline and geometric simplified shapes (that is flat)",
+            "Real anatomy, fur or skin texture (that is realistic)",
+            "Wobbly pencil or marker lines (that is hand-drawn)",
+            "A visible pixel grid (that is pixel)",
+            "A generic round system-emoji face (that is emoji-like)"
+          ]
+        },
+        "realistic": {
+          "en": "Realistic",
+          "ru": "Реалистичный",
+          "aliases": [
+            "realistic",
+            "photo",
+            "photorealistic",
+            "реалистичный",
+            "фото",
+            "collage",
+            "photos",
+            "коллаж",
+            "selfie",
+            "polaroid",
+            "snapshot",
+            "photograph",
+            "фотография",
+            "realism"
+          ],
+          "definition": "Photographic or photoreal rendering: real textures (fur, skin, metal, fabric), natural lighting, true proportions, subtle shadows and depth of field, no outlines. A photo, a photo collage or a painting that copies a photo.",
+          "not": [
+            "A smooth CGI or clay look with idealised shapes (that is 3d)",
+            "Outlines and exaggerated proportions (that is cartoon)",
+            "Flat or gradient vector fills (that is flat or gradient)",
+            "A standard system-emoji face (that is emoji-like)"
+          ]
+        },
+        "native-ui": {
+          "en": "Native app icons",
+          "ru": "Как в приложении",
+          "aliases": [
+            "ios",
+            "android",
+            "macos",
+            "sf symbols",
+            "material",
+            "app icon",
+            "interface",
+            "ui"
+          ],
+          "definition": "Icons that match a real app or operating-system icon set (SF Symbols, Material, app-store tiles, brand app logos): uniform stroke or fill weight, rounded-corner grid geometry, one colour or a brand colour often on a rounded-square tile, simple flat or lightly shaded rendering, no characters or scene detail.",
+          "not": [
+            "Free-form line icons with irregular weight (that is outline or hand-drawn)",
+            "Character, scene or illustrated artwork (that is cartoon or realistic)",
+            "Strong bevel, glass or depth effects (that is glossy or 3d)",
+            "Decorative letters or words (that is lettering)"
+          ]
+        },
+        "lettering": {
+          "en": "Letters and fonts",
+          "ru": "Буквы и шрифты",
+          "aliases": [
+            "font",
+            "fonts",
+            "uppercase",
+            "lowercase",
+            "typeface",
+            "alphabet font",
+            "шрифт",
+            "шрифты",
+            "italic",
+            "capital",
+            "alphabet",
+            "wordmark",
+            "typography",
+            "comic sans"
+          ],
+          "definition": "Letters, digits or words are the subject: a typeface or hand-lettered alphabet drawn consistently across a set, glyphs fill the frame, stroke weight and fill follow the typeface. Effects such as outline, extrusion, gradient or glow are applied to the letterform and get their own style tag.",
+          "not": [
+            "An icon or picture that only contains one letter or a word, such as a logo with a wordmark (that is flat or native-ui)",
+            "A caption, banner or label placed on an illustration (the illustration decides the style)",
+            "A symbol or sign that is not part of an alphabet or number set (that is glyph or outline)"
+          ]
+        },
+        "emoji-like": {
+          "en": "Emoji style",
+          "ru": "Как эмодзи",
+          "aliases": [
+            "emoji style",
+            "smiley",
+            "смайлик"
+          ],
+          "definition": "Looks like a standard system emoji set (Apple, Google Noto, Twemoji, Samsung): round or simple object glyphs, soft gradient shading, thin darker outline or none, centred and symmetric, simple friendly faces, a subtle drop shadow, square canvas with even padding.",
+          "not": [
+            "A character or mascot with its own proportions (that is cartoon)",
+            "Monochrome interface icons (that is outline or glyph)",
+            "Photos or photoreal faces (that is realistic)",
+            "Pixel or hand-drawn marks (that is pixel or hand-drawn)"
+          ]
+        },
+        "mosaic": {
+          "en": "Mosaic tiles",
+          "ru": "Мозаика",
+          "aliases": [
+            "mosaic",
+            "piece",
+            "fragment",
+            "part of",
+            "мозаика",
+            "часть",
+            "фрагмент",
+            "обрывок",
+            "part"
+          ],
+          "definition": "One larger picture or pattern is cut into a grid of equal tiles. Each emoji is a fragment that makes sense only beside the others: edges are cropped straight and seams line up across the set.",
+          "not": [
+            "A single complete picture that stands on its own (any other style)",
+            "One small image built on a pixel grid (that is pixel)",
+            "A set where every emoji repeats the same motif and nothing is cut (that is flat)",
+            "A collage of unrelated photos (that is realistic)"
+          ]
+        }
+      }
+    },
+    "topic": {
+      "label": {
+        "en": "Topic",
+        "ru": "Тематика"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "interface": {
+          "en": "Interface",
+          "ru": "Интерфейс",
+          "aliases": [
+            "icon",
+            "button",
+            "arrow",
+            "settings",
+            "menu",
+            "интерфейс",
+            "иконка",
+            "кнопка",
+            "стрелка",
+            "chevron",
+            "меню",
+            "настройки",
+            "loading",
+            "загрузка",
+            "spinner",
+            "user",
+            "avatar",
+            "profile",
+            "поиск",
+            "search",
+            "link",
+            "ссылка",
+            "notification",
+            "cursor",
+            "toggle",
+            "pin",
+            "pushpin",
+            "thumbtack",
+            "pinned",
+            "булавка"
+          ]
+        },
+        "status": {
+          "en": "Status and signs",
+          "ru": "Статусы и знаки",
+          "aliases": [
+            "check",
+            "checkmark",
+            "cross",
+            "warning",
+            "verified",
+            "badge",
+            "sign",
+            "mark",
+            "галочка",
+            "крестик",
+            "знак",
+            "значок",
+            "значки",
+            "verification",
+            "верификация",
+            "verify",
+            "done",
+            "success",
+            "alert",
+            "siren",
+            "тревога",
+            "stop",
+            "ban",
+            "prohibited",
+            "запрет",
+            "запрещено",
+            "information",
+            "информация"
+          ]
+        },
+        "brands": {
+          "en": "Brands and logos",
+          "ru": "Бренды и логотипы",
+          "aliases": [
+            "logo",
+            "brand",
+            "app",
+            "google",
+            "telegram",
+            "apple",
+            "steam",
+            "логотип",
+            "бренд",
+            "лого",
+            "emblem",
+            "wordmark",
+            "гугл",
+            "microsoft",
+            "adobe",
+            "youtube",
+            "ютуб",
+            "instagram",
+            "twitter",
+            "твиттер",
+            "эппл",
+            "android",
+            "андроид",
+            "телеграм",
+            "whatsapp",
+            "facebook",
+            "tiktok",
+            "bmw",
+            "mercedes",
+            "tesla"
+          ]
+        },
+        "finance": {
+          "en": "Money and crypto",
+          "ru": "Деньги и крипта",
+          "aliases": [
+            "money",
+            "coin",
+            "dollar",
+            "bank",
+            "payment",
+            "crypto",
+            "token",
+            "bitcoin",
+            "ton",
+            "card",
+            "деньги",
+            "монета",
+            "крипта",
+            "оплата",
+            "wallet",
+            "кошелек",
+            "cash",
+            "banknote",
+            "купюра",
+            "currency",
+            "валюта",
+            "exchange",
+            "euro",
+            "евро",
+            "доллар",
+            "биткоин",
+            "ethereum",
+            "binance",
+            "бинанс",
+            "btc",
+            "bnb",
+            "usdt",
+            "stablecoin",
+            "nft"
+          ]
+        },
+        "letters": {
+          "en": "Letters and numbers",
+          "ru": "Буквы и цифры",
+          "aliases": [
+            "letter",
+            "digit",
+            "number",
+            "font",
+            "cyrillic",
+            "latin",
+            "буква",
+            "цифра",
+            "число",
+            "надпись",
+            "надписи",
+            "inscription",
+            "caption",
+            "alphabet",
+            "italic",
+            "capital",
+            "капс",
+            "bracket",
+            "parenthesis",
+            "скобка",
+            "quote",
+            "кавычки",
+            "russian letter",
+            "русская буква"
+          ]
+        },
+        "faces": {
+          "en": "Faces and emotions",
+          "ru": "Лица и эмоции",
+          "aliases": [
+            "face",
+            "smile",
+            "smiley",
+            "eyes",
+            "mouth",
+            "лицо",
+            "улыбка",
+            "глаза",
+            "emoticon",
+            "эмоции",
+            "lips",
+            "губы",
+            "teeth",
+            "зубы",
+            "nose",
+            "ears"
+          ]
+        },
+        "characters": {
+          "en": "Characters and memes",
+          "ru": "Персонажи и мемы",
+          "aliases": [
+            "pepe",
+            "meme",
+            "character",
+            "girl",
+            "boy",
+            "man",
+            "woman",
+            "anime",
+            "пепе",
+            "мем",
+            "персонаж",
+            "девушка",
+            "девушку",
+            "парень",
+            "мужчина",
+            "женщина",
+            "rick",
+            "morty",
+            "рик",
+            "морти",
+            "pusheen",
+            "mascot",
+            "талисман",
+            "doll",
+            "кукла",
+            "rukia",
+            "hair",
+            "волосы",
+            "portrait",
+            "портрет"
+          ]
+        },
+        "animals": {
+          "en": "Animals",
+          "ru": "Животные",
+          "aliases": [
+            "cat",
+            "dog",
+            "duck",
+            "bird",
+            "bear",
+            "bunny",
+            "rabbit",
+            "hamster",
+            "frog",
+            "pig",
+            "animal",
+            "paw",
+            "кот",
+            "кошка",
+            "собака",
+            "утка",
+            "животное",
+            "wolf",
+            "волк",
+            "puppy",
+            "щенок",
+            "pony",
+            "пони",
+            "kitten",
+            "котенок",
+            "fish",
+            "рыба",
+            "кролик",
+            "лягушка",
+            "spider",
+            "паук",
+            "owl",
+            "fox",
+            "horse",
+            "лошадь",
+            "lion",
+            "whale",
+            "shark",
+            "panda",
+            "monkey",
+            "обезьяна",
+            "chicken",
+            "chick",
+            "butterfly",
+            "бабочка",
+            "hedgehog",
+            "ежик",
+            "мишка",
+            "медведь",
+            "хомяк",
+            "птица",
+            "tiger",
+            "elephant",
+            "snake",
+            "turtle",
+            "penguin",
+            "cow",
+            "sheep",
+            "bat",
+            "летучая мышь"
+          ]
+        },
+        "food": {
+          "en": "Food and drink",
+          "ru": "Еда и напитки",
+          "aliases": [
+            "food",
+            "drink",
+            "cup",
+            "coffee",
+            "cake",
+            "candy",
+            "fruit",
+            "еда",
+            "напиток",
+            "кофе",
+            "торт",
+            "ice cream",
+            "мороженое",
+            "chocolate",
+            "шоколад",
+            "cookie",
+            "печенье",
+            "pizza",
+            "пицца",
+            "burger",
+            "sushi",
+            "суши",
+            "bread",
+            "хлеб",
+            "dessert",
+            "cupcake",
+            "кекс",
+            "strawberry",
+            "клубника",
+            "peach",
+            "яблоко",
+            "berries",
+            "vegetable",
+            "овощ",
+            "egg",
+            "яйцо",
+            "mushroom",
+            "гриб",
+            "wine",
+            "champagne",
+            "tea",
+            "чай",
+            "toast",
+            "pie",
+            "леденец",
+            "banana",
+            "hot dog",
+            "hotdog",
+            "хот-дог",
+            "хотдог"
+          ]
+        },
+        "nature": {
+          "en": "Nature and weather",
+          "ru": "Природа и погода",
+          "aliases": [
+            "flower",
+            "flowers",
+            "leaf",
+            "leaves",
+            "tree",
+            "sun",
+            "moon",
+            "cloud",
+            "snow",
+            "rain",
+            "weather",
+            "planet",
+            "цветок",
+            "лист",
+            "погода",
+            "луна",
+            "луны",
+            "луну",
+            "солнце",
+            "облако",
+            "облака",
+            "планета",
+            "sea",
+            "ocean",
+            "море",
+            "water",
+            "grass",
+            "branch",
+            "ветка",
+            "petals",
+            "bouquet",
+            "букет",
+            "sakura",
+            "цветы",
+            "листья",
+            "galaxy",
+            "космос",
+            "cosmos",
+            "ufo",
+            "нло",
+            "astronaut",
+            "космонавт",
+            "mountain",
+            "forest",
+            "sky",
+            "wind",
+            "alien",
+            "пришелец",
+            "пришельцы",
+            "palm tree"
+          ]
+        },
+        "holidays": {
+          "en": "Holidays",
+          "ru": "Праздники",
+          "aliases": [
+            "christmas",
+            "halloween",
+            "pumpkin",
+            "new year",
+            "easter",
+            "party",
+            "birthday",
+            "gift",
+            "рождество",
+            "хэллоуин",
+            "праздник",
+            "тыква",
+            "тыкву",
+            "хеллоуин",
+            "новый год",
+            "новогодний",
+            "санта",
+            "santa",
+            "елка",
+            "елки",
+            "снеговик",
+            "snowman",
+            "balloon",
+            "confetti",
+            "celebration",
+            "carnival",
+            "подарок",
+            "подарки",
+            "день рождения",
+            "xmas",
+            "candle",
+            "свеча"
+          ]
+        },
+        "love": {
+          "en": "Love",
+          "ru": "Любовь",
+          "aliases": [
+            "heart",
+            "hearts",
+            "love",
+            "kiss",
+            "couple",
+            "сердце",
+            "любовь",
+            "поцелуй",
+            "поцелуи",
+            "сердечки",
+            "сердечко",
+            "влюблен",
+            "разбитое"
+          ]
+        },
+        "flags": {
+          "en": "Flags and places",
+          "ru": "Флаги и места",
+          "aliases": [
+            "flag",
+            "country",
+            "city",
+            "map",
+            "флаг",
+            "страна",
+            "location",
+            "геолокация"
+          ]
+        },
+        "games": {
+          "en": "Games",
+          "ru": "Игры",
+          "aliases": [
+            "game",
+            "games",
+            "minecraft",
+            "pokemon",
+            "controller",
+            "dice",
+            "игра",
+            "покемон",
+            "покебол",
+            "pokeball",
+            "gaming",
+            "mario",
+            "марио",
+            "gta",
+            "joystick",
+            "gamepad",
+            "chess",
+            "шахматы"
+          ]
+        },
+        "tech": {
+          "en": "Tech and AI",
+          "ru": "Техника и ИИ",
+          "aliases": [
+            "ai",
+            "robot",
+            "phone",
+            "keyboard",
+            "computer",
+            "laptop",
+            "code",
+            "chip",
+            "ии",
+            "робот",
+            "browser",
+            "network",
+            "mobile",
+            "server",
+            "wifi",
+            "wi-fi",
+            "usb",
+            "bluetooth",
+            "battery",
+            "screen",
+            "monitor",
+            "display",
+            "vpn",
+            "bot",
+            "gpt",
+            "chatgpt",
+            "openai",
+            "neural",
+            "нейросеть",
+            "телефон",
+            "ноутбук",
+            "компьютер",
+            "клавиатура",
+            "смартфон",
+            "processor",
+            "cpu",
+            "gpu",
+            "software",
+            "program",
+            "программа",
+            "data",
+            "database",
+            "binary",
+            "cyber",
+            "hacker",
+            "microchip",
+            "circuit"
+          ]
+        },
+        "travel": {
+          "en": "Travel and transport",
+          "ru": "Путешествия и транспорт",
+          "aliases": [
+            "car",
+            "plane",
+            "train",
+            "travel",
+            "машина",
+            "самолет",
+            "sports car",
+            "sport car",
+            "airplane",
+            "bus",
+            "taxi",
+            "ship",
+            "корабль",
+            "boat",
+            "лодка",
+            "passport",
+            "паспорт",
+            "ticket",
+            "билет",
+            "hotel",
+            "отель",
+            "airport",
+            "аэропорт",
+            "suitcase",
+            "luggage",
+            "чемодан",
+            "road",
+            "дорога",
+            "helicopter",
+            "bike",
+            "bicycle",
+            "motorcycle",
+            "автомобиль",
+            "поезд",
+            "путешествие",
+            "vacation",
+            "journey",
+            "trip",
+            "вокзал"
+          ]
+        },
+        "music": {
+          "en": "Music and media",
+          "ru": "Музыка и медиа",
+          "aliases": [
+            "music",
+            "note",
+            "play",
+            "video",
+            "camera",
+            "музыка",
+            "headphones",
+            "наушники",
+            "microphone",
+            "микрофон",
+            "guitar",
+            "гитара",
+            "piano",
+            "speaker",
+            "sound",
+            "звук",
+            "song",
+            "песня",
+            "radio",
+            "podcast",
+            "streaming",
+            "cinema",
+            "movie",
+            "film",
+            "фильм",
+            "audio",
+            "volume",
+            "vinyl",
+            "melody"
+          ]
+        },
+        "sport": {
+          "en": "Sport",
+          "ru": "Спорт",
+          "aliases": [
+            "sport",
+            "спорт",
+            "football",
+            "soccer",
+            "футбол",
+            "hockey",
+            "хоккей",
+            "basketball",
+            "баскетбол",
+            "volleyball",
+            "tennis",
+            "теннис",
+            "baseball",
+            "golf",
+            "boxing",
+            "бокс",
+            "rugby",
+            "gym",
+            "fitness",
+            "фитнес",
+            "dumbbell",
+            "гантель",
+            "medal",
+            "медаль",
+            "trophy",
+            "трофей",
+            "champion",
+            "чемпион",
+            "olympic",
+            "running",
+            "swimming",
+            "skiing",
+            "skating",
+            "bowling",
+            "billiards",
+            "whistle",
+            "stadium",
+            "стадион"
+          ]
+        },
+        "office": {
+          "en": "Office and work",
+          "ru": "Офис и работа",
+          "aliases": [
+            "office",
+            "офис",
+            "desk",
+            "document",
+            "документ",
+            "folder",
+            "папка",
+            "file",
+            "файл",
+            "briefcase",
+            "портфель",
+            "paperclip",
+            "скрепка",
+            "clipboard",
+            "stapler",
+            "printer",
+            "принтер",
+            "notepad",
+            "блокнот",
+            "calendar",
+            "календарь",
+            "meeting",
+            "встреча",
+            "report",
+            "отчет",
+            "presentation",
+            "презентация",
+            "business",
+            "бизнес",
+            "worker",
+            "employee",
+            "manager",
+            "paper clip"
+          ]
+        },
+        "people": {
+          "en": "People and gestures",
+          "ru": "Люди и жесты",
+          "aliases": [
+            "hand",
+            "рука",
+            "руку",
+            "рук",
+            "ладонь",
+            "finger",
+            "палец",
+            "пальцы",
+            "thumb",
+            "fist",
+            "кулак",
+            "palm",
+            "gesture",
+            "жест",
+            "handshake",
+            "рукопожатие",
+            "clapping",
+            "person",
+            "people",
+            "human",
+            "человек",
+            "люди",
+            "family",
+            "baby",
+            "kid",
+            "child",
+            "ребенок"
+          ]
+        },
+        "symbols": {
+          "en": "Symbols and shapes",
+          "ru": "Символы и фигуры",
+          "aliases": [
+            "star",
+            "starry",
+            "звезда",
+            "звездочка",
+            "звездный",
+            "crown",
+            "корона",
+            "корону",
+            "fire",
+            "flame",
+            "огонь",
+            "огня",
+            "огонек",
+            "огоньки",
+            "пламя",
+            "gem",
+            "gemstone",
+            "jewel",
+            "diamond",
+            "crystal",
+            "алмаз",
+            "бриллиант",
+            "кристалл",
+            "самоцвет",
+            "lightning",
+            "bolt",
+            "thunderbolt",
+            "молния",
+            "circle",
+            "круг",
+            "кружок",
+            "square",
+            "квадрат",
+            "triangle",
+            "треугольник",
+            "hexagon",
+            "octagon",
+            "pentagon",
+            "polygon",
+            "rhombus",
+            "cube",
+            "infinity",
+            "spiral",
+            "dot",
+            "точка",
+            "точку",
+            "ring",
+            "shape"
+          ]
+        },
+        "decor": {
+          "en": "Effects and decor",
+          "ru": "Эффекты и декор",
+          "aliases": [
+            "sparkle",
+            "sparkles",
+            "glitter",
+            "frame",
+            "swirl",
+            "bow",
+            "ribbon",
+            "блеск",
+            "декор",
+            "ornament",
+            "ornate",
+            "divider",
+            "разделитель",
+            "flourish",
+            "border",
+            "garland",
+            "украшение",
+            "декорация",
+            "рамка",
+            "spark",
+            "искра",
+            "бант",
+            "бантик",
+            "decoration",
+            "decorative"
+          ]
+        }
+      }
+    },
+    "mood": {
+      "label": {
+        "en": "Mood",
+        "ru": "Настроение"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "joyful": {
+          "en": "Joyful",
+          "ru": "Радостное",
+          "aliases": [
+            "happy",
+            "smiling",
+            "laughing",
+            "joy",
+            "excited",
+            "party",
+            "радость",
+            "смех",
+            "веселый",
+            "grin",
+            "grinning",
+            "dancing",
+            "dance",
+            "танец",
+            "радостный",
+            "celebration",
+            "cheerful",
+            "весело"
+          ]
+        },
+        "playful": {
+          "en": "Playful",
+          "ru": "Игривое",
+          "aliases": [
+            "funny",
+            "cute",
+            "tongue",
+            "wink",
+            "silly",
+            "смешной",
+            "милый",
+            "игривый",
+            "cool",
+            "крутой",
+            "smirk",
+            "smug",
+            "ухмылка",
+            "crazy",
+            "derp",
+            "подмигивает",
+            "sunglasses"
+          ]
+        },
+        "loving": {
+          "en": "Loving",
+          "ru": "Нежное",
+          "aliases": [
+            "love",
+            "kiss",
+            "hearts",
+            "blush",
+            "нежный",
+            "любовь",
+            "поцелуй",
+            "влюблен",
+            "hug",
+            "hugging",
+            "обнимашки",
+            "blushing"
+          ]
+        },
+        "sad": {
+          "en": "Sad",
+          "ru": "Грустное",
+          "aliases": [
+            "sad",
+            "crying",
+            "tears",
+            "грустный",
+            "плачет",
+            "грусть",
+            "грустно",
+            "плач",
+            "sobbing",
+            "upset",
+            "lonely",
+            "одиночество"
+          ]
+        },
+        "angry": {
+          "en": "Angry",
+          "ru": "Злое",
+          "aliases": [
+            "angry",
+            "rage",
+            "mad",
+            "злой",
+            "гнев",
+            "злость",
+            "annoyed",
+            "grumpy",
+            "rude",
+            "злится"
+          ]
+        },
+        "surprised": {
+          "en": "Surprised",
+          "ru": "Удивлённое",
+          "aliases": [
+            "shocked",
+            "surprised",
+            "wow",
+            "удивлен",
+            "шок",
+            "крик",
+            "screaming",
+            "scream",
+            "удивление",
+            "dizzy",
+            "шокирован"
+          ]
+        },
+        "scary": {
+          "en": "Spooky",
+          "ru": "Жуткое",
+          "aliases": [
+            "skull",
+            "ghost",
+            "witch",
+            "scary",
+            "horror",
+            "череп",
+            "призрак",
+            "привидение",
+            "скелет",
+            "skeleton",
+            "zombie",
+            "зомби",
+            "vampire",
+            "devil",
+            "дьявол",
+            "demon",
+            "creepy",
+            "bloody",
+            "blood",
+            "mummy",
+            "grim"
+          ]
+        },
+        "calm": {
+          "en": "Calm",
+          "ru": "Спокойное",
+          "aliases": [
+            "calm",
+            "sleeping",
+            "neutral",
+            "relaxed",
+            "спокойный",
+            "спит",
+            "tired",
+            "sleepy",
+            "sleep",
+            "zzz",
+            "сон",
+            "cozy",
+            "meh",
+            "bored",
+            "peaceful",
+            "спокойствие",
+            "усталый"
+          ]
+        },
+        "serious": {
+          "en": "Neutral and business-like",
+          "ru": "Нейтральное, деловое",
+          "aliases": [
+            "icon",
+            "logo",
+            "badge",
+            "business",
+            "official",
+            "деловой",
+            "serious",
+            "formal",
+            "strict",
+            "серьезный"
+          ]
+        }
+      }
+    },
+    "role": {
+      "label": {
+        "en": "Role in an interface",
+        "ru": "Роль в интерфейсе"
+      },
+      "scope": [
+        "pack",
+        "emoji"
+      ],
+      "values": {
+        "navigation": {
+          "en": "Navigation",
+          "ru": "Навигация",
+          "slot_groups": [
+            "navigation"
+          ],
+          "aliases": [
+            "arrow",
+            "back",
+            "next",
+            "home",
+            "menu",
+            "forward",
+            "chevron",
+            "вправо",
+            "влево",
+            "вверх",
+            "вниз",
+            "назад",
+            "вперед"
+          ]
+        },
+        "action": {
+          "en": "Actions",
+          "ru": "Действия",
+          "slot_groups": [
+            "actions",
+            "files",
+            "media"
+          ],
+          "aliases": [
+            "add",
+            "plus",
+            "delete",
+            "edit",
+            "copy",
+            "share",
+            "download",
+            "send",
+            "search",
+            "cancel",
+            "refresh",
+            "upload",
+            "save",
+            "плюс",
+            "минус",
+            "minus",
+            "paper plane",
+            "paper airplane",
+            "бумажный самолетик",
+            "бумажный самолет"
+          ]
+        },
+        "status": {
+          "en": "Status and feedback",
+          "ru": "Статус и отклик",
+          "slot_groups": [
+            "status",
+            "warnings"
+          ],
+          "aliases": [
+            "check",
+            "checkmark",
+            "cross",
+            "warning",
+            "exclamation",
+            "question",
+            "loading",
+            "done",
+            "success",
+            "alert",
+            "siren",
+            "stop",
+            "info",
+            "information",
+            "notification",
+            "тревога",
+            "загрузка"
+          ]
+        },
+        "commerce": {
+          "en": "Shop and money",
+          "ru": "Магазин и деньги",
+          "slot_groups": [
+            "commerce",
+            "finance"
+          ],
+          "aliases": [
+            "cart",
+            "money",
+            "coin",
+            "card",
+            "payment",
+            "store",
+            "wallet",
+            "shopping",
+            "shop",
+            "cash",
+            "buy",
+            "pay",
+            "basket",
+            "кошелек",
+            "магазин",
+            "покупки",
+            "купюра"
+          ]
+        },
+        "communication": {
+          "en": "Chat and people",
+          "ru": "Общение и люди",
+          "slot_groups": [
+            "communication",
+            "people"
+          ],
+          "aliases": [
+            "chat",
+            "bubble",
+            "message",
+            "phone",
+            "mail",
+            "speech",
+            "чат",
+            "сообщение",
+            "messenger",
+            "envelope",
+            "письмо",
+            "email",
+            "call",
+            "телефон",
+            "megaphone",
+            "announcement"
+          ]
+        },
+        "settings": {
+          "en": "Settings and data",
+          "ru": "Настройки и данные",
+          "slot_groups": [
+            "settings",
+            "analytics",
+            "time",
+            "ai"
+          ],
+          "aliases": [
+            "settings",
+            "gear",
+            "lock",
+            "key",
+            "shield",
+            "chart",
+            "clock",
+            "calendar",
+            "time",
+            "timer",
+            "часы",
+            "календарь",
+            "настройки",
+            "график",
+            "graph",
+            "analytics"
+          ]
+        },
+        "content": {
+          "en": "Content marks",
+          "ru": "Метки в тексте",
+          "slot_groups": [
+            "post"
+          ],
+          "aliases": [
+            "flag",
+            "letter",
+            "logo",
+            "number",
+            "label",
+            "banner",
+            "надпись",
+            "надписи",
+            "caption",
+            "плашка",
+            "ярлык",
+            "inscription",
+            "russian letter"
+          ]
+        },
+        "decoration": {
+          "en": "Decoration",
+          "ru": "Украшение",
+          "slot_groups": [],
+          "aliases": [
+            "sparkle",
+            "sparkles",
+            "heart",
+            "flower",
+            "frame",
+            "bow",
+            "decor"
+          ]
+        }
+      }
+    },
+    "use": {
+      "label": {
+        "en": "Fits bots for",
+        "ru": "Подходит ботам"
+      },
+      "scope": [
+        "pack"
+      ],
+      "rule": "Score of a use for a pack = topic x coverage x lead x look; the build tags uses scoring 0.45 or more. topic: the pack's strongest topic among `topics` (1 when none are listed). coverage: how well the pack covers the interface roles in `needs`, each role by 3 distinct meanings or by the share of the pack's emoji tagged with it; the best covered role and the average count half each, so a set of check marks half suits a monitoring bot (1 when none are listed). lead: the share of the pack that carries the role a specialised bot is about, so a general icon pack suits utility before shop or support. look: 0.8 to 1.0 by the best of `styles` and `moods` (0.9 when none are listed or the pack has none). A pack with one of `avoid_topics` among its topics scores half: icons that are also letters, holidays or faces are decoration, not a toolbar.",
+      "values": {
+        "utility": {
+          "en": "Tools and monitoring",
+          "ru": "Утилиты и мониторинг",
+          "needs": [
+            "navigation",
+            "status",
+            "settings"
+          ],
+          "topics": [
+            "interface",
+            "status",
+            "tech",
+            "office"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "shop": {
+          "en": "Shops and payments",
+          "ru": "Магазины и оплата",
+          "needs": [
+            "commerce",
+            "navigation",
+            "status"
+          ],
+          "lead": "commerce",
+          "topics": [
+            "interface",
+            "status",
+            "finance"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat",
+            "3d",
+            "glossy"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "finance": {
+          "en": "Finance and crypto",
+          "ru": "Финансы и крипта",
+          "needs": [
+            "commerce"
+          ],
+          "topics": [
+            "finance"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat",
+            "3d"
+          ],
+          "avoid_topics": [
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "support": {
+          "en": "Support and AI assistants",
+          "ru": "Поддержка и ИИ-ассистенты",
+          "needs": [
+            "communication",
+            "status",
+            "navigation"
+          ],
+          "lead": "communication",
+          "topics": [
+            "interface",
+            "status",
+            "tech"
+          ],
+          "styles": [
+            "outline",
+            "glyph",
+            "native-ui",
+            "flat"
+          ],
+          "avoid_topics": [
+            "letters",
+            "flags",
+            "holidays",
+            "characters",
+            "faces",
+            "love",
+            "animals",
+            "food",
+            "nature",
+            "decor"
+          ]
+        },
+        "content": {
+          "en": "Channels and media",
+          "ru": "Каналы и медиа",
+          "topics": [
+            "brands",
+            "letters",
+            "flags",
+            "decor",
+            "nature",
+            "holidays",
+            "finance"
+          ]
+        },
+        "community": {
+          "en": "Communities and fun",
+          "ru": "Сообщества и развлечения",
+          "needs": [],
+          "topics": [
+            "faces",
+            "characters",
+            "animals",
+            "love",
+            "holidays",
+            "people",
+            "food"
+          ],
+          "moods": [
+            "joyful",
+            "playful",
+            "loving"
+          ]
+        },
+        "games": {
+          "en": "Games",
+          "ru": "Игры",
+          "needs": [],
+          "topics": [
+            "games"
+          ],
+          "styles": [
+            "pixel"
+          ]
+        },
+        "education": {
+          "en": "Learning",
+          "ru": "Обучение",
+          "topics": [
+            "letters",
+            "tech"
+          ]
+        }
+      }
+    }
+  },
+  "thresholds": {
+    "emoji": 0.5,
+    "pack": 0.3,
+    "show": 0.55
+  },
+  "masks": [
+    "hand drawn",
+    "hand-drawn",
+    "hand painted",
+    "hand-painted",
+    "sports car",
+    "sport car",
+    "comic sans",
+    "paper plane",
+    "russian letter",
+    "русская буква",
+    "hot dog",
+    "хот-дог",
+    "paper airplane",
+    "бумажный самолетик",
+    "бумажный самолет",
+    "palm tree"
+  ]
+}

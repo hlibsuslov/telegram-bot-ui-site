@@ -1,0 +1,8074 @@
+{
+ "$comment": "Gold v2 (task E3): 80 packs and 400 emoji labelled blind from the contact sheets by an independent vision labeler that never saw the tagger's output; 20 of the packs labelled again by a second blind labeler (`second`) to measure agreement. Sample: stratified by category, seed 20261125, no pack of gold v1. Facet ids from emoji-taxonomy v2.",
+ "labeler": "independent-vision-v2",
+ "packs": {
+  "AdaptiveAnimals": {
+   "style": [
+    "glyph"
+   ],
+   "color": [
+    "white"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "animals"
+   ],
+   "mood": "serious",
+   "fit": "adaptive",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "use",
+    "mood"
+   ]
+  },
+  "SeaCreaturesHD": {
+   "style": [
+    "cartoon",
+    "flat"
+   ],
+   "color": [
+    "blue",
+    "orange",
+    "brown"
+   ],
+   "palette": "muted",
+   "topic": [
+    "animals"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "hamstertt_by_TgEmojiBot": {
+   "style": [
+    "hand-drawn"
+   ],
+   "color": [
+    "white",
+    "black",
+    "pink"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "characters",
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "palette"
+   ]
+  },
+  "NyankoEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "color": [
+    "black",
+    "orange",
+    "white"
+   ],
+   "palette": "muted",
+   "topic": [
+    "animals",
+    "characters"
+   ],
+   "mood": "playful",
+   "fit": "dark",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "palette",
+    "fit"
+   ]
+  },
+  "CatsHDAdaptEMOJIGRAY": {
+   "style": [
+    "outline",
+    "hand-drawn"
+   ],
+   "color": [
+    "white"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "animals"
+   ],
+   "mood": "playful",
+   "fit": "adaptive",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style",
+    "mood"
+   ]
+  },
+  "PandaEmoji": {
+   "style": [
+    "emoji-like",
+    "glossy"
+   ],
+   "color": [
+    "white",
+    "black",
+    "purple"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "animals",
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "animeted_car_emoji_z1vert1k": {
+   "style": [
+    "native-ui",
+    "glyph"
+   ],
+   "color": [
+    "white",
+    "black"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "brands",
+    "travel"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content"
+   ],
+   "unsure": []
+  },
+  "NeyroEmodzi": {
+   "style": [
+    "3d"
+   ],
+   "color": [
+    "teal",
+    "orange",
+    "yellow"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "faces",
+    "characters"
+   ],
+   "mood": "surprised",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "mood"
+   ]
+  },
+  "sparrowcodeemoji": {
+   "style": [
+    "native-ui",
+    "3d"
+   ],
+   "color": [
+    "blue",
+    "white",
+    "green"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "tech",
+    "brands"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "utility",
+    "education"
+   ],
+   "unsure": [
+    "use"
+   ]
+  },
+  "Steam_games_logos": {
+   "style": [
+    "realistic",
+    "flat"
+   ],
+   "color": [
+    "black",
+    "red",
+    "gold"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "games",
+    "brands"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "games",
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "color"
+   ]
+  },
+  "Ai_by_rrzbot": {
+   "style": [
+    "glossy",
+    "native-ui"
+   ],
+   "color": [
+    "blue",
+    "yellow",
+    "red"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "brands",
+    "symbols"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "finance"
+   ],
+   "unsure": [
+    "style",
+    "topic",
+    "mood"
+   ]
+  },
+  "socialss": {
+   "style": [
+    "native-ui",
+    "gradient"
+   ],
+   "color": [
+    "pink",
+    "red",
+    "purple"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "brands",
+    "finance"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "shop"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "gifts_emoji_by_gifts_changes_bot": {
+   "style": [
+    "3d",
+    "glossy"
+   ],
+   "color": [
+    "red",
+    "pink",
+    "brown"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "holidays",
+    "love"
+   ],
+   "mood": "joyful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "topic"
+   ]
+  },
+  "KorysnostiFinanceIcons": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "color": [
+    "teal",
+    "white",
+    "yellow"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "finance",
+    "letters"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "finance",
+    "content"
+   ],
+   "unsure": [
+    "palette"
+   ]
+  },
+  "sincerityinfo_by_TgEmodziBot": {
+   "style": [
+    "glyph",
+    "lettering"
+   ],
+   "color": [
+    "gray",
+    "white",
+    "black"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "finance",
+    "letters"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "finance",
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "fit"
+   ]
+  },
+  "Crypto_istkr": {
+   "style": [
+    "flat"
+   ],
+   "color": [
+    "blue",
+    "black",
+    "orange"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "finance",
+    "brands"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "finance"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "Bitcoinmoji": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "color": [
+    "orange",
+    "white",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "finance",
+    "letters"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "finance",
+    "content"
+   ],
+   "unsure": [
+    "palette"
+   ]
+  },
+  "TONWHALES": {
+   "style": [
+    "cartoon"
+   ],
+   "color": [
+    "blue",
+    "white",
+    "purple"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "animals",
+    "characters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "palette"
+   ]
+  },
+  "DecorationEmojiPack": {
+   "style": [
+    "flat",
+    "native-ui"
+   ],
+   "color": [
+    "red",
+    "green",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "status",
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "light",
+   "use": [
+    "utility",
+    "content",
+    "support"
+   ],
+   "unsure": [
+    "style",
+    "fit",
+    "use"
+   ]
+  },
+  "BubbleEmoji": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "color": [
+    "white",
+    "red",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "letters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community",
+    "content"
+   ],
+   "unsure": []
+  },
+  "doodlepack_by_TgEmojiBot": {
+   "style": [
+    "hand-drawn"
+   ],
+   "color": [
+    "pink",
+    "blue",
+    "yellow"
+   ],
+   "palette": "muted",
+   "topic": [
+    "animals",
+    "food"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "topic"
+   ]
+  },
+  "NeonEmojis": {
+   "style": [
+    "neon"
+   ],
+   "color": [
+    "black",
+    "pink",
+    "yellow"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "love",
+    "symbols"
+   ],
+   "mood": "playful",
+   "fit": "dark",
+   "use": [
+    "community",
+    "content"
+   ],
+   "unsure": []
+  },
+  "HandEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "color": [
+    "yellow",
+    "orange"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "people",
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "FluentEmojiSet1": {
+   "style": [
+    "emoji-like",
+    "3d"
+   ],
+   "color": [
+    "yellow",
+    "orange",
+    "red"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "faces"
+   ],
+   "mood": "joyful",
+   "fit": "light",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "fit",
+    "mood"
+   ]
+  },
+  "HandDrawnEmoji": {
+   "style": [
+    "cartoon",
+    "hand-drawn"
+   ],
+   "color": [
+    "orange",
+    "yellow",
+    "red"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "TwemojiHands": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "color": [
+    "yellow",
+    "pink",
+    "blue"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "people"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "mood"
+   ]
+  },
+  "NotoColorEmojis": {
+   "style": [
+    "emoji-like"
+   ],
+   "color": [
+    "yellow",
+    "orange",
+    "red"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "faces",
+    "love"
+   ],
+   "mood": "joyful",
+   "fit": "light",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "OrderFlagsKotletovv": {
+   "style": [
+    "flat",
+    "native-ui"
+   ],
+   "color": [
+    "black",
+    "white",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "brands",
+    "games"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "games"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "lgbtprideflags": {
+   "style": [
+    "flat"
+   ],
+   "color": [
+    "pink",
+    "purple",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "flags"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content"
+   ],
+   "unsure": []
+  },
+  "FlagMojis": {
+   "style": [
+    "flat",
+    "cartoon"
+   ],
+   "color": [
+    "black",
+    "red",
+    "white"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "flags"
+   ],
+   "mood": "serious",
+   "fit": "dark",
+   "use": [
+    "content"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "SpritzEmoji": {
+   "style": [
+    "cartoon"
+   ],
+   "color": [
+    "orange",
+    "white"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "characters",
+    "animals"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": []
+  },
+  "CookieEmoji": {
+   "style": [
+    "emoji-like",
+    "cartoon"
+   ],
+   "color": [
+    "orange",
+    "brown",
+    "yellow"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "faces",
+    "food"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "TwemojiFoods": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "color": [
+    "red",
+    "yellow",
+    "brown"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "food"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "community",
+    "content"
+   ],
+   "unsure": [
+    "mood",
+    "use"
+   ]
+  },
+  "BrawlAnimatedEmojis": {
+   "style": [
+    "flat",
+    "cartoon"
+   ],
+   "color": [
+    "blue",
+    "red",
+    "yellow"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "faces",
+    "games"
+   ],
+   "mood": "calm",
+   "fit": "light",
+   "use": [
+    "community",
+    "games"
+   ],
+   "unsure": [
+    "style",
+    "mood",
+    "fit"
+   ]
+  },
+  "TotalWarWarhammerFTS1": {
+   "style": [
+    "realistic",
+    "3d"
+   ],
+   "color": [
+    "red",
+    "gold",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "games",
+    "flags"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "games",
+    "content"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "m_pixel": {
+   "style": [
+    "pixel"
+   ],
+   "color": [
+    "red",
+    "yellow",
+    "brown"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "games",
+    "characters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "games",
+    "community"
+   ],
+   "unsure": []
+  },
+  "CenterOfEmoji13204691": {
+   "style": [
+    "3d",
+    "flat"
+   ],
+   "color": [
+    "gold",
+    "white",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "games",
+    "finance"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "games",
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "AnimalHearts": {
+   "style": [
+    "realistic"
+   ],
+   "color": [
+    "green",
+    "brown",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "animals",
+    "love"
+   ],
+   "mood": "loving",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": []
+  },
+  "HeartsEm": {
+   "style": [
+    "glossy",
+    "flat"
+   ],
+   "color": [
+    "pink",
+    "red",
+    "purple"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "love"
+   ],
+   "mood": "loving",
+   "fit": "light",
+   "use": [
+    "community",
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "fit"
+   ]
+  },
+  "HeartRainbow": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "color": [
+    "black",
+    "purple",
+    "red"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "interface",
+    "status"
+   ],
+   "mood": "serious",
+   "fit": "dark",
+   "use": [
+    "content",
+    "utility"
+   ],
+   "unsure": [
+    "style",
+    "mood",
+    "use"
+   ]
+  },
+  "DeadDeathEmojis": {
+   "style": [
+    "cartoon"
+   ],
+   "color": [
+    "blue",
+    "purple",
+    "white"
+   ],
+   "palette": "muted",
+   "topic": [
+    "characters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "mood"
+   ]
+  },
+  "DMJHalloweenEmoji": {
+   "style": [
+    "emoji-like",
+    "mosaic"
+   ],
+   "color": [
+    "orange",
+    "green",
+    "white"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "holidays"
+   ],
+   "mood": "scary",
+   "fit": "both",
+   "use": [
+    "community",
+    "content"
+   ],
+   "unsure": [
+    "mood"
+   ]
+  },
+  "holodnoenovogodnee": {
+   "style": [
+    "hand-drawn",
+    "lettering"
+   ],
+   "color": [
+    "blue",
+    "green",
+    "white"
+   ],
+   "palette": "muted",
+   "topic": [
+    "holidays",
+    "letters"
+   ],
+   "mood": "calm",
+   "fit": "both",
+   "use": [
+    "content",
+    "community"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "greenhalloween": {
+   "style": [
+    "realistic",
+    "mosaic"
+   ],
+   "color": [
+    "green",
+    "black",
+    "purple"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "holidays"
+   ],
+   "mood": "scary",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style",
+    "palette"
+   ]
+  },
+  "HalloweenAdaptiveXkysluv": {
+   "style": [
+    "glyph",
+    "hand-drawn"
+   ],
+   "color": [
+    "black"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "holidays"
+   ],
+   "mood": "scary",
+   "fit": "light",
+   "use": [
+    "content",
+    "community"
+   ],
+   "unsure": [
+    "style",
+    "fit"
+   ]
+  },
+  "XmasNewYear": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "color": [
+    "red",
+    "green",
+    "gold"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "holidays"
+   ],
+   "mood": "joyful",
+   "fit": "both",
+   "use": [
+    "content",
+    "community"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "Premium_Icon": {
+   "style": [
+    "gradient",
+    "native-ui"
+   ],
+   "color": [
+    "purple",
+    "blue",
+    "pink"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "symbols",
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "utility"
+   ],
+   "unsure": [
+    "use"
+   ]
+  },
+  "Golden_Icons": {
+   "style": [
+    "glyph",
+    "glossy"
+   ],
+   "color": [
+    "gold",
+    "black"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "interface",
+    "brands"
+   ],
+   "mood": "serious",
+   "fit": "dark",
+   "use": [
+    "content",
+    "utility"
+   ],
+   "unsure": [
+    "style",
+    "palette"
+   ]
+  },
+  "OutlineEmoji": {
+   "style": [
+    "outline"
+   ],
+   "color": [
+    "black",
+    "gray"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "light",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "Icon_2023": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "color": [
+    "black",
+    "yellow",
+    "pink"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "status",
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "dark",
+   "use": [
+    "content",
+    "utility",
+    "community"
+   ],
+   "unsure": [
+    "use"
+   ]
+  },
+  "KorysnostiIcons": {
+   "style": [
+    "native-ui",
+    "flat"
+   ],
+   "color": [
+    "blue",
+    "green",
+    "red"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "brands",
+    "tech"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "utility"
+   ],
+   "unsure": [
+    "use"
+   ]
+  },
+  "CenterOfEmoji33658028": {
+   "style": [
+    "flat",
+    "neon"
+   ],
+   "color": [
+    "black",
+    "yellow",
+    "pink"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "status",
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "dark",
+   "use": [
+    "content",
+    "utility",
+    "community"
+   ],
+   "unsure": [
+    "use"
+   ]
+  },
+  "TgAndroidIcons": {
+   "style": [
+    "outline",
+    "native-ui"
+   ],
+   "color": [
+    "white"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "adaptive",
+   "use": [
+    "utility",
+    "support"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "PinkMixHDEMOJIGRAY": {
+   "style": [
+    "glyph",
+    "lettering"
+   ],
+   "color": [
+    "pink"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "letters",
+    "interface"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "palette",
+    "mood"
+   ]
+  },
+  "AnimatedReactionsAdaptive": {
+   "style": [
+    "outline"
+   ],
+   "color": [
+    "black",
+    "gray"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "light",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "typical_adaptive_emoji": {
+   "style": [
+    "glyph",
+    "mosaic"
+   ],
+   "color": [
+    "black",
+    "white"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "interface",
+    "travel"
+   ],
+   "mood": "serious",
+   "fit": "light",
+   "use": [
+    "utility",
+    "content"
+   ],
+   "unsure": [
+    "topic",
+    "fit"
+   ]
+  },
+  "alphabet_ru_mini": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "color": [
+    "red",
+    "yellow",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "letters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "content",
+    "education"
+   ],
+   "unsure": []
+  },
+  "MysoulStickBlackGold": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "color": [
+    "black",
+    "gold"
+   ],
+   "palette": "muted",
+   "topic": [
+    "letters",
+    "love"
+   ],
+   "mood": "loving",
+   "fit": "both",
+   "use": [
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "palette",
+    "mood"
+   ]
+  },
+  "neon_alphabet": {
+   "style": [
+    "lettering",
+    "neon"
+   ],
+   "color": [
+    "green"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "letters"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "education"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "comicsansemoji": {
+   "style": [
+    "lettering"
+   ],
+   "color": [
+    "black",
+    "white"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "letters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "content"
+   ],
+   "unsure": [
+    "mood"
+   ]
+  },
+  "MendeleevEmoji": {
+   "style": [
+    "flat",
+    "lettering"
+   ],
+   "color": [
+    "yellow",
+    "green",
+    "pink"
+   ],
+   "palette": "muted",
+   "topic": [
+    "letters"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "education",
+    "content"
+   ],
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "MovingEmojis": {
+   "style": [
+    "lettering",
+    "gradient"
+   ],
+   "color": [
+    "purple",
+    "pink",
+    "white"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "letters"
+   ],
+   "mood": "playful",
+   "fit": "light",
+   "use": [
+    "content"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "ENLettersAndNumbers": {
+   "style": [
+    "lettering"
+   ],
+   "color": [
+    "black",
+    "red"
+   ],
+   "palette": "muted",
+   "topic": [
+    "letters"
+   ],
+   "mood": "serious",
+   "fit": "dark",
+   "use": [
+    "content"
+   ],
+   "unsure": []
+  },
+  "BloodyFontEmoji": {
+   "style": [
+    "lettering",
+    "glossy"
+   ],
+   "color": [
+    "red"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "letters"
+   ],
+   "mood": "scary",
+   "fit": "both",
+   "use": [
+    "content",
+    "community"
+   ],
+   "unsure": []
+  },
+  "PepeEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "color": [
+    "green",
+    "red"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "characters",
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": []
+  },
+  "AdaptiveMemesEmoji": {
+   "style": [
+    "hand-drawn"
+   ],
+   "color": [
+    "black"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "characters",
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "light",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "SupernaturalAirDsgn": {
+   "style": [
+    "realistic"
+   ],
+   "color": [
+    "brown",
+    "black",
+    "white"
+   ],
+   "palette": "muted",
+   "topic": [
+    "characters",
+    "people"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "mood"
+   ]
+  },
+  "TwitchAbuse": {
+   "style": [
+    "lettering",
+    "flat"
+   ],
+   "color": [
+    "purple",
+    "green",
+    "black"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "letters"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community",
+    "content"
+   ],
+   "unsure": []
+  },
+  "Pepe_Collection": {
+   "style": [
+    "cartoon"
+   ],
+   "color": [
+    "green",
+    "black",
+    "blue"
+   ],
+   "palette": "vivid",
+   "topic": [
+    "characters"
+   ],
+   "mood": "playful",
+   "fit": "dark",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "soyonagasak1_by_fStikBot": {
+   "style": [
+    "cartoon",
+    "realistic"
+   ],
+   "color": [
+    "gray",
+    "white",
+    "black"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "characters"
+   ],
+   "mood": "calm",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style",
+    "mood"
+   ]
+  },
+  "ilovemaresemoji": {
+   "style": [
+    "cartoon",
+    "hand-drawn"
+   ],
+   "color": [
+    "pink",
+    "purple",
+    "blue"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "characters",
+    "animals"
+   ],
+   "mood": "loving",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "style",
+    "palette"
+   ]
+  },
+  "MemeEmoji": {
+   "style": [
+    "cartoon",
+    "emoji-like"
+   ],
+   "color": [
+    "orange",
+    "pink"
+   ],
+   "palette": "muted",
+   "topic": [
+    "characters",
+    "faces"
+   ],
+   "mood": "playful",
+   "fit": "both",
+   "use": [
+    "community"
+   ],
+   "unsure": [
+    "palette"
+   ]
+  },
+  "WeatherEmoji": {
+   "style": [
+    "flat"
+   ],
+   "color": [
+    "gray",
+    "yellow",
+    "blue"
+   ],
+   "palette": "muted",
+   "topic": [
+    "nature"
+   ],
+   "mood": "calm",
+   "fit": "both",
+   "use": [
+    "utility",
+    "content"
+   ],
+   "unsure": [
+    "fit"
+   ]
+  },
+  "NatureEmojis": {
+   "style": [
+    "glyph"
+   ],
+   "color": [
+    "black"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "nature"
+   ],
+   "mood": "calm",
+   "fit": "light",
+   "use": [
+    "content"
+   ],
+   "unsure": [
+    "fit",
+    "use"
+   ]
+  },
+  "TwemojiTimeWeather": {
+   "style": [
+    "emoji-like",
+    "flat"
+   ],
+   "color": [
+    "gray",
+    "yellow",
+    "blue"
+   ],
+   "palette": "muted",
+   "topic": [
+    "nature",
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "utility",
+    "content"
+   ],
+   "unsure": [
+    "palette",
+    "mood"
+   ]
+  },
+  "Loading_by_TgEmojis_bot": {
+   "style": [
+    "flat",
+    "gradient"
+   ],
+   "color": [
+    "blue",
+    "red",
+    "white"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "status",
+    "symbols"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "utility",
+    "content"
+   ],
+   "unsure": [
+    "style"
+   ]
+  },
+  "CustomArrows": {
+   "style": [
+    "outline"
+   ],
+   "color": [
+    "white",
+    "black",
+    "blue"
+   ],
+   "palette": "monochrome",
+   "topic": [
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "utility",
+    "support",
+    "shop"
+   ],
+   "unsure": [
+    "palette",
+    "fit"
+   ]
+  },
+  "newStatus": {
+   "style": [
+    "emoji-like",
+    "glyph"
+   ],
+   "color": [
+    "blue",
+    "red",
+    "yellow"
+   ],
+   "palette": "multicolor",
+   "topic": [
+    "status",
+    "interface"
+   ],
+   "mood": "serious",
+   "fit": "both",
+   "use": [
+    "content",
+    "utility"
+   ],
+   "unsure": [
+    "topic",
+    "use"
+   ]
+  }
+ },
+ "emoji": {
+  "AdaptiveAnimals/5208567763970307569": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "animals",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "AdaptiveAnimals/5206704774661027538": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "animals",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "AdaptiveAnimals/5208565861299794271": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "animals",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "AdaptiveAnimals/5206439616265073591": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "animals",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "AdaptiveAnimals/5206259987847852976": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "animals",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "SeaCreaturesHD/5346283326221079721": {
+   "color": [
+    "brown"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "SeaCreaturesHD/5346018030386172572": {
+   "color": [
+    "orange",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "SeaCreaturesHD/5346084026853642391": {
+   "color": [
+    "blue"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "SeaCreaturesHD/5346020319603740802": {
+   "color": [
+    "blue",
+    "yellow",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "SeaCreaturesHD/5346280805075276055": {
+   "color": [
+    "pink"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": [
+    "role"
+   ]
+  },
+  "hamstertt_by_TgEmojiBot/5406979469040714640": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "hamstertt_by_TgEmojiBot/5407031498274539268": {
+   "color": [
+    "white",
+    "black",
+    "pink"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "hamstertt_by_TgEmojiBot/5406733887105695013": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "hamstertt_by_TgEmojiBot/5406658437415206270": {
+   "color": [
+    "white",
+    "black",
+    "yellow"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "hamstertt_by_TgEmojiBot/5406637465089900036": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "NyankoEmoji/5776046446872628523": {
+   "color": [
+    "orange",
+    "white",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "role"
+   ]
+  },
+  "NyankoEmoji/5778625909741326885": {
+   "color": [
+    "orange",
+    "white",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": []
+  },
+  "NyankoEmoji/5819188371158733249": {
+   "color": [
+    "white",
+    "black",
+    "purple"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "NyankoEmoji/5787570363818839831": {
+   "color": [
+    "gold",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": [
+    "style"
+   ]
+  },
+  "NyankoEmoji/5873066455259418627": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "CatsHDAdaptEMOJIGRAY/5190459924152368151": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "CatsHDAdaptEMOJIGRAY/5190706631368813133": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "CatsHDAdaptEMOJIGRAY/5467423119322952330": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "CatsHDAdaptEMOJIGRAY/5467389932110655660": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "CatsHDAdaptEMOJIGRAY/5467644151224904980": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "PandaEmoji/5226568938275481037": {
+   "color": [
+    "white",
+    "black",
+    "blue"
+   ],
+   "style": "emoji-like",
+   "topic": "animals",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "PandaEmoji/5372848794163486495": {
+   "color": [
+    "white",
+    "black",
+    "purple"
+   ],
+   "style": "emoji-like",
+   "topic": "animals",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "PandaEmoji/5444932797955317203": {
+   "color": [
+    "purple",
+    "black"
+   ],
+   "style": "emoji-like",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": []
+  },
+  "PandaEmoji/5219894095241029070": {
+   "color": [
+    "yellow",
+    "pink"
+   ],
+   "style": "glossy",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": [
+    "style"
+   ]
+  },
+  "PandaEmoji/5199646154823838084": {
+   "color": [
+    "yellow"
+   ],
+   "style": "glossy",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": [
+    "style",
+    "mood"
+   ]
+  },
+  "animeted_car_emoji_z1vert1k/5442780946325607425": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "animeted_car_emoji_z1vert1k/5440797607737723358": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "animeted_car_emoji_z1vert1k/5443141079333376508": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "animeted_car_emoji_z1vert1k/5442830883910355548": {
+   "color": [
+    "white",
+    "gray"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "animeted_car_emoji_z1vert1k/5440716213812503031": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "NeyroEmodzi/5373351442776072569": {
+   "color": [
+    "brown"
+   ],
+   "style": "3d",
+   "topic": "faces",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": []
+  },
+  "NeyroEmodzi/5375575462741288603": {
+   "color": [
+    "orange",
+    "white"
+   ],
+   "style": "3d",
+   "topic": "animals",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "NeyroEmodzi/5375394021847868184": {
+   "color": [
+    "red"
+   ],
+   "style": "3d",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "topic",
+    "mood"
+   ]
+  },
+  "NeyroEmodzi/5373304919690323130": {
+   "color": [
+    "red",
+    "white"
+   ],
+   "style": "3d",
+   "topic": "faces",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": []
+  },
+  "NeyroEmodzi/5375112748734620399": {
+   "color": [
+    "teal",
+    "red",
+    "white"
+   ],
+   "style": "3d",
+   "topic": "characters",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": [
+    "topic",
+    "mood"
+   ]
+  },
+  "sparrowcodeemoji/5456220195347518127": {
+   "color": [
+    "green",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "sparrowcodeemoji/5314353929457256617": {
+   "color": [
+    "white",
+    "teal",
+    "red"
+   ],
+   "style": "3d",
+   "topic": "tech",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "sparrowcodeemoji/5192793573157784756": {
+   "color": [
+    "blue"
+   ],
+   "style": "3d",
+   "topic": "tech",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "sparrowcodeemoji/5314574974244115122": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "tech",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "role"
+   ]
+  },
+  "sparrowcodeemoji/5312135132172274721": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "tech",
+   "mood": "serious",
+   "role": "communication",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "Steam_games_logos/5327905096736980309": {
+   "color": [
+    "black",
+    "teal",
+    "red"
+   ],
+   "style": "realistic",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Steam_games_logos/5330509247077695430": {
+   "color": [
+    "black",
+    "gold",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Steam_games_logos/5330148491299666748": {
+   "color": [
+    "black",
+    "green",
+    "red"
+   ],
+   "style": "pixel",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Steam_games_logos/5330221608822911968": {
+   "color": [
+    "purple",
+    "brown"
+   ],
+   "style": "realistic",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "Steam_games_logos/5328150665787095080": {
+   "color": [
+    "red",
+    "black"
+   ],
+   "style": "realistic",
+   "topic": "games",
+   "mood": "scary",
+   "role": "content",
+   "unsure": [
+    "style",
+    "mood"
+   ]
+  },
+  "Ai_by_rrzbot/5023942637632095592": {
+   "color": [
+    "yellow",
+    "orange"
+   ],
+   "style": "glossy",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "Ai_by_rrzbot/5026424132296770832": {
+   "color": [
+    "purple"
+   ],
+   "style": "glossy",
+   "topic": "symbols",
+   "mood": "playful",
+   "role": "decoration",
+   "unsure": [
+    "topic",
+    "mood"
+   ]
+  },
+  "Ai_by_rrzbot/5024033239967204328": {
+   "color": [
+    "green",
+    "yellow"
+   ],
+   "style": "glossy",
+   "topic": "finance",
+   "mood": "joyful",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Ai_by_rrzbot/5026220160004916388": {
+   "color": [
+    "green"
+   ],
+   "style": "flat",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "role"
+   ]
+  },
+  "Ai_by_rrzbot/5026467657495348332": {
+   "color": [
+    "white",
+    "orange",
+    "blue"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "socialss/5931680007091916195": {
+   "color": [
+    "green",
+    "black"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "socialss/5929338571310763688": {
+   "color": [
+    "red",
+    "black"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "socialss/5929431853705465358": {
+   "color": [
+    "pink",
+    "yellow"
+   ],
+   "style": "flat",
+   "topic": "love",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "socialss/5931657638902238609": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "socialss/5931678237565390855": {
+   "color": [
+    "gray"
+   ],
+   "style": "gradient",
+   "topic": "office",
+   "mood": "calm",
+   "role": "action",
+   "unsure": [
+    "style",
+    "role"
+   ]
+  },
+  "gifts_emoji_by_gifts_changes_bot/5231134789158856498": {
+   "color": [
+    "gold",
+    "red",
+    "green"
+   ],
+   "style": "3d",
+   "topic": "holidays",
+   "mood": "joyful",
+   "role": "decoration",
+   "unsure": []
+  },
+  "gifts_emoji_by_gifts_changes_bot/5364312357684145343": {
+   "color": [
+    "pink",
+    "green"
+   ],
+   "style": "3d",
+   "topic": "nature",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "gifts_emoji_by_gifts_changes_bot/5359317697265951988": {
+   "color": [
+    "pink",
+    "brown"
+   ],
+   "style": "3d",
+   "topic": "food",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "gifts_emoji_by_gifts_changes_bot/5359622339296256165": {
+   "color": [
+    "green",
+    "pink"
+   ],
+   "style": "3d",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "gifts_emoji_by_gifts_changes_bot/5280496526169235279": {
+   "color": [
+    "purple",
+    "white"
+   ],
+   "style": "3d",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "KorysnostiFinanceIcons/5202184239977606820": {
+   "color": [
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "KorysnostiFinanceIcons/5280688811855064646": {
+   "color": [
+    "teal",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "KorysnostiFinanceIcons/5282824505817837589": {
+   "color": [
+    "teal",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "KorysnostiFinanceIcons/5280637336672023297": {
+   "color": [
+    "teal"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "KorysnostiFinanceIcons/5201925657176584468": {
+   "color": [
+    "yellow"
+   ],
+   "style": "flat",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "sincerityinfo_by_TgEmodziBot/5211132739914329113": {
+   "color": [
+    "blue"
+   ],
+   "style": "glyph",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": [
+    "style",
+    "topic",
+    "role"
+   ]
+  },
+  "sincerityinfo_by_TgEmodziBot/5213021456077710595": {
+   "color": [
+    "blue"
+   ],
+   "style": "outline",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "communication",
+   "unsure": []
+  },
+  "sincerityinfo_by_TgEmodziBot/5229006787482510696": {
+   "color": [
+    "white",
+    "gray"
+   ],
+   "style": "outline",
+   "topic": "sport",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style",
+    "role"
+   ]
+  },
+  "sincerityinfo_by_TgEmodziBot/5192810117371822490": {
+   "color": [
+    "gray",
+    "white",
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "sincerityinfo_by_TgEmodziBot/5359417821543576783": {
+   "color": [
+    "gray",
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Crypto_istkr/6291648758132246882": {
+   "color": [
+    "yellow",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Crypto_istkr/6291709463200008890": {
+   "color": [
+    "black",
+    "orange"
+   ],
+   "style": "flat",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Crypto_istkr/6291927600294005181": {
+   "color": [
+    "purple",
+    "pink",
+    "blue"
+   ],
+   "style": "gradient",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Crypto_istkr/6294328362458417465": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Crypto_istkr/6291964820480592055": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Bitcoinmoji/5035399273915613995": {
+   "color": [
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "Bitcoinmoji/5082650494061511480": {
+   "color": [
+    "teal"
+   ],
+   "style": "lettering",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Bitcoinmoji/5085071876363911713": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "Bitcoinmoji/5001255800035869848": {
+   "color": [
+    "white",
+    "gray",
+    "orange"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Bitcoinmoji/5001507369155297867": {
+   "color": [
+    "orange",
+    "pink",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TONWHALES/5355185844237902584": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TONWHALES/5355327676942918388": {
+   "color": [
+    "blue",
+    "white",
+    "pink"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "TONWHALES/5352713708306965566": {
+   "color": [
+    "blue",
+    "purple",
+    "green"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TONWHALES/5355127260883984620": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "animals",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "TONWHALES/5208625063128998835": {
+   "color": [
+    "gold",
+    "orange",
+    "purple"
+   ],
+   "style": "cartoon",
+   "topic": "finance",
+   "mood": "joyful",
+   "role": "commerce",
+   "unsure": [
+    "style",
+    "mood"
+   ]
+  },
+  "DecorationEmojiPack/5215286931067251318": {
+   "color": [
+    "white"
+   ],
+   "style": "flat",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": [
+    "style",
+    "topic",
+    "role"
+   ]
+  },
+  "DecorationEmojiPack/5215447163412161956": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "pixel",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": [
+    "role"
+   ]
+  },
+  "DecorationEmojiPack/5213094908608392768": {
+   "color": [
+    "yellow",
+    "green"
+   ],
+   "style": "outline",
+   "topic": "finance",
+   "mood": "serious",
+   "role": "commerce",
+   "unsure": []
+  },
+  "DecorationEmojiPack/5222391476989731666": {
+   "color": [
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "DecorationEmojiPack/5213306216704389051": {
+   "color": [
+    "black",
+    "white",
+    "gray"
+   ],
+   "style": "realistic",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "style"
+   ]
+  },
+  "BubbleEmoji/5413794461152978282": {
+   "color": [
+    "green",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": [
+    "role"
+   ]
+  },
+  "BubbleEmoji/5413472879771658264": {
+   "color": [
+    "red",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "communication",
+   "unsure": [
+    "mood",
+    "role"
+   ]
+  },
+  "BubbleEmoji/5429510648432172315": {
+   "color": [
+    "pink",
+    "blue",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "BubbleEmoji/5429353942255410691": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "BubbleEmoji/5429156240615810384": {
+   "color": [
+    "yellow",
+    "black",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "doodlepack_by_TgEmojiBot/5276418300102868180": {
+   "color": [
+    "gray",
+    "blue",
+    "pink"
+   ],
+   "style": "hand-drawn",
+   "topic": "animals",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "doodlepack_by_TgEmojiBot/5276238968038389392": {
+   "color": [
+    "white",
+    "red"
+   ],
+   "style": "hand-drawn",
+   "topic": "food",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "doodlepack_by_TgEmojiBot/5276279757342799982": {
+   "color": [
+    "white",
+    "green"
+   ],
+   "style": "hand-drawn",
+   "topic": "food",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "doodlepack_by_TgEmojiBot/5276426155598052511": {
+   "color": [
+    "green",
+    "purple"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "doodlepack_by_TgEmojiBot/5276287707327266124": {
+   "color": [
+    "green"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "NeonEmojis/5852757964393287361": {
+   "color": [
+    "red",
+    "black"
+   ],
+   "style": "neon",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "NeonEmojis/5854962639825801415": {
+   "color": [
+    "yellow",
+    "orange",
+    "black"
+   ],
+   "style": "neon",
+   "topic": "symbols",
+   "mood": "playful",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "NeonEmojis/5852588137091436728": {
+   "color": [
+    "blue",
+    "pink",
+    "yellow"
+   ],
+   "style": "neon",
+   "topic": "decor",
+   "mood": "playful",
+   "role": "decoration",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "NeonEmojis/5852531160055287047": {
+   "color": [
+    "pink",
+    "blue",
+    "yellow"
+   ],
+   "style": "neon",
+   "topic": "status",
+   "mood": "surprised",
+   "role": "status",
+   "unsure": []
+  },
+  "NeonEmojis/5852537078520221331": {
+   "color": [
+    "yellow",
+    "purple",
+    "black"
+   ],
+   "style": "neon",
+   "topic": "status",
+   "mood": "surprised",
+   "role": "status",
+   "unsure": []
+  },
+  "HandEmoji/5413807449134079799": {
+   "color": [
+    "yellow",
+    "purple"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "HandEmoji/5375285788672006208": {
+   "color": [
+    "yellow",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "HandEmoji/5370997336841393598": {
+   "color": [
+    "yellow",
+    "orange"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": []
+  },
+  "HandEmoji/5458520502521829759": {
+   "color": [
+    "yellow",
+    "blue",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "HandEmoji/5194948396904881244": {
+   "color": [
+    "gray",
+    "teal"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "FluentEmojiSet1/6334578682832618926": {
+   "color": [
+    "yellow",
+    "orange"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "FluentEmojiSet1/6332210339081357054": {
+   "color": [
+    "green",
+    "teal"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "FluentEmojiSet1/6334676346093963090": {
+   "color": [
+    "white",
+    "gray"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "scary",
+   "role": "communication",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "FluentEmojiSet1/6334503757128140470": {
+   "color": [
+    "red",
+    "pink"
+   ],
+   "style": "emoji-like",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "FluentEmojiSet1/6334520571925104745": {
+   "color": [
+    "brown"
+   ],
+   "style": "emoji-like",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "HandDrawnEmoji/5228778196438102227": {
+   "color": [
+    "orange"
+   ],
+   "style": "cartoon",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "HandDrawnEmoji/5242321246229638182": {
+   "color": [
+    "purple",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "faces",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "HandDrawnEmoji/5247104422458176763": {
+   "color": [
+    "orange"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "HandDrawnEmoji/5303045503905181043": {
+   "color": [
+    "orange",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "HandDrawnEmoji/5330519756862666627": {
+   "color": [
+    "orange",
+    "green"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwemojiHands/6323614546153965188": {
+   "color": [
+    "yellow",
+    "blue"
+   ],
+   "style": "emoji-like",
+   "topic": "people",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwemojiHands/6323485117314500081": {
+   "color": [
+    "yellow",
+    "orange"
+   ],
+   "style": "emoji-like",
+   "topic": "people",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwemojiHands/6323098110696359649": {
+   "color": [
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "people",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiHands/6323508868483647178": {
+   "color": [
+    "pink",
+    "white"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwemojiHands/6323557049426773607": {
+   "color": [
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "people",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "NotoColorEmojis/5962915835356909098": {
+   "color": [
+    "yellow",
+    "blue"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "NotoColorEmojis/5963256795630669886": {
+   "color": [
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "NotoColorEmojis/5963021190904679906": {
+   "color": [
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "NotoColorEmojis/5963124888595074432": {
+   "color": [
+    "brown"
+   ],
+   "style": "emoji-like",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "NotoColorEmojis/5963325837229952887": {
+   "color": [
+    "pink"
+   ],
+   "style": "emoji-like",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "OrderFlagsKotletovv/5415741296813823530": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "OrderFlagsKotletovv/5404870528429213588": {
+   "color": [
+    "blue",
+    "gray"
+   ],
+   "style": "flat",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "OrderFlagsKotletovv/5422411612952740468": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "OrderFlagsKotletovv/5246819786385545958": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "people",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "OrderFlagsKotletovv/5323756407437153796": {
+   "color": [
+    "blue",
+    "orange"
+   ],
+   "style": "flat",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "lgbtprideflags/6042065811969937004": {
+   "color": [
+    "blue",
+    "pink",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "lgbtprideflags/6042120955055050129": {
+   "color": [
+    "pink",
+    "yellow",
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "lgbtprideflags/6042008156328955453": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "lgbtprideflags/6041930915637103513": {
+   "color": [
+    "gray",
+    "pink",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "lgbtprideflags/6042028527358839916": {
+   "color": [
+    "yellow",
+    "purple"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "FlagMojis/6015021992044925861": {
+   "color": [
+    "yellow",
+    "orange",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "FlagMojis/6014622186424242117": {
+   "color": [
+    "green",
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "FlagMojis/6014958327744696119": {
+   "color": [
+    "red",
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "FlagMojis/6014965822462628203": {
+   "color": [
+    "white",
+    "blue",
+    "yellow"
+   ],
+   "style": "cartoon",
+   "topic": "flags",
+   "mood": "playful",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "FlagMojis/6017089284358540632": {
+   "color": [
+    "white",
+    "orange",
+    "green"
+   ],
+   "style": "cartoon",
+   "topic": "flags",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "SpritzEmoji/5226935054172713128": {
+   "color": [
+    "orange",
+    "blue",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "SpritzEmoji/5229017383166828184": {
+   "color": [
+    "orange",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "SpritzEmoji/5229065946362045891": {
+   "color": [
+    "orange",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "SpritzEmoji/5229119981345596557": {
+   "color": [
+    "orange"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "SpritzEmoji/5229034563036013660": {
+   "color": [
+    "orange",
+    "black",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "CookieEmoji/5093865839082341003": {
+   "color": [
+    "white",
+    "blue"
+   ],
+   "style": "cartoon",
+   "topic": "people",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "CookieEmoji/5118814135873700574": {
+   "color": [
+    "orange",
+    "red",
+    "green"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "CookieEmoji/5127473867979227864": {
+   "color": [
+    "orange",
+    "purple",
+    "pink"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "CookieEmoji/5186130090311811682": {
+   "color": [
+    "red"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": []
+  },
+  "CookieEmoji/4943089796680516399": {
+   "color": [
+    "orange",
+    "pink",
+    "blue"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "TwemojiFoods/6323522114162787856": {
+   "color": [
+    "yellow",
+    "green"
+   ],
+   "style": "emoji-like",
+   "topic": "food",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiFoods/6323118318517487330": {
+   "color": [
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "food",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiFoods/6323214530079884911": {
+   "color": [
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "food",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiFoods/6323122690794194232": {
+   "color": [
+    "orange",
+    "white"
+   ],
+   "style": "emoji-like",
+   "topic": "food",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiFoods/6323189907032377006": {
+   "color": [
+    "gray",
+    "red"
+   ],
+   "style": "emoji-like",
+   "topic": "food",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "BrawlAnimatedEmojis/5443128971820541182": {
+   "color": [
+    "blue",
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "BrawlAnimatedEmojis/5442874877260341509": {
+   "color": [
+    "blue",
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "BrawlAnimatedEmojis/5442926300903776241": {
+   "color": [
+    "red",
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "BrawlAnimatedEmojis/5440395723352842637": {
+   "color": [
+    "red",
+    "black",
+    "white"
+   ],
+   "style": "flat",
+   "topic": "faces",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "BrawlAnimatedEmojis/5440578757679128608": {
+   "color": [
+    "red",
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "faces",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": []
+  },
+  "TotalWarWarhammerFTS1/5265126156771823722": {
+   "color": [
+    "red",
+    "black",
+    "gray"
+   ],
+   "style": "realistic",
+   "topic": "games",
+   "mood": "scary",
+   "role": "content",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "TotalWarWarhammerFTS1/5265238521706225169": {
+   "color": [
+    "green",
+    "yellow"
+   ],
+   "style": "realistic",
+   "topic": "flags",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "TotalWarWarhammerFTS1/5388705431168242699": {
+   "color": [
+    "teal",
+    "gold",
+    "white"
+   ],
+   "style": "realistic",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TotalWarWarhammerFTS1/5386706218381236994": {
+   "color": [
+    "purple",
+    "gold"
+   ],
+   "style": "realistic",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "TotalWarWarhammerFTS1/5388834954496991239": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style",
+    "topic",
+    "role"
+   ]
+  },
+  "m_pixel/5210717901908122525": {
+   "color": [
+    "yellow",
+    "black"
+   ],
+   "style": "pixel",
+   "topic": "games",
+   "mood": "playful",
+   "role": "decoration",
+   "unsure": []
+  },
+  "m_pixel/5211169144057143022": {
+   "color": [
+    "orange",
+    "gold"
+   ],
+   "style": "pixel",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "role"
+   ]
+  },
+  "m_pixel/5211208941224107780": {
+   "color": [
+    "red",
+    "white",
+    "orange"
+   ],
+   "style": "pixel",
+   "topic": "games",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "m_pixel/5210912554120946250": {
+   "color": [
+    "red",
+    "blue"
+   ],
+   "style": "pixel",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "m_pixel/5210995279486033024": {
+   "color": [
+    "red",
+    "white"
+   ],
+   "style": "pixel",
+   "topic": "games",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "CenterOfEmoji13204691/5807801326230312662": {
+   "color": [
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "CenterOfEmoji13204691/5807666627465974836": {
+   "color": [
+    "red",
+    "blue"
+   ],
+   "style": "3d",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "CenterOfEmoji13204691/5807442906914492848": {
+   "color": [
+    "brown",
+    "orange",
+    "blue"
+   ],
+   "style": "3d",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "CenterOfEmoji13204691/5810099777978765397": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "3d",
+   "topic": "games",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "CenterOfEmoji13204691/5807563659920020252": {
+   "color": [
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "AnimalHearts/5039786943785731892": {
+   "color": [
+    "white",
+    "green",
+    "orange"
+   ],
+   "style": "realistic",
+   "topic": "animals",
+   "mood": "joyful",
+   "role": "content",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "AnimalHearts/5032789007541471154": {
+   "color": [
+    "orange",
+    "green",
+    "white"
+   ],
+   "style": "realistic",
+   "topic": "animals",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "AnimalHearts/5032869877480687277": {
+   "color": [
+    "brown",
+    "blue"
+   ],
+   "style": "realistic",
+   "topic": "animals",
+   "mood": "joyful",
+   "role": "content",
+   "unsure": []
+  },
+  "AnimalHearts/5037733953713211277": {
+   "color": [
+    "blue"
+   ],
+   "style": "realistic",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "AnimalHearts/5039541275951368756": {
+   "color": [
+    "black",
+    "white",
+    "yellow"
+   ],
+   "style": "realistic",
+   "topic": "animals",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "HeartsEm/4983398550084780701": {
+   "color": [
+    "purple"
+   ],
+   "style": "pixel",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": [
+    "style"
+   ]
+  },
+  "HeartsEm/4983415098593772265": {
+   "color": [
+    "orange"
+   ],
+   "style": "flat",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "HeartsEm/4983573063195951986": {
+   "color": [
+    "pink",
+    "black"
+   ],
+   "style": "pixel",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "HeartsEm/4983774020420764504": {
+   "color": [
+    "pink",
+    "gold"
+   ],
+   "style": "glossy",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "HeartsEm/4983770133475361352": {
+   "color": [
+    "blue",
+    "yellow"
+   ],
+   "style": "flat",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "HeartRainbow/5418346233133542302": {
+   "color": [
+    "red",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "HeartRainbow/5420632757757814580": {
+   "color": [
+    "purple",
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "HeartRainbow/5418053359313629019": {
+   "color": [
+    "pink",
+    "purple",
+    "teal"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "angry",
+   "role": "content",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "HeartRainbow/5420402624820161774": {
+   "color": [
+    "blue",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "nature",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "HeartRainbow/5418202025311612322": {
+   "color": [
+    "black",
+    "white",
+    "pink"
+   ],
+   "style": "flat",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": [
+    "topic",
+    "mood"
+   ]
+  },
+  "DeadDeathEmojis/5226809151501394036": {
+   "color": [
+    "blue",
+    "white",
+    "gray"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "scary",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "DeadDeathEmojis/5229043612532109144": {
+   "color": [
+    "blue",
+    "black",
+    "yellow"
+   ],
+   "style": "cartoon",
+   "topic": "holidays",
+   "mood": "sad",
+   "role": "content",
+   "unsure": [
+    "topic",
+    "mood",
+    "role"
+   ]
+  },
+  "DeadDeathEmojis/5226596576390048516": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": []
+  },
+  "DeadDeathEmojis/5226899783901273855": {
+   "color": [
+    "blue",
+    "brown",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "DeadDeathEmojis/5229126969257383828": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "DMJHalloweenEmoji/5962982128177122934": {
+   "color": [
+    "orange",
+    "green",
+    "yellow"
+   ],
+   "style": "mosaic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "DMJHalloweenEmoji/5963226726564630041": {
+   "color": [
+    "orange",
+    "yellow"
+   ],
+   "style": "mosaic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "DMJHalloweenEmoji/5962990314384789055": {
+   "color": [
+    "green",
+    "brown",
+    "gray"
+   ],
+   "style": "mosaic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": []
+  },
+  "DMJHalloweenEmoji/5965297283053391084": {
+   "color": [
+    "green",
+    "gray"
+   ],
+   "style": "emoji-like",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": []
+  },
+  "DMJHalloweenEmoji/5967700398859881846": {
+   "color": [
+    "white",
+    "black",
+    "gray"
+   ],
+   "style": "mosaic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "holodnoenovogodnee/5255766512500767270": {
+   "color": [
+    "white",
+    "gray",
+    "blue"
+   ],
+   "style": "hand-drawn",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "holodnoenovogodnee/5253730925635732554": {
+   "color": [
+    "green",
+    "blue"
+   ],
+   "style": "hand-drawn",
+   "topic": "holidays",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": []
+  },
+  "holodnoenovogodnee/5255946948371840953": {
+   "color": [
+    "green",
+    "gray"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "holodnoenovogodnee/5253962089365538146": {
+   "color": [
+    "blue"
+   ],
+   "style": "hand-drawn",
+   "topic": "interface",
+   "mood": "calm",
+   "role": "navigation",
+   "unsure": []
+  },
+  "holodnoenovogodnee/5255940561755472527": {
+   "color": [
+    "blue"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "greenhalloween/5420618459811718103": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "realistic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "content",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "greenhalloween/5417985700693849268": {
+   "color": [
+    "green",
+    "black"
+   ],
+   "style": "realistic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": [
+    "style"
+   ]
+  },
+  "greenhalloween/5420454031283761857": {
+   "color": [
+    "gray",
+    "brown"
+   ],
+   "style": "realistic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": []
+  },
+  "greenhalloween/5418137635161945697": {
+   "color": [
+    "purple",
+    "white",
+    "orange"
+   ],
+   "style": "realistic",
+   "topic": "holidays",
+   "mood": "playful",
+   "role": "content",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "greenhalloween/5420532693609787279": {
+   "color": [
+    "green",
+    "black"
+   ],
+   "style": "realistic",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "content",
+   "unsure": []
+  },
+  "HalloweenAdaptiveXkysluv/5199805592599811323": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": []
+  },
+  "HalloweenAdaptiveXkysluv/5456610418896172705": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": []
+  },
+  "HalloweenAdaptiveXkysluv/5199842744066923388": {
+   "color": [
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": [
+    "style",
+    "mood"
+   ]
+  },
+  "HalloweenAdaptiveXkysluv/5199734506596098791": {
+   "color": [
+    "black"
+   ],
+   "style": "lettering",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "content",
+   "unsure": [
+    "style"
+   ]
+  },
+  "HalloweenAdaptiveXkysluv/5201948317424048718": {
+   "color": [
+    "black",
+    "gray"
+   ],
+   "style": "hand-drawn",
+   "topic": "holidays",
+   "mood": "scary",
+   "role": "decoration",
+   "unsure": []
+  },
+  "XmasNewYear/4954400180737671917": {
+   "color": [
+    "green",
+    "gold"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "joyful",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "XmasNewYear/4954482906102759979": {
+   "color": [
+    "purple",
+    "green",
+    "yellow"
+   ],
+   "style": "flat",
+   "topic": "holidays",
+   "mood": "joyful",
+   "role": "decoration",
+   "unsure": []
+  },
+  "XmasNewYear/4954352833018201105": {
+   "color": [
+    "green",
+    "red",
+    "gold"
+   ],
+   "style": "flat",
+   "topic": "holidays",
+   "mood": "joyful",
+   "role": "decoration",
+   "unsure": []
+  },
+  "XmasNewYear/4954349074921816707": {
+   "color": [
+    "red",
+    "gold",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "holidays",
+   "mood": "joyful",
+   "role": "decoration",
+   "unsure": []
+  },
+  "XmasNewYear/4956769941828141749": {
+   "color": [
+    "purple",
+    "pink",
+    "blue"
+   ],
+   "style": "outline",
+   "topic": "holidays",
+   "mood": "joyful",
+   "role": "decoration",
+   "unsure": []
+  },
+  "Premium_Icon/5204221415980539813": {
+   "color": [
+    "blue"
+   ],
+   "style": "gradient",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": []
+  },
+  "Premium_Icon/5204347567759956677": {
+   "color": [
+    "gold"
+   ],
+   "style": "gradient",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": []
+  },
+  "Premium_Icon/5296739400992960225": {
+   "color": [
+    "purple",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "role"
+   ]
+  },
+  "Premium_Icon/5215470334760721739": {
+   "color": [
+    "blue",
+    "purple",
+    "pink"
+   ],
+   "style": "gradient",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "Premium_Icon/5213123182378098899": {
+   "color": [
+    "purple",
+    "blue",
+    "pink"
+   ],
+   "style": "gradient",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": []
+  },
+  "Golden_Icons/5242734542342595995": {
+   "color": [
+    "gold",
+    "black"
+   ],
+   "style": "lettering",
+   "topic": "status",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "Golden_Icons/5242230407671325497": {
+   "color": [
+    "gold",
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "Golden_Icons/5242713260779643386": {
+   "color": [
+    "gold",
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "Golden_Icons/5242722640988219255": {
+   "color": [
+    "gold",
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": []
+  },
+  "Golden_Icons/5242392645765965104": {
+   "color": [
+    "gold",
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "OutlineEmoji/5219675837887956268": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "OutlineEmoji/5219860366862862672": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "OutlineEmoji/5467629518271299429": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "OutlineEmoji/5355051922862653659": {
+   "color": [
+    "black",
+    "gray"
+   ],
+   "style": "outline",
+   "topic": "tech",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "OutlineEmoji/5458604417592863845": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "Icon_2023/5303191610102654814": {
+   "color": [
+    "red",
+    "yellow",
+    "black"
+   ],
+   "style": "lettering",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "style"
+   ]
+  },
+  "Icon_2023/5305244857873214182": {
+   "color": [
+    "yellow",
+    "orange",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "people",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "Icon_2023/5321521491139897009": {
+   "color": [
+    "brown",
+    "pink",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "office",
+   "mood": "calm",
+   "role": "content",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "Icon_2023/5321441544618649855": {
+   "color": [
+    "red",
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "Icon_2023/5330317755960796646": {
+   "color": [
+    "pink",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "decor",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": []
+  },
+  "KorysnostiIcons/5310168243309125430": {
+   "color": [
+    "red",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "KorysnostiIcons/5307786220087028767": {
+   "color": [
+    "red",
+    "green",
+    "blue"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "KorysnostiIcons/5307577381597225631": {
+   "color": [
+    "green"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "KorysnostiIcons/5316686165418452971": {
+   "color": [
+    "blue",
+    "white"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "KorysnostiIcons/5397972209656407213": {
+   "color": [
+    "white",
+    "green",
+    "black"
+   ],
+   "style": "native-ui",
+   "topic": "brands",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "CenterOfEmoji33658028/5895740828860550764": {
+   "color": [
+    "yellow",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "CenterOfEmoji33658028/5904638935945972891": {
+   "color": [
+    "yellow",
+    "black"
+   ],
+   "style": "glossy",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": []
+  },
+  "CenterOfEmoji33658028/5904453449193361678": {
+   "color": [
+    "white",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "style"
+   ]
+  },
+  "CenterOfEmoji33658028/5904521868022386173": {
+   "color": [
+    "white",
+    "black",
+    "red"
+   ],
+   "style": "flat",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "role"
+   ]
+  },
+  "CenterOfEmoji33658028/5904725037155356585": {
+   "color": [
+    "yellow",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "TgAndroidIcons/5877260593903177342": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "TgAndroidIcons/5886285363869126932": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "action",
+   "unsure": []
+  },
+  "TgAndroidIcons/5841238690306724929": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "communication",
+   "unsure": []
+  },
+  "TgAndroidIcons/5778158488450502097": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "TgAndroidIcons/5778496382117613636": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "PinkMixHDEMOJIGRAY/5404360672861528768": {
+   "color": [
+    "pink"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "PinkMixHDEMOJIGRAY/5404584144304903489": {
+   "color": [
+    "pink",
+    "white"
+   ],
+   "style": "mosaic",
+   "topic": "love",
+   "mood": "loving",
+   "role": "decoration",
+   "unsure": []
+  },
+  "PinkMixHDEMOJIGRAY/5366538271729951262": {
+   "color": [
+    "pink"
+   ],
+   "style": "gradient",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": [
+    "style"
+   ]
+  },
+  "PinkMixHDEMOJIGRAY/5368447818484718166": {
+   "color": [
+    "pink",
+    "white"
+   ],
+   "style": "3d",
+   "topic": "sport",
+   "mood": "playful",
+   "role": "decoration",
+   "unsure": [
+    "topic",
+    "role"
+   ]
+  },
+  "PinkMixHDEMOJIGRAY/5366595961730671496": {
+   "color": [
+    "pink"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "communication",
+   "unsure": []
+  },
+  "AnimatedReactionsAdaptive/5089526779652080475": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "AnimatedReactionsAdaptive/5175092136030241679": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "AnimatedReactionsAdaptive/5172398207988139299": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "AnimatedReactionsAdaptive/5091473589543109313": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "faces",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "AnimatedReactionsAdaptive/5172923860445562359": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "people",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": []
+  },
+  "typical_adaptive_emoji/5431844821423634115": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "mosaic",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "typical_adaptive_emoji/5434036294126682263": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": [
+    "role"
+   ]
+  },
+  "typical_adaptive_emoji/5433729556152335279": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "office",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "typical_adaptive_emoji/5431606081371519523": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "typical_adaptive_emoji/5434074463501040948": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "glyph",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "alphabet_ru_mini/5454330491341643548": {
+   "color": [
+    "orange"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "alphabet_ru_mini/5456371910772269309": {
+   "color": [
+    "blue"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "alphabet_ru_mini/5456119517019119748": {
+   "color": [
+    "yellow"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "alphabet_ru_mini/5454347190174490271": {
+   "color": [
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "alphabet_ru_mini/5454207307384626821": {
+   "color": [
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "content",
+   "unsure": []
+  },
+  "MysoulStickBlackGold/5780932728086076798": {
+   "color": [
+    "black",
+    "gold"
+   ],
+   "style": "glossy",
+   "topic": "food",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": []
+  },
+  "MysoulStickBlackGold/5767150817983340254": {
+   "color": [
+    "black",
+    "gold"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MysoulStickBlackGold/5767340161616583692": {
+   "color": [
+    "black",
+    "gold"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MysoulStickBlackGold/5769209013556224304": {
+   "color": [
+    "black",
+    "gold"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MysoulStickBlackGold/5769614780591513057": {
+   "color": [
+    "black",
+    "gold"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "neon_alphabet/5463193233666348423": {
+   "color": [
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "neon_alphabet/5462915121649032245": {
+   "color": [
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "neon_alphabet/5463279652703311927": {
+   "color": [
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "neon_alphabet/5463309300862557594": {
+   "color": [
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "neon_alphabet/5463306058162248029": {
+   "color": [
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "color",
+    "style",
+    "topic",
+    "mood",
+    "role"
+   ]
+  },
+  "comicsansemoji/5280904376263649144": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "comicsansemoji/5280875295040086258": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "comicsansemoji/5454123817515360675": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "comicsansemoji/5280749976484323750": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "comicsansemoji/5280600610406670426": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MendeleevEmoji/5190789721806091459": {
+   "color": [
+    "pink",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MendeleevEmoji/5197576792335986781": {
+   "color": [
+    "green",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MendeleevEmoji/5226551749816366841": {
+   "color": [
+    "yellow",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MendeleevEmoji/5226917556475932251": {
+   "color": [
+    "yellow",
+    "green"
+   ],
+   "style": "flat",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MendeleevEmoji/5244701534284954753": {
+   "color": [
+    "white",
+    "gray",
+    "black"
+   ],
+   "style": "flat",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MovingEmojis/5776072942525877772": {
+   "color": [
+    "purple",
+    "pink",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MovingEmojis/5776164051667128745": {
+   "color": [
+    "pink",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MovingEmojis/5776262041345986345": {
+   "color": [
+    "purple",
+    "pink",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MovingEmojis/5776330778002591861": {
+   "color": [
+    "purple",
+    "orange",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "MovingEmojis/5776317089941819022": {
+   "color": [
+    "purple",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "ENLettersAndNumbers/5208579609490109308": {
+   "color": [
+    "black",
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "ENLettersAndNumbers/5206688797382689723": {
+   "color": [
+    "black",
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "ENLettersAndNumbers/5208672758740826870": {
+   "color": [
+    "black",
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "ENLettersAndNumbers/5208495054468954344": {
+   "color": [
+    "black",
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "ENLettersAndNumbers/5206603447792581912": {
+   "color": [
+    "black",
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "BloodyFontEmoji/5330292450013494017": {
+   "color": [
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "scary",
+   "role": "content",
+   "unsure": []
+  },
+  "BloodyFontEmoji/5364021841801262907": {
+   "color": [
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "scary",
+   "role": "content",
+   "unsure": []
+  },
+  "BloodyFontEmoji/5363807703321818872": {
+   "color": [
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "scary",
+   "role": "content",
+   "unsure": []
+  },
+  "BloodyFontEmoji/5325798810415287550": {
+   "color": [
+    "red"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "scary",
+   "role": "content",
+   "unsure": []
+  },
+  "BloodyFontEmoji/5463329250985656403": {
+   "color": [
+    "red"
+   ],
+   "style": "glossy",
+   "topic": "love",
+   "mood": "sad",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "PepeEmoji/5327761026353997352": {
+   "color": [
+    "green",
+    "red",
+    "blue"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "PepeEmoji/5326037211164978005": {
+   "color": [
+    "green",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "surprised",
+   "role": "communication",
+   "unsure": []
+  },
+  "PepeEmoji/5310007628712129919": {
+   "color": [
+    "green",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "PepeEmoji/5350761933433743924": {
+   "color": [
+    "green",
+    "blue",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "PepeEmoji/5359388675895467568": {
+   "color": [
+    "green",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "AdaptiveMemesEmoji/5307665510031179928": {
+   "color": [
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "AdaptiveMemesEmoji/5310025177948502770": {
+   "color": [
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "AdaptiveMemesEmoji/5309774923089065501": {
+   "color": [
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": [
+    "style"
+   ]
+  },
+  "AdaptiveMemesEmoji/5310257376765424748": {
+   "color": [
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "characters",
+   "mood": "angry",
+   "role": "communication",
+   "unsure": []
+  },
+  "AdaptiveMemesEmoji/5307933932602276034": {
+   "color": [
+    "black"
+   ],
+   "style": "hand-drawn",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "SupernaturalAirDsgn/5255802255218593960": {
+   "color": [
+    "brown",
+    "teal",
+    "green"
+   ],
+   "style": "realistic",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "SupernaturalAirDsgn/5253620630875558130": {
+   "color": [
+    "brown"
+   ],
+   "style": "realistic",
+   "topic": "characters",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "SupernaturalAirDsgn/5255709114557812885": {
+   "color": [
+    "black",
+    "white"
+   ],
+   "style": "realistic",
+   "topic": "people",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "SupernaturalAirDsgn/5253639180839309021": {
+   "color": [
+    "brown"
+   ],
+   "style": "realistic",
+   "topic": "characters",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "SupernaturalAirDsgn/5253544236292263497": {
+   "color": [
+    "brown",
+    "black"
+   ],
+   "style": "realistic",
+   "topic": "characters",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwitchAbuse/5420234773203301857": {
+   "color": [
+    "green",
+    "purple",
+    "black"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwitchAbuse/5418129929990615588": {
+   "color": [
+    "white",
+    "purple",
+    "black"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "TwitchAbuse/5418142333856163412": {
+   "color": [
+    "purple",
+    "white"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwitchAbuse/5417957834946033223": {
+   "color": [
+    "black",
+    "white",
+    "green"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "TwitchAbuse/5472261631910130356": {
+   "color": [
+    "purple",
+    "green"
+   ],
+   "style": "flat",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "Pepe_Collection/5960776748369979028": {
+   "color": [
+    "green",
+    "blue",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "Pepe_Collection/5965071028471206740": {
+   "color": [
+    "green",
+    "blue",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "Pepe_Collection/5965048866439959024": {
+   "color": [
+    "green",
+    "yellow",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "Pepe_Collection/5962973581192205593": {
+   "color": [
+    "green",
+    "gray",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "Pepe_Collection/5965364993212813682": {
+   "color": [
+    "green",
+    "blue",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "soyonagasak1_by_fStikBot/5375511038231874694": {
+   "color": [
+    "gray"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "sad",
+   "role": "communication",
+   "unsure": []
+  },
+  "soyonagasak1_by_fStikBot/5375421191811005542": {
+   "color": [
+    "white",
+    "gray"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "soyonagasak1_by_fStikBot/5375190676621264519": {
+   "color": [
+    "white",
+    "black",
+    "gray"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "soyonagasak1_by_fStikBot/5375399523700999744": {
+   "color": [
+    "white",
+    "gray"
+   ],
+   "style": "hand-drawn",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "soyonagasak1_by_fStikBot/5375287820191567824": {
+   "color": [
+    "gray",
+    "black"
+   ],
+   "style": "realistic",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "topic",
+    "role"
+   ]
+  },
+  "ilovemaresemoji/5397733542618769693": {
+   "color": [
+    "white",
+    "blue"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "ilovemaresemoji/5433673455289542069": {
+   "color": [
+    "yellow",
+    "pink",
+    "purple"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "ilovemaresemoji/5404668059375935362": {
+   "color": [
+    "white",
+    "green"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "ilovemaresemoji/5395331096827175432": {
+   "color": [
+    "teal",
+    "yellow",
+    "red"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "ilovemaresemoji/5406773057207446530": {
+   "color": [
+    "gray",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "loving",
+   "role": "communication",
+   "unsure": []
+  },
+  "MemeEmoji/5368376088235875736": {
+   "color": [
+    "orange"
+   ],
+   "style": "cartoon",
+   "topic": "faces",
+   "mood": "calm",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "MemeEmoji/5271897426117009417": {
+   "color": [
+    "orange",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "MemeEmoji/5458501819414103680": {
+   "color": [
+    "orange"
+   ],
+   "style": "cartoon",
+   "topic": "faces",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "MemeEmoji/5276450615436787319": {
+   "color": [
+    "orange",
+    "black"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "MemeEmoji/5350400133978671317": {
+   "color": [
+    "orange",
+    "white"
+   ],
+   "style": "cartoon",
+   "topic": "characters",
+   "mood": "playful",
+   "role": "communication",
+   "unsure": []
+  },
+  "WeatherEmoji/5458553324661907817": {
+   "color": [
+    "gray",
+    "yellow"
+   ],
+   "style": "flat",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "WeatherEmoji/5456644628310664448": {
+   "color": [
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "WeatherEmoji/5458786979472744976": {
+   "color": [
+    "red",
+    "pink"
+   ],
+   "style": "flat",
+   "topic": "nature",
+   "mood": "serious",
+   "role": "content",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "WeatherEmoji/5458906804765336878": {
+   "color": [
+    "gray",
+    "yellow",
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "WeatherEmoji/5458875859525970449": {
+   "color": [
+    "gray"
+   ],
+   "style": "flat",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "NatureEmojis/5080377043317687745": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "NatureEmojis/5048654337560019842": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "NatureEmojis/5055717291019207953": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "NatureEmojis/5089127034160939887": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "NatureEmojis/5057843394320008206": {
+   "color": [
+    "black"
+   ],
+   "style": "glyph",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiTimeWeather/6323161783586522185": {
+   "color": [
+    "gray",
+    "white"
+   ],
+   "style": "emoji-like",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "TwemojiTimeWeather/6323196443972601554": {
+   "color": [
+    "gray",
+    "white"
+   ],
+   "style": "emoji-like",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": []
+  },
+  "TwemojiTimeWeather/6323103148692997473": {
+   "color": [
+    "purple",
+    "black",
+    "white"
+   ],
+   "style": "emoji-like",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiTimeWeather/6323578601572664881": {
+   "color": [
+    "purple",
+    "blue"
+   ],
+   "style": "emoji-like",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "content",
+   "unsure": []
+  },
+  "TwemojiTimeWeather/6323503680163153903": {
+   "color": [
+    "orange",
+    "yellow"
+   ],
+   "style": "emoji-like",
+   "topic": "symbols",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": [
+    "mood"
+   ]
+  },
+  "Loading_by_TgEmojis_bot/5005867619954197330": {
+   "color": [
+    "red"
+   ],
+   "style": "flat",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": []
+  },
+  "Loading_by_TgEmojis_bot/5006096150869050528": {
+   "color": [
+    "red"
+   ],
+   "style": "flat",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "topic"
+   ]
+  },
+  "Loading_by_TgEmojis_bot/5003883452437627591": {
+   "color": [
+    "blue",
+    "pink",
+    "yellow"
+   ],
+   "style": "flat",
+   "topic": "symbols",
+   "mood": "calm",
+   "role": "status",
+   "unsure": [
+    "style",
+    "role"
+   ]
+  },
+  "Loading_by_TgEmojis_bot/5006237051566163366": {
+   "color": [
+    "black",
+    "red",
+    "blue"
+   ],
+   "style": "flat",
+   "topic": "decor",
+   "mood": "serious",
+   "role": "decoration",
+   "unsure": [
+    "style",
+    "topic"
+   ]
+  },
+  "Loading_by_TgEmojis_bot/5005768492109006022": {
+   "color": [
+    "gray"
+   ],
+   "style": "flat",
+   "topic": "status",
+   "mood": "serious",
+   "role": "status",
+   "unsure": [
+    "color",
+    "style",
+    "topic",
+    "mood",
+    "role"
+   ]
+  },
+  "CustomArrows/5789837943342370709": {
+   "color": [
+    "white"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "CustomArrows/5787419352768711504": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "CustomArrows/5787267225027087894": {
+   "color": [
+    "black"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "CustomArrows/5791720878479772740": {
+   "color": [
+    "blue"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "CustomArrows/5791755057829514922": {
+   "color": [
+    "blue"
+   ],
+   "style": "outline",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "navigation",
+   "unsure": []
+  },
+  "newStatus/5839431531277323597": {
+   "color": [
+    "green",
+    "brown"
+   ],
+   "style": "emoji-like",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": []
+  },
+  "newStatus/5836746115860401582": {
+   "color": [
+    "pink",
+    "green"
+   ],
+   "style": "emoji-like",
+   "topic": "nature",
+   "mood": "calm",
+   "role": "decoration",
+   "unsure": []
+  },
+  "newStatus/5855187026097212671": {
+   "color": [
+    "blue"
+   ],
+   "style": "lettering",
+   "topic": "letters",
+   "mood": "serious",
+   "role": "content",
+   "unsure": []
+  },
+  "newStatus/5886551046251089646": {
+   "color": [
+    "yellow",
+    "gray"
+   ],
+   "style": "emoji-like",
+   "topic": "faces",
+   "mood": "joyful",
+   "role": "communication",
+   "unsure": []
+  },
+  "newStatus/5956267526630412170": {
+   "color": [
+    "gray",
+    "black"
+   ],
+   "style": "emoji-like",
+   "topic": "interface",
+   "mood": "serious",
+   "role": "settings",
+   "unsure": [
+    "topic"
+   ]
+  }
+ },
+ "second": {
+  "labeler": "independent-vision-v2-b",
+  "packs": {
+   "PandaEmoji": {
+    "style": [
+     "emoji-like",
+     "cartoon"
+    ],
+    "color": [
+     "white",
+     "black",
+     "pink"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "animals",
+     "faces"
+    ],
+    "mood": "playful",
+    "fit": "both",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "style"
+    ]
+   },
+   "AdaptiveAnimals": {
+    "style": [
+     "glyph"
+    ],
+    "color": [
+     "white"
+    ],
+    "palette": "monochrome",
+    "topic": [
+     "animals"
+    ],
+    "mood": "serious",
+    "fit": "adaptive",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "mood",
+     "use"
+    ]
+   },
+   "sparrowcodeemoji": {
+    "style": [
+     "native-ui",
+     "3d"
+    ],
+    "color": [
+     "blue",
+     "white",
+     "orange"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "tech",
+     "brands"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "content",
+     "utility",
+     "education"
+    ],
+    "unsure": [
+     "use"
+    ]
+   },
+   "socialss": {
+    "style": [
+     "native-ui",
+     "gradient"
+    ],
+    "color": [
+     "pink",
+     "red",
+     "blue"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "brands",
+     "finance"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "content",
+     "shop"
+    ],
+    "unsure": [
+     "color",
+     "style"
+    ]
+   },
+   "sincerityinfo_by_TgEmodziBot": {
+    "style": [
+     "native-ui",
+     "glyph"
+    ],
+    "color": [
+     "gray",
+     "white",
+     "black"
+    ],
+    "palette": "monochrome",
+    "topic": [
+     "finance",
+     "brands"
+    ],
+    "mood": "serious",
+    "fit": "dark",
+    "use": [
+     "finance",
+     "content"
+    ],
+    "unsure": [
+     "fit",
+     "style",
+     "use"
+    ]
+   },
+   "NeonEmojis": {
+    "style": [
+     "neon"
+    ],
+    "color": [
+     "pink",
+     "black",
+     "red"
+    ],
+    "palette": "vivid",
+    "topic": [
+     "love",
+     "symbols"
+    ],
+    "mood": "playful",
+    "fit": "both",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "palette",
+     "fit"
+    ]
+   },
+   "FluentEmojiSet1": {
+    "style": [
+     "emoji-like",
+     "3d"
+    ],
+    "color": [
+     "yellow",
+     "orange"
+    ],
+    "palette": "vivid",
+    "topic": [
+     "faces"
+    ],
+    "mood": "joyful",
+    "fit": "light",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "style",
+     "fit"
+    ]
+   },
+   "OrderFlagsKotletovv": {
+    "style": [
+     "native-ui",
+     "flat"
+    ],
+    "color": [
+     "black",
+     "white",
+     "blue"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "brands",
+     "games"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "content",
+     "games"
+    ],
+    "unsure": [
+     "style"
+    ]
+   },
+   "SpritzEmoji": {
+    "style": [
+     "cartoon"
+    ],
+    "color": [
+     "orange",
+     "white"
+    ],
+    "palette": "vivid",
+    "topic": [
+     "characters",
+     "animals"
+    ],
+    "mood": "playful",
+    "fit": "both",
+    "use": [
+     "community"
+    ],
+    "unsure": []
+   },
+   "TotalWarWarhammerFTS1": {
+    "style": [
+     "realistic",
+     "hand-drawn"
+    ],
+    "color": [
+     "red",
+     "black",
+     "gold"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "games",
+     "symbols"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "games"
+    ],
+    "unsure": [
+     "style",
+     "palette"
+    ]
+   },
+   "HeartsEm": {
+    "style": [
+     "glossy",
+     "flat"
+    ],
+    "color": [
+     "pink",
+     "red",
+     "blue"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "love"
+    ],
+    "mood": "loving",
+    "fit": "light",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "style",
+     "fit"
+    ]
+   },
+   "DeadDeathEmojis": {
+    "style": [
+     "cartoon"
+    ],
+    "color": [
+     "purple",
+     "white",
+     "black"
+    ],
+    "palette": "muted",
+    "topic": [
+     "characters"
+    ],
+    "mood": "scary",
+    "fit": "both",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "mood",
+     "palette"
+    ]
+   },
+   "XmasNewYear": {
+    "style": [
+     "flat",
+     "lettering"
+    ],
+    "color": [
+     "red",
+     "green",
+     "gold"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "holidays",
+     "letters"
+    ],
+    "mood": "joyful",
+    "fit": "both",
+    "use": [
+     "content",
+     "community"
+    ],
+    "unsure": [
+     "style"
+    ]
+   },
+   "Premium_Icon": {
+    "style": [
+     "gradient",
+     "native-ui"
+    ],
+    "color": [
+     "purple",
+     "blue",
+     "pink"
+    ],
+    "palette": "vivid",
+    "topic": [
+     "symbols",
+     "interface"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "utility",
+     "content"
+    ],
+    "unsure": [
+     "use"
+    ]
+   },
+   "Icon_2023": {
+    "style": [
+     "neon",
+     "flat"
+    ],
+    "color": [
+     "black",
+     "yellow",
+     "pink"
+    ],
+    "palette": "vivid",
+    "topic": [
+     "status",
+     "interface"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "community",
+     "content"
+    ],
+    "unsure": [
+     "style",
+     "mood",
+     "use"
+    ]
+   },
+   "MendeleevEmoji": {
+    "style": [
+     "flat",
+     "lettering"
+    ],
+    "color": [
+     "green",
+     "yellow",
+     "pink"
+    ],
+    "palette": "muted",
+    "topic": [
+     "letters"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "education",
+     "content"
+    ],
+    "unsure": [
+     "style",
+     "topic"
+    ]
+   },
+   "ilovemaresemoji": {
+    "style": [
+     "hand-drawn",
+     "cartoon"
+    ],
+    "color": [
+     "purple",
+     "pink",
+     "yellow"
+    ],
+    "palette": "multicolor",
+    "topic": [
+     "characters",
+     "animals"
+    ],
+    "mood": "loving",
+    "fit": "both",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "mood",
+     "topic"
+    ]
+   },
+   "SupernaturalAirDsgn": {
+    "style": [
+     "realistic"
+    ],
+    "color": [
+     "brown",
+     "black",
+     "gray"
+    ],
+    "palette": "muted",
+    "topic": [
+     "characters"
+    ],
+    "mood": "serious",
+    "fit": "both",
+    "use": [
+     "community"
+    ],
+    "unsure": [
+     "mood"
+    ]
+   },
+   "NatureEmojis": {
+    "style": [
+     "glyph"
+    ],
+    "color": [
+     "black"
+    ],
+    "palette": "monochrome",
+    "topic": [
+     "nature"
+    ],
+    "mood": "calm",
+    "fit": "light",
+    "use": [
+     "content"
+    ],
+    "unsure": [
+     "fit"
+    ]
+   }
+  },
+  "emoji": {
+   "PandaEmoji/5226568938275481037": {
+    "color": [
+     "white",
+     "black",
+     "teal"
+    ],
+    "style": "emoji-like",
+    "topic": "animals",
+    "mood": "sad",
+    "role": "decoration",
+    "unsure": [
+     "topic"
+    ]
+   },
+   "PandaEmoji/5372848794163486495": {
+    "color": [
+     "white",
+     "black"
+    ],
+    "style": "emoji-like",
+    "topic": "animals",
+    "mood": "joyful",
+    "role": "decoration",
+    "unsure": []
+   },
+   "PandaEmoji/5444932797955317203": {
+    "color": [
+     "black",
+     "gray"
+    ],
+    "style": "emoji-like",
+    "topic": "animals",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "PandaEmoji/5219894095241029070": {
+    "color": [
+     "yellow",
+     "pink",
+     "purple"
+    ],
+    "style": "emoji-like",
+    "topic": "nature",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "PandaEmoji/5199646154823838084": {
+    "color": [
+     "yellow"
+    ],
+    "style": "emoji-like",
+    "topic": "symbols",
+    "mood": "playful",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "AdaptiveAnimals/5208567763970307569": {
+    "color": [
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "animals",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "AdaptiveAnimals/5206704774661027538": {
+    "color": [
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "animals",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "AdaptiveAnimals/5208565861299794271": {
+    "color": [
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "animals",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "topic",
+     "mood"
+    ]
+   },
+   "AdaptiveAnimals/5206439616265073591": {
+    "color": [
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "animals",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "AdaptiveAnimals/5206259987847852976": {
+    "color": [
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "animals",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "sparrowcodeemoji/5456220195347518127": {
+    "color": [
+     "green",
+     "white"
+    ],
+    "style": "native-ui",
+    "topic": "brands",
+    "mood": "serious",
+    "role": "content",
+    "unsure": []
+   },
+   "sparrowcodeemoji/5314353929457256617": {
+    "color": [
+     "white",
+     "teal",
+     "red"
+    ],
+    "style": "3d",
+    "topic": "tech",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "role"
+    ]
+   },
+   "sparrowcodeemoji/5192793573157784756": {
+    "color": [
+     "blue",
+     "white"
+    ],
+    "style": "3d",
+    "topic": "tech",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "role"
+    ]
+   },
+   "sparrowcodeemoji/5314574974244115122": {
+    "color": [
+     "blue",
+     "white"
+    ],
+    "style": "native-ui",
+    "topic": "tech",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "role"
+    ]
+   },
+   "sparrowcodeemoji/5312135132172274721": {
+    "color": [
+     "blue",
+     "white"
+    ],
+    "style": "native-ui",
+    "topic": "tech",
+    "mood": "serious",
+    "role": "communication",
+    "unsure": [
+     "topic"
+    ]
+   },
+   "socialss/5931680007091916195": {
+    "color": [
+     "green",
+     "black"
+    ],
+    "style": "native-ui",
+    "topic": "brands",
+    "mood": "serious",
+    "role": "content",
+    "unsure": []
+   },
+   "socialss/5929338571310763688": {
+    "color": [
+     "red",
+     "black"
+    ],
+    "style": "native-ui",
+    "topic": "brands",
+    "mood": "serious",
+    "role": "content",
+    "unsure": []
+   },
+   "socialss/5929431853705465358": {
+    "color": [
+     "white",
+     "purple",
+     "yellow"
+    ],
+    "style": "flat",
+    "topic": "love",
+    "mood": "loving",
+    "role": "communication",
+    "unsure": []
+   },
+   "socialss/5931657638902238609": {
+    "color": [
+     "blue"
+    ],
+    "style": "flat",
+    "topic": "brands",
+    "mood": "serious",
+    "role": "commerce",
+    "unsure": [
+     "style",
+     "topic"
+    ]
+   },
+   "socialss/5931678237565390855": {
+    "color": [
+     "gray",
+     "black"
+    ],
+    "style": "native-ui",
+    "topic": "office",
+    "mood": "calm",
+    "role": "action",
+    "unsure": [
+     "style",
+     "mood"
+    ]
+   },
+   "sincerityinfo_by_TgEmodziBot/5211132739914329113": {
+    "color": [
+     "blue",
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "symbols",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": [
+     "style",
+     "mood",
+     "role"
+    ]
+   },
+   "sincerityinfo_by_TgEmodziBot/5213021456077710595": {
+    "color": [
+     "blue",
+     "white"
+    ],
+    "style": "outline",
+    "topic": "brands",
+    "mood": "serious",
+    "role": "communication",
+    "unsure": [
+     "role"
+    ]
+   },
+   "sincerityinfo_by_TgEmodziBot/5229006787482510696": {
+    "color": [
+     "white",
+     "gray"
+    ],
+    "style": "outline",
+    "topic": "sport",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style",
+     "role"
+    ]
+   },
+   "sincerityinfo_by_TgEmodziBot/5192810117371822490": {
+    "color": [
+     "gray",
+     "white",
+     "black"
+    ],
+    "style": "native-ui",
+    "topic": "finance",
+    "mood": "serious",
+    "role": "commerce",
+    "unsure": []
+   },
+   "sincerityinfo_by_TgEmodziBot/5359417821543576783": {
+    "color": [
+     "gray",
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "finance",
+    "mood": "serious",
+    "role": "commerce",
+    "unsure": [
+     "style"
+    ]
+   },
+   "NeonEmojis/5852757964393287361": {
+    "color": [
+     "red",
+     "black"
+    ],
+    "style": "neon",
+    "topic": "love",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": []
+   },
+   "NeonEmojis/5854962639825801415": {
+    "color": [
+     "orange",
+     "black"
+    ],
+    "style": "neon",
+    "topic": "symbols",
+    "mood": "joyful",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "NeonEmojis/5852588137091436728": {
+    "color": [
+     "pink",
+     "teal",
+     "yellow"
+    ],
+    "style": "neon",
+    "topic": "symbols",
+    "mood": "playful",
+    "role": "decoration",
+    "unsure": [
+     "topic",
+     "role"
+    ]
+   },
+   "NeonEmojis/5852531160055287047": {
+    "color": [
+     "pink",
+     "teal",
+     "yellow"
+    ],
+    "style": "neon",
+    "topic": "status",
+    "mood": "surprised",
+    "role": "status",
+    "unsure": []
+   },
+   "NeonEmojis/5852537078520221331": {
+    "color": [
+     "yellow",
+     "purple",
+     "black"
+    ],
+    "style": "neon",
+    "topic": "status",
+    "mood": "surprised",
+    "role": "status",
+    "unsure": []
+   },
+   "FluentEmojiSet1/6334578682832618926": {
+    "color": [
+     "orange",
+     "yellow",
+     "white"
+    ],
+    "style": "emoji-like",
+    "topic": "faces",
+    "mood": "angry",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "FluentEmojiSet1/6332210339081357054": {
+    "color": [
+     "green"
+    ],
+    "style": "emoji-like",
+    "topic": "faces",
+    "mood": "sad",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "FluentEmojiSet1/6334676346093963090": {
+    "color": [
+     "white",
+     "purple"
+    ],
+    "style": "emoji-like",
+    "topic": "faces",
+    "mood": "scary",
+    "role": "decoration",
+    "unsure": [
+     "topic"
+    ]
+   },
+   "FluentEmojiSet1/6334503757128140470": {
+    "color": [
+     "pink",
+     "red"
+    ],
+    "style": "emoji-like",
+    "topic": "love",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": []
+   },
+   "FluentEmojiSet1/6334520571925104745": {
+    "color": [
+     "brown",
+     "pink"
+    ],
+    "style": "emoji-like",
+    "topic": "animals",
+    "mood": "sad",
+    "role": "decoration",
+    "unsure": []
+   },
+   "OrderFlagsKotletovv/5415741296813823530": {
+    "color": [
+     "black",
+     "white"
+    ],
+    "style": "native-ui",
+    "topic": "games",
+    "mood": "serious",
+    "role": "content",
+    "unsure": []
+   },
+   "OrderFlagsKotletovv/5404870528429213588": {
+    "color": [
+     "blue",
+     "gray"
+    ],
+    "style": "native-ui",
+    "topic": "characters",
+    "mood": "calm",
+    "role": "content",
+    "unsure": [
+     "style",
+     "mood"
+    ]
+   },
+   "OrderFlagsKotletovv/5422411612952740468": {
+    "color": [
+     "white",
+     "black"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "playful",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "OrderFlagsKotletovv/5246819786385545958": {
+    "color": [
+     "white",
+     "gray",
+     "blue"
+    ],
+    "style": "flat",
+    "topic": "people",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style",
+     "mood"
+    ]
+   },
+   "OrderFlagsKotletovv/5323756407437153796": {
+    "color": [
+     "blue",
+     "white",
+     "orange"
+    ],
+    "style": "flat",
+    "topic": "office",
+    "mood": "serious",
+    "role": "action",
+    "unsure": [
+     "topic",
+     "role"
+    ]
+   },
+   "SpritzEmoji/5226935054172713128": {
+    "color": [
+     "orange",
+     "white",
+     "blue"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "angry",
+    "role": "decoration",
+    "unsure": [
+     "topic"
+    ]
+   },
+   "SpritzEmoji/5229017383166828184": {
+    "color": [
+     "orange",
+     "white",
+     "pink"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "playful",
+    "role": "decoration",
+    "unsure": []
+   },
+   "SpritzEmoji/5229065946362045891": {
+    "color": [
+     "orange",
+     "black",
+     "white"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "playful",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "SpritzEmoji/5229119981345596557": {
+    "color": [
+     "orange",
+     "white"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "angry",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "SpritzEmoji/5229034563036013660": {
+    "color": [
+     "orange",
+     "black",
+     "white"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "surprised",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "TotalWarWarhammerFTS1/5265126156771823722": {
+    "color": [
+     "red",
+     "black",
+     "gray"
+    ],
+    "style": "realistic",
+    "topic": "games",
+    "mood": "scary",
+    "role": "content",
+    "unsure": [
+     "style",
+     "mood"
+    ]
+   },
+   "TotalWarWarhammerFTS1/5265238521706225169": {
+    "color": [
+     "green",
+     "yellow"
+    ],
+    "style": "realistic",
+    "topic": "flags",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style",
+     "topic"
+    ]
+   },
+   "TotalWarWarhammerFTS1/5388705431168242699": {
+    "color": [
+     "white",
+     "teal",
+     "gold"
+    ],
+    "style": "realistic",
+    "topic": "games",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "TotalWarWarhammerFTS1/5386706218381236994": {
+    "color": [
+     "purple",
+     "gold",
+     "teal"
+    ],
+    "style": "realistic",
+    "topic": "games",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "TotalWarWarhammerFTS1/5388834954496991239": {
+    "color": [
+     "black",
+     "white"
+    ],
+    "style": "glyph",
+    "topic": "interface",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style",
+     "topic",
+     "role"
+    ]
+   },
+   "HeartsEm/4983398550084780701": {
+    "color": [
+     "purple",
+     "white"
+    ],
+    "style": "pixel",
+    "topic": "love",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": []
+   },
+   "HeartsEm/4983415098593772265": {
+    "color": [
+     "orange"
+    ],
+    "style": "flat",
+    "topic": "love",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": []
+   },
+   "HeartsEm/4983573063195951986": {
+    "color": [
+     "pink",
+     "black"
+    ],
+    "style": "pixel",
+    "topic": "love",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": []
+   },
+   "HeartsEm/4983774020420764504": {
+    "color": [
+     "pink",
+     "yellow"
+    ],
+    "style": "flat",
+    "topic": "love",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": [
+     "style"
+    ]
+   },
+   "HeartsEm/4983770133475361352": {
+    "color": [
+     "blue",
+     "yellow"
+    ],
+    "style": "gradient",
+    "topic": "flags",
+    "mood": "loving",
+    "role": "content",
+    "unsure": [
+     "style",
+     "topic"
+    ]
+   },
+   "DeadDeathEmojis/5226809151501394036": {
+    "color": [
+     "purple",
+     "white",
+     "gray"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "scary",
+    "role": "decoration",
+    "unsure": []
+   },
+   "DeadDeathEmojis/5229043612532109144": {
+    "color": [
+     "brown",
+     "blue",
+     "black"
+    ],
+    "style": "flat",
+    "topic": "nature",
+    "mood": "sad",
+    "role": "decoration",
+    "unsure": [
+     "style",
+     "topic",
+     "mood"
+    ]
+   },
+   "DeadDeathEmojis/5226596576390048516": {
+    "color": [
+     "purple",
+     "white"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "angry",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "DeadDeathEmojis/5226899783901273855": {
+    "color": [
+     "purple",
+     "brown",
+     "white"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "DeadDeathEmojis/5229126969257383828": {
+    "color": [
+     "blue",
+     "purple",
+     "white"
+    ],
+    "style": "cartoon",
+    "topic": "characters",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "XmasNewYear/4954400180737671917": {
+    "color": [
+     "green",
+     "gold"
+    ],
+    "style": "flat",
+    "topic": "holidays",
+    "mood": "joyful",
+    "role": "content",
+    "unsure": [
+     "topic",
+     "role"
+    ]
+   },
+   "XmasNewYear/4954482906102759979": {
+    "color": [
+     "purple",
+     "green",
+     "yellow"
+    ],
+    "style": "flat",
+    "topic": "holidays",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "XmasNewYear/4954352833018201105": {
+    "color": [
+     "green",
+     "red",
+     "yellow"
+    ],
+    "style": "flat",
+    "topic": "holidays",
+    "mood": "joyful",
+    "role": "decoration",
+    "unsure": []
+   },
+   "XmasNewYear/4954349074921816707": {
+    "color": [
+     "red",
+     "yellow",
+     "black"
+    ],
+    "style": "flat",
+    "topic": "holidays",
+    "mood": "joyful",
+    "role": "decoration",
+    "unsure": []
+   },
+   "XmasNewYear/4956769941828141749": {
+    "color": [
+     "pink",
+     "purple"
+    ],
+    "style": "outline",
+    "topic": "holidays",
+    "mood": "joyful",
+    "role": "decoration",
+    "unsure": []
+   },
+   "Premium_Icon/5204221415980539813": {
+    "color": [
+     "blue",
+     "teal"
+    ],
+    "style": "gradient",
+    "topic": "symbols",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "role"
+    ]
+   },
+   "Premium_Icon/5204347567759956677": {
+    "color": [
+     "gold"
+    ],
+    "style": "gradient",
+    "topic": "symbols",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "style",
+     "role"
+    ]
+   },
+   "Premium_Icon/5296739400992960225": {
+    "color": [
+     "purple",
+     "white"
+    ],
+    "style": "native-ui",
+    "topic": "interface",
+    "mood": "serious",
+    "role": "settings",
+    "unsure": [
+     "role"
+    ]
+   },
+   "Premium_Icon/5215470334760721739": {
+    "color": [
+     "purple",
+     "blue",
+     "pink"
+    ],
+    "style": "gradient",
+    "topic": "status",
+    "mood": "serious",
+    "role": "settings",
+    "unsure": []
+   },
+   "Premium_Icon/5213123182378098899": {
+    "color": [
+     "purple",
+     "blue",
+     "pink"
+    ],
+    "style": "gradient",
+    "topic": "symbols",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": [
+     "role"
+    ]
+   },
+   "Icon_2023/5303191610102654814": {
+    "color": [
+     "red",
+     "yellow",
+     "black"
+    ],
+    "style": "lettering",
+    "topic": "status",
+    "mood": "serious",
+    "role": "status",
+    "unsure": [
+     "style",
+     "mood"
+    ]
+   },
+   "Icon_2023/5305244857873214182": {
+    "color": [
+     "yellow",
+     "orange",
+     "black"
+    ],
+    "style": "emoji-like",
+    "topic": "people",
+    "mood": "serious",
+    "role": "navigation",
+    "unsure": [
+     "style"
+    ]
+   },
+   "Icon_2023/5321521491139897009": {
+    "color": [
+     "brown",
+     "pink",
+     "black"
+    ],
+    "style": "pixel",
+    "topic": "office",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": [
+     "topic",
+     "role"
+    ]
+   },
+   "Icon_2023/5321441544618649855": {
+    "color": [
+     "red",
+     "white",
+     "black"
+    ],
+    "style": "flat",
+    "topic": "status",
+    "mood": "serious",
+    "role": "status",
+    "unsure": []
+   },
+   "Icon_2023/5330317755960796646": {
+    "color": [
+     "pink",
+     "black"
+    ],
+    "style": "flat",
+    "topic": "decor",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "MendeleevEmoji/5190789721806091459": {
+    "color": [
+     "pink",
+     "black"
+    ],
+    "style": "flat",
+    "topic": "letters",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "MendeleevEmoji/5197576792335986781": {
+    "color": [
+     "green",
+     "white"
+    ],
+    "style": "flat",
+    "topic": "letters",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "MendeleevEmoji/5226551749816366841": {
+    "color": [
+     "yellow",
+     "black"
+    ],
+    "style": "flat",
+    "topic": "letters",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "MendeleevEmoji/5226917556475932251": {
+    "color": [
+     "yellow",
+     "green"
+    ],
+    "style": "flat",
+    "topic": "letters",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "MendeleevEmoji/5244701534284954753": {
+    "color": [
+     "white",
+     "gray"
+    ],
+    "style": "flat",
+    "topic": "letters",
+    "mood": "serious",
+    "role": "content",
+    "unsure": [
+     "style"
+    ]
+   },
+   "ilovemaresemoji/5397733542618769693": {
+    "color": [
+     "white",
+     "blue"
+    ],
+    "style": "hand-drawn",
+    "topic": "characters",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "ilovemaresemoji/5433673455289542069": {
+    "color": [
+     "yellow",
+     "purple"
+    ],
+    "style": "hand-drawn",
+    "topic": "characters",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "ilovemaresemoji/5404668059375935362": {
+    "color": [
+     "white",
+     "yellow",
+     "teal"
+    ],
+    "style": "hand-drawn",
+    "topic": "characters",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "ilovemaresemoji/5395331096827175432": {
+    "color": [
+     "teal",
+     "yellow",
+     "brown"
+    ],
+    "style": "hand-drawn",
+    "topic": "characters",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "ilovemaresemoji/5406773057207446530": {
+    "color": [
+     "gray",
+     "black"
+    ],
+    "style": "hand-drawn",
+    "topic": "characters",
+    "mood": "loving",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "SupernaturalAirDsgn/5255802255218593960": {
+    "color": [
+     "brown",
+     "teal"
+    ],
+    "style": "realistic",
+    "topic": "characters",
+    "mood": "playful",
+    "role": "decoration",
+    "unsure": []
+   },
+   "SupernaturalAirDsgn/5253620630875558130": {
+    "color": [
+     "brown",
+     "black"
+    ],
+    "style": "realistic",
+    "topic": "characters",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": []
+   },
+   "SupernaturalAirDsgn/5255709114557812885": {
+    "color": [
+     "black",
+     "gray"
+    ],
+    "style": "realistic",
+    "topic": "characters",
+    "mood": "playful",
+    "role": "decoration",
+    "unsure": [
+     "mood"
+    ]
+   },
+   "SupernaturalAirDsgn/5253639180839309021": {
+    "color": [
+     "brown",
+     "gray"
+    ],
+    "style": "realistic",
+    "topic": "characters",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "SupernaturalAirDsgn/5253544236292263497": {
+    "color": [
+     "brown",
+     "black"
+    ],
+    "style": "realistic",
+    "topic": "characters",
+    "mood": "serious",
+    "role": "decoration",
+    "unsure": []
+   },
+   "NatureEmojis/5080377043317687745": {
+    "color": [
+     "black"
+    ],
+    "style": "glyph",
+    "topic": "nature",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "NatureEmojis/5048654337560019842": {
+    "color": [
+     "black"
+    ],
+    "style": "glyph",
+    "topic": "nature",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "NatureEmojis/5055717291019207953": {
+    "color": [
+     "black"
+    ],
+    "style": "glyph",
+    "topic": "nature",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   },
+   "NatureEmojis/5089127034160939887": {
+    "color": [
+     "black"
+    ],
+    "style": "glyph",
+    "topic": "nature",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": [
+     "role"
+    ]
+   },
+   "NatureEmojis/5057843394320008206": {
+    "color": [
+     "black"
+    ],
+    "style": "glyph",
+    "topic": "nature",
+    "mood": "calm",
+    "role": "decoration",
+    "unsure": []
+   }
+  }
+ }
+}

@@ -20,10 +20,12 @@ import ruData from "emojibase-data/ru/compact.json";
 import ukData from "emojibase-data/uk/compact.json";
 import { emojiFile, type Format } from "./emoji-card";
 import { stripVariation } from "./emoji-slots";
+import { parseFilters } from "./emoji-facets";
 
-export interface SearchPack { name: string; title: string; category: string; rank: number; tags: string[] }
+/** fc: "facet:value" tags for filters, fw: label words of those tags for plain-word search (lib/emoji-facets.ts) */
+export interface SearchPack { name: string; title: string; category: string; rank: number; tags: string[]; fc?: string[]; fw?: string[] }
 /** pv: the emoji has a preview picture (an animated emoji without a thumbnail has none); st: a video emoji has a still */
-export interface SearchEmoji { p: number; id: string; f: string; fmt: Format; ad: boolean; pv: boolean; st: boolean; tags: string[] }
+export interface SearchEmoji { p: number; id: string; f: string; fmt: Format; ad: boolean; pv: boolean; st: boolean; tags: string[]; fc?: string[]; fw?: string[] }
 /** revision: a fingerprint of the whole catalog; the search index is rebuilt when it changes */
 export interface SearchSource { packs: SearchPack[]; emoji: SearchEmoji[]; revision: string }
 
@@ -33,6 +35,8 @@ export interface EmojiHit {
 }
 export interface SearchResult {
   query: string;
+  /** facet filters taken from the query (`style:outline`), and filters it could not read */
+  filters: string[]; unknownFilters: string[];
   emoji: EmojiHit[];
   packs: { name: string; score: number; hits: number }[];
   suggest: { complete: string[]; related: string[]; categories: string[]; didYouMean: string | null };
@@ -124,6 +128,7 @@ function build(src: SearchSource): Index {
     for (const w of words(p.name.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/_/g, " "))) put(packTerms, stem(w), i, 2);
     for (const w of words(p.category)) put(packTerms, stem(w), i, 3);
     for (const t of p.tags) for (const w of words(t)) put(packTerms, stem(w), i, 4);
+    for (const t of p.fw ?? []) for (const w of words(t)) put(packTerms, stem(w), i, 3);
   });
 
   src.emoji.forEach((e, i) => {
@@ -138,6 +143,7 @@ function build(src: SearchSource): Index {
     tagStems.set(i, own.map(stem));
     for (const w of own) { put(emojiTerms, stem(w), i, 5); count(w); }
     for (const [w, weight] of meaning) { put(emojiTerms, stem(w), i, weight); count(w); }
+    for (const t of e.fw ?? []) for (const w of words(t)) put(emojiTerms, stem(w), i, 3);
   });
   return { src, emojiTerms, packTerms, byFallback, surface, stems: [...new Set([...emojiTerms.keys(), ...packTerms.keys()])], tagStems };
 }
@@ -182,12 +188,14 @@ function expand(ix: Index, q: string): [string, number][] {
 
 export function search(src: SearchSource, query: string, { limit = 60, pack }: { limit?: number; pack?: string } = {}): SearchResult {
   const ix = indexOf(src);
-  const q = query.trim().slice(0, 100);
+  const raw = query.trim().slice(0, 160);
+  const { filters, rest, unknown } = parseFilters(raw);
+  const q = rest.slice(0, 100);
   const emojiInQuery = [...new Set((q.match(EMOJI_RE) ?? []).map(stripVariation))];
   const qWords = words(q.replace(EMOJI_RE, " "), true).slice(0, 6);
   const onlyPack = pack ? src.packs.findIndex((p) => p.name.toLowerCase() === pack.toLowerCase()) : -1;
-  const empty: SearchResult = { query: q, emoji: [], packs: [], suggest: { complete: [], related: [], categories: [], didYouMean: null }, total: 0 };
-  if (!qWords.length && !emojiInQuery.length) return empty;
+  const empty: SearchResult = { query: q, filters, unknownFilters: unknown, emoji: [], packs: [], suggest: { complete: [], related: [], categories: [], didYouMean: null }, total: 0 };
+  if (!qWords.length && !emojiInQuery.length && !filters.length) return empty;
   if (pack && onlyPack < 0) return empty; // an unknown pack filter means nothing, not everything
 
   // Score of each query part, per emoji and per pack.
@@ -212,7 +220,11 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
   const scores = new Map<number, number>();
   src.emoji.forEach((e, i) => {
     if (onlyPack >= 0 && e.p !== onlyPack) return;
-    let total = 0;
+    if (filters.length) {
+      const own = e.fc ?? [], packFc = src.packs[e.p].fc ?? [];
+      if (!filters.every((f) => own.includes(f) || packFc.includes(f))) return;
+    }
+    let total = parts.length ? 0 : 1; // filters alone: every emoji that passes them, by popularity
     for (const part of parts) {
       const s = Math.max(part.emoji.get(i) ?? 0, (part.packs.get(e.p) ?? 0) * 0.35);
       if (!s) return;
@@ -281,5 +293,5 @@ export function search(src: SearchSource, query: string, { limit = 60, pack }: {
     if (fixed.join(" ") !== qWords.join(" ")) didYouMean = fixed.join(" ");
   }
 
-  return { query: q, emoji, packs, suggest: { complete, related, categories, didYouMean }, total: ordered.length };
+  return { query: q, filters, unknownFilters: unknown, emoji, packs, suggest: { complete, related, categories, didYouMean }, total: ordered.length };
 }

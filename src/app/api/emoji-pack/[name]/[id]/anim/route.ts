@@ -2,12 +2,13 @@
 // as Telegram stores it (gzip-compressed Lottie). The client decompresses and plays it.
 // Proxied, because Telegram's file URL contains the bot token.
 import { allow, canonicalOnly, animationFile, clientKey, errorResponse, ResolverError } from "@/lib/emoji-pack";
+import { RATE_LIMITS } from "@/lib/emoji-api-contract";
 
 export async function GET(req: Request, ctx: RouteContext<"/api/emoji-pack/[name]/[id]/anim">) {
   const { name, id } = await ctx.params;
   try {
     canonicalOnly(req);
-    if (!allow(`anim:${clientKey(req)}`, 1000)) throw new ResolverError("RATE_LIMITED", 429, "too many animations at once; retry in a minute");
+    if (!allow(`anim:${clientKey(req)}`, RATE_LIMITS.anim)) throw new ResolverError("RATE_LIMITED", 429, "too many animations at once; retry in a minute");
     const { body, type } = await animationFile(name, id);
     return new Response(body, {
       headers: {
@@ -18,6 +19,10 @@ export async function GET(req: Request, ctx: RouteContext<"/api/emoji-pack/[name
       },
     });
   } catch (err) {
+    // The shared downloader says NO_PREVIEW when Telegram has no servable file; here that means no animation.
+    if (err instanceof ResolverError && err.code === "NO_PREVIEW") {
+      return errorResponse(new ResolverError("NO_ANIMATION", 404, "no animation for this emoji"));
+    }
     return errorResponse(err);
   }
 }

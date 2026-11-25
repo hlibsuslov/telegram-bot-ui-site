@@ -1,0 +1,55 @@
+{
+ "$comment": "Accuracy floor per facet on the gold v2 holdout, measured on src/content/emoji-facets.json (`check --gate`). Raise it after an improvement with `check --write-gate`; never lower it to make a change pass.",
+ "gold": "scripts/emoji_taxonomy_gold_v2.json",
+ "split": "holdout",
+ "min": {
+  "emoji.color": {
+   "recall": 0.57,
+   "hit_rate": 0.78
+  },
+  "emoji.mood": {
+   "recall": 0.62,
+   "hit_rate": 0.62
+  },
+  "emoji.role": {
+   "recall": 0.4,
+   "hit_rate": 0.4
+  },
+  "emoji.style": {
+   "recall": 0.68,
+   "hit_rate": 0.68
+  },
+  "emoji.topic": {
+   "recall": 0.72,
+   "hit_rate": 0.72
+  },
+  "pack.color": {
+   "recall": 0.47,
+   "hit_rate": 0.84
+  },
+  "pack.fit": {
+   "recall": 0.79,
+   "hit_rate": 0.79
+  },
+  "pack.mood": {
+   "recall": 0.54,
+   "hit_rate": 0.54
+  },
+  "pack.palette": {
+   "recall": 0.69,
+   "hit_rate": 0.69
+  },
+  "pack.style": {
+   "recall": 0.85,
+   "hit_rate": 0.97
+  },
+  "pack.topic": {
+   "recall": 0.75,
+   "hit_rate": 0.88
+  },
+  "pack.use": {
+   "recall": 0.81,
+   "hit_rate": 0.92
+  }
+ }
+}

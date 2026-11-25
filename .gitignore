@@ -45,3 +45,6 @@ next-env.d.ts
 
 # contact sheets for tagging the emoji library (scripts/emoji_sheets.py)
 /.emoji-sheets/
+
+# emoji taxonomy work files (scripts/emoji_taxonomy.py)
+/.emoji-taxonomy/

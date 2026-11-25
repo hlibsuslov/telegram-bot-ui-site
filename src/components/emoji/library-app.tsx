@@ -5,7 +5,7 @@
 // collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
 // screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
-import { memo, startTransition, useCallback, useDeferredValue, useEffect, useMemo, useState, type ReactNode } from "react";
+import { memo, startTransition, useCallback, useDeferredValue, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection } from "@/lib/emoji-library";
@@ -139,11 +139,17 @@ function Suggestions({ data, onPick, onCategory }: { data: SearchResult; onPick:
   );
 }
 
+const noSubscribe = () => () => {};
+const queryFromUrl = () => (new URLSearchParams(window.location.search).get("q") ?? "").slice(0, 160);
+
 export function LibraryApp({ packs, categories, collections }: { packs: CardPack[]; categories: string[]; collections: Collection[] }) {
   const { saved, togglePack } = useSaved();
   const [view, setView] = useState<View>({ kind: "all" });
   const [format, setFormat] = useState<Format>("any");
-  const [query, setQuery] = useState("");
+  // A tag link on a pack page opens the library with `?q=style:outline`; what the person types wins.
+  const urlQuery = useSyncExternalStore(noSubscribe, queryFromUrl, () => "");
+  const [typed, setQuery] = useState<string | null>(null);
+  const query = typed ?? urlQuery;
   const [copied, setCopied] = useState(false);
   const q = useDeferredValue(query);
   // The pills and the list on the left answer a tap at once; the packs below follow in a background
@@ -223,7 +229,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
             <span className="sr-only">Search packs and emoji</span>
             <Search aria-hidden="true" className="tg-hint pointer-events-none absolute top-1/2 left-3 size-[18px] -translate-y-1/2" />
             <input
-              type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search emoji: cart, arrow, heart, 🔥"
+              type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search emoji: cart, arrow, 🔥, style:outline fit:adaptive"
               className="tg-field h-10 w-full rounded-xl pr-9 pl-10 text-[15px] outline-none"
             />
             {query ? (

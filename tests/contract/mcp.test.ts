@@ -1,0 +1,416 @@
+// POST /api/mcp: the MCP protocol over Streamable HTTP (initialize, tools/list, tools/call, errors),
+// and every tool that has an HTTP twin answers exactly what that route answers for the same input.
+// The route handler runs unchanged; Telegram is faked (./telegram.ts), the catalog is real.
+import assert from "node:assert/strict";
+import { after, before, describe, test } from "node:test";
+import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
+import { catalogPacks, catalogVersion } from "@/lib/emoji-facets";
+import { openApiDocument } from "@/lib/emoji-openapi";
+import { pickFamily, rankPacks } from "@/lib/emoji-pick";
+import { SLOT_NAMES } from "@/lib/emoji-slots";
+import { SITE_ORIGIN } from "@/content/site";
+import { validate } from "./schema";
+import { FAILING, FAKE_TOKEN, installFakeTelegram } from "./telegram";
+
+process.env.EMOJI_RESOLVER_BOT_TOKEN = FAKE_TOKEN;
+delete process.env.EMOJI_RESOLVER_FIXTURES;
+
+const mcp = await import("@/app/api/mcp/route");
+const search = await import("@/app/api/emoji-search/route");
+const facets = await import("@/app/api/emoji-facets/route");
+const byId = await import("@/app/api/emoji-pack/by-id/route");
+const pack = await import("@/app/api/emoji-pack/[name]/route");
+
+type Obj = Record<string, unknown>;
+interface Rpc { status: number; headers: Headers; bytes: number; body: { jsonrpc?: string; id?: unknown; result?: Obj; error?: { code: number; message: string } } | null }
+interface ToolResult { isError?: boolean; content: { type: string; text: string }[] }
+
+let restore = () => {};
+before(() => { restore = installFakeTelegram(); });
+after(() => restore());
+
+let clients = 0;
+const client = () => `203.0.113.${++clients}`;
+const HEADERS = { "Content-Type": "application/json", Accept: "application/json, text/event-stream" };
+
+async function post(body: unknown, { ip = client(), headers = {} as Record<string, string> } = {}): Promise<Rpc> {
+  const req = new Request("http://localhost:3000/api/mcp", {
+    method: "POST", headers: { ...HEADERS, "x-real-ip": ip, ...headers }, body: typeof body === "string" ? body : JSON.stringify(body),
+  });
+  const res = await mcp.POST(req);
+  const text = await res.text();
+  return { status: res.status, headers: res.headers, bytes: Buffer.byteLength(text), body: text ? JSON.parse(text) : null };
+}
+
+let ids = 0;
+const call = (name: string, args: Obj, ip?: string) =>
+  post({ jsonrpc: "2.0", id: ++ids, method: "tools/call", params: { name, arguments: args } }, { ip, headers: { "Mcp-Protocol-Version": "2025-11-25" } });
+
+/** A tool call that must succeed: its parsed JSON answer, after checking the size limit. */
+async function tool(name: string, args: Obj, ip?: string): Promise<Obj> {
+  const res = await call(name, args, ip);
+  assert.equal(res.status, 200);
+  assert.ok(res.bytes <= MCP_RESPONSE_MAX, `${name}: ${res.bytes} bytes`);
+  const result = res.body!.result as unknown as ToolResult;
+  assert.ok(!result.isError, `${name}: ${result.content[0]?.text}`);
+  return JSON.parse(result.content[0].text);
+}
+
+async function toolError(name: string, args: Obj, ip?: string): Promise<{ text: string; json?: Obj & { error?: { code: string } } }> {
+  const res = await call(name, args, ip);
+  assert.equal(res.status, 200, `${name}: a tool error is an HTTP 200 JSON-RPC result`);
+  const result = res.body!.result as unknown as ToolResult;
+  assert.equal(result.isError, true, `${name}: expected isError`);
+  const text = result.content[0].text;
+  try { return { text, json: JSON.parse(text) }; } catch { return { text }; }
+}
+
+const request = (url: string, ip = client()) => new Request(`http://localhost:3000${url}`, { headers: { "x-real-ip": ip } });
+const httpJson = async (res: Response | Promise<Response>) => (await res).json() as Promise<Obj>;
+const params = <T extends Obj>(p: T) => ({ params: Promise.resolve(p) });
+const checkified = catalogPacks().find((p) => p.name === "checkified")!;
+const other = catalogPacks().find((p) => p.name !== "checkified" && p.emoji.length >= 6)!;
+
+describe("MCP protocol", () => {
+  test("initialize: 2025-11-25, tools, server info and instructions; no session", async () => {
+    const res = await post({ jsonrpc: "2.0", id: 1, method: "initialize",
+      params: { protocolVersion: "2025-11-25", capabilities: {}, clientInfo: { name: "contract-test", version: "1" } } });
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get("content-type") ?? "", /^application\/json/);
+    assert.equal(res.headers.get("mcp-session-id"), null);
+    const r = res.body!.result!;
+    assert.equal(r.protocolVersion, "2025-11-25");
+    assert.deepEqual((r.capabilities as Obj).tools, { listChanged: false });
+    assert.equal((r.serverInfo as Obj).name, "telegram-emoji-library");
+    assert.match(String(r.instructions), /custom/);
+  });
+  test("initialize: an older client keeps its revision, an unknown one gets the latest", async () => {
+    for (const v of ["2025-06-18", "2025-03-26", "2024-11-05"]) {
+      const res = await post({ jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: v, capabilities: {}, clientInfo: { name: "old", version: "1" } } });
+      assert.equal(res.body!.result!.protocolVersion, v);
+    }
+    const res = await post({ jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "1999-01-01", capabilities: {}, clientInfo: { name: "x", version: "1" } } });
+    assert.equal(res.body!.result!.protocolVersion, "2025-11-25");
+  });
+  test("a notification is accepted with 202 and no body", async () => {
+    const res = await post({ jsonrpc: "2.0", method: "notifications/initialized" });
+    assert.equal(res.status, 202);
+    assert.equal(res.body, null);
+  });
+  test("tools/list: six read-only tools with strict input schemas", async () => {
+    const res = await post({ jsonrpc: "2.0", id: 2, method: "tools/list" });
+    const tools = (res.body!.result!.tools as { name: string; inputSchema: Obj; annotations: Obj }[]);
+    assert.deepEqual(tools.map((t) => t.name).sort(),
+      ["emoji_by_id", "emoji_facets", "emoji_pack", "emoji_pick_family", "emoji_rank_packs", "emoji_search"]);
+    for (const t of tools) {
+      assert.equal(t.inputSchema.type, "object", t.name);
+      assert.equal(t.inputSchema.additionalProperties, false, `${t.name}: extra arguments must be refused`);
+      assert.equal(t.annotations.readOnlyHint, true, t.name);
+      assert.equal(t.annotations.destructiveHint, false, t.name);
+    }
+    const pick = tools.find((t) => t.name === "emoji_pick_family")!;
+    assert.deepEqual(((pick.inputSchema.properties as Obj).slots as { items: { enum: string[] } }).items.enum, SLOT_NAMES);
+  });
+  test("unknown method: JSON-RPC -32601", async () => {
+    const res = await post({ jsonrpc: "2.0", id: 3, method: "resources/nosuch" });
+    assert.equal(res.status, 200);
+    assert.equal(res.body!.error!.code, -32601);
+  });
+  test("not JSON: 400 with JSON-RPC -32700", async () => {
+    const res = await post("{nope");
+    assert.equal(res.status, 400);
+    assert.equal(res.body!.error!.code, -32700);
+  });
+  test("an unsupported protocol header: 400", async () => {
+    const res = await post({ jsonrpc: "2.0", id: 4, method: "tools/list" }, { headers: { "Mcp-Protocol-Version": "1999-01-01" } });
+    assert.equal(res.status, 400);
+  });
+  test("GET and DELETE: 405, POST only", async () => {
+    for (const handler of [mcp.GET, mcp.DELETE]) {
+      const res = await handler();
+      assert.equal(res.status, 405);
+      assert.equal(res.headers.get("allow"), "POST");
+    }
+  });
+  test("a body over 64 KB: 413", async () => {
+    const res = await post({ jsonrpc: "2.0", id: 5, method: "ping", params: { pad: "x".repeat(70_000) } });
+    assert.equal(res.status, 413);
+  });
+});
+
+describe("MCP tools answer what the HTTP API answers", () => {
+  test("emoji_search = GET /api/emoji-search (words and a pack; a facet filter)", async () => {
+    for (const [query, packName] of [["check", "checkified"], ["checkmark", undefined], [`style:outline`, checkified.name]] as const) {
+      const qs = `q=${encodeURIComponent(query)}${packName ? `&pack=${packName}` : ""}`;
+      const http = await httpJson(search.GET(request(`/api/emoji-search?${qs}`)));
+      assert.deepEqual(await tool("emoji_search", { query, ...(packName && { pack: packName }) }), http, query);
+    }
+  });
+  test("emoji_pack = GET /api/emoji-pack/{name}, also for a pack outside the catalog", async () => {
+    for (const name of ["checkified", FAILING.outside]) {
+      const http = await httpJson(pack.GET(request(`/api/emoji-pack/${name}`), params({ name })));
+      assert.deepEqual(await tool("emoji_pack", { name }), http, name);
+    }
+  });
+  test("emoji_facets = GET /api/emoji-facets with packs limited to the names asked", async () => {
+    const http = await httpJson(facets.GET(request("/api/emoji-facets")));
+    const names = ["checkified", other.name.toUpperCase()];
+    const wanted = { ...http, packs: (http.packs as Obj[]).filter((p) => ["checkified", other.name].includes(p.name as string)) };
+    assert.deepEqual(await tool("emoji_facets", { packs: names }), wanted);
+    assert.deepEqual(await tool("emoji_facets", {}), { ...http, packs: [] });
+  });
+  test("emoji_by_id = GET /api/emoji-pack/by-id", async () => {
+    const list = [checkified.emoji[0].id, other.emoji[0].id, "1"];
+    const http = await httpJson(byId.GET(request(`/api/emoji-pack/by-id?ids=${list.join(",")}`)));
+    assert.deepEqual(await tool("emoji_by_id", { ids: list }), http);
+  });
+  test("errors carry the HTTP error body: emoji_pack of a missing pack and of a sticker set", async () => {
+    for (const [name, code] of [[FAILING.missing, "PACK_NOT_FOUND"], [FAILING.regular, "NOT_EMOJI_PACK"], [FAILING.broken, "TELEGRAM_ERROR"]]) {
+      const http = await httpJson(pack.GET(request(`/api/emoji-pack/${name}`), params({ name })));
+      const { json } = await toolError("emoji_pack", { name });
+      assert.equal(json!.error!.code, code);
+      assert.deepEqual(json, http);
+    }
+  });
+  test("over 100 KB: the largest list is cut, with a note, and the rest is the HTTP answer", async () => {
+    const http = await httpJson(search.GET(request("/api/emoji-search?q=heart")));
+    assert.ok(JSON.stringify(http).length > MCP_RESPONSE_MAX, "pick a query whose answer is over the limit");
+    const answer = await tool("emoji_search", { query: "heart" });
+    const cut = answer.truncated as { note: string; fields: { field: string; kept: number; total: number }[] };
+    assert.match(cut.note, /100 KB/);
+    const emoji = cut.fields.find((f) => f.field === "emoji")!;
+    assert.equal(emoji.total, (http.emoji as unknown[]).length);
+    assert.ok(emoji.kept > 0 && emoji.kept < emoji.total);
+    const rest = { ...answer };
+    delete rest.truncated;
+    const expected: Obj = { ...http };
+    for (const f of cut.fields) expected[f.field] = (http[f.field] as unknown[]).slice(0, f.kept);
+    assert.deepEqual(rest, expected);
+  });
+});
+
+describe("MCP tools for choosing packs", () => {
+  test("emoji_rank_packs: the library ranking, best first, with the catalog version", async () => {
+    const args = { style: ["outline"], use: ["support"], theme: "both" as const, top: 5 };
+    const answer = await tool("emoji_rank_packs", args);
+    assert.deepEqual(answer, rankPacks({ brief: { style: ["outline"], use: ["support"] }, theme: "both", top: 5 }));
+    const rows = answer.packs as { score: number; matched: unknown[] }[];
+    assert.equal(rows.length, 5);
+    assert.ok(rows.every((r, i) => i === 0 || rows[i - 1].score >= r.score), "not sorted");
+    assert.equal(answer.taxonomy, catalogVersion.taxonomy);
+  });
+  test("emoji_rank_packs: labels are read, unknown values are reported, require filters hard", async () => {
+    const answer = await tool("emoji_rank_packs", { style: ["контурный", "nosuch"], require: ["motion:static"] });
+    assert.deepEqual(answer.brief, { style: ["outline"] });
+    assert.ok((answer.problems as string[]).some((p) => p.includes("style:nosuch")));
+    const nothing = await tool("emoji_rank_packs", { require: ["style:nosuch"] });
+    assert.equal(nothing.total, 0);
+  });
+  test("a required facet named like an Object property is a bad filter with an empty ranking, not an internal error", async () => {
+    for (const require of [["constructor:x"], ["motion:static", "constructor:static"]]) {
+      const answer = await tool("emoji_rank_packs", { require });
+      assert.equal(answer.total, 0, require.join(" "));
+      assert.deepEqual(answer.packs, []);
+      assert.ok((answer.problems as string[]).includes(`bad filter ${require.at(-1)}`), require.join(" "));
+      const family = await tool("emoji_pick_family", { slots: ["home", "done"], require });
+      assert.equal(family.map, null);
+      assert.deepEqual(family.ranking, []);
+      assert.ok((family.notes as string[]).includes(`bad filter ${require.at(-1)}`));
+    }
+    for (const name of ["toString", "hasOwnProperty", "__proto__", "valueOf"]) {
+      const ranked = rankPacks({ brief: { [name]: ["x"] }, require: [`${name}:x`, `fit:${name}`] });
+      assert.equal(ranked.total, 0, name);
+      assert.ok(ranked.problems.some((p) => p.startsWith(`unknown facet ${name}`)), name);
+    }
+  });
+  test("emoji_rank_packs without a brief: BAD_REQUEST as an isError result", async () => {
+    const { json } = await toolError("emoji_rank_packs", {});
+    assert.equal(json!.error!.code, "BAD_REQUEST");
+  });
+  test("emoji_pick_family: one pack, an icon map of that pack's real ids", async () => {
+    const slots = ["home", "done", "favorite", "cart", "settings"];
+    const answer = await tool("emoji_pick_family", { slots, style: ["outline"] });
+    const map = answer.map as { family: string; icons: Record<string, { id: string; set: string }>; missing: string[] };
+    assert.ok(map, "no family picked");
+    const family = catalogPacks().find((p) => p.name === map.family)!;
+    const own = new Set(family.emoji.map((e) => e.id));
+    for (const [slot, icon] of Object.entries(map.icons)) {
+      assert.equal(icon.set, map.family, slot);
+      assert.ok(own.has(icon.id), `${slot}: ${icon.id} is not in ${map.family}`);
+    }
+    assert.deepEqual([...Object.keys(map.icons), ...map.missing].sort(), [...slots].sort());
+    assert.deepEqual(answer.brief, { style: ["outline"], fit: ["both"] });
+    const ranking = answer.ranking as { name: string; score: number }[];
+    assert.equal(ranking[0].name, map.family);
+    assert.ok(ranking.length <= 6);
+  });
+  test("emoji_pick_family: a light or dark theme alone picks the pack tagged for it among equal candidates", () => {
+    const fitOf = (name: string) => Object.fromEntries(catalogPacks().find((p) => p.name === name)!.facets.fit ?? []);
+    const [light, dark] = ["ENLettersAndNumbers", "LettersAndNumbers"];
+    assert.ok(fitOf(light).light > 0.5 && !fitOf(light).dark && fitOf(dark).dark > 0.5 && !fitOf(dark).light, "packs with opposite theme tags");
+    const packs = [light, dark].map((name, rank) => ({ name, title: name, category: "test", rank, tags: [] }));
+    const emoji = packs.flatMap((_, p) => ["🏠", "✅"].map((f, i) => ({ p, id: `${p}${i}`, f, fmt: "static" as const, ad: false, pv: true, st: false, tags: [] })));
+    for (const [theme, want] of [["light", light], ["dark", dark]] as const) {
+      const answer = pickFamily({ packs, emoji, revision: "test" }, { slots: ["home", "done"], theme });
+      assert.equal(answer.map?.family, want, theme);
+      assert.equal(answer.ranking[0].coverage, answer.ranking[1].coverage);
+    }
+  });
+  test("emoji_pick_family: a slot outside the list or an extra argument is refused", async () => {
+    assert.match((await toolError("emoji_pick_family", { slots: ["teleport"] })).text, /slots/);
+    assert.match((await toolError("emoji_pick_family", { slots: ["home"], colour: ["blue"] })).text, /colour|unrecognized/i);
+    assert.match((await toolError("emoji_search", { query: 5 })).text, /query/);
+  });
+  test("an unknown tool: isError", async () => {
+    assert.match((await toolError("emoji_nosuch", {})).text, /emoji_nosuch/);
+  });
+});
+
+describe("rate limiter table", () => {
+  test("a full table does not reset the counters of live clients", async () => {
+    const { allow } = await import("@/lib/emoji-pack");
+    const key = `table-test:${client()}`;
+    for (let i = 0; i < 3; i++) assert.equal(allow(key, 3), true);
+    for (let i = 0; i < 20_500; i++) allow(`table-fill:${i}`, 3);
+    assert.equal(allow(key, 3), false, "the client's spent limit survived the table filling up");
+    assert.equal(allow(`table-new:${client()}`, 3), true, "a new client still gets the overflow share");
+    // leave an empty table for the other tests: a sweep with a 1 ms window drops every window
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    allow(`table-sweep:${client()}`, 3, 1);
+  });
+});
+
+describe("pickFamily index", () => {
+  const source = (revision: string, fallback: string) => ({
+    revision, packs: [{ name: "only", title: "Only" }],
+    emoji: [{ p: 0, id: "1", f: fallback, fmt: "static", ad: true, pv: true, st: true, tags: [] }],
+  }) as unknown as Parameters<typeof pickFamily>[0];
+  test("a new library build is indexed again; the same build answers the same", () => {
+    const home = source("a", "🏠");
+    const first = pickFamily(home, { slots: ["home"] });
+    assert.equal(first.map?.icons.home?.id, "1");
+    assert.deepEqual(pickFamily(home, { slots: ["home"] }), first);
+    assert.equal(pickFamily(source("b", "⭐"), { slots: ["home"] }).map, null, "build b has no home icon");
+  });
+});
+
+describe("MCP batches", () => {
+  const search = (id: number) => ({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "emoji_search", arguments: { query: "heart" } } });
+  test("a 2025-03-26 batch is answered within the 100 KB limit as a whole, each answer cut with its note", async () => {
+    const res = await post([search(1), search(2)], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    assert.equal(res.status, 200);
+    assert.ok(res.bytes <= MCP_RESPONSE_MAX, `${res.bytes} bytes`);
+    const answers = res.body as unknown as { id: number; result: ToolResult }[];
+    assert.deepEqual(answers.map((a) => a.id).sort(), [1, 2]);
+    for (const a of answers) {
+      assert.ok(!a.result.isError);
+      assert.match((JSON.parse(a.result.content[0].text).truncated as { note: string }).note, /100 KB/);
+    }
+  });
+  test("an empty batch, or one that repeats a request id, is an invalid request", async () => {
+    for (const batch of [[], [search(1), search(1)]]) {
+      const res = await post(batch, { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+      assert.equal(res.status, 400, JSON.stringify(batch).slice(0, 40));
+      assert.equal(res.body!.error!.code, -32600);
+    }
+  });
+  test("a batch is answered with an array even when one message gets a reply; notifications alone get 202 and no body", async () => {
+    const note = { jsonrpc: "2.0", method: "notifications/initialized" };
+    const one = await post([{ jsonrpc: "2.0", id: 7, method: "ping" }, note], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    assert.equal(one.status, 200);
+    assert.deepEqual(one.body, [{ jsonrpc: "2.0", id: 7, result: {} }]);
+    const none = await post([note, note], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    assert.equal(none.status, 202);
+    assert.equal(none.bytes, 0);
+  });
+  test("notifications do not take a share of the answer limit", async () => {
+    const note = { jsonrpc: "2.0", method: "notifications/initialized" };
+    const res = await post([search(1), ...Array.from({ length: 20 }, () => note)], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    const [answer] = res.body as unknown as { result: ToolResult }[];
+    const text = answer.result.content[0].text;
+    assert.ok(Buffer.byteLength(text) > MCP_RESPONSE_MAX / 2, `${Buffer.byteLength(text)} bytes for the only call`);
+  });
+  test("every message of a batch counts against the MCP limit", async () => {
+    const ip = client();
+    const pings = (n: number) => Array.from({ length: n }, (_, i) => ({ jsonrpc: "2.0", id: i + 1, method: "ping" }));
+    const size = 100; // the SDK's largest batch
+    assert.equal(RATE_LIMITS.mcp % size, 0);
+    for (let sent = 0; sent < RATE_LIMITS.mcp; sent += size) {
+      assert.equal((await post(pings(size), { ip, headers: { "Mcp-Protocol-Version": "2025-03-26" } })).status, 200, `after ${sent}`);
+    }
+    assert.equal((await post({ jsonrpc: "2.0", id: 1, method: "ping" }, { ip })).status, 429);
+  });
+  test("a revision that sends one message per POST gets a batch refused", async () => {
+    for (const version of ["2025-06-18", "2025-11-25", "2024-11-05"]) {
+      const res = await post([search(1), search(2)], { headers: { "Mcp-Protocol-Version": version } });
+      assert.equal(res.status, 400, version);
+      assert.equal(res.body!.error!.code, -32600, version);
+    }
+  });
+});
+
+describe("MCP request and answer bounds", () => {
+  test("a declared body over 64 KB is refused before it is read", async () => {
+    const req = new Request("http://localhost:3000/api/mcp", {
+      method: "POST", headers: { ...HEADERS, "x-real-ip": client(), "Content-Length": String(65 * 1024) }, body: "{}",
+    });
+    const res = await mcp.POST(req);
+    assert.equal(res.status, 413);
+  });
+  test("a long string id does not push one answer past the limit", async () => {
+    const id = "x".repeat(8000);
+    const res = await post({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "emoji_search", arguments: { query: "heart" } } },
+      { headers: { "Mcp-Protocol-Version": "2025-11-25" } });
+    assert.equal(res.status, 200);
+    assert.ok(res.bytes <= MCP_RESPONSE_MAX, `${res.bytes} bytes`);
+    assert.equal(res.body!.id, id);
+  });
+});
+
+describe("MCP Origin check", () => {
+  const ping = (headers: Record<string, string>, ip?: string) => post({ jsonrpc: "2.0", id: 1, method: "ping" }, { ip, headers });
+  test("a browser page of this site, or a client that sends no Origin (native apps, CLIs), is served", async () => {
+    for (const origin of [SITE_ORIGIN, "http://localhost:3000"]) {
+      const res = await ping({ Origin: origin });
+      assert.equal(res.status, 200, origin);
+      assert.deepEqual(res.body!.result, {}, origin);
+    }
+    assert.equal((await ping({})).status, 200);
+  });
+  test("a page of another site is refused with 403 before any work or quota", async () => {
+    const ip = client();
+    for (const origin of ["https://evil.example", "null", `${SITE_ORIGIN}.evil.example`, "http://localhost:3001", SITE_ORIGIN.replace("https:", "http:")]) {
+      const res = await ping({ Origin: origin }, ip);
+      assert.equal(res.status, 403, origin);
+      assert.equal(res.body!.error!.code, -32000, origin);
+      assert.equal(res.headers.get("cache-control"), "no-store");
+    }
+    for (let i = 0; i < RATE_LIMITS.mcp; i++) await ping({ Origin: "https://evil.example" }, ip);
+    assert.equal((await ping({}, ip)).status, 200, "refused requests must not use the client's MCP quota");
+  });
+});
+
+describe("MCP limits", () => {
+  test("a tool call counts against its endpoint's limit, shared with the HTTP route", async () => {
+    const ip = client();
+    const viaMcp = Math.ceil(RATE_LIMITS.pack / 2);
+    for (let i = 0; i < viaMcp; i++) assert.equal((await tool("emoji_pack", { name: "checkified" }, ip)).ok, true);
+    for (let i = viaMcp; i < RATE_LIMITS.pack; i++) {
+      assert.equal((await pack.GET(request("/api/emoji-pack/checkified", ip), params({ name: "checkified" }))).status, 200, `HTTP call ${i + 1}`);
+    }
+    assert.equal((await pack.GET(request("/api/emoji-pack/checkified", ip), params({ name: "checkified" }))).status, 429, "the MCP calls used the HTTP route's quota");
+    const { json } = await toolError("emoji_pack", { name: "checkified" }, ip);
+    assert.equal(json!.error!.code, "RATE_LIMITED");
+    assert.equal(json!.retryAfter, 60);
+  });
+  test(`every request counts against the MCP limit: ${RATE_LIMITS.mcp} a minute, then 429 RATE_LIMITED as documented`, async () => {
+    const ip = client();
+    for (let i = 0; i < RATE_LIMITS.mcp; i++) assert.equal((await post({ jsonrpc: "2.0", id: i, method: "ping" }, { ip })).status, 200);
+    const res = await post({ jsonrpc: "2.0", id: 0, method: "ping" }, { ip });
+    assert.equal(res.status, 429);
+    assert.equal(res.headers.get("retry-after"), "60");
+    const doc = openApiDocument("http://localhost:3000") as unknown as { paths: Record<string, { post: { responses: Record<string, { content: Record<string, { schema: Obj }> }> } }> };
+    const spec = doc.paths["/api/mcp"].post.responses["429"].content["application/json"].schema;
+    assert.deepEqual(validate(res.body, spec, doc), []);
+  });
+});

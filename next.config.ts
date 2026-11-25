@@ -5,9 +5,18 @@ import { OLD_HOST, SITE_ORIGIN } from "./src/content/site";
 // load pictures, media and data from this site.
 const EMOJI_CSP = "img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
 
+// The agent docs the skill generates (scripts/sync_agent_docs.py) are served from public/. Next sets the right
+// type for them but writes the charset in capitals; this pins the exact value agents and crawlers expect.
+const AGENT_DOCS = [
+  { source: "/agents.md", type: "text/markdown; charset=utf-8" },
+  { source: "/llms.txt", type: "text/plain; charset=utf-8" },
+  { source: "/llms-full.txt", type: "text/plain; charset=utf-8" },
+];
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
+      ...AGENT_DOCS.map(({ source, type }) => ({ source, headers: [{ key: "Content-Type", value: type }] })),
       ...["/emoji", "/emoji/:path*"].map((source) => ({ source, headers: [{ key: "Content-Security-Policy", value: EMOJI_CSP }] })),
       ...["/api/emoji-search", "/api/emoji-pack/:name"].map((source) => ({ source, headers: [{ key: "X-Robots-Tag", value: "noindex" }] })),
     ];

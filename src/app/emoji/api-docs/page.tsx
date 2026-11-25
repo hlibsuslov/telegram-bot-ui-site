@@ -3,9 +3,11 @@ import { EmojiCode, EmojiDoc } from "@/components/emoji/emoji-doc";
 import { IdLookup } from "@/components/emoji/id-lookup";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { CHECKMARK } from "@/content/emoji-example";
-import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, emojiPackPath } from "@/lib/emoji-links";
+import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
+import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_MCP_PATH, EMOJI_OPENAPI_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { emojiBreadcrumbs, emojiMetadata } from "@/lib/emoji-metadata";
 import { messageEmojiHtml } from "@/lib/emoji-snippets";
+import { siteUrl } from "@/lib/site-url";
 
 const TITLE = "Telegram Custom Emoji ID Lookup and JSON API";
 const DESCRIPTION = "Find which Telegram pack owns a custom emoji ID, or use the Emoji Library API to search packs and get IDs for bot messages and buttons.";
@@ -30,10 +32,11 @@ export default function EmojiApiDocs() {
       <section aria-labelledby="endpoints">
         <h2 id="endpoints">Public JSON endpoints</h2>
         <p>Use <code>GET</code> on this site. These endpoints are read-only and require no API key. Resolve relative <code>pageUrl</code>, <code>preview</code>, <code>animation</code>, and <code>still</code> paths against the site origin. <code>still</code> is the thumbnail of a video emoji (its <code>preview</code> is the WEBM itself), or null. Use <code>pageUrl</code> to cite a library pack or <code>telegramUrl</code> for its original Telegram link. Keep every ID as a string.</p>
+        <p className="mt-2">Every JSON answer carries the catalog version: <code>taxonomy</code> and <code>generated</code>. The full contract is the <a href={EMOJI_OPENAPI_PATH}>OpenAPI 3.1 document</a>, and the <a href={EMOJI_EXPORT_PATH}>catalog export</a> holds every pack with its tags and emoji IDs in one gzip NDJSON file for offline use.</p>
 
         <div className="mt-5">
           <h3 id="search"><code>GET /api/emoji-search</code></h3>
-          <p>Pass <code>q</code> with words or a fallback emoji. Add <code>pack</code> to restrict matches to a catalog pack’s short name, case-insensitively. The query is clipped to 100 characters and uses up to six word tokens. Results contain up to 60 emoji, or up to 200 with a pack filter. <code>total</code> counts emoji matches before truncation. Pack matches and suggestions are returned separately. A blank query or unknown pack filter returns empty matches with HTTP 200.</p>
+          <p>Pass <code>q</code> with words or a fallback emoji. Add <code>pack</code> to restrict matches to a catalog pack’s short name, case-insensitively. The query is clipped to 160 characters and uses up to six word tokens. Tag filters narrow the matches: <code>style:outline</code>, <code>fit:adaptive</code>, <code>motion:static</code>, <code>color:blue</code>, <code>use:shop</code> (any facet and value from <code>/api/emoji-facets</code>, by id or label); the answer lists the filters it applied in <code>filters</code> and the ones it could not read in <code>unknownFilters</code>. Every match carries its <code>facets</code>. Results contain up to 60 emoji, or up to 200 with a pack filter. <code>total</code> counts emoji matches before truncation. Pack matches and suggestions are returned separately. A blank query or unknown pack filter returns empty matches with HTTP 200.</p>
           <p className="mt-2"><a href={CHECKMARK.search}>Run this checkmark search</a></p>
           <EmojiCode>{JSON.stringify({
             ok: true, query: "checkmark",
@@ -45,7 +48,7 @@ export default function EmojiApiDocs() {
 
         <div className="mt-5">
           <h3 id="pack"><code>GET /api/emoji-pack/[name]</code></h3>
-          <p>Use the short name from a Telegram <code>t.me/addemoji/…</code> link. Names use 1–64 ASCII letters, digits, or underscores. The response contains the original pack title and up to 200 emoji. Each entry has a string <code>id</code>, a Unicode <code>fallback</code>, a <code>format</code> of <code>static</code>, <code>animated</code> (TGS), or <code>video</code> (WebM), an <code>adaptive</code> flag for text-color repainting, and relative media paths or <code>null</code>. <code>pageUrl</code> is <code>null</code> for a pack outside this catalog.</p>
+          <p>Use the short name from a Telegram <code>t.me/addemoji/…</code> link. Names use 1–64 ASCII letters, digits, or underscores. The response contains the original pack title and up to 200 emoji. Each entry has a string <code>id</code>, a Unicode <code>fallback</code>, a <code>format</code> of <code>static</code>, <code>animated</code> (TGS), or <code>video</code> (WebM), an <code>adaptive</code> flag for text-color repainting, and relative media paths or <code>null</code>. <code>pageUrl</code> is <code>null</code> for a pack outside this catalog. For a catalog pack, <code>facets</code> and each emoji’s <code>facets</code> hold its tags, and <code>compatible</code> names packs drawn alike.</p>
           <p className="mt-2"><a href={CHECKMARK.api}>Get the full checkified pack</a>. This excerpt shows its checkmark.</p>
           <EmojiCode>{JSON.stringify({
             ok: true, name: CHECKMARK.name, title: CHECKMARK.title, emoji: [sample],
@@ -54,11 +57,33 @@ export default function EmojiApiDocs() {
         </div>
 
         <div className="mt-5">
+          <h3 id="facets"><code>GET /api/emoji-facets</code></h3>
+          <p>The tag taxonomy (style, colour, palette, theme fit, motion, topic, mood, role in an interface, bot category) with English and Russian labels, and every catalog pack’s tags as <code>[value, confidence]</code> pairs from 0 to 1, plus <code>compatible</code> packs. Tags are built from Telegram’s data, the emoji pictures and their descriptions; corrections made by hand win. One request is enough to rank packs for a bot.</p>
+          <p className="mt-2"><a href="/api/emoji-facets">Get the taxonomy and all pack tags</a></p>
+        </div>
+
+        <div className="mt-5">
           <h3 id="by-id"><code>GET /api/emoji-pack/by-id</code></h3>
           <p>Pass <code>ids</code> as a comma-separated list of 1–200 distinct IDs. Each ID is 1–20 digits. Duplicates are collapsed, and unknown IDs are omitted. A valid lookup with no matches returns HTTP 200 and an empty <code>emoji</code> array. Use the returned <code>set</code> with the pack endpoint to get the emoji’s fallback and format.</p>
           <p className="mt-2"><a href={CHECKMARK.lookup}>Look up the checkmark ID</a></p>
           <EmojiCode>{JSON.stringify({ ok: true, emoji: [{ id: CHECKMARK.id, set: CHECKMARK.name, pageUrl: CHECKMARK.path, telegramUrl: CHECKMARK.telegramUrl }] }, null, 2)}</EmojiCode>
         </div>
+      </section>
+
+      <section aria-labelledby="mcp">
+        <h2 id="mcp" className="scroll-mt-24">Connect it as an MCP server</h2>
+        <p>The same library is a remote MCP server at <code>{EMOJI_MCP_PATH}</code>, so an agent can search emoji, read packs and pick a pack for a bot without writing HTTP calls. It speaks MCP over Streamable HTTP (protocol 2025-11-25; older revisions are negotiated), is read-only and stateless, and needs no key or sign-in.</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li><code>emoji_search</code>, <code>emoji_pack</code> and <code>emoji_by_id</code> answer exactly what the endpoints above answer for the same input.</li>
+          <li><code>emoji_facets</code> gives the tag taxonomy and the tags of the packs you name.</li>
+          <li><code>emoji_rank_packs</code> ranks every catalog pack by tags (style, colour, palette, topic, mood, role, bot category) with hard <code>require</code> filters such as <code>motion:static</code>.</li>
+          <li><code>emoji_pick_family</code> picks one pack for the icon slots a bot needs (home, back, settings and so on) and returns its icon map with real IDs.</li>
+        </ul>
+        <h3 className="mt-4">Claude Code</h3>
+        <EmojiCode>{`claude mcp add --transport http telegram-emoji ${siteUrl()}${EMOJI_MCP_PATH}`}</EmojiCode>
+        <h3>claude.ai</h3>
+        <p>Open Settings, then Connectors, choose Add custom connector, give it a name and paste <code>{`${siteUrl()}${EMOJI_MCP_PATH}`}</code> as the server URL. Leave the OAuth fields empty. On Team and Enterprise plans an owner adds the connector for the organization first; members then turn it on.</p>
+        <p className="mt-2">A failed tool call comes back as a tool error with the same <code>{"{ok:false, error:{code, message}}"}</code> body as the HTTP API. Answers stay under {MCP_RESPONSE_MAX / 1024} KB; a larger one keeps the first part of each list and says so in <code>truncated</code>. The server allows {RATE_LIMITS.mcp} requests a minute per client, and each tool call also counts against its endpoint’s limit below.</p>
       </section>
 
       <section aria-labelledby="errors">
