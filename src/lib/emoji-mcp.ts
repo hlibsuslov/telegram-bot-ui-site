@@ -102,9 +102,9 @@ async function runTool(client: string, bucket: keyof typeof RATE_LIMITS, work: (
 // ------------------------------------------------------------------ server
 
 /** A fresh server for one request of one client (`client` keys its rate limits). `messages`: how many
- *  JSON-RPC messages the request batches; their answers share MCP_RESPONSE_MAX. */
-export function emojiMcpServer(client: string, { messages = 1 } = {}): McpServer {
-  const max = Math.floor(MCP_RESPONSE_MAX / Math.max(1, messages)) - ENVELOPE;
+ *  requests the POST carries; their answers share MCP_RESPONSE_MAX less `reserve` (the bytes of their ids). */
+export function emojiMcpServer(client: string, { messages = 1, reserve = 0 } = {}): McpServer {
+  const max = Math.floor((MCP_RESPONSE_MAX - reserve) / Math.max(1, messages)) - ENVELOPE;
   const run = (c: string, bucket: keyof typeof RATE_LIMITS, work: () => unknown) => runTool(c, bucket, work, max);
   const server = new McpServer({ name: "telegram-emoji-library", title: "Telegram Emoji Library", version: "1.0.0" }, { instructions: INSTRUCTIONS });
 

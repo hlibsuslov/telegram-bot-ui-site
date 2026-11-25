@@ -266,6 +266,34 @@ describe("MCP tools for choosing packs", () => {
   });
 });
 
+describe("rate limiter table", () => {
+  test("a full table does not reset the counters of live clients", async () => {
+    const { allow } = await import("@/lib/emoji-pack");
+    const key = `table-test:${client()}`;
+    for (let i = 0; i < 3; i++) assert.equal(allow(key, 3), true);
+    for (let i = 0; i < 20_500; i++) allow(`table-fill:${i}`, 3);
+    assert.equal(allow(key, 3), false, "the client's spent limit survived the table filling up");
+    assert.equal(allow(`table-new:${client()}`, 3), true, "a new client still gets the overflow share");
+    // leave an empty table for the other tests: a sweep with a 1 ms window drops every window
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    allow(`table-sweep:${client()}`, 3, 1);
+  });
+});
+
+describe("pickFamily index", () => {
+  const source = (revision: string, fallback: string) => ({
+    revision, packs: [{ name: "only", title: "Only" }],
+    emoji: [{ p: 0, id: "1", f: fallback, fmt: "static", ad: true, pv: true, st: true, tags: [] }],
+  }) as unknown as Parameters<typeof pickFamily>[0];
+  test("a new library build is indexed again; the same build answers the same", () => {
+    const home = source("a", "🏠");
+    const first = pickFamily(home, { slots: ["home"] });
+    assert.equal(first.map?.icons.home?.id, "1");
+    assert.deepEqual(pickFamily(home, { slots: ["home"] }), first);
+    assert.equal(pickFamily(source("b", "⭐"), { slots: ["home"] }).map, null, "build b has no home icon");
+  });
+});
+
 describe("MCP batches", () => {
   const search = (id: number) => ({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "emoji_search", arguments: { query: "heart" } } });
   test("a 2025-03-26 batch is answered within the 100 KB limit as a whole, each answer cut with its note", async () => {
@@ -279,12 +307,63 @@ describe("MCP batches", () => {
       assert.match((JSON.parse(a.result.content[0].text).truncated as { note: string }).note, /100 KB/);
     }
   });
+  test("an empty batch, or one that repeats a request id, is an invalid request", async () => {
+    for (const batch of [[], [search(1), search(1)]]) {
+      const res = await post(batch, { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+      assert.equal(res.status, 400, JSON.stringify(batch).slice(0, 40));
+      assert.equal(res.body!.error!.code, -32600);
+    }
+  });
+  test("a batch is answered with an array even when one message gets a reply; notifications alone get 202 and no body", async () => {
+    const note = { jsonrpc: "2.0", method: "notifications/initialized" };
+    const one = await post([{ jsonrpc: "2.0", id: 7, method: "ping" }, note], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    assert.equal(one.status, 200);
+    assert.deepEqual(one.body, [{ jsonrpc: "2.0", id: 7, result: {} }]);
+    const none = await post([note, note], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    assert.equal(none.status, 202);
+    assert.equal(none.bytes, 0);
+  });
+  test("notifications do not take a share of the answer limit", async () => {
+    const note = { jsonrpc: "2.0", method: "notifications/initialized" };
+    const res = await post([search(1), ...Array.from({ length: 20 }, () => note)], { headers: { "Mcp-Protocol-Version": "2025-03-26" } });
+    const [answer] = res.body as unknown as { result: ToolResult }[];
+    const text = answer.result.content[0].text;
+    assert.ok(Buffer.byteLength(text) > MCP_RESPONSE_MAX / 2, `${Buffer.byteLength(text)} bytes for the only call`);
+  });
+  test("every message of a batch counts against the MCP limit", async () => {
+    const ip = client();
+    const pings = (n: number) => Array.from({ length: n }, (_, i) => ({ jsonrpc: "2.0", id: i + 1, method: "ping" }));
+    const size = 100; // the SDK's largest batch
+    assert.equal(RATE_LIMITS.mcp % size, 0);
+    for (let sent = 0; sent < RATE_LIMITS.mcp; sent += size) {
+      assert.equal((await post(pings(size), { ip, headers: { "Mcp-Protocol-Version": "2025-03-26" } })).status, 200, `after ${sent}`);
+    }
+    assert.equal((await post({ jsonrpc: "2.0", id: 1, method: "ping" }, { ip })).status, 429);
+  });
   test("a revision that sends one message per POST gets a batch refused", async () => {
     for (const version of ["2025-06-18", "2025-11-25", "2024-11-05"]) {
       const res = await post([search(1), search(2)], { headers: { "Mcp-Protocol-Version": version } });
       assert.equal(res.status, 400, version);
       assert.equal(res.body!.error!.code, -32600, version);
     }
+  });
+});
+
+describe("MCP request and answer bounds", () => {
+  test("a declared body over 64 KB is refused before it is read", async () => {
+    const req = new Request("http://localhost:3000/api/mcp", {
+      method: "POST", headers: { ...HEADERS, "x-real-ip": client(), "Content-Length": String(65 * 1024) }, body: "{}",
+    });
+    const res = await mcp.POST(req);
+    assert.equal(res.status, 413);
+  });
+  test("a long string id does not push one answer past the limit", async () => {
+    const id = "x".repeat(8000);
+    const res = await post({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "emoji_search", arguments: { query: "heart" } } },
+      { headers: { "Mcp-Protocol-Version": "2025-11-25" } });
+    assert.equal(res.status, 200);
+    assert.ok(res.bytes <= MCP_RESPONSE_MAX, `${res.bytes} bytes`);
+    assert.equal(res.body!.id, id);
   });
 });
 

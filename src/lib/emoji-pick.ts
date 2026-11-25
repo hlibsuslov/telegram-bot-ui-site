@@ -103,6 +103,33 @@ export interface FamilyOptions extends RankOptions { slots: string[] }
 
 interface Icon { id: string; set: string; fallback: string; animated: boolean; adaptive: boolean }
 
+interface PackIndex { p: number; byFallback: Map<string, SearchEmoji>; signs: Map<string, string>; topFormatShare: number; formats: Record<string, number> }
+
+/** Each pack's emoji by fallback and the slot signs it covers: the same for every pick from one library build,
+ *  so it is built once per revision ("use cache" may hand out a fresh copy of the library on each call). */
+let packIndex: { revision: string; packs: PackIndex[] } | null = null;
+function indexOf(source: SearchSource): PackIndex[] {
+  if (packIndex?.revision === source.revision) return packIndex.packs;
+  const emojiOf = new Map<number, SearchEmoji[]>();
+  for (const e of source.emoji) {
+    const list = emojiOf.get(e.p);
+    if (list) list.push(e); else emojiOf.set(e.p, [e]);
+  }
+  const packs: PackIndex[] = [];
+  for (const [p, emoji] of emojiOf) {
+    const byFallback = new Map<string, SearchEmoji>();
+    for (const e of emoji) {
+      const key = stripVariation(e.f);
+      if (key && !byFallback.has(key)) byFallback.set(key, e);
+    }
+    const formats: Record<string, number> = {};
+    for (const e of emoji) formats[e.fmt] = (formats[e.fmt] ?? 0) + 1;
+    packs.push({ p, byFallback, signs: slotEmoji(byFallback.keys()), formats, topFormatShare: Math.max(...Object.values(formats)) / emoji.length });
+  }
+  packIndex = { revision: source.revision, packs };
+  return packs;
+}
+
 /** ONE pack for the slots a bot needs and its icon map. Score = slot coverage, then fit to the brief,
  *  then theme safety (adaptive share when both themes matter), then static icons (buttons), then one
  *  format across the pack. The slots and their emoji are lib/emoji-slots.ts. */
@@ -124,22 +151,10 @@ export function pickFamily(source: SearchSource, { slots, brief = {}, require = 
   const hasWanted = Object.keys(wanted).length > 0;
   if (!source.packs.length) notes.push("the library could not be read in this deployment");
 
-  const emojiOf = new Map<number, SearchEmoji[]>();
-  for (const e of source.emoji) {
-    const list = emojiOf.get(e.p);
-    if (list) list.push(e); else emojiOf.set(e.p, [e]);
-  }
-
   const ranking = [];
-  for (const [p, emoji] of emojiOf) {
+  for (const { p, byFallback, signs, formats, topFormatShare } of indexOf(source)) {
     const { name, title } = source.packs[p];
     if (require.length && !fit.has(name)) continue;
-    const byFallback = new Map<string, SearchEmoji>();
-    for (const e of emoji) {
-      const key = stripVariation(e.f);
-      if (key && !byFallback.has(key)) byFallback.set(key, e);
-    }
-    const signs = slotEmoji(byFallback.keys());
     const icons: Record<string, Icon> = {};
     const missing: string[] = [];
     for (const slot of slots) {
@@ -152,14 +167,12 @@ export function pickFamily(source: SearchSource, { slots, brief = {}, require = 
     const coverage = used.length / slots.length;
     const adaptive = used.filter((i) => i.adaptive).length / used.length;
     const still = used.filter((i) => !i.animated).length / used.length;
-    const formats: Record<string, number> = {};
-    for (const e of emoji) formats[e.fmt] = (formats[e.fmt] ?? 0) + 1;
     const match = fit.get(name) ?? { score: 0, matched: [] };
     let score = coverage;
     if (hasWanted) score += 0.35 * match.score;
     if (theme === "both") score += 0.15 * adaptive;
     if (motion === "static") score += 0.1 * still;
-    score += 0.05 * Math.max(...Object.values(formats)) / emoji.length;
+    score += 0.05 * topFormatShare;
     ranking.push({ icons, row: {
       name, title, telegramUrl: telegramPackUrl(name), coverage: Math.round(coverage * 1000) / 1000,
       adaptiveShare: Math.round(adaptive * 100) / 100, staticShare: Math.round(still * 100) / 100, formats, missing,

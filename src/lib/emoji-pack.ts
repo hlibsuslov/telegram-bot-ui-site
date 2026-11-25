@@ -340,12 +340,21 @@ export async function animationFile(name: string, id: string): Promise<FileBody>
 // ------------------------------------------------------------------ per-client limit, errors
 
 // A fixed window per key: two numbers per client instead of a list of timestamps.
+// When the table is full, expired windows are dropped; if every window is live, new clients of an endpoint
+// share one overflow counter. Live counters are never reset, so a flood of new keys cannot refill anyone's limit.
 const hits = new Map<string, { start: number; n: number }>();
+const KEYS_MAX = 20_000;
 export function allow(key: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now();
   let w = hits.get(key);
+  if (!w && hits.size >= KEYS_MAX) {
+    for (const [k, v] of hits) if (now - v.start >= windowMs) hits.delete(k);
+    if (hits.size >= KEYS_MAX) {
+      key = `${key.slice(0, key.indexOf(":") + 1)}overflow`;
+      w = hits.get(key);
+    }
+  }
   if (!w || now - w.start >= windowMs) {
-    if (!w && hits.size > 20_000) hits.clear();
     w = { start: now, n: 0 };
     hits.set(key, w);
   }
