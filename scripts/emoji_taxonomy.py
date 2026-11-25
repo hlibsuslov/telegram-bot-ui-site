@@ -41,6 +41,13 @@ PACKS = os.path.join(CONTENT, "emoji-packs.txt")
 TAGS = os.path.join(CONTENT, "emoji-tags.txt")
 OVERRIDES = os.path.join(CONTENT, "emoji-tag-overrides.txt")
 STYLES = os.path.join(CONTENT, "emoji-pack-styles.json")  # curated look cards from the vision pass; never generated
+DESCRIPTIONS = os.path.join(CONTENT, "emoji-pack-descriptions.json")  # curated en/ru/uk texts; never generated
+DESC_LIMITS = {"what": 140, "for": 70, "not_for": 70}
+DESC_LANGS = ("en", "ru", "uk")
+# Words that sell instead of describe (a stem matches its forms).
+MARKETING = ("best", "amazing", "perfect", "stunning", "unique", "ultimate", "awesome", "beautiful",
+             "лучш", "идеальн", "потрясающ", "уникальн", "крут", "шикарн",
+             "найкращ", "ідеальн", "неймовірн", "унікальн", "крутий")
 OUT = os.path.join(CONTENT, "emoji-facets.json")
 WORK = os.path.join(ROOT, ".emoji-taxonomy")
 FULL = os.path.join(WORK, "facets-full.json")  # every tag with its sources, for eval and review
@@ -380,6 +387,39 @@ def style_card_errors(doc: dict, tax: dict, listed: set[str]) -> list[str]:
     return errors
 
 
+def description_errors(doc: dict, listed: set[str]) -> list[str]:
+    """Problems in emoji-pack-descriptions.json: every listed pack described in en/ru/uk, plain and short."""
+    errors = []
+    packs = doc.get("packs") or {}
+    by_lower = {n.lower() for n in packs}
+    errors += [f"emoji-pack-descriptions.json: {n}: no description" for n in sorted(listed) if n.lower() not in by_lower]
+    known = {n.lower() for n in listed}
+    for name, desc in packs.items():
+        at = f"emoji-pack-descriptions.json: {name}"
+        if name.lower() not in known:
+            errors.append(f"{at}: not in emoji-packs.txt")
+        for lang in DESC_LANGS:
+            part = desc.get(lang) if isinstance(desc, dict) else None
+            if not isinstance(part, dict):
+                errors.append(f"{at}: {lang} missing")
+                continue
+            errors += [f"{at}: {lang} unknown field {k!r}" for k in sorted(set(part) - set(DESC_LIMITS))]
+            for field, limit in DESC_LIMITS.items():
+                text = part.get(field)
+                where = f"{at}: {lang}.{field}"
+                if not isinstance(text, str) or not text.strip():
+                    errors.append(f"{where} is empty")
+                    continue
+                if len(text) > limit:
+                    errors.append(f"{where} is {len(text)} characters, at most {limit}")
+                low = text.lower()
+                if any(re.search(r"(?<!\w)" + w, low) for w in MARKETING):
+                    errors.append(f"{where} has a marketing word: {text}")
+                if "!" in text:
+                    errors.append(f"{where} has an exclamation mark")
+    return errors
+
+
 def apply_style_card(p: "Scores", card: dict) -> None:
     """The look card of the vision pass: its styles at up to 0.9 (second one 0.1 lower). A sure card drops
     the styles that only the pack's words or its emoji suggested; an unsure one only adds."""
@@ -443,6 +483,8 @@ def build(args) -> int:
     overrides, errors = parse_overrides(OVERRIDES, tax)
     cards = (load_json(STYLES) if os.path.isfile(STYLES) else {}).get("packs", {})
     errors += style_card_errors({"packs": cards}, tax, {n for n, _ in listed_packs()})
+    descriptions = (load_json(DESCRIPTIONS) if os.path.isfile(DESCRIPTIONS) else {}).get("packs", {})
+    descriptions = {k.lower(): v for k, v in descriptions.items()}
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 2
@@ -560,6 +602,8 @@ def build(args) -> int:
         report["overrides_applied"] += len(overrides.get(name.lower(), []))
         out_packs[name] = {"category": category, "count": n, "meanings": len(meanings),
                            "facets": p.compact(th["pack"], LIMITS_PACK, prefer={"topic": CATEGORY_TOPIC.get(category, "")})}
+        if name.lower() in descriptions:  # what it is, what it suits, where it fits badly (en/ru/uk)
+            out_packs[name]["description"] = descriptions[name.lower()]
         if card:  # how the pack is drawn, for descriptions and the API
             out_packs[name]["look"] = {k: card[k] for k in ("line_weight", "fill", "perspective", "shadows", "characters",
                                                             "drawn")}
@@ -871,6 +915,8 @@ def check(args) -> int:
     errors += taxonomy_errors(tax)
     if os.path.isfile(STYLES):
         errors += style_card_errors(load_json(STYLES), tax, {n for n, _ in listed_packs()})
+    if os.path.isfile(DESCRIPTIONS):
+        errors += description_errors(load_json(DESCRIPTIONS), {n for n, _ in listed_packs()})
     if os.path.isfile(OUT):
         doc = load_json(OUT)
         for name, p in doc["packs"].items():

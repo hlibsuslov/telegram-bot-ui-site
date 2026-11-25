@@ -348,5 +348,39 @@ class BotUse(unittest.TestCase):
         self.assertEqual(ranked[:1], ["utility"], ranked)
 
 
+DESC = {lang: {"what": "Thin line icons that take the text colour.", "for": "Menus and buttons",
+                "not_for": "Festive posts"} for lang in ("en", "ru", "uk")}
+
+
+class Descriptions(unittest.TestCase):
+    """src/content/emoji-pack-descriptions.json (E2): one en/ru/uk description per listed pack."""
+
+    def errors(self, packs, listed=("tgiosicons",)):
+        return et.description_errors({"packs": packs}, set(listed))
+
+    def test_a_valid_description_passes(self):
+        self.assertEqual(self.errors({"tgiosicons": DESC}), [])
+
+    def test_each_broken_rule_is_reported(self):
+        cases = {
+            "no description": ({}, ("tgiosicons",)),
+            "not in emoji-packs.txt": ({"tgiosicons": DESC, "nosuchpack": DESC}, ("tgiosicons",)),
+            "uk.for": ({"tgiosicons": {**DESC, "uk": {**DESC["uk"], "for": ""}}}, ("tgiosicons",)),
+            "en.what is 141": ({"tgiosicons": {**DESC, "en": {**DESC["en"], "what": "x" * 141}}}, ("tgiosicons",)),
+            "marketing word": ({"tgiosicons": {**DESC, "ru": {**DESC["ru"], "for": "Лучший выбор для меню"}}},
+                               ("tgiosicons",)),
+            "exclamation": ({"tgiosicons": {**DESC, "en": {**DESC["en"], "for": "Menus!"}}}, ("tgiosicons",)),
+            "unknown field": ({"tgiosicons": {**DESC, "en": {**DESC["en"], "tagline": "x"}}}, ("tgiosicons",)),
+        }
+        for expected, (packs, listed) in cases.items():
+            with self.subTest(expected):
+                found = self.errors(packs, listed)
+                self.assertTrue(any(expected in e for e in found), found)
+
+    def test_the_shipped_file_describes_every_pack(self):
+        listed = {n for n, _ in et.listed_packs()}
+        self.assertEqual(et.description_errors(et.load_json(et.DESCRIPTIONS), listed), [])
+
+
 if __name__ == "__main__":
     unittest.main()
