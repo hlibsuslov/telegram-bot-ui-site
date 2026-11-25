@@ -3,11 +3,12 @@
 // with a confidence. One request lets an agent rank packs for a bot without reading every pack.
 // Static data built by scripts/emoji_taxonomy.py; no Telegram call.
 import { allow, clientKey, errorResponse, ResolverError } from "@/lib/emoji-pack";
+import { RATE_LIMITS } from "@/lib/emoji-api-contract";
 import { allPackFacets, facetsMeta, taxonomy } from "@/lib/emoji-facets";
 
 export async function GET(req: Request) {
   try {
-    if (!allow(`facets:${clientKey(req)}`, 60)) throw new ResolverError("RATE_LIMITED", 429, "too many requests; retry in a minute", 60);
+    if (!allow(`facets:${clientKey(req)}`, RATE_LIMITS.facets)) throw new ResolverError("RATE_LIMITED", 429, "too many requests; retry in a minute", 60);
     const facets = Object.fromEntries(Object.entries(taxonomy.facets).map(([id, f]) => [id, {
       label: f.label, measured: !!f.measured, scope: f.scope,
       values: Object.fromEntries(Object.entries(f.values).map(([v, d]) => [v, { en: d.en, ru: d.ru }])),

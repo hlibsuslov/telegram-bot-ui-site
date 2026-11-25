@@ -1,12 +1,13 @@
 // GET /api/emoji-pack/<name>/<id>: the picture of one emoji of that pack (WEBP, WEBM, or the
 // static thumbnail of a TGS). Proxied, because Telegram's file URL contains the bot token.
 import { allow, canonicalOnly, clientKey, errorResponse, previewFile, ResolverError } from "@/lib/emoji-pack";
+import { RATE_LIMITS } from "@/lib/emoji-api-contract";
 
 export async function GET(req: Request, ctx: RouteContext<"/api/emoji-pack/[name]/[id]">) {
   const { name, id } = await ctx.params;
   try {
     canonicalOnly(req);
-    if (!allow(`file:${clientKey(req)}`, 1500)) throw new ResolverError("RATE_LIMITED", 429, "too many pictures at once; retry in a minute");
+    if (!allow(`file:${clientKey(req)}`, RATE_LIMITS.file)) throw new ResolverError("RATE_LIMITED", 429, "too many pictures at once; retry in a minute");
     const { body, type } = await previewFile(name, id);
     return new Response(body, {
       headers: {

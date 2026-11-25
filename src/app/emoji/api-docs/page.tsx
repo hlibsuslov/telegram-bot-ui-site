@@ -3,7 +3,7 @@ import { EmojiCode, EmojiDoc } from "@/components/emoji/emoji-doc";
 import { IdLookup } from "@/components/emoji/id-lookup";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { CHECKMARK } from "@/content/emoji-example";
-import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, emojiPackPath } from "@/lib/emoji-links";
+import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_OPENAPI_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { emojiBreadcrumbs, emojiMetadata } from "@/lib/emoji-metadata";
 import { messageEmojiHtml } from "@/lib/emoji-snippets";
 
@@ -30,6 +30,7 @@ export default function EmojiApiDocs() {
       <section aria-labelledby="endpoints">
         <h2 id="endpoints">Public JSON endpoints</h2>
         <p>Use <code>GET</code> on this site. These endpoints are read-only and require no API key. Resolve relative <code>pageUrl</code>, <code>preview</code>, <code>animation</code>, and <code>still</code> paths against the site origin. <code>still</code> is the thumbnail of a video emoji (its <code>preview</code> is the WEBM itself), or null. Use <code>pageUrl</code> to cite a library pack or <code>telegramUrl</code> for its original Telegram link. Keep every ID as a string.</p>
+        <p className="mt-2">Every JSON answer carries the catalog version: <code>taxonomy</code> and <code>generated</code>. The full contract is the <a href={EMOJI_OPENAPI_PATH}>OpenAPI 3.1 document</a>, and the <a href={EMOJI_EXPORT_PATH}>catalog export</a> holds every pack with its tags and emoji IDs in one gzip NDJSON file for offline use.</p>
 
         <div className="mt-5">
           <h3 id="search"><code>GET /api/emoji-search</code></h3>

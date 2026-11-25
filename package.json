@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --experimental-transform-types --disable-warning=ExperimentalWarning --import ./tests/contract/register.mjs --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
