@@ -5311,6 +5311,20 @@
    "unsure": [],
    "source": "vision"
   },
+  "PERCEPTRON": {
+   "style": [
+    "native-ui"
+   ],
+   "line_weight": "none",
+   "fill": "flat",
+   "perspective": "front",
+   "shadows": "none",
+   "characters": "some",
+   "drawn": "AI and software logos centred on black rounded tiles, in white or their brand colours",
+   "confidence": 0.96,
+   "unsure": [],
+   "source": "vision"
+  },
   "PigEmoji": {
    "style": [
     "cartoon"
@@ -5758,6 +5772,21 @@
    "characters": "none",
    "drawn": "Apple-style heart emoji in 35 colours and two-tone blends; soft gradient shading, thin darker rim",
    "confidence": 0.9,
+   "unsure": [],
+   "source": "vision"
+  },
+  "RhymesTG": {
+   "style": [
+    "cartoon",
+    "glossy"
+   ],
+   "line_weight": "medium",
+   "fill": "gradient",
+   "perspective": "front",
+   "shadows": "soft",
+   "characters": "some",
+   "drawn": "Glossy yellow square faces and hands, with neon signs and red text split for live updates",
+   "confidence": 0.94,
    "unsure": [],
    "source": "vision"
   },
