@@ -3,7 +3,6 @@
 // What a visitor keeps from the library, in this browser only (localStorage): saved packs and
 // single emoji they picked. Nothing is sent anywhere.
 import { useCallback, useSyncExternalStore } from "react";
-import { track } from "@/components/site/analytics";
 
 export type SavedEmoji = { id: string; fallback: string; pack: string };
 type Saved = { packs: string[]; emoji: SavedEmoji[] };
@@ -60,7 +59,6 @@ export function useSaved() {
 export async function copy(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
-    track("copy_snippet", { snippet: text.slice(0, 100) });
     return true;
   } catch {
     return false;
