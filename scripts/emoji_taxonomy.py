@@ -257,31 +257,36 @@ def measure_cell(img, i: int) -> dict | None:
 
 
 def measure_sheets(dirs: list[str]) -> dict[str, dict[str, dict]]:
-    """pack name (lower) -> emoji id -> measurement."""
+    """pack name (lower) -> emoji id -> measurement. The first folder with a pack's sheet wins; a fill sheet
+    (<pack>.fill.png, emoji_sheets.py --gaps) then measures the emoji that sheet left empty."""
     out: dict[str, dict[str, dict]] = {}
     try:
         from PIL import Image
     except ImportError:
         print("Pillow is missing: colours are taken from words only", file=sys.stderr)
         return out
-    for d in dirs:
-        if not os.path.isdir(d):
-            continue
-        for f in sorted(os.listdir(d)):
-            if not f.endswith(".json") or f.lower()[:-5] in out:
-                continue
-            png = os.path.join(d, f[:-5] + ".png")
-            if not os.path.isfile(png):
-                continue
-            raw = load_json(os.path.join(d, f))
-            cells = raw["emoji"] if isinstance(raw.get("emoji"), dict) else raw  # newer sheets nest the index
-            img = Image.open(png).convert("RGB")
-            got = {}
-            for num, (eid, _fb) in cells.items():
-                m = measure_cell(img, int(num) - 1)
-                if m:
-                    got[str(eid)] = m
-            out[f.lower()[:-5]] = got
+
+    def cells_of(d: str, f: str) -> dict[str, dict]:
+        raw = load_json(os.path.join(d, f))
+        cells = raw["emoji"] if isinstance(raw.get("emoji"), dict) else raw  # newer sheets nest the index
+        img = Image.open(os.path.join(d, f[:-5] + ".png")).convert("RGB")
+        got = {}
+        for num, (eid, _fb) in cells.items():
+            m = measure_cell(img, int(num) - 1)
+            if m:
+                got[str(eid)] = m
+        return got
+
+    sheets = [(d, f) for d in dirs if os.path.isdir(d) for f in sorted(os.listdir(d))
+              if f.endswith(".json") and os.path.isfile(os.path.join(d, f[:-5] + ".png"))]
+    for d, f in sheets:
+        if not f.endswith(".fill.json") and f.lower()[:-5] not in out:
+            out[f.lower()[:-5]] = cells_of(d, f)
+    for d, f in sheets:
+        if f.endswith(".fill.json"):
+            got = out.setdefault(f.lower()[: -len(".fill.json")], {})
+            for eid, m in cells_of(d, f).items():
+                got.setdefault(eid, m)
     return out
 
 
@@ -491,7 +496,8 @@ def build(args) -> int:
     cards = {k.lower(): v for k, v in cards.items()}
     unknown_words: Counter = Counter()
     report = {"packs": 0, "emoji": 0, "measured_emoji": 0, "packs_without_snapshot": [], "packs_without_sheet": [],
-              "duplicate_free_tags": 0, "duplicate_emoji_ids": [], "overrides_applied": 0}
+              "duplicate_free_tags": 0, "duplicate_emoji_ids": [], "overrides_applied": 0,
+              "unmeasured": {}}  # pack -> {id: [format, fallback]}: emoji_sheets.py --gaps draws them again
     seen_ids: dict[str, str] = {}
     out_packs, out_emoji, site_emoji = {}, {}, {}
     pack_vectors = {}
@@ -521,7 +527,9 @@ def build(args) -> int:
                 s.add("fit", "adaptive", 1.0, "telegram")
             elif m:
                 s.add("fit", m["fit"], m["fit_conf"], "pixels")
-            if m:
+            if not m:
+                report["unmeasured"].setdefault(name, {})[eid] = [fmt, e.get("fallback") or ""]
+            else:
                 report["measured_emoji"] += 1
                 for fam, share in sorted(m["shares"].items(), key=lambda x: -x[1]):
                     if share >= 0.18 and not (e.get("adaptive") and fam in ("black", "white", "gray")):
@@ -647,8 +655,9 @@ def build(args) -> int:
     os.makedirs(WORK, exist_ok=True)
     with open(os.path.join(WORK, "report.json"), "w", encoding="utf-8") as fh:
         json.dump(report, fh, ensure_ascii=False, indent=1)
-    print(json.dumps({k: (v if not isinstance(v, list) else len(v)) for k, v in report.items() if k != "unknown_words_top"},
-                     ensure_ascii=False))
+    shown = {k: len(v) if isinstance(v, list) else v for k, v in report.items()
+             if k not in ("unknown_words_top", "unmeasured")}
+    print(json.dumps(shown, ensure_ascii=False))
     print(f"wrote {os.path.relpath(OUT, ROOT)} ({os.path.getsize(OUT) // 1024} KB)")
     return 0
 

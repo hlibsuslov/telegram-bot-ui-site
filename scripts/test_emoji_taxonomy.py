@@ -1,7 +1,13 @@
 """Guards of `emoji_taxonomy.py check`: py -3 -m unittest discover -s scripts -p "test_*.py"."""
+import contextlib
 import copy
+import gzip
+import io
+import json
 import os
+import shutil
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -380,6 +386,47 @@ class Descriptions(unittest.TestCase):
     def test_the_shipped_file_describes_every_pack(self):
         listed = {n for n, _ in et.listed_packs()}
         self.assertEqual(et.description_errors(et.load_json(et.DESCRIPTIONS), listed), [])
+
+
+try:
+    from PIL import Image
+except ImportError:  # CI runs without Pillow: the sheet tests skip, the rest runs
+    Image = None
+
+
+@unittest.skipUnless(Image, "needs Pillow")
+class FillSheets(unittest.TestCase):
+    """An emoji the pack's sheet left empty is measured from its fill sheet (emoji_sheets.py --gaps)."""
+
+    def test_a_fill_sheet_measures_the_empty_cells_only(self):
+        import emoji_sheets as es
+        d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, True)
+        red, blue = (Image.new("RGBA", (64, 64), c) for c in ((220, 30, 30, 255), (30, 60, 220, 255)))
+        emoji = [{"id": "1", "fallback": "x"}, {"id": "2", "fallback": "y"}]
+        with contextlib.redirect_stdout(io.StringIO()):
+            es.draw(emoji, [red, None], d, "Pack", "t")
+            es.draw(emoji, [blue, blue], d, "Pack.fill", None)
+        got = et.measure_sheets([d])
+        self.assertEqual(set(got), {"pack"})
+        self.assertIn("red", got["pack"]["1"]["shares"])  # the pack's own sheet wins
+        self.assertIn("blue", got["pack"]["2"]["shares"])
+
+    def test_a_tgs_without_a_thumbnail_is_drawn_from_its_first_frame(self):
+        import emoji_sheets as es
+        try:
+            import rlottie_python  # noqa: F401
+        except ImportError:
+            self.skipTest("needs rlottie-python")
+        tf = {"a": 0, "k": 0}
+        lottie = {"v": "5.5.2", "fr": 30, "ip": 0, "op": 30, "w": 100, "h": 100, "layers": [
+            {"ty": 1, "sc": "#2050e0", "sw": 100, "sh": 100, "ip": 0, "op": 30, "st": 0, "ks": {
+                "o": {"a": 0, "k": 100}, "r": tf, "p": {"a": 0, "k": [50, 50, 0]}, "a": {"a": 0, "k": [50, 50, 0]},
+                "s": {"a": 0, "k": [100, 100, 100]}}}]}
+        img = es.picture("application/x-tgsticker", gzip.compress(json.dumps(lottie).encode()))
+        self.assertIsNotNone(img)
+        r, g, b, a = img.getpixel((img.width // 2, img.height // 2))
+        self.assertEqual(et.colour_family(r, g, b), "blue")
 
 
 if __name__ == "__main__":
