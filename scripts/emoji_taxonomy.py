@@ -406,6 +406,31 @@ def default_mood(s: "Scores") -> str | None:
     return None
 
 
+def use_scores(uses: dict, role_count: Counter, p: "Scores") -> dict[str, float]:
+    """How well a pack suits each kind of bot (the `use` facet), by the rule in the taxonomy's facets.use.rule:
+    topic x role coverage x lead x look, halved for an avoided topic. `role_count` holds the distinct interface
+    meanings per role (from the fallbacks: 26 letters that share one fallback are one meaning)."""
+    def conf(facet: str, floor: float) -> dict[str, float]:
+        return {v: c for v, (c, _) in p.d.get(facet, {}).items() if c >= floor}
+
+    have = {"topics": conf("topic", 0.5), "styles": conf("style", 0.4), "moods": conf("mood", 0.3)}
+    roles = conf("role", 0.0)  # share of the pack's emoji tagged with the role, and the pack's own words
+    out = {}
+    for use, spec in uses.items():
+        topic = max(have["topics"].get(t, 0.0) for t in spec["topics"]) if spec.get("topics") else 1.0
+        covered = [max(min(1.0, role_count[r] / 3), roles.get(r, 0.0)) for r in spec.get("needs", [])]
+        # the best covered need and the average count half each: a set of check marks is half a monitoring kit
+        coverage = (max(covered) + sum(covered) / len(covered)) / 2 if covered else 1.0
+        lead = roles.get(spec["lead"], 0.0) if spec.get("lead") else 1.0
+        fits = [max(have[k].get(v, 0.0) for v in spec[k]) if have[k] else 0.5 for k in ("styles", "moods") if spec.get(k)]
+        look = 0.8 + 0.2 * (sum(fits) / len(fits) if fits else 0.5)
+        score = topic * coverage * lead * look
+        if set(have["topics"]) & set(spec.get("avoid_topics", [])):
+            score *= 0.5  # an icon pack that is also about letters, holidays or faces is decoration, not a toolbar
+        out[use] = round(score, 2)
+    return out
+
+
 def build(args) -> int:
     tax = load_json(TAXONOMY)
     th = tax["thresholds"]
@@ -528,22 +553,9 @@ def build(args) -> int:
         # Distinct interface meanings per role (from the fallback's slots), not emoji: 26 letters that share
         # one fallback are one meaning, not broad coverage.
         role_count = Counter(role_of_group.get(slot_group.get(m, ""), "") for m in meanings)
-        styles = {v for v, (c, _) in p.d.get("style", {}).items() if c >= 0.4}
-        topics = {v for v, (c, _) in p.d.get("topic", {}).items() if c >= 0.5}
-        moods = {v for v, (c, _) in p.d.get("mood", {}).items() if c >= 0.3}
-        for use, spec in tax["facets"]["use"]["values"].items():
-            needs = spec.get("needs", [])
-            need_score = sum(min(1.0, role_count[r] / 3) for r in needs) / len(needs) if needs else 0.0
-            extra = [bool(styles & set(spec.get("styles", []))), bool(topics & set(spec.get("topics", []))),
-                     bool(moods & set(spec.get("moods", [])))]
-            wanted = [k for k in ("styles", "topics", "moods") if spec.get(k)]
-            match = sum(x for x, k in zip(extra, ("styles", "topics", "moods")) if k in wanted) / len(wanted) if wanted else 0
-            score = 0.65 * need_score + 0.35 * match if needs else match * 0.9
-            top_topic = max(p.d.get("topic", {}).items(), key=lambda kv: kv[1][0], default=(None, None))[0]
-            if top_topic in spec.get("avoid_topics", []):
-                score *= 0.5  # an alphabet or a holiday pack is not a toolbar for a support bot
+        for use, score in use_scores(tax["facets"]["use"]["values"], role_count, p).items():
             if score >= 0.45:
-                p.add("use", use, round(score, 2), "rules")
+                p.add("use", use, score, "rules")
         apply_overrides(p, overrides.get(name.lower(), []))
         report["overrides_applied"] += len(overrides.get(name.lower(), []))
         out_packs[name] = {"category": category, "count": n, "meanings": len(meanings),

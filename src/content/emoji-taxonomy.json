@@ -1,5 +1,5 @@
 {
-  "$comment": "Normalized tag taxonomy of the emoji library. One source of truth for scripts/emoji_taxonomy.py (tagging), lib/emoji-facets.ts (search, filters, API) and the telegram-bot-ui skill (pack picking through the API). Each value has an English and a Russian label and aliases: words found in the free-text tags of emoji-tags.txt that mean this value. Facets marked measured come from Telegram data or pixels, not from words. Style values also carry a `definition` and a `not` list: rubric text for the human or vision labeling pass, not read by code. `masks` are phrases cut out of a tag before its single words are matched, so \"hand drawn\" is not a hand.",
+  "$comment": "Normalized tag taxonomy of the emoji library. One source of truth for scripts/emoji_taxonomy.py (tagging), lib/emoji-facets.ts (search, filters, API) and the telegram-bot-ui skill (pack picking through the API). Each value has an English and a Russian label and aliases: words found in the free-text tags of emoji-tags.txt that mean this value. Facets marked measured come from Telegram data or pixels, not from words. Style values also carry a `definition` and a `not` list: rubric text for the human or vision labeling pass, not read by code. `masks` are phrases cut out of a tag before its single words are matched, so \"hand drawn\" is not a hand. Use values (bot kinds) carry the inputs of their score: `needs` (interface roles), `lead`, `topics`, `styles`, `moods` and `avoid_topics`; facets.use.rule says how they combine.",
   "version": 2,
   "facets": {
     "motion": {
@@ -1905,6 +1905,7 @@
       "scope": [
         "pack"
       ],
+      "rule": "Score of a use for a pack = topic x coverage x lead x look; the build tags uses scoring 0.45 or more. topic: the pack's strongest topic among `topics` (1 when none are listed). coverage: how well the pack covers the interface roles in `needs`, each role by 3 distinct meanings or by the share of the pack's emoji tagged with it; the best covered role and the average count half each, so a set of check marks half suits a monitoring bot (1 when none are listed). lead: the share of the pack that carries the role a specialised bot is about, so a general icon pack suits utility before shop or support. look: 0.8 to 1.0 by the best of `styles` and `moods` (0.9 when none are listed or the pack has none). A pack with one of `avoid_topics` among its topics scores half: icons that are also letters, holidays or faces are decoration, not a toolbar.",
       "values": {
         "utility": {
           "en": "Tools and monitoring",
@@ -1913,6 +1914,12 @@
             "navigation",
             "status",
             "settings"
+          ],
+          "topics": [
+            "interface",
+            "status",
+            "tech",
+            "office"
           ],
           "styles": [
             "outline",
@@ -1941,6 +1948,12 @@
             "navigation",
             "status"
           ],
+          "lead": "commerce",
+          "topics": [
+            "interface",
+            "status",
+            "finance"
+          ],
           "styles": [
             "outline",
             "glyph",
@@ -1966,8 +1979,7 @@
           "en": "Finance and crypto",
           "ru": "Финансы и крипта",
           "needs": [
-            "commerce",
-            "status"
+            "commerce"
           ],
           "topics": [
             "finance"
@@ -1980,8 +1992,6 @@
             "3d"
           ],
           "avoid_topics": [
-            "letters",
-            "flags",
             "holidays",
             "characters",
             "faces",
@@ -1999,6 +2009,12 @@
             "communication",
             "status",
             "navigation"
+          ],
+          "lead": "communication",
+          "topics": [
+            "interface",
+            "status",
+            "tech"
           ],
           "styles": [
             "outline",
@@ -2022,16 +2038,14 @@
         "content": {
           "en": "Channels and media",
           "ru": "Каналы и медиа",
-          "needs": [
-            "content"
-          ],
           "topics": [
             "brands",
             "letters",
             "flags",
             "decor",
             "nature",
-            "holidays"
+            "holidays",
+            "finance"
           ]
         },
         "community": {
@@ -2043,7 +2057,9 @@
             "characters",
             "animals",
             "love",
-            "holidays"
+            "holidays",
+            "people",
+            "food"
           ],
           "moods": [
             "joyful",
@@ -2056,21 +2072,15 @@
           "ru": "Игры",
           "needs": [],
           "topics": [
-            "games",
-            "characters"
+            "games"
           ],
           "styles": [
-            "pixel",
-            "cartoon",
-            "3d"
+            "pixel"
           ]
         },
         "education": {
           "en": "Learning",
           "ru": "Обучение",
-          "needs": [
-            "status"
-          ],
           "topics": [
             "letters",
             "tech"

@@ -293,5 +293,60 @@ class StyleCards(unittest.TestCase):
         self.assertEqual(p.d["style"]["outline"][0], 0.6)
 
 
+class BotUse(unittest.TestCase):
+    """The `use` facet with the shipped rules: interface and status packs get utility, shop or support only where
+    they cover the roles those bots need; decorative and character packs lean to content and community."""
+
+    USES = et.load_json(et.TAXONOMY)["facets"]["use"]["values"]
+
+    def ranked(self, meanings: dict, **facets) -> list:
+        """Uses the build would tag (score of at least 0.45), best first, for a pack with these distinct interface
+        meanings per role and these pack facets ({facet: {value: confidence}})."""
+        p = et.Scores()
+        for facet, vals in facets.items():
+            for value, conf in vals.items():
+                p.add(facet, value, conf, "test")
+        scores = et.use_scores(self.USES, et.Counter(meanings), p)
+        return [u for u, s in sorted(scores.items(), key=lambda t: (-t[1], t[0])) if s >= 0.45]
+
+    def test_a_general_interface_pack_suits_utility_before_shop_and_support(self):
+        every_role = {"navigation": 6, "status": 6, "settings": 6, "commerce": 6, "communication": 6}
+        ranked = self.ranked(every_role, topic={"interface": 1.0}, style={"outline": 1.0},
+                             role={r: 0.2 for r in every_role})
+        self.assertEqual(ranked[0], "utility", ranked)
+
+    def test_a_pack_led_by_carts_and_coins_suits_shop(self):
+        ranked = self.ranked({"commerce": 8, "navigation": 3, "status": 3}, topic={"interface": 1.0},
+                             style={"glyph": 1.0}, role={"commerce": 0.9})
+        self.assertEqual(ranked[0], "shop", ranked)
+
+    def test_a_character_pack_suits_community_not_games_or_shop(self):
+        ranked = self.ranked({"status": 4, "navigation": 3, "commerce": 3}, topic={"characters": 1.0},
+                             style={"cartoon": 0.9})
+        self.assertEqual(ranked[0], "community", ranked)
+        self.assertFalse({"games", "shop", "utility", "support"} & set(ranked), ranked)
+
+    def test_reaction_faces_in_the_interface_category_are_not_a_toolbar(self):
+        ranked = self.ranked({"status": 3, "settings": 3, "navigation": 3, "commerce": 3},
+                             topic={"interface": 1.0, "faces": 0.9}, style={"emoji-like": 1.0})
+        self.assertEqual(ranked[0], "community", ranked)
+        self.assertFalse({"utility", "shop", "support"} & set(ranked), ranked)
+
+    def test_an_alphabet_suits_channels(self):
+        ranked = self.ranked({}, topic={"letters": 1.0}, style={"lettering": 1.0}, mood={"joyful": 0.9},
+                             role={"content": 1.0})
+        self.assertEqual(ranked[0], "content", ranked)
+        self.assertNotIn("utility", ranked)
+
+    def test_incidental_status_icons_do_not_make_a_holiday_pack_a_learning_pack(self):
+        ranked = self.ranked({"navigation": 6, "status": 7, "settings": 2, "commerce": 3},
+                             topic={"holidays": 1.0, "decor": 0.9}, style={"hand-drawn": 1.0})
+        self.assertTrue(ranked and set(ranked) <= {"content", "community"}, ranked)
+
+    def test_a_set_of_check_marks_partly_covers_a_monitoring_bot(self):
+        ranked = self.ranked({"status": 2}, topic={"status": 1.0}, style={"flat": 0.8}, role={"status": 1.0})
+        self.assertEqual(ranked[:1], ["utility"], ranked)
+
+
 if __name__ == "__main__":
     unittest.main()
