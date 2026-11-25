@@ -38,6 +38,18 @@
       "type": "event",
       "eventKey": "order.ready",
       "screen": "order.ready"
+    },
+    {
+      "id": "picked-up",
+      "type": "event",
+      "eventKey": "order.picked_up",
+      "screen": "order.rate"
+    },
+    {
+      "id": "happy-hour",
+      "type": "event",
+      "eventKey": "promo.happy_hour",
+      "screen": "promo.happy-hour"
     }
   ],
   "contexts": [

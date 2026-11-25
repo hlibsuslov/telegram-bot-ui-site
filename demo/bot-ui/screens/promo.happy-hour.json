@@ -1,0 +1,42 @@
+{
+  "id": "promo.happy-hour",
+  "title": "Happy hour",
+  "kind": "notification",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "regular.html",
+    "text": {
+      "en": "<tg-emoji emoji-id=\"5886285355279193209\">🏷</tg-emoji> <b>Happy hour</b>\nIced drinks are 30% off for the next hour. Show this message at the counter.",
+      "ru": "<tg-emoji emoji-id=\"5886285355279193209\">🏷</tg-emoji> <b>Счастливый час</b>\nХолодные напитки −30% ещё час. Покажите это сообщение на кассе.",
+      "uk": "<tg-emoji emoji-id=\"5886285355279193209\">🏷</tg-emoji> <b>Щаслива година</b>\nХолодні напої −30% ще годину. Покажіть це повідомлення на касі."
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "iced"
+      ]
+    ]
+  },
+  "actions": {
+    "iced": {
+      "label": {
+        "en": "Order an iced latte",
+        "ru": "Заказать айс-латте",
+        "uk": "Замовити айс-лате"
+      },
+      "type": "navigate",
+      "to": "order.size",
+      "presentation": "send",
+      "style": "primary",
+      "set": {
+        "drink": "iced_latte"
+      }
+    }
+  },
+  "widget": {
+    "ref": "happy-hour"
+  }
+}
