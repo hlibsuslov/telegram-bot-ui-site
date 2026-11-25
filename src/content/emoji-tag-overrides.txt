@@ -7,3 +7,62 @@
 # Facets and values: src/content/emoji-taxonomy.json (ids, not labels). Example:
 #   tgiosicons style: +outline, -glyph
 # `py -3 scripts/emoji_taxonomy.py check` validates every line.
+
+# Seen on the contact sheets while writing the pack descriptions (E2, 2026-11-25). Gold v2 packs are
+# left out so the accuracy gate keeps measuring the tagger, not these corrections.
+# only bouquets
+flowersmax_by_TgEmodziBot topic: -finance, +nature
+# Poke Balls
+PokeBall_Emoji use: -support, -education, +games
+# car photos
+carspack_by_TgEmojiBot topic: -nature, +travel
+# goofy faces
+RobloxFac_by_TgEmodziBot mood: -scary, +playful
+# shaded metal and copper
+decorations_kotletovv style: -outline
+# metal frame cut across tiles
+Steel_Theme style: -native-ui
+# painted autumn art
+osennii3Emoji topic: -interface, +nature
+# painted autumn art
+osennii3Emoji mood: -serious
+# pop-culture and gaming glyphs
+IOS27icons8 use: -shop, -finance, -support
+# meme frames
+veritylover_by_photocropperbot role: -action, -settings
+# logos on shields
+Flags_kotletovv topic: -flags, +brands
+# football crests
+worldcup_z1vert1k topic: -food, +sport
+# photos of Pixel phones
+google_nws_emoji style: -pixel
+# car logos and transport icons
+newemojis_car topic: -nature, +travel
+# meme photos
+Memes_by_iEmojicBot role: -action, -commerce
+# card art
+PkmnTCGP_01 mood: -serious
+# kittens
+BiscuitEmojis topic: -food, +animals
+# fan images
+Cloti_f068_by_fStikBot role: -action, -commerce
+# Halloween silhouettes
+Halloween2023emoji topic: -interface, +holidays
+# Halloween silhouettes
+Halloween2023emoji mood: -serious
+# letters
+SpookyLetters role: -settings
+# anime girl portraits
+birthdaycardsemoji topic: -finance, +characters
+# anime girl portraits
+birthdaycardsemoji role: -commerce
+# anime girl portraits
+birthdaycardsemoji mood: -serious
+# colour squares, checkmarks, arrows
+Crypto_animation topic: -finance, +status
+# anime characters
+emojiadaptive_8a06f_by_TgEmodziBot topic: -brands, -tech, +characters
+# anime characters
+emojiadaptive_8a06f_by_TgEmodziBot mood: -serious
+# app icons
+AppsIconsWB mood: -loving
