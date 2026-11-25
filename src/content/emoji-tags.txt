@@ -3139,7 +3139,7 @@ animeted_car_emoji_z1vert1k/5442680272292188787: lada, logo, car brand, лада
 animeted_car_emoji_z1vert1k/5440361458103787638: maserati, logo, trident, мазерати
 animeted_car_emoji_z1vert1k/5442793401730764596: mustang, ford mustang, horse, мустанг
 animeted_car_emoji_z1vert1k/5443060213689127281: man, logo, truck brand, ман
-ApplicationEmoji: app logos, social networks, software, brands, логотипы, приложения, соцсети
+ApplicationEmoji: app logos, social networks, software, brands, логотипы, приложения, соцсети, app icons, application icons, иконки приложений, логотипи застосунків, іконки програм
 ApplicationEmoji/5323379047315555501: letter b, logo, black, буква б
 ApplicationEmoji/5334954057192719331: dinosaur mascot, logo, динозавр
 ApplicationEmoji/5335012820935261564: bilibili, logo, video, билибили
@@ -46838,3 +46838,204 @@ zhelezo_28919_by_TgEmodziBot/5400117717619486970: key, heart, silver, ключ
 zhelezo_28919_by_TgEmodziBot/5400339217672874735: padlock, heart, silver, замок
 zhelezo_28919_by_TgEmodziBot/5400221191971581113: padlock, heart, silver, замок
 zhelezo_28919_by_TgEmodziBot/5400026531168822112: key, heart, silver, ключ
+
+PERCEPTRON: AI logos, software brands, app icons, technology, neural networks, dark tiles, логотипы, нейросети, приложения, штучний інтелект, логотипи
+PERCEPTRON/5228905817096360967: silver star, four point star, metallic
+PERCEPTRON/5420370412565474709: chatgpt, openai, white knot, чатгпт
+PERCEPTRON/5420186008144618636: google gemini, gemini, gradient star, джемини
+PERCEPTRON/5420316231553033594: google, search engine, multicolor g, гугл
+PERCEPTRON/5420388442838179800: claude, anthropic, orange sunburst, клод
+PERCEPTRON/5420429657344352644: grok, xai, white spiral, грок
+PERCEPTRON/5420172865544692858: blue swirl, circle, vortex
+PERCEPTRON/5420091613353388651: ai, wordmark, artificial intelligence
+PERCEPTRON/5420447322544843707: color gradient, curved ribbon, blue green orange
+PERCEPTRON/5420431843482708337: terminal, command prompt, blue cloud
+PERCEPTRON/5420340777291132638: banana, nano banana, нанобанана
+PERCEPTRON/5420364601474725223: spacex, white swoosh, спейс икс
+PERCEPTRON/5420382399819198008: perplexity, ai search, teal outline, перплексити
+PERCEPTRON/5420238668738633882: deepseek, blue whale, дипсик
+PERCEPTRON/5420525198891857595: blue arches, waves
+PERCEPTRON/5420130611656437917: cloud face, blue cloud
+PERCEPTRON/5420130461332580199: pixel alien, orange, eight bit
+PERCEPTRON/5420287523991626855: kimi, white letter k
+PERCEPTRON/5417842291735834193: gradient arch, rainbow
+PERCEPTRON/5420620134848965266: meta, meta ai, infinity, мета
+PERCEPTRON/5420520225319726312: white z, diagonal mark
+PERCEPTRON/5420200563788786346: microsoft, four squares, майкрософт
+PERCEPTRON/5420319731951381993: google ai studio, blue mark
+PERCEPTRON/5420508019022670725: microsoft copilot, ribbon, копилот
+PERCEPTRON/5420457054940735748: mistral ai, pixel m, мистраль
+PERCEPTRON/5420542164012671988: purple dots, flower
+PERCEPTRON/5420483696622872004: classical column, pillar
+PERCEPTRON/5420376318145505395: cursor, code editor, white cube
+PERCEPTRON/5420337268302848958: white loop, rounded mark
+PERCEPTRON/5420615912896115666: wireframe, blue geometry
+PERCEPTRON/5420249577955568519: blue arrow, dots, download
+PERCEPTRON/5420585422923280141: blue bars, bar chart
+PERCEPTRON/5418010525604819976: glowing screen, gradient rectangle
+PERCEPTRON/5420398664860347882: suno, music, суно
+PERCEPTRON/5420273707081840640: hugging face, hug, yellow smiley, хаггинг фейс
+PERCEPTRON/5420106164702586800: blue waves, ribbon
+PERCEPTRON/5420577468643846629: pink sound wave, audio, waveform
+PERCEPTRON/5420136306783071313: hand gesture, white hand
+PERCEPTRON/5420414414505426406: white orbit, circle
+PERCEPTRON/5418217319690185945: purple tile, white diagonal bars
+PERCEPTRON/5420544006553646200: pause, vertical bars
+PERCEPTRON/5420338531023232264: square, frame, outline
+PERCEPTRON/5420407078701275277: v0, vercel, wordmark
+PERCEPTRON/5420267681242720608: white mountains, triangle
+PERCEPTRON/5420616080399835416: purple starburst
+PERCEPTRON/5420416879816654560: white zigzag, letter
+PERCEPTRON/5420343762293402086: purple ghost, octopus
+PERCEPTRON/5420303539924674308: italic letter g
+PERCEPTRON/5420378560118433949: laboratory flask, beaker, lab
+PERCEPTRON/5420340154520873551: alibaba, orange letter a
+PERCEPTRON/5420431564309833273: sparkles, magic, stars
+PERCEPTRON/5420454121478078370: white letter r, outline
+PERCEPTRON/5420208724226646782: blue prism, geometric
+PERCEPTRON/5420379208658497421: ellipsis, chat bubble, typing
+PERCEPTRON/5420105090960761439: orange spiral, sunset
+PERCEPTRON/5420583816605508684: red letter u, ribbon
+PERCEPTRON/5420496920827176475: orange letter c, concentric arcs
+PERCEPTRON/5420240322301045771: white letter m, dot
+PERCEPTRON/5420542902747048646: github copilot, robot, coding
+PERCEPTRON/5420122352434327038: midjourney, sailboat, миджорни
+PERCEPTRON/5420393910331552355: gradient pinwheel
+PERCEPTRON/5420273775801313522: lovable, gradient heart
+PERCEPTRON/5420307010258251211: white ghost, gamepad
+PERCEPTRON/5429383787983186892: black and white portrait, illustration
+PERCEPTRON/5420621315964973729: white letter r, geometric
+PERCEPTRON/5420388872334911738: white clover, rounded
+PERCEPTRON/5420443723362248557: dotted heart, noise
+PERCEPTRON/5420467199653487398: cyan loop, blue outline
+PERCEPTRON/5420181365284975051: purple tile, white ghost
+PERCEPTRON/5420246159161606038: blue wireframe globe
+PERCEPTRON/5420202213056225610: n8n, workflow automation, pink nodes
+PERCEPTRON/5420254869355276791: green tile, white cross
+PERCEPTRON/5420115639400445092: android, green robot, андроид
+PERCEPTRON/5420589610516390500: google chrome, browser, хром
+PERCEPTRON/5420488446856701851: github, octocat, гитхаб
+PERCEPTRON/5420338543908138396: youtube, play button, ютуб
+PERCEPTRON/5420280849612450459: nvidia, green eye, нвидиа
+PERCEPTRON/5420623948779922359: gmail, email, гмейл
+PERCEPTRON/5420168351534065009: google cloud, cloud computing
+PERCEPTRON/5420259108487999684: windows, microsoft, виндовс
+PERCEPTRON/5420153155939773395: apple, mac, эпл
+PERCEPTRON/5420098360747008413: visual studio code, vscode, code editor
+PERCEPTRON/5420468045762048521: google translate, translate, переводчик
+PERCEPTRON/5420387128578189486: samsung, wordmark, самсунг
+PERCEPTRON/5420317378309300164: google play, play store, гугл плей
+PERCEPTRON/5420613653743314499: google calendar, calendar, календарь
+PERCEPTRON/5420425345197186788: reddit, red mascot, реддит
+PERCEPTRON/5420630855087335900: firebase, flame
+PERCEPTRON/5420441829281673595: bing, microsoft bing, search engine
+PERCEPTRON/5420152988436046601: huawei, red fan, хуавей
+PERCEPTRON/5420127416200766090: broadcom, red circle
+PERCEPTRON/5420264344053130346: google meet, video call
+PERCEPTRON/5420110532684325533: whatsapp, green chat bubble, ватсап
+PERCEPTRON/5420620877878307639: adobe, red letter a, адоб
+PERCEPTRON/5420109531956945895: opera, browser, опера
+PERCEPTRON/5420302290089195299: oculus, vr headset, virtual reality
+PERCEPTRON/5420373848539309511: hsbc, banking logo
+PERCEPTRON/5420189345334206789: x, twitter, икс, твиттер
+
+RhymesTG: square smileys, reaction faces, hand gestures, neon signs, live broadcast, chat reactions, квадратные смайлы, реакции, жесты, прямой эфир, квадратні смайли, реакції, жести
+RhymesTG/5215256127561811383: crying laugh, laughing, tears of joy
+RhymesTG/5217455507299647769: square smiley, tears of joy, loud laugh
+RhymesTG/5215409260325780790: square smiley, nervous laugh, sweat
+RhymesTG/5215535751407615600: tongue out, licking lips, square smiley
+RhymesTG/5215726490905230401: star eyes, starstruck, square smiley
+RhymesTG/5193142827013390653: on fire, hot face, flame, sweat
+RhymesTG/5192724269565492302: screaming, shocked, fear
+RhymesTG/5215510445460307910: square smiley, glasses, shocked, hands on cheeks
+RhymesTG/5213291536506176337: crying, tears, scream
+RhymesTG/5215702722556216049: square smiley, sobbing, tears
+RhymesTG/5215630567105640860: pointing at you, finger, square smiley
+RhymesTG/5215516814896809478: gritted teeth, grimace, square smiley
+RhymesTG/5192693981456121442: swearing, censored, angry face
+RhymesTG/5215449465514639737: praying, pleading, hands together
+RhymesTG/5217839146663427496: hug, hugging face, open hands
+RhymesTG/5215501194100752064: heart hands together, love, square smiley
+RhymesTG/5215184865464434019: heart eyes, admiration, love
+RhymesTG/5192703086786788601: red heart, love
+RhymesTG/5193070705922557652: pink heart, scribble, smiling heart
+RhymesTG/5215323880670904103: sigh, puff of air, square smiley
+RhymesTG/5193054359277029196: steam from nose, square smiley
+RhymesTG/5193124354359049689: sideways glance, big eyes
+RhymesTG/5190914129828790140: clown, laughing, red nose
+RhymesTG/5192706123328668704: popcorn, watching, clown
+RhymesTG/5192683433016442341: thumbs up, approval, square smiley
+RhymesTG/5192778287369173635: salute, hand to forehead, square smiley
+RhymesTG/5217730123213585126: thinking, hand on chin, square smiley
+RhymesTG/5215562891305959990: crown, surprised, square smiley
+RhymesTG/5215560846901525685: exploding head, mind blown, mushroom cloud
+RhymesTG/5215223777868135274: salute, square smiley
+RhymesTG/5193153525776925050: horns gesture, rock hand, square smiley
+RhymesTG/5193088461317355823: party face, confetti, kiss
+RhymesTG/5192785807856909635: green face, nauseated, sick
+RhymesTG/5215604883201213166: green face, holding back vomit
+RhymesTG/5215694248585741246: vomiting, green face
+RhymesTG/5215508285091759395: purple devil, horns, smirk
+RhymesTG/5215330546460147782: shaka, call me hand, hand gesture
+RhymesTG/5193151021810990669: wink, smiley, grin
+RhymesTG/5193106714928363968: angel, halo, innocent
+RhymesTG/5193148101233228510: money face, dollar eyes
+RhymesTG/5190675621704909202: poop, brown, smiling poop
+RhymesTG/5193201595050902372: basketball, basketball player, sport
+RhymesTG/5192900629512602979: candle, lit candle, beige
+RhymesTG/5192849699790413502: heart hands, love, hand gesture
+RhymesTG/5190441335533878047: pointing left, index finger
+RhymesTG/5190841012305543075: gg, good game, pixel letters
+RhymesTG/5190658171252783998: pixel hand, hand gesture
+RhymesTG/5190587772443835933: shrug, shoulders, confusion
+RhymesTG/5193125264892115755: middle finger, eye, rude gesture
+RhymesTG/5192822065970824533: middle finger, rude gesture, yellow hand
+RhymesTG/5190790202842430485: wine, wine glass, toast
+RhymesTG/5215411519478579102: handshake, agreement, hands
+RhymesTG/5215233617638211671: fist bump, fist, hand gesture
+RhymesTG/5215539655532887090: fist salute, raised fist, hand gesture
+RhymesTG/5215267754038278935: victory sign, peace sign, fingers
+RhymesTG/5215304222605589628: ok hand, gesture, approval
+RhymesTG/5217474744458164228: ok hand, gesture, approval
+RhymesTG/5215562977205305728: pinky promise, hands
+RhymesTG/5215723170895512221: fist bump, impact, hands
+RhymesTG/5190907309420723206: red rose, flower, hand
+RhymesTG/5215594618229375043: covering mouth, hush, square smiley
+RhymesTG/5215653850123354718: covering eyes, peeking face, square smiley
+RhymesTG/5192723049794779835: pinched fingers, thinking, square smiley
+RhymesTG/5215531357656073875: big eyes, looking, square eyes
+RhymesTG/5192841414798491006: no, pixel letters
+RhymesTG/5190745234534841695: dollar sign, green neon, money
+RhymesTG/5192787543023697410: euro sign, blue neon, money
+RhymesTG/5193016125478157519: palm tree, neon sign, tropical
+RhymesTG/5192752448845922373: coffee, neon cup, hot drink
+RhymesTG/5190444913241634592: popcorn, neon sign, cinema
+RhymesTG/5190915345304535964: cocktail, neon glass, drink
+RhymesTG/5192721112764531793: sneakers, neon shoes, pink blue
+RhymesTG/5280959987500195788: rhymes, channel logo, script wordmark
+RhymesTG/5280525388349448429: blank tile, spacer
+RhymesTG/5280605914691281686: blank tile, spacer
+RhymesTG/5431541734171484782: yellow line, separator
+RhymesTG/5368612740933885340: red dot, recording, live
+RhymesTG/5398038979217989221: red dot, recording, live
+RhymesTG/5397569414738485822: red dot, recording, live
+RhymesTG/5192745147401518730: plus sign, gold, add
+RhymesTG/5190816775805090844: minus sign, gold, remove
+RhymesTG/5193076637272391245: check mark, gold, approval, галочка
+RhymesTG/5192681148093840692: low battery, pixel text, battery
+RhymesTG/5400124538027516360: red dot, separator, live
+RhymesTG/5397999529943375209: red dot, separator, live
+RhymesTG/5397790554014622082: breaking news, red lettering, срочно
+RhymesTG/5398093357798924180: breaking news, red lettering, срочно
+RhymesTG/5397712982610287896: breaking news, red lettering, срочно
+RhymesTG/5397849657059581607: breaking news, red lettering, срочно
+RhymesTG/5397659265454317248: breaking news, red lettering, срочно
+RhymesTG/5397652054204226954: live, recording dot, red lettering, эфир
+RhymesTG/5397943970246433852: live, red lettering, эфир
+RhymesTG/5429172419757613540: live broadcast, red lettering, прямой эфир
+RhymesTG/5429318272552018349: live broadcast, red lettering, прямой эфир
+RhymesTG/5429499352668185825: live broadcast, red lettering, прямой эфир
+RhymesTG/5431700291479150093: live broadcast, red lettering, прямой эфир
+RhymesTG/5431565425211088498: live broadcast, red lettering, прямой эфир
+RhymesTG/5431483176587371015: live broadcast, red lettering, прямой эфир
+RhymesTG/5431629166820736489: live broadcast, red lettering, прямой эфир

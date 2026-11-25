@@ -5,23 +5,19 @@
 // collection rows on the first screen, then the pack grid. Packs play on mouse hover; on a touch
 // screen a card is a still preview and a tap opens the pack.
 import Link from "next/link";
-import { memo, startTransition, useCallback, useDeferredValue, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
-import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, Star, X } from "lucide-react";
+import { startTransition, useCallback, useDeferredValue, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
+import { Check, ChevronRight, Copy, Loader2, Search, Sparkles, X } from "lucide-react";
 import { CategoryIcon } from "./category-icon";
 import type { Collection } from "@/lib/emoji-library";
-import { fromCardEmoji, type CardPack } from "@/lib/emoji-card";
+import type { CardPack } from "@/lib/emoji-card";
 import { emojiPackPath, telegramPackUrl } from "@/lib/emoji-links";
-import { BOT_SLOTS } from "@/lib/emoji-slots";
-import { EmojiMotion, EmojiStill, isMouse, PremiumEmoji } from "./premium-emoji";
+import { isMouse, PremiumEmoji } from "./premium-emoji";
 import { copy, useSaved } from "./saved";
+import { PackCard } from "./pack-card";
 import { useEmojiSearch } from "./use-emoji-search";
 import type { EmojiHit, SearchResult } from "@/lib/emoji-search";
 import { cn } from "@/lib/utils";
 import { track } from "@vercel/analytics";
-
-export function matches(search: string, query: string): boolean {
-  return query.toLowerCase().split(/\s+/).filter(Boolean).every((t) => search.includes(t));
-}
 
 type View = { kind: "all" } | { kind: "saved" } | { kind: "collection"; id: string } | { kind: "category"; name: string };
 type Format = "any" | "animated" | "static";
@@ -66,50 +62,12 @@ function Cell({ active, onClick, icon, label, count }: { active: boolean; onClic
   );
 }
 
-/** Memoized, with a stable onSave(name): typing in search re-renders the page, not every card. */
-export const PackCard = memo(function PackCard({ pack, saved, onSave, className }: { pack: CardPack; saved: boolean; onSave: (name: string) => void; className?: string }) {
-  const [hot, setHot] = useState(false);
-  return (
-    <article
-      className={cn("tg-glass tg-card flex flex-col rounded-2xl p-3.5", className)}
-      onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
-      onFocus={(e) => e.target.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
-    >
-      <div className="flex items-start gap-2">
-        <div className="min-w-0 flex-1">
-          <h3 className="truncate text-[15px] font-semibold"><Link href={`/emoji/${pack.name}`} className="rounded hover:underline">{pack.title}</Link></h3>
-          <p className="tg-hint truncate text-[13px]">
-            {pack.count} emoji · {pack.formats.map((f) => FORMAT_LABEL[f]).join(", ")}{pack.adaptiveShare >= 0.5 ? " · ◐ any theme" : ""}{pack.covers >= 6 ? ` · ${pack.covers}/${BOT_SLOTS.length} bot icons` : ""}
-          </p>
-        </div>
-        <button
-          type="button" onClick={() => onSave(pack.name)} aria-pressed={saved} aria-label={saved ? `Remove ${pack.title} from saved` : `Save ${pack.title}`}
-          className="tg-cell -mt-1 -mr-1 inline-flex size-9 items-center justify-center rounded-full"
-        >
-          <Star aria-hidden="true" className={cn("size-[18px]", saved ? "fill-amber-400 text-amber-500" : "tg-hint")} />
-        </button>
-      </div>
-      <Link href={`/emoji/${pack.name}`} tabIndex={-1} aria-hidden="true" className="mt-2.5 grid grid-cols-8 gap-1">
-        {pack.sample.map((t) => {
-          const e = fromCardEmoji(pack.name, t);
-          return <EmojiStill key={e.id} emoji={e} size={28} className="mx-auto">{hot && e.format !== "static" ? <EmojiMotion emoji={e} /> : null}</EmojiStill>;
-        })}
-      </Link>
-      <div className="mt-auto flex items-center gap-4 pt-3">
-        <Link href={emojiPackPath(pack.name)} aria-label={`Open pack ${pack.title}`} className="tg-button inline-flex h-8 items-center rounded-full px-4 text-sm font-medium">Open pack</Link>
-        <a href={telegramPackUrl(pack.name)} target="_blank" rel="noopener noreferrer" aria-label={`Add to Telegram · ${pack.title}`} className="tg-accent rounded text-sm hover:underline">Add to Telegram</a>
-        {pack.count > pack.sample.length ? <span className="tg-hint ml-auto text-xs">+{pack.count - pack.sample.length}</span> : null}
-      </div>
-    </article>
-  );
-});
-
 function HitTile({ hit }: { hit: EmojiHit }) {
   const [hot, setHot] = useState(false);
   return (
     <li>
       <Link
-        href={emojiPackPath(hit.pack, hit.id)} title={`${hit.fallback} · ${FORMAT_LABEL[hit.format]} · ${hit.pack}`}
+        href={emojiPackPath(hit.pack, hit.id)} prefetch={false} title={`${hit.fallback} · ${FORMAT_LABEL[hit.format]} · ${hit.pack}`}
         aria-label={`${FORMAT_LABEL[hit.format]} ${hit.fallback || "emoji"} from ${hit.pack}, custom emoji ID ${hit.id}`}
         onPointerEnter={(e) => isMouse(e) && setHot(true)} onPointerLeave={() => setHot(false)}
         onFocus={(e) => e.currentTarget.matches(":focus-visible") && setHot(true)} onBlur={() => setHot(false)}
@@ -133,7 +91,7 @@ function Suggestions({ data, onPick, onCategory }: { data: SearchResult; onPick:
       <div className="tg-scroll-x -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5">
         {categories.map((c) => <button key={`c-${c}`} type="button" onClick={() => onCategory(c)} className={cn(chip, "tg-accent")}>{c}</button>)}
         {complete.map((w) => <button key={`w-${w}`} type="button" onClick={() => onPick(w)} className={chip}><Search aria-hidden="true" className="tg-hint mr-1.5 size-3.5" />{w}</button>)}
-        {related.map((w) => <button key={`r-${w}`} type="button" onClick={() => onPick(w)} className={chip}><Sparkles aria-hidden="true" className="tg-hint mr-1.5 size-3.5" />{w}</button>)}
+        {related.map((w) => <button key={`r-${w}`} type="button" onClick={() => onPick([data.query, w, ...data.filters].filter(Boolean).join(" "))} className={chip}><Sparkles aria-hidden="true" className="tg-hint mr-1.5 size-3.5" />{w}</button>)}
       </div>
     </div>
   );
@@ -281,7 +239,7 @@ export function LibraryApp({ packs, categories, collections }: { packs: CardPack
           </section>
         )) : null}
 
-        {searching && data ? (
+        {searching && data && !loading && !failed ? (
           <Suggestions data={data} onPick={setQuery} onCategory={(c) => { setView({ kind: "category", name: c }); setQuery(""); }} />
         ) : null}
 

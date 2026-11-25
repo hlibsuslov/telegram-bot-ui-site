@@ -17,7 +17,8 @@ import { emojiFacets, facetTokens, facetWords, packFacets, taxonomy } from "./em
 
 const SAMPLE = 16; // two rows of 8 on a pack card
 
-export interface LibraryEmoji extends PackEmoji { tags: string[]; search: string }
+interface TaggedEmoji extends PackEmoji { tags: string[] }
+export interface LibraryEmoji extends TaggedEmoji { search: string }
 export interface LibraryPack {
   name: string; title: string; link: string; category: string; count: number; formats: Format[]; adaptive: boolean;
   /** position in the packs file: the list is kept most popular first */
@@ -28,9 +29,7 @@ export interface LibraryPack {
   meanings: number;
   /** which common bot interface meanings the pack has an emoji for */
   covers: string[];
-  /** names of the most similar packs (same category, shared meanings) */
-  similar: string[];
-  tags: string[]; sample: LibraryEmoji[];
+  tags: string[]; sample: PackEmoji[];
 }
 export interface Collection { id: string; title: string; hint: string; packs: string[] }
 export interface Library {
@@ -55,30 +54,29 @@ export function parseTags(text: string): Map<string, string[]> {
   return out;
 }
 
-const strip = (s: string) => s.replace(/[︎️]/g, "");
+let parsedTags: Map<string, string[]> | undefined;
+const packTags = () => parsedTags ??= parseTags(tagsText);
 
-function withSearch(pack: string, e: PackEmoji, tags: Map<string, string[]>): LibraryEmoji {
-  const own = tags.get(`${pack.toLowerCase()}/${e.id}`) ?? [];
-  return { ...e, tags: own, search: emojiSearchText(e.fallback, own) };
-}
+const strip = (s: string) => s.replace(/[︎️]/g, "");
 
 function coverage(fallbacks: Set<string>): string[] {
   return [...slotEmoji(fallbacks).keys()];
 }
 
-async function readPack({ name, category }: ListedPack, tags: Map<string, string[]>, rank = 0): Promise<{ pack: LibraryPack; emoji: LibraryEmoji[]; fallbacks: Set<string> }> {
+async function readPack({ name, category }: ListedPack, rank: number): Promise<{ pack: LibraryPack; emoji: TaggedEmoji[] }> {
   const p = await resolvePack(name);
-  const emoji = p.emoji.map((e) => withSearch(p.name, e, tags));
-  const packTags = tags.get(p.name.toLowerCase()) ?? [];
+  const tags = packTags();
+  const key = p.name.toLowerCase();
+  const emoji = p.emoji.map((e) => ({ ...e, tags: tags.get(`${key}/${e.id}`) ?? [] }));
   const formats = (["static", "animated", "video"] as const).filter((f) => emoji.some((e) => e.format === f));
   const fallbacks = new Set(emoji.map((e) => strip(e.fallback)).filter(Boolean));
   return {
     emoji,
-    fallbacks,
     pack: {
       name: p.name, title: p.title, link: telegramPackUrl(p.name), category, count: emoji.length, formats,
-      rank, meanings: fallbacks.size, covers: coverage(fallbacks), similar: [],
-      adaptive: emoji.some((e) => e.adaptive), adaptiveShare: emoji.length ? emoji.filter((e) => e.adaptive).length / emoji.length : 0, tags: packTags, sample: emoji.slice(0, SAMPLE).map((e) => ({ ...e, tags: [], search: "" })),
+      rank, meanings: fallbacks.size, covers: coverage(fallbacks),
+      adaptive: emoji.some((e) => e.adaptive), adaptiveShare: emoji.length ? emoji.filter((e) => e.adaptive).length / emoji.length : 0,
+      tags: tags.get(key) ?? [], sample: p.emoji.slice(0, SAMPLE),
     },
   };
 }
@@ -118,9 +116,8 @@ export async function getLibrary(): Promise<Library> {
   "use cache";
   cacheLife("hours");
   const list = listedPacks();
-  const tags = parseTags(tagsText);
-  const results = await settledInBatches(list, READ_PARALLEL, (p, i) => readPack(p, tags, i));
-  const read: { pack: LibraryPack; emoji: LibraryEmoji[]; fallbacks: Set<string> }[] = [];
+  const results = await settledInBatches(list, READ_PARALLEL, readPack);
+  const read: Awaited<ReturnType<typeof readPack>>[] = [];
   const unavailable: string[] = [];
   results.forEach((r, i) => {
     if (r.status === "fulfilled") {
@@ -136,7 +133,6 @@ export async function getLibrary(): Promise<Library> {
   if (!off && unavailable.length > list.length * 0.2) {
     throw new Error(`emoji library: ${unavailable.length} of ${list.length} packs could not be read; keeping the previous library`);
   }
-  linkSimilar(read);
   const packs = read.map((r) => r.pack);
   const categories = [...new Set(packs.map((p) => p.category))].sort((a, b) => Number(a === OTHER) - Number(b === OTHER));
   const body = {
@@ -155,24 +151,6 @@ export async function getLibrary(): Promise<Library> {
   };
   const source: SearchSource = { ...body, revision: revisionOf(JSON.stringify(body)) };
   return { packs, categories, collections: collections(packs), listed: list.length, unavailable, source };
-}
-
-/** Similar packs: the same category counts most, then the share of meanings two packs have in common. */
-function linkSimilar(read: { pack: LibraryPack; fallbacks: Set<string> }[]) {
-  for (const a of read) {
-    a.pack.similar = read
-      .filter((b) => b !== a)
-      .map((b) => {
-        let shared = 0;
-        for (const f of a.fallbacks) if (b.fallbacks.has(f)) shared++;
-        const union = a.fallbacks.size + b.fallbacks.size - shared || 1;
-        return { name: b.pack.name, score: (a.pack.category === b.pack.category ? 1 : 0) + shared / union };
-      })
-      .filter((x) => x.score > 0.15)
-      .sort((x, y) => y.score - x.score)
-      .slice(0, 6)
-      .map((x) => x.name);
-  }
 }
 
 /** Curated rows for the library's first screen, built from what the packs contain. */
@@ -204,11 +182,8 @@ export async function getLibraryPack(name: string): Promise<{ pack: LibraryPack;
   const rank = list.findIndex((p) => p.name.toLowerCase() === name.toLowerCase());
   if (rank < 0) return null;
   try {
-    const { pack, emoji } = await readPack(list[rank], parseTags(tagsText), rank);
-    if (!emoji.length) return null;
-    const library = await getLibrary();
-    const same = library.packs.find((p) => p.name === pack.name);
-    return { pack: { ...pack, similar: same?.similar ?? [] }, emoji };
+    const { pack, emoji } = await readPack(list[rank], rank);
+    return emoji.length ? { pack, emoji: emoji.map((e) => ({ ...e, search: emojiSearchText(e.fallback, e.tags) })) } : null;
   } catch (err) {
     // Only a definite answer is cached as "no page" (no such pack, not an emoji pack, no resolver token
     // in this deployment); a timeout or a 429 throws, so the

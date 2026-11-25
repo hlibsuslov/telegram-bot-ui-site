@@ -2,24 +2,26 @@
 
 // One pack at /emoji/<name>, laid out like Telegram's "Add emoji" sheet (grid, blue button at
 // the bottom) with an analysis column: formats, the bot icons the pack covers, the picked emoji
-// with everything a bot needs to use it, and similar packs below.
-import { type ReactNode, useDeferredValue, useEffect, useMemo, useState } from "react";
+// with everything a bot needs to use it.
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Bookmark, Play, Search, Star } from "lucide-react";
-import type { CardPack } from "@/lib/emoji-card";
-import type { LibraryEmoji, LibraryPack } from "@/lib/emoji-library";
+import { fromCardEmoji, type CardEmoji, type EmojiData } from "@/lib/emoji-card";
+import type { LibraryPack } from "@/lib/emoji-library";
 import { buttonEmojiField, messageEmojiHtml } from "@/lib/emoji-snippets";
 import { BOT_SLOTS, stripVariation } from "@/lib/emoji-slots";
 import { cn } from "@/lib/utils";
 import { CopyRow } from "./copy-row";
-import { matches, PackCard } from "./library-app";
 import { isMouse, PremiumEmoji, useCanHover } from "./premium-emoji";
 import { useSaved } from "./saved";
+
+type SheetEmoji = EmojiData & { search: string };
+type SheetPack = Pick<LibraryPack, "name" | "title" | "link" | "count" | "formats" | "meanings">;
 
 const FORMAT = { static: { label: "Static", color: "#8e8e93" }, animated: { label: "Animated", color: "#3390ec" }, video: { label: "Video", color: "#34c759" } } as const;
 
 /** An emoji of the grid. A mouse plays it on hover; a touch screen plays the one tapped (picked), so
  *  a phone runs one or two animations at a time instead of every one a finger passes. */
-function Tile({ e, selected, all, canHover, onSelect }: { e: LibraryEmoji; selected: boolean; all: boolean; canHover: boolean; onSelect: () => void }) {
+function Tile({ e, selected, all, canHover, onSelect }: { e: SheetEmoji; selected: boolean; all: boolean; canHover: boolean; onSelect: () => void }) {
   const [hot, setHot] = useState(false);
   return (
     <li id={`emoji-${e.id}`} className="scroll-mt-24">
@@ -37,7 +39,7 @@ function Tile({ e, selected, all, canHover, onSelect }: { e: LibraryEmoji; selec
 
 /** How the pack sits in a Telegram chat in each theme: a message and two buttons on the light and dark
  *  wallpapers. Adaptive emoji take the text colour of each theme, as Telegram repaints them. */
-function ThemePreview({ emoji, pick }: { emoji: LibraryEmoji[]; pick: LibraryEmoji | null }) {
+function ThemePreview({ emoji, pick }: { emoji: SheetEmoji[]; pick: SheetEmoji | null }) {
   const lead = pick ?? emoji[0];
   const rest = emoji.filter((e) => e.id !== lead?.id).slice(0, 7);
   if (!lead) return null;
@@ -83,14 +85,18 @@ function ThemePreview({ emoji, pick }: { emoji: LibraryEmoji[]; pick: LibraryEmo
   );
 }
 
-export function PackSheet({ pack, emoji, similar, pageUrl, about }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: CardPack[]; pageUrl: string; about?: ReactNode }) {
+export function PackSheet({ pack, entries, pageUrl }: { pack: SheetPack; entries: [CardEmoji, string][]; pageUrl: string }) {
+  const emoji = useMemo(() => entries.map(([media, search]) => ({ ...fromCardEmoji(pack.name, media), search })), [entries, pack.name]);
   const { saved, togglePack, toggleEmoji } = useSaved();
   const canHover = useCanHover();
   const [query, setQuery] = useState("");
   const [all, setAll] = useState(false);
-  const [pick, setPick] = useState<LibraryEmoji | null>(emoji[0] ?? null);
+  const [pick, setPick] = useState<SheetEmoji | null>(emoji[0] ?? null);
   const q = useDeferredValue(query);
-  const shown = useMemo(() => emoji.filter((e) => matches(e.search, q)), [emoji, q]);
+  const shown = useMemo(() => {
+    const terms = q.toLowerCase().replace(/ё/g, "е").trim().split(/\s+/).filter(Boolean);
+    return terms.length ? emoji.filter((e) => terms.every((term) => e.search.includes(term))) : emoji;
+  }, [emoji, q]);
   const hasMotion = pack.formats.some((f) => f !== "static");
   const packSaved = saved.packs.includes(pack.name);
   const emojiSaved = !!pick && saved.emoji.some((x) => x.id === pick.id);
@@ -109,13 +115,24 @@ export function PackSheet({ pack, emoji, similar, pageUrl, about }: { pack: Libr
     return () => window.removeEventListener("hashchange", selectFromHash);
   }, [emoji]);
 
-  const formatCounts = (["animated", "video", "static"] as const).map((f) => ({ f, n: emoji.filter((e) => e.format === f).length })).filter((x) => x.n);
-  const adaptive = emoji.filter((e) => e.adaptive).length;
-  const slots = BOT_SLOTS.map(([slot, signs]) => {
-    const keys = new Set(signs.map(stripVariation));
-    return { slot, e: emoji.find((x) => keys.has(stripVariation(x.fallback))) };
-  });
-  const covered = slots.filter((s) => s.e).length;
+  const { formatCounts, adaptive, slots, covered } = useMemo(() => {
+    const counts = { animated: 0, video: 0, static: 0 };
+    let adaptive = 0;
+    for (const item of emoji) {
+      counts[item.format]++;
+      if (item.adaptive) adaptive++;
+    }
+    const slots = BOT_SLOTS.map(([slot, signs]) => {
+      const keys = new Set(signs.map(stripVariation));
+      return { slot, e: emoji.find((item) => keys.has(stripVariation(item.fallback))) };
+    });
+    return {
+      formatCounts: (["animated", "video", "static"] as const).flatMap((f) => counts[f] ? [{ f, n: counts[f] }] : []),
+      adaptive,
+      slots,
+      covered: slots.filter(({ e }) => e).length,
+    };
+  }, [emoji]);
 
   return (
     <div className="space-y-6">
@@ -123,8 +140,7 @@ export function PackSheet({ pack, emoji, similar, pageUrl, about }: { pack: Libr
         <section aria-labelledby="pack-title" className="tg-glass flex min-w-0 flex-col rounded-3xl">
           <div className="px-4 pt-4 sm:px-5">
             <h1 id="pack-title" className="text-xl font-semibold text-balance">{pack.title}</h1>
-            <p className="tg-hint mt-0.5 text-[13px]">{pack.count} emoji · {pack.category} · t.me/addemoji/{pack.name}</p>
-            {about}
+            <p className="tg-hint mt-0.5 text-[13px]">{pack.count} emoji</p>
             <div className="mt-3 flex gap-2">
               <label className="relative flex-1">
                 <span className="sr-only">Search this pack</span>
@@ -180,7 +196,6 @@ export function PackSheet({ pack, emoji, similar, pageUrl, about }: { pack: Libr
               {pick.fallback && <CopyRow label="In a message (HTML)" accessibleLabel="Telegram message HTML" value={messageEmojiHtml(pick.id, pick.fallback)} />}
               <CopyRow label="On a button" accessibleLabel="icon_custom_emoji_id button field" value={buttonEmojiField(pick.id)} />
               <CopyRow label="Emoji source link" value={`${pageUrl}#e=${pick.id}`} />
-              {pick.tags.length ? <p className="tg-hint text-xs">Tags: {pick.tags.join(", ")}</p> : null}
             </section>
           ) : null}
 
@@ -223,17 +238,6 @@ export function PackSheet({ pack, emoji, similar, pageUrl, about }: { pack: Libr
       </div>
 
       <ThemePreview emoji={emoji} pick={pick} />
-
-      {similar.length ? (
-        <section aria-labelledby="similar-title">
-          <h2 id="similar-title" className="mb-2 px-1 text-lg font-semibold">Similar packs</h2>
-          <div className="tg-scroll-x -mx-3 flex snap-x gap-3 overflow-x-auto px-3 pb-1">
-            {similar.map((p) => (
-              <PackCard key={p.name} pack={p} saved={saved.packs.includes(p.name)} onSave={togglePack} className="w-[19rem] shrink-0 snap-start 2xl:w-[22rem]" />
-            ))}
-          </div>
-        </section>
-      ) : null}
     </div>
   );
 }

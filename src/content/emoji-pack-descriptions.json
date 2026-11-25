@@ -5786,6 +5786,23 @@
     "not_for": "Суворі фінансові боти, підтримка й кнопки інтерфейсу"
    }
   },
+  "PERCEPTRON": {
+   "en": {
+    "what": "98 animated AI and software logos on rounded black tiles, including ChatGPT, Claude, Gemini and GitHub.",
+    "for": "Tool roundups, developer chats and product links.",
+    "not_for": "Neutral navigation and messages that avoid brand logos."
+   },
+   "ru": {
+    "what": "98 анимированных логотипов ИИ и программ на чёрных плитках, в том числе ChatGPT, Claude, Gemini и GitHub.",
+    "for": "Подборки инструментов, чаты разработчиков и ссылки на продукты.",
+    "not_for": "Нейтральная навигация и сообщения без логотипов."
+   },
+   "uk": {
+    "what": "98 анімованих логотипів ШІ й програм на чорних плитках, зокрема ChatGPT, Claude, Gemini та GitHub.",
+    "for": "Добірки інструментів, чати розробників і посилання на продукти.",
+    "not_for": "Нейтральна навігація та повідомлення без логотипів."
+   }
+  },
   "PigEmoji": {
    "en": {
     "what": "Pink cartoon pig heads with dark outlines, googly eyes and gradient shading in many expressions; a few objects. Animated, own colours.",
@@ -6277,6 +6294,23 @@
     "what": "Статичні сердечка в стилі емодзі Apple, 35 кольорів і двоколірні поєднання; м’який градієнт, тонкий темний обідок.",
     "for": "Реакції, кольорові мітки, пости про кохання та чати спільнот",
     "not_for": "Боти, яким потрібні значки з іншим змістом, ніж серце"
+   }
+  },
+  "RhymesTG": {
+   "en": {
+    "what": "99 animated emoji with square smileys, hand gestures, neon signs and red text tiles for live updates.",
+    "for": "Community reactions, chats and live updates.",
+    "not_for": "Formal channels and settings menus."
+   },
+   "ru": {
+    "what": "99 анимированных эмодзи: квадратные смайлы, жесты, неоновые знаки и красные буквы для прямых эфиров.",
+    "for": "Реакции в сообществах, чаты и прямые эфиры.",
+    "not_for": "Официальные каналы и меню настроек."
+   },
+   "uk": {
+    "what": "99 анімованих емодзі: квадратні смайли, жести, неонові знаки й червоні літери для прямих ефірів.",
+    "for": "Реакції у спільнотах, чати та прямі ефіри.",
+    "not_for": "Офіційні канали та меню налаштувань."
    }
   },
   "robinastralcharmy": {

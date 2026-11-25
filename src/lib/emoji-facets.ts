@@ -43,6 +43,11 @@ export function packFacets(name: string): { facets: FacetMap; compatible: [strin
   return { facets: doc.packs[key].facets, compatible: doc.packs[key].compatible ?? [], ...drawnAs(doc.packs[key]) };
 }
 
+export function packFacetTitle(name: string): string | undefined {
+  const key = byLowerPack.get(name.toLowerCase());
+  return key ? doc.packs[key].title : undefined;
+}
+
 const facetOfCode = Object.fromEntries(Object.entries(doc.codes).map(([facet, code]) => [code, facet]));
 
 function decode(text: string): FacetMap {
