@@ -382,5 +382,16 @@ class Descriptions(unittest.TestCase):
         self.assertEqual(et.description_errors(et.load_json(et.DESCRIPTIONS), listed), [])
 
 
+class Titles(unittest.TestCase):
+    def test_titles_come_from_the_sheet_metadata(self):
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b:
+            json.dump({"pack": "ABCEmoji", "title": "ABC Emoji", "emoji": {}}, open(os.path.join(a, "ABCEmoji.json"), "w"))
+            json.dump({"pack": "abcemoji", "title": "Other", "emoji": {}}, open(os.path.join(b, "abcemoji.json"), "w"))
+            open(os.path.join(b, "Notes.tags.txt"), "w").close()
+            self.assertEqual(et.sheet_titles([a, b]), {"abcemoji": "ABC Emoji"})  # first folder wins
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -256,6 +256,22 @@ def measure_cell(img, i: int) -> dict | None:
             "fill": round(n / box, 2)}
 
 
+def sheet_titles(dirs: list[str]) -> dict[str, str]:
+    """Pack title from each contact sheet's metadata (<Pack>.json beside the PNG); the first folder wins."""
+    titles: dict[str, str] = {}
+    for d in dirs:
+        for f in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+            if not f.endswith(".json") or f.count(".") != 1:
+                continue
+            try:
+                title = load_json(os.path.join(d, f)).get("title")
+            except (OSError, ValueError):
+                continue
+            if isinstance(title, str) and title.strip():
+                titles.setdefault(f[:-5].lower(), title.strip())
+    return titles
+
+
 def measure_sheets(dirs: list[str]) -> dict[str, dict[str, dict]]:
     """pack name (lower) -> emoji id -> measurement."""
     out: dict[str, dict[str, dict]] = {}
@@ -480,6 +496,7 @@ def build(args) -> int:
     role_of_group = {g: r for r, v in tax["facets"]["role"]["values"].items() for g in v.get("slot_groups", [])}
     mood_of = {VS.sub("", ch): mood for mood, chars in FALLBACK_MOOD.items() for ch in chars}
     measured = measure_sheets(args.sheets or [])
+    titles = sheet_titles(args.sheets or [])
     overrides, errors = parse_overrides(OVERRIDES, tax)
     cards = (load_json(STYLES) if os.path.isfile(STYLES) else {}).get("packs", {})
     errors += style_card_errors({"packs": cards}, tax, {n for n, _ in listed_packs()})
@@ -600,7 +617,7 @@ def build(args) -> int:
                 p.add("use", use, score, "rules")
         apply_overrides(p, overrides.get(name.lower(), []))
         report["overrides_applied"] += len(overrides.get(name.lower(), []))
-        out_packs[name] = {"category": category, "count": n, "meanings": len(meanings),
+        out_packs[name] = {"category": category, "title": titles.get(name.lower(), ""), "count": n, "meanings": len(meanings),
                            "facets": p.compact(th["pack"], LIMITS_PACK, prefer={"topic": CATEGORY_TOPIC.get(category, "")})}
         if name.lower() in descriptions:  # what it is, what it suits, where it fits badly (en/ru/uk)
             out_packs[name]["description"] = descriptions[name.lower()]
