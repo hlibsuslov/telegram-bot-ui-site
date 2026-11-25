@@ -6,7 +6,7 @@ import "server-only";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult, ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { RATE_LIMITS, RATE_WINDOW_SECONDS } from "./emoji-api-contract";
+import { MCP_RESPONSE_MAX, RATE_LIMITS, RATE_WINDOW_SECONDS } from "./emoji-api-contract";
 import { byIdAnswer, facetsAnswer, packAnswer, searchAnswer } from "./emoji-answers";
 import { getLibrary } from "./emoji-library";
 import { EMOJI_EXPORT_PATH } from "./emoji-links";
@@ -15,8 +15,6 @@ import { PACK_NAME } from "./emoji-pack-list";
 import { pickFamily, rankPacks, type Brief } from "./emoji-pick";
 import { SLOT_NAMES } from "./emoji-slots";
 
-/** Largest JSON-RPC answer body; a tool result over it is cut, with a note saying what was cut. */
-export const MCP_RESPONSE_MAX = 100 * 1024;
 const ENVELOPE = 512; // the JSON-RPC envelope around a tool result's text
 const FACETS_PACKS_MAX = 40;
 

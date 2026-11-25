@@ -3,9 +3,8 @@
 // The route handler runs unchanged; Telegram is faked (./telegram.ts), the catalog is real.
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
-import { RATE_LIMITS } from "@/lib/emoji-api-contract";
+import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
 import { catalogPacks, catalogVersion } from "@/lib/emoji-facets";
-import { MCP_RESPONSE_MAX } from "@/lib/emoji-mcp";
 import { openApiDocument } from "@/lib/emoji-openapi";
 import { rankPacks } from "@/lib/emoji-pick";
 import { SLOT_NAMES } from "@/lib/emoji-slots";
