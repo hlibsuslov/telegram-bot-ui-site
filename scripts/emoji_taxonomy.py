@@ -436,6 +436,14 @@ def description_errors(doc: dict, listed: set[str]) -> list[str]:
     return errors
 
 
+def stale_descriptions(curated: dict, out: dict) -> list[str]:
+    """Packs whose generated description no longer equals the curated one: the site would show old text."""
+    generated = {k.lower(): v.get("description") for k, v in (out.get("packs") or {}).items()}
+    return [f"{name}: description in emoji-facets.json differs from emoji-pack-descriptions.json (run build)"
+            for name, desc in (curated.get("packs") or {}).items()
+            if name.lower() in generated and generated[name.lower()] != desc]
+
+
 def apply_style_card(p: "Scores", card: dict) -> None:
     """The look card of the vision pass: its styles at up to 0.9 (second one 0.1 lower). A sure card drops
     the styles that only the pack's words or its emoji suggested; an unsure one only adds."""
@@ -460,6 +468,16 @@ def default_mood(s: "Scores") -> str | None:
     if lead in NEUTRAL_TOPICS or (adaptive and lead not in EXPRESSIVE_TOPICS):
         return "serious"
     return None
+
+
+def finish_pack(p: "Scores", ops: list, uses: dict, role_count: Counter) -> None:
+    """Hand corrections to the pack's own tags first, then the bot uses derived from them, then corrections
+    to the uses themselves: a corrected topic must change the use it implied."""
+    apply_overrides(p, [o for o in ops if o[1] != "use"])
+    for use, score in use_scores(uses, role_count, p).items():
+        if score >= 0.45:
+            p.add("use", use, score, "rules")
+    apply_overrides(p, [o for o in ops if o[1] == "use"])
 
 
 def use_scores(uses: dict, role_count: Counter, p: "Scores") -> dict[str, float]:
@@ -612,10 +630,7 @@ def build(args) -> int:
         # Distinct interface meanings per role (from the fallback's slots), not emoji: 26 letters that share
         # one fallback are one meaning, not broad coverage.
         role_count = Counter(role_of_group.get(slot_group.get(m, ""), "") for m in meanings)
-        for use, score in use_scores(tax["facets"]["use"]["values"], role_count, p).items():
-            if score >= 0.45:
-                p.add("use", use, score, "rules")
-        apply_overrides(p, overrides.get(name.lower(), []))
+        finish_pack(p, overrides.get(name.lower(), []), tax["facets"]["use"]["values"], role_count)
         report["overrides_applied"] += len(overrides.get(name.lower(), []))
         out_packs[name] = {"category": category, "title": titles.get(name.lower(), ""), "count": n, "meanings": len(meanings),
                            "facets": p.compact(th["pack"], LIMITS_PACK, prefer={"topic": CATEGORY_TOPIC.get(category, "")})}
@@ -934,6 +949,8 @@ def check(args) -> int:
         errors += style_card_errors(load_json(STYLES), tax, {n for n, _ in listed_packs()})
     if os.path.isfile(DESCRIPTIONS):
         errors += description_errors(load_json(DESCRIPTIONS), {n for n, _ in listed_packs()})
+        if os.path.isfile(OUT):
+            errors += stale_descriptions(load_json(DESCRIPTIONS), load_json(OUT))
     if os.path.isfile(OUT):
         doc = load_json(OUT)
         for name, p in doc["packs"].items():

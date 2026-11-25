@@ -382,6 +382,37 @@ class Descriptions(unittest.TestCase):
         self.assertEqual(et.description_errors(et.load_json(et.DESCRIPTIONS), listed), [])
 
 
+class OverridesBeforeUse(unittest.TestCase):
+    """Codex review 20261125-185438: a correction to a pack's topic must change the bot use derived from it."""
+
+    def test_removing_the_only_eligible_topic_removes_the_use(self):
+        uses = et.load_json(et.TAXONOMY)["facets"]["use"]["values"]
+        from collections import Counter
+
+        def scored(ops):
+            p = et.Scores()
+            p.add("topic", "interface", 1.0, "category")
+            p.add("style", "outline", 0.9, "vision")
+            p.add("role", "navigation", 0.9, "aggregate")
+            et.finish_pack(p, ops, uses, Counter({"navigation": 3, "settings": 3, "status": 3}))
+            return set(p.d.get("use", {}))
+
+        self.assertIn("utility", scored([]))
+        self.assertNotIn("utility", scored([("-", "topic", "interface"), ("+", "topic", "characters")]))
+        self.assertNotIn("utility", scored([("-", "use", "utility")]))
+
+
+class StaleOutput(unittest.TestCase):
+    def test_generated_descriptions_must_match_the_curated_file(self):
+        curated = {"packs": {"Pack": DESC}}
+        self.assertEqual(et.stale_descriptions(curated, {"packs": {"Pack": {"description": DESC}}}), [])
+        edited = {"packs": {"Pack": {**DESC, "en": {**DESC["en"], "for": "Other"}}}}
+        self.assertEqual(et.stale_descriptions(edited, {"packs": {"Pack": {"description": DESC}}}),
+                         ["Pack: description in emoji-facets.json differs from emoji-pack-descriptions.json (run build)"])
+        self.assertEqual(et.stale_descriptions(curated, {"packs": {"Pack": {}}}),
+                         ["Pack: description in emoji-facets.json differs from emoji-pack-descriptions.json (run build)"])
+
+
 class Titles(unittest.TestCase):
     def test_titles_come_from_the_sheet_metadata(self):
         import json
