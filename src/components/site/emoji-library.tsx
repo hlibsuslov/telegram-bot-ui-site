@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, BookOpen, Braces, Download, Plug, Search, Terminal, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LIBRARY_STATS, MARQUEE, SHOWCASE_PACKS } from "@/content/emoji-showcase";
+import { LIBRARY_STATS, SHOWCASE_PACKS } from "@/content/emoji-showcase";
 import { SITE_ORIGIN } from "@/content/site";
 import {
   EMOJI_API_DOCS_PATH,
@@ -13,6 +13,7 @@ import {
 } from "@/lib/emoji-links";
 import { EmojiGlyph } from "./emoji-glyph";
 import { DuckIcon } from "./duck-icon";
+import { EmojiMarquee } from "./emoji-marquee";
 import { CopyButton } from "./install-window";
 import { Container } from "./section";
 
@@ -60,29 +61,6 @@ const WAYS: Way[] = [
   },
 ];
 
-function Marquee() {
-  return (
-    <div
-      aria-hidden="true"
-      className="relative space-y-3 overflow-hidden rounded-2xl border border-border bg-card py-5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
-    >
-      {MARQUEE.map((row, r) => (
-        <div
-          key={r}
-          className="flex w-max gap-3 motion-safe:animate-[emoji-marquee_48s_linear_infinite] hover:[animation-play-state:paused]"
-          style={r % 2 ? { animationDirection: "reverse" } : undefined}
-        >
-          {[...row, ...row].map((emoji, i) => (
-            <span key={i} className="flex size-14 items-center justify-center rounded-xl bg-muted/60 sm:size-16">
-              <EmojiGlyph emoji={emoji} className="size-9 sm:size-10" />
-            </span>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export function EmojiLibrary() {
   const stats = [
     { value: fmt.format(LIBRARY_STATS.packs), label: "premium emoji packs" },
@@ -117,7 +95,7 @@ export function EmojiLibrary() {
         </div>
 
         <div className="mt-10">
-          <Marquee />
+          <EmojiMarquee />
         </div>
 
         <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
@@ -192,6 +170,7 @@ export function EmojiLibrary() {
                     </span>
                   </th>
                   <td className="block px-5 pt-2 text-muted-foreground md:table-cell md:py-4 md:align-top">
+                    <span className="sr-only md:hidden">For whom: </span>
                     {way.who}
                     {way.tools ? (
                       <span className="mt-2 flex flex-wrap gap-1">
@@ -204,6 +183,7 @@ export function EmojiLibrary() {
                     ) : null}
                   </td>
                   <td className="block px-5 pt-2 pb-4 md:table-cell md:py-4 md:align-top">
+                    <span className="sr-only md:hidden">Try it: </span>
                     <div className="flex items-start gap-2 rounded-lg border border-border bg-background py-1.5 pr-1.5 pl-3">
                       <code className="min-w-0 flex-1 py-1 font-mono text-xs leading-5 [overflow-wrap:anywhere]">{way.code}</code>
                       <CopyButton text={way.code} label={way.name} />
@@ -223,7 +203,7 @@ export function EmojiLibrary() {
           <Link href={EMOJI_API_DOCS_PATH} className="inline-flex items-center gap-2 font-medium text-brand hover:underline">
             API and MCP reference <ArrowRight aria-hidden="true" className="size-4" />
           </Link>
-          <p className="text-muted-foreground">Telegram shows custom emoji when the bot has a Fragment username or its owner has Premium.</p>
+          <p className="text-muted-foreground">Custom emoji need a Fragment username for the bot, or owner Premium for private chats and groups.</p>
         </div>
       </Container>
     </section>

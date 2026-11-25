@@ -60,7 +60,7 @@ export function Hero() {
           href="#whats-new"
           className="group inline-flex items-center gap-2 rounded-full border border-brand/30 bg-card/70 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-brand/60 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
-          <span className="rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold text-white">New</span>
+          <span className="rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold text-background">New</span>
           Mini Apps, MCP server and an emoji library
           <ArrowRight aria-hidden="true" className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
         </a>

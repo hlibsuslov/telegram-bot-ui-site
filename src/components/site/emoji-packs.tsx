@@ -16,7 +16,7 @@ function PacksVisual() {
       <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm">
         <Link2 aria-hidden="true" className="size-4 text-muted-foreground" />
         <span className="min-w-0 flex-1 truncate text-muted-foreground">https://t.me/addemoji/…</span>
-        <span className="rounded-md bg-brand px-2.5 py-1 text-xs font-medium text-white">Import</span>
+        <span className="rounded-md bg-brand px-2.5 py-1 text-xs font-medium text-background">Import</span>
       </div>
       {SHOWCASE_PACKS.slice(0, 3).map((p) => (
         <div key={p.name} className="rounded-lg border border-border bg-background p-3">

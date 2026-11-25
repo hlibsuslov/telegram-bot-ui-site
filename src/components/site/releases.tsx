@@ -39,7 +39,7 @@ export function Releases() {
         {RELEASES.map((release, i) => (
           <li key={release.version} className="relative flex gap-2">
             <div className="sticky top-24 flex w-28 shrink-0 flex-col items-end gap-1.5 self-start pb-4 max-md:hidden">
-              <span className="inline-flex h-7 items-center rounded-md bg-brand px-2.5 text-sm font-semibold text-white tabular-nums">
+              <span className="inline-flex h-7 items-center rounded-md bg-brand px-2.5 text-sm font-semibold text-background tabular-nums">
                 v{release.version}
               </span>
               <time dateTime={release.dateTime} className="text-right text-sm text-muted-foreground">
@@ -56,7 +56,7 @@ export function Releases() {
             </div>
             <div className="min-w-0 flex-1 pb-14 pl-3 md:pl-8">
               <p className="flex items-center gap-2 text-sm md:hidden">
-                <span className="rounded-md bg-brand px-2 py-0.5 font-semibold text-white">v{release.version}</span>
+                <span className="rounded-md bg-brand px-2 py-0.5 font-semibold text-background">v{release.version}</span>
                 <time dateTime={release.dateTime} className="text-muted-foreground">{release.date}</time>
               </p>
               <h3 className="mt-2 text-xl font-semibold tracking-tight text-balance md:mt-0 sm:text-2xl">{release.title}</h3>

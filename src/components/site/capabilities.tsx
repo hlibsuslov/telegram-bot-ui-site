@@ -126,8 +126,8 @@ export function Capabilities() {
                 <th scope="row" className="block px-5 pt-4 md:table-cell md:py-3.5 md:align-top">
                   <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] font-medium text-brand">{c.verb}</code>
                 </th>
-                <td className="block px-5 pt-2 text-muted-foreground md:table-cell md:py-3.5 md:align-top">{c.does}</td>
-                <td className="block px-5 pt-1 pb-4 italic md:table-cell md:py-3.5 md:align-top">“{c.ask}”</td>
+                <td className="block px-5 pt-2 text-muted-foreground md:table-cell md:py-3.5 md:align-top"><span className="sr-only md:hidden">What the agent does: </span>{c.does}</td>
+                <td className="block px-5 pt-1 pb-4 italic md:table-cell md:py-3.5 md:align-top"><span className="not-italic text-muted-foreground md:hidden">You might say: </span>“{c.ask}”</td>
               </tr>
             ))}
           </tbody>

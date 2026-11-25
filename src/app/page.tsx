@@ -14,6 +14,7 @@ import { Releases } from "@/components/site/releases";
 import { Scenarios } from "@/components/site/scenarios";
 import { SkillMap } from "@/components/site/skill-map";
 import { Studio } from "@/components/site/studio";
+import { JsonLd } from "@/components/emoji/json-ld";
 import { FAQ } from "@/content/site";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
@@ -32,10 +33,7 @@ const faqJsonLd = {
 export default function Home() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\u003c") }}
-      />
+      <JsonLd value={faqJsonLd} />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:shadow"

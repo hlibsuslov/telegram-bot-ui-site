@@ -295,7 +295,7 @@ export const FAQ = [
   },
   {
     q: "Do I need Telegram Premium for custom emoji?",
-    a: "A bot shows custom emoji when it has a Fragment username or its owner has Premium. Otherwise the skill falls back to plain emoji for the whole message, never a mix.",
+    a: "A bot with a Fragment username can use custom emoji everywhere. Owner Premium covers only messages the bot sends to private chats, groups and supergroups, not channel posts. Otherwise the skill falls back to plain emoji for the whole message, never a mix.",
   },
   {
     q: "Does it build Telegram Mini Apps?",

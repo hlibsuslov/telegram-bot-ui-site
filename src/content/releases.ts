@@ -37,7 +37,7 @@ export const RELEASES: Release[] = [
       {
         icon: "tags",
         title: "Emoji packs chosen by tags",
-        text: "Pick one pack by style, colour, theme fit and motion; with your style profile the pick compares the brand accent with pack colours and says why. Works offline from the export too.",
+        text: "Pick one pack for your icon slots by style, colour, theme fit and motion, and see why each pack ranks where it does. Offline, the export ranks packs by your style profile.",
         code: "py -3 scripts/tgui.py emoji library pick --needs home,back,settings",
       },
       {
@@ -73,7 +73,7 @@ export const RELEASES: Release[] = [
         icon: "mcp",
         title: "A local MCP server with 15 tools",
         text: "Bot API and WebApp lookup, request and Rich HTML validation, map render, simulate and snapshot, command audit and plan, emoji library search and pick. Standard library only.",
-        code: "claude mcp add --transport stdio telegram-bot-ui -- py -3 <skill>/scripts/bot_ui_mcp.py",
+        code: "py -3 scripts/tgui.py mcp",
       },
       {
         icon: "memory",

@@ -305,7 +305,7 @@ export const STAGES: Stage[] = [
         id: "emoji-library",
         title: "Connect the emoji library to your agent",
         prompt:
-          "Add the remote MCP server with `claude mcp add --transport http telegram-emoji https://telegram-bot-ui.hlixli.com/api/mcp`. Then use `emoji_pick_family` for the slots home, back, settings, help and pay, and show the icon map with real ids.",
+          "Add the remote MCP server with `claude mcp add --transport http telegram-emoji https://telegram-bot-ui.hlixli.com/api/mcp`. Then use `emoji_pick_family` for the slots home, back, settings, info and money, and show the icon map with real ids.",
         steps: [
           "Rank whole packs by slot coverage and the brief’s tags.",
           "Return one icon map from one pack, with the missing slots named.",
@@ -338,7 +338,7 @@ export const STAGES: Stage[] = [
         id: "local-mcp",
         title: "Run the skill’s tools over MCP",
         prompt:
-          "Register the skill’s local MCP server with `claude mcp add --transport stdio telegram-bot-ui -- py -3 <skill>/scripts/bot_ui_mcp.py`. Use `validate_request` on every Bot API call you write in this task and `map_snapshot` to screenshot the screens you changed.",
+          "Register the skill’s local MCP server (`scripts/tgui.py mcp` in the installed skill folder) with your agent, using the full path to that folder. Use `validate_request` on every Bot API call you write in this task and `map_snapshot` to screenshot the screens you changed.",
         steps: [
           "Check each request against the catalog and Telegram’s keyboard rules before writing it.",
           "Open the single-file Studio snapshot and screenshot the changed screens.",
