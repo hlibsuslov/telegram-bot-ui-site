@@ -3,7 +3,7 @@
 // One pack at /emoji/<name>, laid out like Telegram's "Add emoji" sheet (grid, blue button at
 // the bottom) with an analysis column: formats, the bot icons the pack covers, the picked emoji
 // with everything a bot needs to use it, and similar packs below.
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Bookmark, Play, Search, Star } from "lucide-react";
 import type { CardPack } from "@/lib/emoji-card";
 import type { LibraryEmoji, LibraryPack } from "@/lib/emoji-library";
@@ -83,7 +83,7 @@ function ThemePreview({ emoji, pick }: { emoji: LibraryEmoji[]; pick: LibraryEmo
   );
 }
 
-export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: CardPack[]; pageUrl: string }) {
+export function PackSheet({ pack, emoji, similar, pageUrl, about }: { pack: LibraryPack; emoji: LibraryEmoji[]; similar: CardPack[]; pageUrl: string; about?: ReactNode }) {
   const { saved, togglePack, toggleEmoji } = useSaved();
   const canHover = useCanHover();
   const [query, setQuery] = useState("");
@@ -124,6 +124,7 @@ export function PackSheet({ pack, emoji, similar, pageUrl }: { pack: LibraryPack
           <div className="px-4 pt-4 sm:px-5">
             <h1 id="pack-title" className="text-xl font-semibold text-balance">{pack.title}</h1>
             <p className="tg-hint mt-0.5 text-[13px]">{pack.count} emoji · {pack.category} · t.me/addemoji/{pack.name}</p>
+            {about}
             <div className="mt-3 flex gap-2">
               <label className="relative flex-1">
                 <span className="sr-only">Search this pack</span>

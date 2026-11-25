@@ -10,6 +10,10 @@ import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, emojiPackPath } from "@/lib/emoj
 import { emojiBreadcrumbs, emojiMetadata } from "@/lib/emoji-metadata";
 import { siteUrl } from "@/lib/site-url";
 import { labelled, packFacets } from "@/lib/emoji-facets";
+import { type AboutLang, packAbout } from "@/lib/emoji-pack-about";
+
+// The library is English-only (root layout: <html lang="en">); packAbout falls back to English anyway.
+const PAGE_LANG: AboutLang = "en";
 
 // Keep real packs on demand. Prerendering every pack in separate workers floods Telegram.
 // Cache Components needs one build-time parameter, so validate with an unlisted name.
@@ -24,7 +28,10 @@ export async function generateMetadata({ params }: PageProps<"/emoji/[name]">): 
   const { pack } = data;
   const title = `${pack.title} | Telegram Emoji Pack`;
   const format = new Intl.ListFormat("en", { type: "conjunction" }).format(pack.formats);
-  const description = `Browse ${pack.count} ${format} Telegram custom emoji in ${pack.title}. Copy IDs, message HTML, and bot button icons.`;
+  const what = packAbout(pack.name, PAGE_LANG)?.what;
+  const description = what
+    ? `${what} Copy the Telegram custom emoji IDs, message HTML, and bot button icons.`
+    : `Browse ${pack.count} ${format} Telegram custom emoji in ${pack.title}. Copy IDs, message HTML, and bot button icons.`;
   return emojiMetadata(emojiPackPath(pack.name), title, description);
 }
 
@@ -43,7 +50,7 @@ export default async function EmojiPackPage({ params }: PageProps<"/emoji/[name]
       <Link href="/emoji" className="tg-accent mb-3 inline-flex items-center gap-0.5 rounded px-1 text-[15px]">
         <ChevronLeft aria-hidden="true" className="size-5" /> Emoji Library
       </Link>
-      <PackSheet pack={pack} emoji={emoji} similar={similar} pageUrl={`${siteUrl()}${path}`} />
+      <PackSheet pack={pack} emoji={emoji} similar={similar} pageUrl={`${siteUrl()}${path}`} about={<PackAbout name={pack.name} />} />
       <PackFacets name={pack.name} />
       <details className="tg-glass group mt-5 rounded-2xl px-4 py-3 text-sm">
         <ExpandSummary count={pack.count}>Custom emoji IDs in this pack</ExpandSummary>
@@ -69,6 +76,23 @@ export default async function EmojiPackPage({ params }: PageProps<"/emoji/[name]
         <a className="tg-accent underline" href={`/api/emoji-pack/${pack.name}`}>This pack as JSON</a>
       </nav>
     </>
+  );
+}
+
+/** What the pack is, where it suits and where it fits badly, and how it is drawn (lib/emoji-pack-about.ts). */
+function PackAbout({ name }: { name: string }) {
+  const about = packAbout(name, PAGE_LANG);
+  if (!about) return null;
+  const rows = [["Suits", about.suits], ["Not for", about.notFor], ["How it’s drawn", about.drawn]].filter((r): r is [string, string] => !!r[1]);
+  return (
+    <div className="mt-2.5 max-w-prose text-[14px] leading-snug">
+      <p className="text-pretty">{about.what}</p>
+      <dl className="mt-1.5 space-y-0.5 text-[13px]">
+        {rows.map(([label, text]) => (
+          <div key={label}><dt className="tg-hint inline">{label}: </dt><dd className="inline">{text}</dd></div>
+        ))}
+      </dl>
+    </div>
   );
 }
 
