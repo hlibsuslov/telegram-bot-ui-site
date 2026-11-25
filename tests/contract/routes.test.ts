@@ -9,7 +9,7 @@ import { catalogExport } from "@/lib/emoji-export";
 import { catalogPacks, catalogVersion } from "@/lib/emoji-facets";
 import { openApiDocument } from "@/lib/emoji-openapi";
 import { validate } from "./schema";
-import { FAILING, FAKE_TOKEN, formatOf, installFakeTelegram } from "./telegram";
+import { FAILING, FAKE_TOKEN, formatOf, installFakeTelegram, pathless } from "./telegram";
 
 process.env.EMOJI_RESOLVER_BOT_TOKEN = FAKE_TOKEN;
 delete process.env.EMOJI_RESOLVER_FIXTURES;
@@ -192,6 +192,11 @@ describe("GET /api/emoji-pack/{name}/{id} and its still and anim", () => {
   });
   test("404 NO_PREVIEW: the still of a static emoji", async () => {
     await documented(STILL, await file(still, staticPack.name, staticPack.emoji[0].id, "/still"), 404, "NO_PREVIEW");
+  });
+  test("404 NO_ANIMATION: Telegram gives no file path for an animated emoji", async () => {
+    const pack = catalogPacks().find((p) => formatOf(p.name) === "animated" && p.name.toLowerCase() !== "checkified")!;
+    pathless.add(`F${pack.emoji[0].id}`);
+    await documented(ANIM, await file(anim, pack.name, pack.emoji[0].id, "/anim"), 404, "NO_ANIMATION");
   });
   test("404 NO_ANIMATION: the animation of a static emoji", async () => {
     await documented(ANIM, await file(anim, staticPack.name, staticPack.emoji[0].id, "/anim"), 404, "NO_ANIMATION");

@@ -13,6 +13,13 @@ npm run dev
 npm run lint && npm run build
 ```
 
+`npm test` runs the emoji API contract tests (`tests/contract/`) with Node's own test runner; it needs
+Node 22.15 or newer (`module.registerHooks`). The tagger's checks are `py -3 scripts/emoji_taxonomy.py check --gate`
+and `py -3 -m unittest scripts/test_emoji_taxonomy.py`.
+
+The API's per-client rate limits key on `x-real-ip` / `x-forwarded-for`. On Vercel the edge sets these; behind any
+other host, put the app behind a proxy that overwrites them, or a caller can choose its own bucket.
+
 ## Content
 
 - Every claim comes from the skill repository. Facts, install commands and FAQ live in `src/content/site.ts`; update it with each skill release.

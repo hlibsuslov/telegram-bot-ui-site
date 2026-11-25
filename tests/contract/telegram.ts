@@ -19,6 +19,8 @@ interface Sticker { file_id: string; custom_emoji_id: string; emoji: string; is_
 
 const packs = new Map(catalogPacks().map((p, i) => [p.name.toLowerCase(), { name: p.name, ids: p.emoji.map((e) => e.id), index: i }]));
 const files = new Map<string, string>(); // file_id -> file_path
+/** file_ids whose getFile answer has no file_path, as Telegram does for a file it cannot serve. */
+export const pathless = new Set<string>();
 const GLYPHS = ["✅", "🏠", "⭐", "🔔", "❤️", "🛒"];
 
 /** The format of every emoji of a pack: checkified is animated and adaptive, as in Telegram; the rest rotate. */
@@ -78,6 +80,7 @@ function answer(path: string, body: string): Answer {
   if (method === "getStickerSet") return getStickerSet(params.name);
   if (method === "getCustomEmojiStickers") return getCustomEmojiStickers(params.custom_emoji_ids);
   if (method === "getFile") {
+    if (pathless.has(params.file_id)) return ok({ file_id: params.file_id, file_size: 64 });
     const filePath = files.get(params.file_id);
     return filePath ? ok({ file_id: params.file_id, file_path: filePath, file_size: 64 }) : fail(400, "Bad Request: invalid file_id");
   }

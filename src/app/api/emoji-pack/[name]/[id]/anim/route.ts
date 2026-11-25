@@ -19,6 +19,10 @@ export async function GET(req: Request, ctx: RouteContext<"/api/emoji-pack/[name
       },
     });
   } catch (err) {
+    // The shared downloader says NO_PREVIEW when Telegram has no servable file; here that means no animation.
+    if (err instanceof ResolverError && err.code === "NO_PREVIEW") {
+      return errorResponse(new ResolverError("NO_ANIMATION", 404, "no animation for this emoji"));
+    }
     return errorResponse(err);
   }
 }
