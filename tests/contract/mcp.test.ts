@@ -205,6 +205,23 @@ describe("MCP tools for choosing packs", () => {
     const nothing = await tool("emoji_rank_packs", { require: ["style:nosuch"] });
     assert.equal(nothing.total, 0);
   });
+  test("a required facet named like an Object property is a bad filter with an empty ranking, not an internal error", async () => {
+    for (const require of [["constructor:x"], ["motion:static", "constructor:static"]]) {
+      const answer = await tool("emoji_rank_packs", { require });
+      assert.equal(answer.total, 0, require.join(" "));
+      assert.deepEqual(answer.packs, []);
+      assert.ok((answer.problems as string[]).includes(`bad filter ${require.at(-1)}`), require.join(" "));
+      const family = await tool("emoji_pick_family", { slots: ["home", "done"], require });
+      assert.equal(family.map, null);
+      assert.deepEqual(family.ranking, []);
+      assert.ok((family.notes as string[]).includes(`bad filter ${require.at(-1)}`));
+    }
+    for (const name of ["toString", "hasOwnProperty", "__proto__", "valueOf"]) {
+      const ranked = rankPacks({ brief: { [name]: ["x"] }, require: [`${name}:x`, `fit:${name}`] });
+      assert.equal(ranked.total, 0, name);
+      assert.ok(ranked.problems.some((p) => p.startsWith(`unknown facet ${name}`)), name);
+    }
+  });
   test("emoji_rank_packs without a brief: BAD_REQUEST as an isError result", async () => {
     const { json } = await toolError("emoji_rank_packs", {});
     assert.equal(json!.error!.code, "BAD_REQUEST");

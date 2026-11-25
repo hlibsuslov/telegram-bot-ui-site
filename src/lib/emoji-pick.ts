@@ -17,13 +17,16 @@ export type Motion = "static" | "any";
 const FACET_WEIGHT: Record<string, number> = { style: 0.28, topic: 0.2, use: 0.14, fit: 0.12, color: 0.1, mood: 0.1, palette: 0.04, motion: 0.02 };
 const OTHER_FACET_WEIGHT = 0.05;
 
+/** A key's own value: facet names come from callers, and "constructor" or "toString" must not reach Object.prototype. */
+const own = <T>(record: Record<string, T>, key: string): T | undefined => (Object.hasOwn(record, key) ? record[key] : undefined);
+
 /** Brief values as taxonomy ids, and what could not be read. */
 function normalizeBrief(brief: Brief): { wanted: Record<string, string[]>; problems: string[] } {
   const wanted: Record<string, string[]> = {};
   const problems: string[] = [];
   for (const [facet, values] of Object.entries(brief)) {
     if (!values?.length) continue;
-    const def = taxonomy.facets[facet];
+    const def = own(taxonomy.facets, facet);
     if (!def) { problems.push(`unknown facet ${facet} (known: ${Object.keys(taxonomy.facets).join(", ")})`); continue; }
     const ids: string[] = [];
     for (const v of values) {
@@ -45,10 +48,10 @@ function facetMatch(tags: FacetMap, wanted: Record<string, string[]>, threshold:
   let got = 0, total = 0;
   const matched: Matched[] = [];
   for (const [facet, values] of Object.entries(wanted)) {
-    const weight = FACET_WEIGHT[facet] ?? OTHER_FACET_WEIGHT;
+    const weight = own(FACET_WEIGHT, facet) ?? OTHER_FACET_WEIGHT;
     total += weight;
     let best = 0, hit: Matched | null = null;
-    for (const [value, conf] of tags[facet] ?? []) {
+    for (const [value, conf] of own(tags, facet) ?? []) {
       if (conf < threshold || conf <= best) continue;
       const themeFit = facet === "fit" && (value === "adaptive" || value === "both") && values.some((v) => ["light", "dark", "both"].includes(v));
       if (values.includes(value) || themeFit) { best = conf; hit = [facet, value, Math.round(conf * 100) / 100]; }
@@ -68,14 +71,16 @@ export function rankPacks({ brief = {}, require = [], motion, theme, top = 8 }: 
   const must: [string, string][] = require.map((r) => {
     const at = r.indexOf(":");
     const [facet, value] = at < 0 ? [r, ""] : [r.slice(0, at), r.slice(at + 1)];
-    const id = taxonomy.facets[facet] ? facetValueId(facet, value) : undefined;
+    const id = own(taxonomy.facets, facet) ? facetValueId(facet, value) : undefined;
     if (!id) problems.push(`bad filter ${r}`);
-    return [facet, id ?? ""]; // a filter that names nothing real matches no pack, never every pack
+    return [facet, id ?? ""];
   });
+  // A filter that names nothing real matches no pack, never every pack.
+  const packs = must.every(([, v]) => v) ? allPackFacets() : [];
   const rows = [];
-  for (const pk of allPackFacets()) {
+  for (const pk of packs) {
     const tags = pk.facets;
-    if (must.some(([f, v]) => !(tags[f] ?? []).some(([val, c]) => val === v && c >= th))) continue;
+    if (must.some(([f, v]) => !(own(tags, f) ?? []).some(([val, c]) => val === v && c >= th))) continue;
     const { score: match, matched } = facetMatch(tags, wanted, th);
     let score = match;
     // Preferences, not filters: Telegram's own icon packs are animated, and dropping them would hide
