@@ -8,6 +8,7 @@ import { catalogPacks, catalogVersion } from "@/lib/emoji-facets";
 import { openApiDocument } from "@/lib/emoji-openapi";
 import { pickFamily, rankPacks } from "@/lib/emoji-pick";
 import { SLOT_NAMES } from "@/lib/emoji-slots";
+import { SITE_ORIGIN } from "@/content/site";
 import { validate } from "./schema";
 import { FAILING, FAKE_TOKEN, installFakeTelegram } from "./telegram";
 
@@ -262,6 +263,29 @@ describe("MCP tools for choosing packs", () => {
   });
   test("an unknown tool: isError", async () => {
     assert.match((await toolError("emoji_nosuch", {})).text, /emoji_nosuch/);
+  });
+});
+
+describe("MCP Origin check", () => {
+  const ping = (headers: Record<string, string>, ip?: string) => post({ jsonrpc: "2.0", id: 1, method: "ping" }, { ip, headers });
+  test("a browser page of this site, or a client that sends no Origin (native apps, CLIs), is served", async () => {
+    for (const origin of [SITE_ORIGIN, "http://localhost:3000"]) {
+      const res = await ping({ Origin: origin });
+      assert.equal(res.status, 200, origin);
+      assert.deepEqual(res.body!.result, {}, origin);
+    }
+    assert.equal((await ping({})).status, 200);
+  });
+  test("a page of another site is refused with 403 before any work or quota", async () => {
+    const ip = client();
+    for (const origin of ["https://evil.example", "null", `${SITE_ORIGIN}.evil.example`, "http://localhost:3001", SITE_ORIGIN.replace("https:", "http:")]) {
+      const res = await ping({ Origin: origin }, ip);
+      assert.equal(res.status, 403, origin);
+      assert.equal(res.body!.error!.code, -32000, origin);
+      assert.equal(res.headers.get("cache-control"), "no-store");
+    }
+    for (let i = 0; i < RATE_LIMITS.mcp; i++) await ping({ Origin: "https://evil.example" }, ip);
+    assert.equal((await ping({}, ip)).status, 200, "refused requests must not use the client's MCP quota");
   });
 });
 

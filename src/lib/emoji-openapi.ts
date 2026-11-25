@@ -272,6 +272,11 @@ function mcpOperation(origin: string) {
           error: object({ code: { type: "integer" }, message: str("What went wrong.") }, [], "A JSON-RPC error."),
         }, ["result", "error"]) } } },
         202: { description: "A notification was accepted; no body." },
+        403: { description: "A browser page of another site (its Origin header) is refused; clients that send no Origin are served.",
+          content: { "application/json": { schema: object({
+            jsonrpc: { const: "2.0" }, id: { type: "null" },
+            error: object({ code: { const: -32000 }, message: str("What went wrong.") }, [], "A JSON-RPC error."),
+          }, [], "A JSON-RPC error, not this API's error body.") } } },
         ...errorResponses(["RATE_LIMITED"]),
       },
     },

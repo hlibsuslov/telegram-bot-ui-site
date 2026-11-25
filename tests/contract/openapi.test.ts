@@ -126,6 +126,7 @@ test("errors: every documented code has its status, and each status lists its co
     for (const [status, res] of Object.entries(op.responses)) {
       if (status.startsWith("2")) continue;
       const schema = (res.content as Record<string, Obj>)["application/json"].schema as Obj;
+      if ((schema.properties as Obj).jsonrpc) continue; // the MCP route's JSON-RPC errors have numeric codes
       const codes = (((schema.properties as Obj).error as Obj).properties as Record<string, Obj>).code.enum as (keyof typeof ERRORS)[];
       for (const c of codes) assert.equal(String(ERRORS[c].status), status, `${method} ${path}: ${c} is ${ERRORS[c].status}, documented as ${status}`);
     }
