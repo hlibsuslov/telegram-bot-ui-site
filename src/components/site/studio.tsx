@@ -35,7 +35,7 @@ export function Studio() {
             </div>
             <Image
               src="/studio/simulator.webp"
-              alt={`${DEMO_BOT_NAME}’s start screen in the Studio’s Telegram simulator, with premium emoji in the message and on the buttons`}
+              alt={`${DEMO_BOT_NAME}’s coffee menu in the Studio’s Telegram simulator: a Rich message with a price table and buttons inside it`}
               width={500}
               height={620}
               unoptimized

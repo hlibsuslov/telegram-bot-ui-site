@@ -2,7 +2,7 @@
 export const DEMO_PAGE = "/studio/demo.html";
 
 export const DEMO_BOT_NAME = "Pulloa";
-export const DEMO_SCREEN_COUNT = 19;
+export const DEMO_SCREEN_COUNT = 26;
 
 export const ORDER_STATES = [
   { id: "default", label: "Brewing" },
