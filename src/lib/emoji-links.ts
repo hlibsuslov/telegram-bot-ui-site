@@ -4,6 +4,7 @@ export const EMOJI_API_DOCS_PATH = "/emoji/api-docs";
 export const EMOJI_SHARE_IMAGE_PATH = "/share/telegram-emoji-library.png";
 export const EMOJI_OPENAPI_PATH = "/api/emoji-openapi.json";
 export const EMOJI_EXPORT_PATH = "/emoji-library.ndjson.gz";
+export const EMOJI_MCP_PATH = "/api/mcp";
 
 export function emojiPackPath(name: string, id?: string): string {
   return `${EMOJI_LIBRARY_PATH}/${name}${id ? `#e=${id}` : ""}`;

@@ -1,12 +1,13 @@
 // Lets `node --test` import the route handlers as Next.js builds them: the "@/" alias and
 // extensionless imports resolve to src/*.ts, JSON and .txt files import as their contents (the
-// turbopack "raw" rule), and the few Next.js runtime APIs the handlers call outside a request are
+// turbopack "raw" rule) when a .ts file imports them, and the few Next.js runtime APIs the handlers call outside a request are
 // stubbed. Nothing here ships; the handlers themselves run unchanged.
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const SRC = new URL("../../src/", import.meta.url);
+const AS_MODULE = "?as-module";
 const STUBS = {
   "server-only": "export {};",
   // connection() only marks a route dynamic; cacheLife() only tunes the cache of a "use cache" function.
@@ -32,13 +33,17 @@ registerHooks({
     }
     const resolved = url ? { url, shortCircuit: true } : nextResolve(specifier, context);
     // The package has no "type": say what .ts files are instead of letting Node guess (and warn).
-    return resolved.url.endsWith(".ts") ? { ...resolved, format: "module-typescript" } : resolved;
+    if (resolved.url.endsWith(".ts")) return { ...resolved, format: "module-typescript" };
+    // Only the app's own imports read data files as modules; a package's require() of its JSON stays as Node does it.
+    if (/\.(json|txt)$/.test(resolved.url) && /\.tsx?$/.test(context.parentURL ?? "")) return { ...resolved, url: `${resolved.url}${AS_MODULE}` };
+    return resolved;
   },
   load(url, context, nextLoad) {
     if (url.startsWith("stub:")) return { format: "module", source: STUBS[url.slice(5)], shortCircuit: true };
-    if (url.startsWith("file:") && (url.endsWith(".json") || url.endsWith(".txt"))) {
-      const text = readFileSync(fileURLToPath(url), "utf8");
-      const source = `export default ${url.endsWith(".json") ? text : JSON.stringify(text)};`;
+    if (url.startsWith("file:") && url.endsWith(AS_MODULE)) {
+      const path = url.slice(0, -AS_MODULE.length);
+      const text = readFileSync(fileURLToPath(path), "utf8");
+      const source = `export default ${path.endsWith(".json") ? text : JSON.stringify(text)};`;
       return { format: "module", source, shortCircuit: true };
     }
     return nextLoad(url, context);

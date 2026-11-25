@@ -7,7 +7,7 @@ import { CHECKMARK } from "@/content/emoji-example";
 import { ERRORS, RATE_LIMITS, RATE_WINDOW_SECONDS, type ErrorCode } from "./emoji-api-contract";
 import { catalogExport } from "./emoji-export";
 import { catalogPacks, catalogVersion, emojiFacets, facetCodes, facetsMeta, packFacets, taxonomy, type Look } from "./emoji-facets";
-import { EMOJI_EXPORT_PATH, EMOJI_OPENAPI_PATH, emojiPackPath } from "./emoji-links";
+import { EMOJI_EXPORT_PATH, EMOJI_MCP_PATH, EMOJI_OPENAPI_PATH, emojiPackPath } from "./emoji-links";
 
 type Schema = Record<string, unknown>;
 const ref = (name: string): Schema => ({ $ref: `#/components/schemas/${name}` });
@@ -245,6 +245,39 @@ function media(summary: string, operationId: string, kind: string, limit: number
   };
 }
 
+const MCP_TOOLS = "emoji_search, emoji_pack, emoji_facets, emoji_rank_packs, emoji_pick_family, emoji_by_id";
+
+/** POST /api/mcp: JSON-RPC 2.0 over MCP Streamable HTTP, described here so the endpoint has a contract too. */
+function mcpOperation(origin: string) {
+  const { description: limit, ...limits } = rateLimit(RATE_LIMITS.mcp);
+  return {
+    post: {
+      tags: ["mcp"], operationId: "mcp", summary: "Remote MCP server (Streamable HTTP)",
+      description: `Model Context Protocol 2025-11-25 (older revisions are negotiated), stateless and read-only, no key. Tools: ${MCP_TOOLS}; ` +
+        "each answers what its HTTP endpoint answers, cut to 100 KB with a `truncated` note when larger. Send Accept: application/json, " +
+        "text/event-stream. Answers are one JSON body; GET and DELETE answer 405. Tool failures are isError results carrying the " +
+        `error body of this API; protocol errors are JSON-RPC errors. Connect: claude mcp add --transport http telegram-emoji ${origin}${EMOJI_MCP_PATH}. ` +
+        `${limit} Each tool call also counts against its endpoint's limit (search, pack, by-id, facets).`,
+      ...limits,
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: object({
+          jsonrpc: { const: "2.0" }, id: { type: ["string", "integer"] }, method: str("initialize, tools/list, tools/call, ping, or a notification."),
+          params: { type: "object" },
+        }, ["id", "params"], "A JSON-RPC 2.0 request or notification (no id).") } },
+      },
+      responses: {
+        200: { description: "The JSON-RPC response: a result, or a JSON-RPC error.", content: { "application/json": { schema: object({
+          jsonrpc: { const: "2.0" }, id: { type: ["string", "integer", "null"] }, result: { type: "object" },
+          error: object({ code: { type: "integer" }, message: str("What went wrong.") }, [], "A JSON-RPC error."),
+        }, ["result", "error"]) } } },
+        202: { description: "A notification was accepted; no body." },
+        ...errorResponses(["RATE_LIMITED"]),
+      },
+    },
+  };
+}
+
 export function openApiDocument(origin: string) {
   const ex = examples();
   const file = catalogExport();
@@ -268,6 +301,7 @@ export function openApiDocument(origin: string) {
       { name: "packs", description: "One pack's emoji, the pack of an emoji id, and every pack's tags." },
       { name: "media", description: "Pictures and animations of single emoji." },
       { name: "catalog", description: "This document and the offline export." },
+      { name: "mcp", description: "The same library as a remote MCP server for agents." },
     ],
     paths: {
       "/api/emoji-search": {
@@ -318,6 +352,7 @@ export function openApiDocument(origin: string) {
         "A picture to show until the video plays (shares the picture limit).", RATE_LIMITS.file, ["image/webp", "image/png", "image/jpeg"], [...MEDIA_ERRORS, "NO_PREVIEW"]),
       "/api/emoji-pack/{name}/{id}/anim": media("Animation of an animated emoji", "getEmojiAnimation",
         "The TGS file as Telegram stores it (gzip-compressed Lottie); decompress and play it.", RATE_LIMITS.anim, ["application/x-tgsticker"], [...MEDIA_ERRORS, "NO_ANIMATION"]),
+      [EMOJI_MCP_PATH]: mcpOperation(origin),
       [EMOJI_OPENAPI_PATH]: {
         get: {
           tags: ["catalog"], operationId: "getOpenApi", summary: "This document",

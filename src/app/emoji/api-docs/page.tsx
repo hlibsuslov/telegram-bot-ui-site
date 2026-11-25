@@ -3,9 +3,11 @@ import { EmojiCode, EmojiDoc } from "@/components/emoji/emoji-doc";
 import { IdLookup } from "@/components/emoji/id-lookup";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { CHECKMARK } from "@/content/emoji-example";
-import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_OPENAPI_PATH, emojiPackPath } from "@/lib/emoji-links";
+import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
+import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_MCP_PATH, EMOJI_OPENAPI_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { emojiBreadcrumbs, emojiMetadata } from "@/lib/emoji-metadata";
 import { messageEmojiHtml } from "@/lib/emoji-snippets";
+import { siteUrl } from "@/lib/site-url";
 
 const TITLE = "Telegram Custom Emoji ID Lookup and JSON API";
 const DESCRIPTION = "Find which Telegram pack owns a custom emoji ID, or use the Emoji Library API to search packs and get IDs for bot messages and buttons.";
@@ -66,6 +68,22 @@ export default function EmojiApiDocs() {
           <p className="mt-2"><a href={CHECKMARK.lookup}>Look up the checkmark ID</a></p>
           <EmojiCode>{JSON.stringify({ ok: true, emoji: [{ id: CHECKMARK.id, set: CHECKMARK.name, pageUrl: CHECKMARK.path, telegramUrl: CHECKMARK.telegramUrl }] }, null, 2)}</EmojiCode>
         </div>
+      </section>
+
+      <section aria-labelledby="mcp">
+        <h2 id="mcp" className="scroll-mt-24">Connect it as an MCP server</h2>
+        <p>The same library is a remote MCP server at <code>{EMOJI_MCP_PATH}</code>, so an agent can search emoji, read packs and pick a pack for a bot without writing HTTP calls. It speaks MCP over Streamable HTTP (protocol 2025-11-25; older revisions are negotiated), is read-only and stateless, and needs no key or sign-in.</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li><code>emoji_search</code>, <code>emoji_pack</code> and <code>emoji_by_id</code> answer exactly what the endpoints above answer for the same input.</li>
+          <li><code>emoji_facets</code> gives the tag taxonomy and the tags of the packs you name.</li>
+          <li><code>emoji_rank_packs</code> ranks every catalog pack by tags (style, colour, palette, topic, mood, role, bot category) with hard <code>require</code> filters such as <code>motion:static</code>.</li>
+          <li><code>emoji_pick_family</code> picks one pack for the icon slots a bot needs (home, back, settings and so on) and returns its icon map with real IDs.</li>
+        </ul>
+        <h3 className="mt-4">Claude Code</h3>
+        <EmojiCode>{`claude mcp add --transport http telegram-emoji ${siteUrl()}${EMOJI_MCP_PATH}`}</EmojiCode>
+        <h3>claude.ai</h3>
+        <p>Open Settings, then Connectors, choose Add custom connector, give it a name and paste <code>{`${siteUrl()}${EMOJI_MCP_PATH}`}</code> as the server URL. Leave the OAuth fields empty. On Team and Enterprise plans an owner adds the connector for the organization first; members then turn it on.</p>
+        <p className="mt-2">A failed tool call comes back as a tool error with the same <code>{"{ok:false, error:{code, message}}"}</code> body as the HTTP API. Answers stay under {MCP_RESPONSE_MAX / 1024} KB; a larger one keeps the first part of each list and says so in <code>truncated</code>. The server allows {RATE_LIMITS.mcp} requests a minute per client, and each tool call also counts against its endpoint’s limit below.</p>
       </section>
 
       <section aria-labelledby="errors">

@@ -238,6 +238,7 @@ describe("GET /llms.txt", () => {
     const text = await llms.GET().text();
     const file = catalogExport();
     for (const part of ["/api/emoji-openapi.json", "/emoji-library.ndjson.gz", String(file.bytes), file.etag, "facet:value", "compatible",
+      "/api/mcp", "claude mcp add --transport http", "Add custom connector",
       ...Object.values(RATE_LIMITS).map(String)]) {
       assert.ok(text.includes(part), `llms.txt does not mention ${part}`);
     }

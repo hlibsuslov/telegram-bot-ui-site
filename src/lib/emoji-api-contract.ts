@@ -2,9 +2,12 @@
 // and the OpenAPI document (lib/emoji-openapi.ts) is built from the same table, so the two cannot
 // drift apart. No imports: every route can use it without pulling in the catalog data.
 
-/** Requests per client (IP), per endpoint and per server instance in a one-minute window. */
-export const RATE_LIMITS = { search: 240, pack: 30, ids: 30, facets: 60, file: 1500, anim: 1000 } as const;
+/** Requests per client (IP), per endpoint and per server instance in a one-minute window. `mcp` counts every
+ *  request to /api/mcp; each MCP tool call also counts against its endpoint's limit (search, pack, ids, facets). */
+export const RATE_LIMITS = { search: 240, pack: 30, ids: 30, facets: 60, file: 1500, anim: 1000, mcp: 300 } as const;
 export const RATE_WINDOW_SECONDS = 60;
+/** Largest answer body of /api/mcp; a larger tool result is cut, with a note saying what was cut. */
+export const MCP_RESPONSE_MAX = 100 * 1024;
 
 /** Every `error.code` an endpoint answers with, its HTTP status and what it means. */
 export const ERRORS = {
