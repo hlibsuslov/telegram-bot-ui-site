@@ -5,11 +5,11 @@
   "audience": "private",
   "message": {
     "id": "main",
-    "format": "regular.html",
+    "format": "rich.html",
     "text": {
-      "en": "📍 <b>Pickup</b>\nPulloa, 12 Harbour St, the counter by the window. Say order #{order.no}.",
-      "ru": "📍 <b>Самовывоз</b>\nPulloa, Портовая, 12, стойка у окна. Назовите заказ #{order.no}.",
-      "uk": "📍 <b>Самовивіз</b>\nPulloa, Портова, 12, стійка біля вікна. Назвіть замовлення #{order.no}."
+      "en": "<h2><tg-emoji emoji-id=\"6030399199030284183\">📍</tg-emoji> Pickup at Harbour St</h2>\n<p>Order <b>#{order.no}</b> will be ready at <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>.</p>\n<ol><li>Come in from Harbour St: the pickup counter is by the window.</li><li>Say your order number, <b>#{order.no}</b>.</li><li>Lids and sleeves are by the door.</li></ol>\n<blockquote>Running late? We keep your drink warm for 15 minutes.</blockquote>\n<tg-button-row><tg-button action=\"map\"><tg-emoji emoji-id=\"6030399199030284183\">📍</tg-emoji> Open in Maps</tg-button><tg-button type=\"copy_text\" text=\"Pulloa, 12 Harbour St\"><tg-emoji emoji-id=\"6034969813032374911\">📄</tg-emoji> Copy address</tg-button></tg-button-row>\n<footer>Open daily 7:30–20:00</footer>",
+      "ru": "<h2><tg-emoji emoji-id=\"6030399199030284183\">📍</tg-emoji> Самовывоз на Портовой</h2>\n<p>Заказ <b>#{order.no}</b> будет готов к <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>.</p>\n<ol><li>Вход с Портовой улицы, стойка выдачи у окна.</li><li>Назовите номер заказа, <b>#{order.no}</b>.</li><li>Крышки и манжеты у двери.</li></ol>\n<blockquote>Опаздываете? Держим напиток тёплым 15 минут.</blockquote>\n<tg-button-row><tg-button action=\"map\"><tg-emoji emoji-id=\"6030399199030284183\">📍</tg-emoji> Открыть на карте</tg-button><tg-button type=\"copy_text\" text=\"Pulloa, Портовая, 12\"><tg-emoji emoji-id=\"6034969813032374911\">📄</tg-emoji> Скопировать адрес</tg-button></tg-button-row>\n<footer>Ежедневно 7:30–20:00</footer>",
+      "uk": "<h2><tg-emoji emoji-id=\"6030399199030284183\">📍</tg-emoji> Самовивіз на Портовій</h2>\n<p>Замовлення <b>#{order.no}</b> буде готове о <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>.</p>\n<ol><li>Вхід з Портової вулиці, стійка видачі біля вікна.</li><li>Назвіть номер замовлення, <b>#{order.no}</b>.</li><li>Кришки й манжети біля дверей.</li></ol>\n<blockquote>Запізнюєтеся? Тримаємо напій теплим 15 хвилин.</blockquote>\n<tg-button-row><tg-button action=\"map\"><tg-emoji emoji-id=\"6030399199030284183\">📍</tg-emoji> Відкрити на мапі</tg-button><tg-button type=\"copy_text\" text=\"Pulloa, Портова, 12\"><tg-emoji emoji-id=\"6034969813032374911\">📄</tg-emoji> Скопіювати адресу</tg-button></tg-button-row>\n<footer>Щодня 7:30–20:00</footer>"
     }
   },
   "keyboard": {
@@ -21,6 +21,15 @@
     ]
   },
   "actions": {
+    "map": {
+      "label": {
+        "en": "Open in Maps",
+        "ru": "Открыть на карте",
+        "uk": "Відкрити на мапі"
+      },
+      "type": "url",
+      "url": "https://www.openstreetmap.org/search?query=12%20Harbour%20St"
+    },
     "back": {
       "label": {
         "en": "← Status",

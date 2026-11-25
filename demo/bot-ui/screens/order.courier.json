@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "🛵 <b>Courier</b>\nYour order goes with the next courier. We'll message you when it leaves.",
-      "ru": "🛵 <b>Курьер</b>\nЗаказ поедет со следующим курьером. Напишем, когда он выедет.",
-      "uk": "🛵 <b>Кур'єр</b>\nЗамовлення поїде з наступним кур'єром. Напишемо, коли він виїде."
+      "en": "<b>Courier</b>\nYour order goes with the next courier. We'll message you when it leaves.",
+      "ru": "<b>Курьер</b>\nЗаказ поедет со следующим курьером. Напишем, когда он выедет.",
+      "uk": "<b>Кур'єр</b>\nЗамовлення поїде з наступним кур'єром. Напишемо, коли він виїде."
     }
   },
   "keyboard": {

@@ -1,0 +1,45 @@
+{
+  "id": "support.faq",
+  "title": "Help",
+  "kind": "menu",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "rich.html",
+    "text": {
+      "en": "<h2><tg-emoji emoji-id=\"6030848053177486888\">❓</tg-emoji> Questions &amp; answers</h2>\n<p>Quick answers to what guests ask most. Tap a question to open it.</p>\n<details><summary>Which milk can I choose?</summary><p>Whole, oat or almond. Oat and almond cost nothing extra, and any drink can be made without milk.</p></details>\n<details><summary>Allergens</summary><table compact><tr><th align=\"left\">Item</th><th align=\"left\">Contains</th></tr><tr><td>Butter croissant</td><td>gluten, milk, egg</td></tr><tr><td>Cinnamon roll</td><td>gluten, milk, egg</td></tr><tr><td>Oat milk</td><td>oats (gluten)</td></tr><tr><td>Almond milk</td><td>tree nuts</td></tr></table></details>\n<details><summary>How much caffeine is in my drink?</summary><p>An S has one shot of espresso, M and L have two: <tg-math>2 \\times 63 = 126</tg-math> mg of caffeine. Decaf costs nothing extra.</p></details>\n<details><summary>Can I cancel an order?</summary><p>Yes, until the barista starts on it: write to us and the money goes back to your card within 3–5 days.</p></details>\n<h3>From the roastery</h3>\n<blockquote expandable>Our house blend is half Brazil for chocolate and body, half Ethiopia for a bright berry finish. We roast it in small batches every Monday, so the beans in your cup are never more than a week old.<cite>Mira, head roaster</cite></blockquote>\n<tg-button-row><tg-button action=\"write\"><tg-emoji emoji-id=\"6034831751308644168\">💬</tg-emoji> Write to a person</tg-button></tg-button-row>",
+      "ru": "<h2><tg-emoji emoji-id=\"6030848053177486888\">❓</tg-emoji> Вопросы и ответы</h2>\n<p>Короткие ответы на частые вопросы гостей. Нажмите на вопрос, чтобы открыть его.</p>\n<details><summary>Какое молоко можно выбрать?</summary><p>Обычное, овсяное или миндальное. Овсяное и миндальное без доплаты, любой напиток можно сделать без молока.</p></details>\n<details><summary>Аллергены</summary><table compact><tr><th align=\"left\">Позиция</th><th align=\"left\">Содержит</th></tr><tr><td>Сливочный круассан</td><td>глютен, молоко, яйцо</td></tr><tr><td>Синнабон</td><td>глютен, молоко, яйцо</td></tr><tr><td>Овсяное молоко</td><td>овёс (глютен)</td></tr><tr><td>Миндальное молоко</td><td>орехи</td></tr></table></details>\n<details><summary>Сколько кофеина в напитке?</summary><p>В S одна порция эспрессо, в M и L две: <tg-math>2 \\times 63 = 126</tg-math> мг кофеина. Без кофеина — без доплаты.</p></details>\n<details><summary>Можно отменить заказ?</summary><p>Да, пока бариста не начал его готовить: напишите нам, и деньги вернутся на карту за 3–5 дней.</p></details>\n<h3>Из обжарочной</h3>\n<blockquote expandable>Наш домашний бленд наполовину из Бразилии для шоколадной плотности, наполовину из Эфиопии для яркого ягодного послевкусия. Обжариваем небольшими партиями каждый понедельник, так что зёрнам в вашей чашке не больше недели.<cite>Мира, обжарщица</cite></blockquote>\n<tg-button-row><tg-button action=\"write\"><tg-emoji emoji-id=\"6034831751308644168\">💬</tg-emoji> Написать человеку</tg-button></tg-button-row>",
+      "uk": "<h2><tg-emoji emoji-id=\"6030848053177486888\">❓</tg-emoji> Питання та відповіді</h2>\n<p>Короткі відповіді на часті запитання гостей. Натисніть на запитання, щоб відкрити його.</p>\n<details><summary>Яке молоко можна обрати?</summary><p>Звичайне, вівсяне або мигдальне. Вівсяне й мигдальне без доплати, будь-який напій можна зробити без молока.</p></details>\n<details><summary>Алергени</summary><table compact><tr><th align=\"left\">Позиція</th><th align=\"left\">Містить</th></tr><tr><td>Вершковий круасан</td><td>глютен, молоко, яйце</td></tr><tr><td>Синабон</td><td>глютен, молоко, яйце</td></tr><tr><td>Вівсяне молоко</td><td>овес (глютен)</td></tr><tr><td>Мигдальне молоко</td><td>горіхи</td></tr></table></details>\n<details><summary>Скільки кофеїну в напої?</summary><p>У S одна порція еспресо, у M і L дві: <tg-math>2 \\times 63 = 126</tg-math> мг кофеїну. Без кофеїну — без доплати.</p></details>\n<details><summary>Чи можна скасувати замовлення?</summary><p>Так, поки бариста не почав його готувати: напишіть нам, і гроші повернуться на картку за 3–5 днів.</p></details>\n<h3>З обсмажувальні</h3>\n<blockquote expandable>Наш домашній бленд наполовину з Бразилії для шоколадної щільності, наполовину з Ефіопії для яскравого ягідного післясмаку. Обсмажуємо невеликими партіями щопонеділка, тож зернам у вашій чашці не більше тижня.<cite>Міра, обсмажувальниця</cite></blockquote>\n<tg-button-row><tg-button action=\"write\"><tg-emoji emoji-id=\"6034831751308644168\">💬</tg-emoji> Написати людині</tg-button></tg-button-row>"
+    }
+  },
+  "keyboard": {
+    "type": "inline",
+    "rows": [
+      [
+        "back"
+      ]
+    ]
+  },
+  "actions": {
+    "write": {
+      "label": {
+        "en": "Write to a person",
+        "ru": "Написать человеку",
+        "uk": "Написати людині"
+      },
+      "type": "navigate",
+      "to": "support.start",
+      "presentation": "send",
+      "style": "primary"
+    },
+    "back": {
+      "label": {
+        "en": "← Back",
+        "ru": "← Назад",
+        "uk": "← Назад"
+      },
+      "type": "back",
+      "fallback": "entry.start"
+    }
+  }
+}

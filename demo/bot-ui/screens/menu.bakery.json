@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "<b>Bakery</b>\nBaked this morning.\nButter croissant · €2.40\nCinnamon roll · €2.90",
-      "ru": "<b>Выпечка</b>\nИспекли сегодня утром.\nСливочный круассан · 2,40 €\nСиннабон · 2,90 €",
-      "uk": "<b>Випічка</b>\nСпекли сьогодні зранку.\nВершковий круасан · 2,40 €\nСинабон · 2,90 €"
+      "en": "<tg-emoji emoji-id=\"5330233145105064635\">🥐</tg-emoji> <b>Bakery</b>\nBaked this morning.\nButter croissant · €2.40\nCinnamon roll · €2.90",
+      "ru": "<tg-emoji emoji-id=\"5330233145105064635\">🥐</tg-emoji> <b>Выпечка</b>\nИспекли сегодня утром.\nСливочный круассан · 2,40 €\nСиннабон · 2,90 €",
+      "uk": "<tg-emoji emoji-id=\"5330233145105064635\">🥐</tg-emoji> <b>Випічка</b>\nСпекли сьогодні зранку.\nВершковий круасан · 2,40 €\nСинабон · 2,90 €"
     }
   },
   "keyboard": {

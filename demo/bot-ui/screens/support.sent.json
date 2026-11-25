@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "📨 <b>Sent to the team</b>\nWe'll answer right here in this chat.",
-      "ru": "📨 <b>Отправили команде</b>\nОтветим прямо здесь, в этом чате.",
-      "uk": "📨 <b>Надіслали команді</b>\nВідповімо просто тут, у цьому чаті."
+      "en": "<tg-emoji emoji-id=\"5774022692642492953\">✅</tg-emoji> <b>Sent to the team</b>\nWe'll answer right here in this chat.",
+      "ru": "<tg-emoji emoji-id=\"5774022692642492953\">✅</tg-emoji> <b>Отправили команде</b>\nОтветим прямо здесь, в этом чате.",
+      "uk": "<tg-emoji emoji-id=\"5774022692642492953\">✅</tg-emoji> <b>Надіслали команді</b>\nВідповімо просто тут, у цьому чаті."
     }
   },
   "keyboard": {

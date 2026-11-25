@@ -7,9 +7,9 @@
     "id": "main",
     "format": "regular.html",
     "text": {
-      "en": "<b>Tea &amp; more</b>\nMatcha latte · €4.40\nChai latte · €4.10",
-      "ru": "<b>Чай и не только</b>\nМатча-латте · 4,40 €\nЧай-латте · 4,10 €",
-      "uk": "<b>Чай і не тільки</b>\nМатча-лате · 4,40 €\nЧай-лате · 4,10 €"
+      "en": "<tg-emoji emoji-id=\"5327885709254598634\">🍵</tg-emoji> <b>Tea &amp; more</b>\nMatcha latte · €4.40\nChai latte · €4.10",
+      "ru": "<tg-emoji emoji-id=\"5327885709254598634\">🍵</tg-emoji> <b>Чай и не только</b>\nМатча-латте · 4,40 €\nЧай-латте · 4,10 €",
+      "uk": "<tg-emoji emoji-id=\"5327885709254598634\">🍵</tg-emoji> <b>Чай і не тільки</b>\nМатча-лате · 4,40 €\nЧай-лате · 4,10 €"
     }
   },
   "keyboard": {

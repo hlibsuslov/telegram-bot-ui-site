@@ -5,37 +5,32 @@
   "audience": "private",
   "message": {
     "id": "main",
-    "format": "regular.html",
+    "format": "rich.html",
     "text": {
-      "en": "⭐ <b>Loyalty card</b>\n{loyalty.stamps} of 10 stamps. Every 10th drink is on us.",
-      "ru": "⭐ <b>Карта гостя</b>\n{loyalty.stamps} из 10 отметок. Каждый 10-й напиток в подарок.",
-      "uk": "⭐ <b>Картка гостя</b>\n{loyalty.stamps} з 10 позначок. Кожен 10-й напій у подарунок."
+      "en": "<h2><tg-emoji emoji-id=\"5773677501825945508\">🎁</tg-emoji> Loyalty card</h2>\n<p><b>{loyalty.stamps} of 10</b> stamps. <mark>{loyalty.left} more</mark> and your next drink is on us.</p>\n<ul><li>One stamp for every drink you pay for in the bot.</li><li>The free drink can be any size, iced drinks too.</li><li>Stamps never expire.</li></ul>\n<aside>Every 10th drink is on us.</aside>\n<tg-button-row><tg-button action=\"menu\"></tg-button></tg-button-row>\n<footer>A stamp appears once the order is picked up.</footer>",
+      "ru": "<h2><tg-emoji emoji-id=\"5773677501825945508\">🎁</tg-emoji> Карта гостя</h2>\n<p><b>{loyalty.stamps} из 10</b> отметок. Ещё <mark>{loyalty.left}</mark>, и следующий напиток за наш счёт.</p>\n<ul><li>Одна отметка за каждый напиток, оплаченный в боте.</li><li>Бесплатный напиток любого размера, холодные тоже.</li><li>Отметки не сгорают.</li></ul>\n<aside>Каждый 10-й напиток от нас.</aside>\n<tg-button-row><tg-button action=\"menu\"></tg-button></tg-button-row>\n<footer>Отметка появляется, когда заказ получен.</footer>",
+      "uk": "<h2><tg-emoji emoji-id=\"5773677501825945508\">🎁</tg-emoji> Картка гостя</h2>\n<p><b>{loyalty.stamps} з 10</b> позначок. Ще <mark>{loyalty.left}</mark>, і наступний напій за наш рахунок.</p>\n<ul><li>Одна позначка за кожен напій, сплачений у боті.</li><li>Безкоштовний напій будь-якого розміру, холодні теж.</li><li>Позначки не згорають.</li></ul>\n<aside>Кожен 10-й напій від нас.</aside>\n<tg-button-row><tg-button action=\"menu\"></tg-button></tg-button-row>\n<footer>Позначка з'являється, коли замовлення отримано.</footer>"
     }
   },
   "keyboard": {
     "type": "inline",
     "rows": [
       [
-        "how"
-      ],
-      [
         "back"
       ]
     ]
   },
   "actions": {
-    "how": {
+    "menu": {
       "label": {
-        "en": "How it works",
-        "ru": "Как это работает",
-        "uk": "Як це працює"
+        "en": "Order a drink",
+        "ru": "Заказать напиток",
+        "uk": "Замовити напій"
       },
-      "type": "answer",
-      "text": {
-        "en": "One stamp per drink, added automatically",
-        "ru": "Одна отметка за напиток, ставится сама",
-        "uk": "Одна позначка за напій, ставиться сама"
-      }
+      "type": "navigate",
+      "to": "menu.categories",
+      "presentation": "edit",
+      "style": "primary"
     },
     "back": {
       "label": {

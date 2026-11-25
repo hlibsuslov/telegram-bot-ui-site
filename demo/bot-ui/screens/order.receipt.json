@@ -1,0 +1,18 @@
+{
+  "id": "order.receipt",
+  "title": "Receipt",
+  "kind": "result",
+  "audience": "private",
+  "message": {
+    "id": "main",
+    "format": "rich.html",
+    "text": {
+      "en": "<h2>Receipt #{order.no}</h2>\n<p>Paid in Telegram. Ready at <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>, pickup at Harbour St.</p>\n<table compact>\n<tr><th align=\"left\">Item</th><th align=\"right\">Price</th></tr>\n<tr><td>{cart.drink}</td><td align=\"right\">{cart.drink_price}</td></tr>\n<tr><td>{cart.pastry}</td><td align=\"right\">{cart.pastry_price}</td></tr>\n<tr><td><b>Total</b></td><td align=\"right\"><b>{cart.total}</b></td></tr>\n</table>\n<tg-button-row><tg-button type=\"copy_text\" text=\"{order.no}\"><tg-emoji emoji-id=\"6034969813032374911\">📄</tg-emoji> Copy order number</tg-button></tg-button-row>\n<hr>\n<footer>Pulloa · 12 Harbour St · prices include VAT</footer>",
+      "ru": "<h2>Чек #{order.no}</h2>\n<p>Оплачено в Telegram. Будет готов к <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>, самовывоз на Портовой.</p>\n<table compact>\n<tr><th align=\"left\">Позиция</th><th align=\"right\">Цена</th></tr>\n<tr><td>{cart.drink}</td><td align=\"right\">{cart.drink_price}</td></tr>\n<tr><td>{cart.pastry}</td><td align=\"right\">{cart.pastry_price}</td></tr>\n<tr><td><b>Итого</b></td><td align=\"right\"><b>{cart.total}</b></td></tr>\n</table>\n<tg-button-row><tg-button type=\"copy_text\" text=\"{order.no}\"><tg-emoji emoji-id=\"6034969813032374911\">📄</tg-emoji> Скопировать номер заказа</tg-button></tg-button-row>\n<hr>\n<footer>Pulloa · Портовая, 12 · цены с НДС</footer>",
+      "uk": "<h2>Чек #{order.no}</h2>\n<p>Сплачено в Telegram. Буде готове о <tg-time unix=\"{pickup.unix}\" format=\"t\">{pickup.time}</tg-time>, самовивіз на Портовій.</p>\n<table compact>\n<tr><th align=\"left\">Позиція</th><th align=\"right\">Ціна</th></tr>\n<tr><td>{cart.drink}</td><td align=\"right\">{cart.drink_price}</td></tr>\n<tr><td>{cart.pastry}</td><td align=\"right\">{cart.pastry_price}</td></tr>\n<tr><td><b>Разом</b></td><td align=\"right\"><b>{cart.total}</b></td></tr>\n</table>\n<tg-button-row><tg-button type=\"copy_text\" text=\"{order.no}\"><tg-emoji emoji-id=\"6034969813032374911\">📄</tg-emoji> Скопіювати номер замовлення</tg-button></tg-button-row>\n<hr>\n<footer>Pulloa · Портова, 12 · ціни з ПДВ</footer>"
+    }
+  },
+  "keyboard": {
+    "type": "none"
+  }
+}
