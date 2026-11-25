@@ -111,9 +111,10 @@ export function pickFamily(source: SearchSource, { slots, brief = {}, require = 
   let wanted: Record<string, string[]> = {};
   const notes: string[] = [];
   const hasBrief = Object.values(brief).some((v) => v?.length);
-  if (hasBrief || require.length) {
-    // The theme the bot must look right in is part of the brief.
-    const ask: Brief = hasBrief && !brief.fit?.length ? { ...brief, fit: [theme] } : brief;
+  // The theme the bot must look right in is part of the brief; a light or dark theme is one even alone.
+  const themed = !brief.fit?.length && (hasBrief || theme !== "both");
+  if (hasBrief || themed || require.length) {
+    const ask: Brief = themed ? { ...brief, fit: [theme] } : brief;
     const ranked = rankPacks({ brief: ask, require, top: Infinity });
     wanted = ranked.brief;
     notes.push(...ranked.problems);

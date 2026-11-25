@@ -6,7 +6,7 @@ import { after, before, describe, test } from "node:test";
 import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
 import { catalogPacks, catalogVersion } from "@/lib/emoji-facets";
 import { openApiDocument } from "@/lib/emoji-openapi";
-import { rankPacks } from "@/lib/emoji-pick";
+import { pickFamily, rankPacks } from "@/lib/emoji-pick";
 import { SLOT_NAMES } from "@/lib/emoji-slots";
 import { validate } from "./schema";
 import { FAILING, FAKE_TOKEN, installFakeTelegram } from "./telegram";
@@ -242,6 +242,18 @@ describe("MCP tools for choosing packs", () => {
     const ranking = answer.ranking as { name: string; score: number }[];
     assert.equal(ranking[0].name, map.family);
     assert.ok(ranking.length <= 6);
+  });
+  test("emoji_pick_family: a light or dark theme alone picks the pack tagged for it among equal candidates", () => {
+    const fitOf = (name: string) => Object.fromEntries(catalogPacks().find((p) => p.name === name)!.facets.fit ?? []);
+    const [light, dark] = ["ENLettersAndNumbers", "LettersAndNumbers"];
+    assert.ok(fitOf(light).light > 0.5 && !fitOf(light).dark && fitOf(dark).dark > 0.5 && !fitOf(dark).light, "packs with opposite theme tags");
+    const packs = [light, dark].map((name, rank) => ({ name, title: name, category: "test", rank, tags: [] }));
+    const emoji = packs.flatMap((_, p) => ["🏠", "✅"].map((f, i) => ({ p, id: `${p}${i}`, f, fmt: "static" as const, ad: false, pv: true, st: false, tags: [] })));
+    for (const [theme, want] of [["light", light], ["dark", dark]] as const) {
+      const answer = pickFamily({ packs, emoji, revision: "test" }, { slots: ["home", "done"], theme });
+      assert.equal(answer.map?.family, want, theme);
+      assert.equal(answer.ranking[0].coverage, answer.ranking[1].coverage);
+    }
   });
   test("emoji_pick_family: a slot outside the list or an extra argument is refused", async () => {
     assert.match((await toolError("emoji_pick_family", { slots: ["teleport"] })).text, /slots/);
