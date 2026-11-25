@@ -10,9 +10,17 @@ import taxonomyDoc from "@/content/emoji-taxonomy.json";
 
 export type Tag = [string, number];
 export type FacetMap = Record<string, Tag[]>;
+/** How a pack is drawn (look cards in emoji-pack-styles.json). */
+export interface Look { line_weight: string; fill: string; perspective: string; shadows: string; characters: string; drawn: string }
+/** What a pack shows, what a bot uses it for and what not, per language. Not every build has it yet. */
+export type PackDescription = Partial<Record<"en" | "ru" | "uk", { what: string; for: string; not_for: string }>>;
+interface PackDoc {
+  category: string; count: number; meanings: number; facets: FacetMap; compatible: [string, number][];
+  title?: string; look?: Look; description?: PackDescription;
+}
 interface FacetsDoc {
   format: string; taxonomy: number; generated: string; thresholds: { emoji: number; pack: number; show: number };
-  packs: Record<string, { category: string; count: number; meanings: number; facets: FacetMap; compatible: [string, number][] }>;
+  packs: Record<string, PackDoc>;
   /** per emoji: "c:blue@9,white@6;s:outline@6" (facet code, value, confidence x10) */
   codes: Record<string, string>; emoji: Record<string, Record<string, string>>;
 }
@@ -24,10 +32,15 @@ const doc = facetsDoc as unknown as FacetsDoc;
 export const taxonomy = taxonomyDoc as unknown as Taxonomy;
 const byLowerPack = new Map(Object.keys(doc.packs).map((k) => [k.toLowerCase(), k]));
 
-export function packFacets(name: string): { facets: FacetMap; compatible: [string, number][] } | null {
+/** look and description only when the catalog has them, so a response never carries an empty one. */
+function drawnAs(p: PackDoc): { look?: Look; description?: PackDescription } {
+  return { ...(p.look && { look: p.look }), ...(p.description && { description: p.description }) };
+}
+
+export function packFacets(name: string): { facets: FacetMap; compatible: [string, number][]; look?: Look; description?: PackDescription } | null {
   const key = byLowerPack.get(name.toLowerCase());
   if (!key) return null;
-  return { facets: doc.packs[key].facets, compatible: doc.packs[key].compatible ?? [] };
+  return { facets: doc.packs[key].facets, compatible: doc.packs[key].compatible ?? [], ...drawnAs(doc.packs[key]) };
 }
 
 const facetOfCode = Object.fromEntries(Object.entries(doc.codes).map(([facet, code]) => [code, facet]));
@@ -114,8 +127,32 @@ export function labelled(map: FacetMap, lang: "en" | "ru" = "en"): { facet: stri
 }
 
 export const facetsMeta = { generated: doc.generated, taxonomy: doc.taxonomy, thresholds: doc.thresholds };
+/** The catalog version every JSON answer carries: taxonomy version and the day the tags were built. */
+export const catalogVersion = { taxonomy: doc.taxonomy, generated: doc.generated };
+/** Facet of each one-letter code in the per-emoji tag strings ("c" -> "color"). */
+export const facetCodes: Record<string, string> = facetOfCode;
 
 /** Every pack's facets in one answer, for agents that pick packs (GET /api/emoji-facets). */
 export function allPackFacets() {
-  return Object.entries(doc.packs).map(([name, p]) => ({ name, category: p.category, count: p.count, meanings: p.meanings, facets: p.facets, compatible: p.compatible ?? [] }));
+  return Object.entries(doc.packs).map(([name, p]) => ({
+    name, category: p.category, count: p.count, meanings: p.meanings, facets: p.facets, compatible: p.compatible ?? [], ...drawnAs(p),
+  }));
+}
+
+export interface CatalogPack {
+  name: string; title: string | null; category: string; count: number; meanings: number; facets: FacetMap;
+  look?: Look; description?: PackDescription; compatible: [string, number][];
+  /** every emoji id with its own tag string ("c:blue@9,white@6;s:outline@6") */
+  emoji: { id: string; codes: string }[];
+}
+let catalog: CatalogPack[] | null = null;
+
+/** Every pack with its emoji ids and their raw tag strings, for the catalog export (lib/emoji-export.ts). */
+export function catalogPacks(): CatalogPack[] {
+  catalog ??= Object.entries(doc.packs).map(([name, p]) => ({
+    name, title: p.title ?? null, category: p.category, count: p.count, meanings: p.meanings, facets: p.facets,
+    ...drawnAs(p), compatible: p.compatible ?? [],
+    emoji: Object.entries(doc.emoji[name] ?? {}).map(([id, codes]) => ({ id, codes })),
+  }));
+  return catalog;
 }

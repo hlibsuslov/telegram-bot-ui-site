@@ -14,6 +14,7 @@
 // retry_after is running.
 import "server-only";
 import { request } from "node:https";
+import type { ErrorCode } from "./emoji-api-contract";
 import { emojiFile, type Format } from "./emoji-card";
 import { fixtureAnimation, fixturePack, fixturePreview, fixturesOn } from "./emoji-fixtures";
 import { PACK_NAME } from "./emoji-pack-list";
@@ -47,12 +48,12 @@ interface Sticker {
 interface StickerSet { name: string; title?: string; sticker_type?: string; stickers?: Sticker[] }
 
 export class ResolverError extends Error {
-  constructor(readonly code: string, readonly status: number, message: string, readonly retryAfter?: number) {
+  constructor(readonly code: ErrorCode, readonly status: number, message: string, readonly retryAfter?: number) {
     super(message);
   }
 }
 
-function missing(code: string, message: string): never {
+function missing(code: ErrorCode, message: string): never {
   throw new ResolverError(code, 404, message);
 }
 
