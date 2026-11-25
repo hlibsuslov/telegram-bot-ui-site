@@ -1,18 +1,24 @@
 {
   "scenarioId": "guest.empty-and-support",
-  "title": "No order yet, loyalty card, a message to support",
+  "title": "No order yet, the FAQ, then a message to a person",
   "locale": "uk",
   "context": {
     "chat": "private",
     "delivery.method": "pickup"
   },
   "data": {
-    "cart.summary": "Flat white M, oat milk · Butter croissant",
-    "cart.total": "€6.30",
+    "cart.summary": "Флет вайт M, вівсяне молоко · Вершковий круасан",
+    "cart.total": "6,30 €",
+    "cart.drink": "Флет вайт M, вівсяне молоко",
+    "cart.drink_price": "3,90 €",
+    "cart.pastry": "Вершковий круасан",
+    "cart.pastry_price": "2,40 €",
     "order.no": "218",
     "pickup.time": "8:45",
+    "pickup.unix": "1794737100",
     "order.status_text": "brewing",
-    "loyalty.stamps": "7"
+    "loyalty.stamps": "7",
+    "loyalty.left": "3"
   },
   "steps": [
     {
@@ -30,18 +36,20 @@
       "press": "back"
     },
     {
-      "press": "card"
+      "press": "help"
     },
     {
       "expect": {
-        "screen": "loyalty.card"
+        "screen": "support.faq"
       }
     },
     {
-      "press": "back"
+      "press": "write"
     },
     {
-      "press": "help"
+      "expect": {
+        "screen": "support.start"
+      }
     },
     {
       "text": "Забули додати кришку"
@@ -49,6 +57,14 @@
     {
       "expect": {
         "screen": "support.sent"
+      }
+    },
+    {
+      "press": "menu"
+    },
+    {
+      "expect": {
+        "screen": "entry.start"
       }
     }
   ]
