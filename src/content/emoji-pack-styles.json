@@ -286,22 +286,6 @@
    "unsure": [],
    "source": "vision"
   },
-  "alphabet_telemoji": {
-   "style": [
-    "lettering"
-   ],
-   "line_weight": "none",
-   "fill": "gradient",
-   "perspective": "front",
-   "shadows": "none",
-   "characters": "none",
-   "drawn": "bold red sans Latin and Cyrillic letters and digits with a soft bevel; odd stray cells: Nyan Cat, black objects, photo",
-   "confidence": 0.8,
-   "unsure": [
-    "characters"
-   ],
-   "source": "vision"
-  },
   "AlphabetEmoji": {
    "style": [
     "lettering",
@@ -1180,24 +1164,6 @@
    ],
    "source": "vision"
   },
-  "CenterOfEmoji62973425": {
-   "style": [
-    "flat",
-    "neon"
-   ],
-   "line_weight": "thin",
-   "fill": "flat",
-   "perspective": "front",
-   "shadows": "glow",
-   "characters": "some",
-   "drawn": "Mixed icons on black tiles: flat arrows, hearts, dots, badges, some glowing neon arrows/words, a few emoji; black blanks",
-   "confidence": 0.55,
-   "unsure": [
-    "style",
-    "shadows"
-   ],
-   "source": "vision"
-  },
   "CenterOfEmoji715083": {
    "style": [
     "native-ui",
@@ -1674,23 +1640,6 @@
    ],
    "source": "vision"
   },
-  "creatvisual": {
-   "style": [
-    "lettering",
-    "gradient"
-   ],
-   "line_weight": "none",
-   "fill": "gradient",
-   "perspective": "front",
-   "shadows": "soft",
-   "characters": "some",
-   "drawn": "Mixed: Cyrillic alphabet and digits in pink-green gradient script, pink decor icons, then photo portraits and collages",
-   "confidence": 0.65,
-   "unsure": [
-    "style"
-   ],
-   "source": "vision"
-  },
   "CreepyEmoji": {
    "style": [
     "emoji-like"
@@ -2064,24 +2013,6 @@
    ],
    "source": "vision"
   },
-  "Decoration_Pack2": {
-   "style": [
-    "flat",
-    "neon"
-   ],
-   "line_weight": "thin",
-   "fill": "flat",
-   "perspective": "front",
-   "shadows": "glow",
-   "characters": "some",
-   "drawn": "Mixed icons on black tiles: flat arrows, hearts, dots, badges, some glowing neon arrows/words, a few emoji; black blanks",
-   "confidence": 0.55,
-   "unsure": [
-    "style",
-    "shadows"
-   ],
-   "source": "vision"
-  },
   "Decoration_Pack5": {
    "style": [
     "cartoon",
@@ -2230,20 +2161,6 @@
    ],
    "source": "vision"
   },
-  "DMJTGCheck": {
-   "style": [
-    "native-ui"
-   ],
-   "line_weight": "none",
-   "fill": "gradient",
-   "perspective": "front",
-   "shadows": "none",
-   "characters": "some",
-   "drawn": "Telegram and third-party client app icons in circles with blue gradients, plus three portrait photo badges",
-   "confidence": 0.85,
-   "unsure": [],
-   "source": "vision"
-  },
   "DMJTGStarsEmoji": {
    "style": [
     "glossy",
@@ -2378,38 +2295,6 @@
    "shadows": "none",
    "characters": "some",
    "drawn": "Cute Halloween illustrations: pumpkins, ghosts, frogs, witches, cats; flat fills with grainy brush texture, no outline",
-   "confidence": 0.72,
-   "unsure": [
-    "style"
-   ],
-   "source": "vision"
-  },
-  "e26110310291a1cb7e_by_lemurkka_emoji_bot": {
-   "style": [
-    "hand-drawn",
-    "lettering"
-   ],
-   "line_weight": "medium",
-   "fill": "textured",
-   "perspective": "front",
-   "shadows": "none",
-   "characters": "some",
-   "drawn": "Monochrome grey/beige grainy pencil-texture drawings: icons, faces, animals, Russian word labels, digits; 2 black cells",
-   "confidence": 0.75,
-   "unsure": [],
-   "source": "vision"
-  },
-  "e261108201322beae9_by_lemurkka_emoji_bot": {
-   "style": [
-    "hand-drawn",
-    "cartoon"
-   ],
-   "line_weight": "bold",
-   "fill": "textured",
-   "perspective": "mixed",
-   "shadows": "none",
-   "characters": "some",
-   "drawn": "mixed: punk stickers, B/W engraving-hatched skulls, rats, boots plus grainy bold-outline cartoons, cut-out words",
    "confidence": 0.72,
    "unsure": [
     "style"
@@ -3013,21 +2898,6 @@
    ],
    "source": "vision"
   },
-  "Flags_kotletovv": {
-   "style": [
-    "glossy",
-    "native-ui"
-   ],
-   "line_weight": "none",
-   "fill": "gradient",
-   "perspective": "front",
-   "shadows": "soft",
-   "characters": "some",
-   "drawn": "Brand/app/game logos on bevelled shield badges with glossy highlight and gradient; a few mascots",
-   "confidence": 0.8,
-   "unsure": [],
-   "source": "vision"
-  },
   "FlagsEmoji": {
    "style": [
     "emoji-like"
@@ -3299,24 +3169,6 @@
    "confidence": 0.7,
    "unsure": [
     "style"
-   ],
-   "source": "vision"
-  },
-  "GeorgiPrem_by_TgEmodziBot": {
-   "style": [
-    "realistic",
-    "flat"
-   ],
-   "line_weight": "none",
-   "fill": "photo",
-   "perspective": "mixed",
-   "shadows": "none",
-   "characters": "some",
-   "drawn": "mixed Georgia set: flags and crosses as flat marks, photos of footballers, food, wine, people; cartoon men",
-   "confidence": 0.5,
-   "unsure": [
-    "style",
-    "fill"
    ],
    "source": "vision"
   },
@@ -4663,24 +4515,6 @@
    "drawn": "photo cutouts of meme cats, dogs and people on black tiles, banana and apple cat memes on white; some cells blank",
    "confidence": 0.75,
    "unsure": [],
-   "source": "vision"
-  },
-  "memetop_by_TgEmojiBot": {
-   "style": [
-    "cartoon",
-    "realistic"
-   ],
-   "line_weight": "medium",
-   "fill": "flat",
-   "perspective": "mixed",
-   "shadows": "none",
-   "characters": "some",
-   "drawn": "Mixed memes: Pepe frog cartoons, photo cats/dogs/people, Hello Kitty, Sailor Moon on square tiles; promo cells",
-   "confidence": 0.55,
-   "unsure": [
-    "style",
-    "fill"
-   ],
    "source": "vision"
   },
   "MendeleevEmoji": {
@@ -7575,20 +7409,6 @@
    "unsure": [
     "style"
    ],
-   "source": "vision"
-  },
-  "zeeeeexexexesexcc_by_fStikBot": {
-   "style": [
-    "cartoon"
-   ],
-   "line_weight": "thin",
-   "fill": "flat",
-   "perspective": "mixed",
-   "shadows": "none",
-   "characters": "all",
-   "drawn": "cut-out anime and manga images of one dark-haired girl character, cel-shaded and black-white panels",
-   "confidence": 0.85,
-   "unsure": [],
    "source": "vision"
   },
   "zhelezo_28919_by_TgEmodziBot": {

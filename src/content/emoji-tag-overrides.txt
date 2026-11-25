@@ -30,8 +30,6 @@ osennii3Emoji mood: -serious
 IOS27icons8 use: -shop, -finance, -support
 # meme frames
 veritylover_by_photocropperbot role: -action, -settings
-# logos on shields
-Flags_kotletovv topic: -flags, +brands
 # football crests
 worldcup_z1vert1k topic: -food, +sport
 # photos of Pixel phones

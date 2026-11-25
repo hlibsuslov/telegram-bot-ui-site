@@ -1382,30 +1382,6 @@
     "mood"
    ]
   },
-  "creatvisual": {
-   "style": [
-    "lettering",
-    "gradient"
-   ],
-   "color": [
-    "pink",
-    "green",
-    "gray"
-   ],
-   "palette": "muted",
-   "topic": [
-    "letters",
-    "decor"
-   ],
-   "mood": "calm",
-   "fit": "both",
-   "use": [
-    "content"
-   ],
-   "unsure": [
-    "mood"
-   ]
-  },
   "neon_alphabet": {
    "style": [
     "lettering",
@@ -1862,27 +1838,6 @@
     "topic",
     "use"
    ]
-  },
-  "DMJTGCheck": {
-   "style": [
-    "native-ui",
-    "flat"
-   ],
-   "color": [
-    "blue",
-    "white",
-    "purple"
-   ],
-   "palette": "vivid",
-   "topic": [
-    "brands"
-   ],
-   "mood": "serious",
-   "fit": "both",
-   "use": [
-    "content"
-   ],
-   "unsure": []
   }
  },
  "emoji": {
@@ -5308,67 +5263,6 @@
    "role": "content",
    "unsure": []
   },
-  "creatvisual/5465272328550120759": {
-   "color": [
-    "pink",
-    "green"
-   ],
-   "style": "lettering",
-   "topic": "letters",
-   "mood": "calm",
-   "role": "content",
-   "unsure": []
-  },
-  "creatvisual/5471879830792338339": {
-   "color": [
-    "pink",
-    "green"
-   ],
-   "style": "lettering",
-   "topic": "letters",
-   "mood": "calm",
-   "role": "content",
-   "unsure": []
-  },
-  "creatvisual/5471942069163423556": {
-   "color": [
-    "gray",
-    "pink",
-    "white"
-   ],
-   "style": "3d",
-   "topic": "love",
-   "mood": "loving",
-   "role": "decoration",
-   "unsure": [
-    "style"
-   ]
-  },
-  "creatvisual/5470154916091692318": {
-   "color": [
-    "pink",
-    "gray"
-   ],
-   "style": "flat",
-   "topic": "music",
-   "mood": "calm",
-   "role": "content",
-   "unsure": [
-    "style"
-   ]
-  },
-  "creatvisual/5471987570046955560": {
-   "color": [
-    "gray",
-    "black",
-    "pink"
-   ],
-   "style": "realistic",
-   "topic": "characters",
-   "mood": "calm",
-   "role": "content",
-   "unsure": []
-  },
   "neon_alphabet/5463193233666348423": {
    "color": [
     "green"
@@ -6503,63 +6397,6 @@
    "unsure": [
     "topic"
    ]
-  },
-  "DMJTGCheck/6008151809602886115": {
-   "color": [
-    "white",
-    "blue",
-    "green"
-   ],
-   "style": "native-ui",
-   "topic": "brands",
-   "mood": "serious",
-   "role": "content",
-   "unsure": []
-  },
-  "DMJTGCheck/6050803639465808439": {
-   "color": [
-    "blue",
-    "pink",
-    "purple"
-   ],
-   "style": "gradient",
-   "topic": "symbols",
-   "mood": "serious",
-   "role": "decoration",
-   "unsure": []
-  },
-  "DMJTGCheck/6048806797500747209": {
-   "color": [
-    "purple",
-    "white"
-   ],
-   "style": "native-ui",
-   "topic": "brands",
-   "mood": "serious",
-   "role": "content",
-   "unsure": []
-  },
-  "DMJTGCheck/6048334643155963622": {
-   "color": [
-    "purple",
-    "white"
-   ],
-   "style": "native-ui",
-   "topic": "brands",
-   "mood": "serious",
-   "role": "content",
-   "unsure": []
-  },
-  "DMJTGCheck/6003479903092087715": {
-   "color": [
-    "blue",
-    "white"
-   ],
-   "style": "native-ui",
-   "topic": "brands",
-   "mood": "serious",
-   "role": "content",
-   "unsure": []
   }
  },
  "second": {
@@ -6928,31 +6765,6 @@
      "style",
      "mood",
      "use"
-    ]
-   },
-   "creatvisual": {
-    "style": [
-     "lettering",
-     "gradient"
-    ],
-    "color": [
-     "pink",
-     "green",
-     "gray"
-    ],
-    "palette": "muted",
-    "topic": [
-     "letters",
-     "decor"
-    ],
-    "mood": "calm",
-    "fit": "both",
-    "use": [
-     "content"
-    ],
-    "unsure": [
-     "style",
-     "mood"
     ]
    },
    "MendeleevEmoji": {
@@ -8012,71 +7824,6 @@
     ],
     "style": "flat",
     "topic": "decor",
-    "mood": "calm",
-    "role": "decoration",
-    "unsure": []
-   },
-   "creatvisual/5465272328550120759": {
-    "color": [
-     "pink",
-     "green"
-    ],
-    "style": "lettering",
-    "topic": "letters",
-    "mood": "calm",
-    "role": "content",
-    "unsure": [
-     "mood"
-    ]
-   },
-   "creatvisual/5471879830792338339": {
-    "color": [
-     "pink",
-     "green"
-    ],
-    "style": "lettering",
-    "topic": "letters",
-    "mood": "calm",
-    "role": "content",
-    "unsure": [
-     "mood"
-    ]
-   },
-   "creatvisual/5471942069163423556": {
-    "color": [
-     "gray",
-     "pink",
-     "white"
-    ],
-    "style": "glossy",
-    "topic": "love",
-    "mood": "loving",
-    "role": "decoration",
-    "unsure": [
-     "style"
-    ]
-   },
-   "creatvisual/5470154916091692318": {
-    "color": [
-     "pink",
-     "white"
-    ],
-    "style": "flat",
-    "topic": "music",
-    "mood": "calm",
-    "role": "action",
-    "unsure": [
-     "role"
-    ]
-   },
-   "creatvisual/5471987570046955560": {
-    "color": [
-     "gray",
-     "pink",
-     "black"
-    ],
-    "style": "realistic",
-    "topic": "characters",
     "mood": "calm",
     "role": "decoration",
     "unsure": []

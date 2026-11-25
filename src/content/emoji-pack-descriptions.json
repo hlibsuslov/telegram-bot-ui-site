@@ -312,23 +312,6 @@
     "not_for": "Латиниця, цифри, українські і, ї, є, ґ; ділові повідомлення"
    }
   },
-  "alphabet_telemoji": {
-   "en": {
-    "what": "Static bold red sans letters, Latin and Cyrillic, and digits with a soft bevel; a few unrelated stray cells at the end.",
-    "for": "Spelling words in channel posts, headings, learning bots",
-    "not_for": "Muted or monochrome designs, formal finance bots"
-   },
-   "ru": {
-    "what": "Статичные жирные красные буквы без засечек, латиница и кириллица, и цифры с мягким объёмом; в конце несколько посторонних ячеек.",
-    "for": "Слова из букв в постах, заголовки, учебные боты",
-    "not_for": "Приглушённые и монохромные дизайны, строгие финансовые боты"
-   },
-   "uk": {
-    "what": "Статичні жирні червоні літери без зарубок, латиниця й кирилиця, і цифри з м'яким об'ємом; наприкінці кілька сторонніх клітинок.",
-    "for": "Слова з літер у дописах, заголовки, навчальні боти",
-    "not_for": "Приглушені й монохромні дизайни, строгі фінансові боти"
-   }
-  },
   "AlphabetEmoji": {
    "en": {
     "what": "Sans-serif Latin letters, digits and punctuation in white with an even black outline, plus 12 blank spacer cells. Static, own colours.",
@@ -1281,23 +1264,6 @@
     "not_for": "Світла тема, де видно чорні плитки; суворі боти"
    }
   },
-  "CenterOfEmoji62973425": {
-   "en": {
-    "what": "Video icons on black tiles: flat and neon arrows, hearts, dots, badges, words and assorted emoji; a few cells are black blanks.",
-    "for": "Bright pointers and accents in channel posts and promo messages",
-    "not_for": "Family or formal bots: includes 18+, rude gesture and gun icons"
-   },
-   "ru": {
-    "what": "Видео-иконки на чёрных плашках: плоские и неоновые стрелки, сердца, точки, значки, слова и разные эмодзи; несколько ячеек пустые.",
-    "for": "Яркие указатели и акценты в постах каналов и промо-сообщениях",
-    "not_for": "Семейные и строгие боты: есть 18+, грубый жест и оружие"
-   },
-   "uk": {
-    "what": "Відеоіконки на чорних плашках: пласкі й неонові стрілки, серця, крапки, значки, слова та різні емодзі; кілька клітинок порожні.",
-    "for": "Яскраві вказівники й акценти в дописах каналів і промоповідомленнях",
-    "not_for": "Сімейні та суворі боти: є 18+, грубий жест і зброя"
-   }
-  },
   "CenterOfEmoji715083": {
    "en": {
     "what": "Static crypto coin and social app logos in flat colour circles, word pills such as GEM and SCAM, verified badges and a few mascots.",
@@ -1825,23 +1791,6 @@
     "not_for": "Суворі фінансові боти, підтримка й дрібні статус-значки"
    }
   },
-  "creatvisual": {
-   "en": {
-    "what": "Static Cyrillic letters and digits in pink-green gradient script, pink decor icons such as hearts and flowers, then tinted photo portraits.",
-    "for": "Headings and decor in Russian-language blogs and lifestyle channels",
-    "not_for": "Interface buttons and formal bots; the photo cells are personal"
-   },
-   "ru": {
-    "what": "Статичная кириллица и цифры розово-зелёным градиентным шрифтом, розовые декор-иконки вроде сердец и цветов, затем тонированные фото людей.",
-    "for": "Заголовки и декор в русскоязычных блогах и лайфстайл-каналах",
-    "not_for": "Кнопки интерфейса и строгие боты; фото в наборе личные"
-   },
-   "uk": {
-    "what": "Статична кирилиця й цифри рожево-зеленим градієнтним шрифтом, рожеві декор-іконки на кшталт сердець і квітів, далі тоновані фото людей.",
-    "for": "Заголовки й декор у російськомовних блогах і лайфстайл-каналах",
-    "not_for": "Кнопки інтерфейсу й суворі боти; фото в наборі особисті"
-   }
-  },
   "CreepyEmoji": {
    "en": {
     "what": "Apple-style emoji parts remixed into cursed combos: yellow faces, people, animals and food with gradient shading. Animated, own colours.",
@@ -2250,23 +2199,6 @@
     "not_for": "Світла тема, де помітні чорні плитки"
    }
   },
-  "Decoration_Pack2": {
-   "en": {
-    "what": "Video icons on black tiles: flat and neon arrows, hearts, dots, badges, words and mixed emoji; a few cells are black blanks.",
-    "for": "Bright pointers and accents in channel posts and promo messages",
-    "not_for": "Family or formal bots: includes 18+, rude gesture and gun icons"
-   },
-   "ru": {
-    "what": "Видео-иконки на чёрных плашках: плоские и неоновые стрелки, сердца, точки, значки, слова и разные эмодзи; несколько ячеек пустые.",
-    "for": "Яркие указатели и акценты в постах каналов и промо-сообщениях",
-    "not_for": "Семейные и строгие боты: есть 18+, грубый жест и оружие"
-   },
-   "uk": {
-    "what": "Відеоіконки на чорних плашках: пласкі й неонові стрілки, серця, крапки, значки, слова та різні емодзі; кілька клітинок порожні.",
-    "for": "Яскраві вказівники й акценти в дописах каналів і промоповідомленнях",
-    "not_for": "Сімейні та суворі боти: є 18+, грубий жест і зброя"
-   }
-  },
   "Decoration_Pack5": {
    "en": {
     "what": "Mixed icons on black tiles: game-art chest, cup, gem and bonus ticket, cartoon avatars, app logos like TikTok. Video, does not repaint.",
@@ -2420,23 +2352,6 @@
     "not_for": "Поодинокі реакції: багато фрагментів окремо незрозумілі"
    }
   },
-  "DMJTGCheck": {
-   "en": {
-    "what": "Static icons of Telegram and third-party Telegram client apps in circles, mostly blue gradients, plus three portrait photo badges.",
-    "for": "Posts and bots about Telegram clients, app lists and links",
-    "not_for": "Check marks or status signs; bots outside the Telegram topic"
-   },
-   "ru": {
-    "what": "Статичные значки Telegram и сторонних клиентов Telegram в кругах, в основном с синим градиентом, и три фото-портрета.",
-    "for": "Посты и боты о клиентах Telegram, списки приложений и ссылки",
-    "not_for": "Галочки и значки статуса; боты не о Telegram"
-   },
-   "uk": {
-    "what": "Статичні значки Telegram і сторонніх клієнтів Telegram у колах, переважно із синім градієнтом, і три фотопортрети.",
-    "for": "Дописи й боти про клієнти Telegram, списки застосунків і посилання",
-    "not_for": "Галочки й значки статусу; боти не про Telegram"
-   }
-  },
   "DMJTGStarsEmoji": {
    "en": {
     "what": "Animated Telegram Stars icons: a gold gradient star with orange edge and bevel shine, plus motion trails, coins and neon-outline stars.",
@@ -2588,40 +2503,6 @@
     "what": "200 статичних милих малюнків до Гелловіну: гарбузи, привиди, жаби, відьми, коти; пласка заливка із зернистою фактурою, без контуру.",
     "for": "Дописи до Гелловіну, осінні привітання, чати спільнот",
     "not_for": "Кнопки інтерфейсу, суворі боти, дописи поза сезоном"
-   }
-  },
-  "e26110310291a1cb7e_by_lemurkka_emoji_bot": {
-   "en": {
-    "what": "Static grey-beige drawings with grainy pencil texture: social logos, office items, faces, animals, weather, arrows, digits, Russian labels.",
-    "for": "Post markers, lists and calm menus in Russian-language channels",
-    "not_for": "Family or formal bots: some Russian labels are swear words"
-   },
-   "ru": {
-    "what": "Статичные серо-бежевые рисунки с зернистой карандашной фактурой: логотипы соцсетей, офис, лица, звери, погода, стрелки, цифры, слова-метки.",
-    "for": "Метки в постах русскоязычных каналов, списки, спокойные меню",
-    "not_for": "Семейные и строгие боты: среди слов-меток есть мат"
-   },
-   "uk": {
-    "what": "Статичні сіро-бежеві малюнки із зернистою олівцевою фактурою: логотипи соцмереж, офіс, обличчя, звірі, погода, стрілки, цифри, слова-мітки.",
-    "for": "Мітки в дописах російськомовних каналів, списки, спокійні меню",
-    "not_for": "Сімейні та суворі боти: серед слів-міток є лайка"
-   }
-  },
-  "e261108201322beae9_by_lemurkka_emoji_bot": {
-   "en": {
-    "what": "200 static punk stickers: black and white hatched skulls, rats and boots, grainy bold-outline colour cartoons, cut-out words like RIOT.",
-    "for": "Punk, alternative music and art community chats, edgy posts",
-    "not_for": "Kids, business or support bots: some rude gestures and words"
-   },
-   "ru": {
-    "what": "200 статичных панк-стикеров: чёрно-белые черепа, крысы и ботинки в штриховке, зернистые цветные мультяшки с жирным контуром, слова-вырезки.",
-    "for": "Чаты панк- и альтернативной сцены, арт-сообщества, дерзкие посты",
-    "not_for": "Детские, деловые и сервисные боты: есть грубые жесты и слова"
-   },
-   "uk": {
-    "what": "200 статичних панк-наліпок: чорно-білі черепи, щури й черевики в штрихуванні, зернисті кольорові мультяшки з жирним контуром, слова-вирізки.",
-    "for": "Чати панк- та альтернативної сцени, арт-спільноти, зухвалі дописи",
-    "not_for": "Дитячі, ділові й сервісні боти: є грубі жести та слова"
    }
   },
   "Easter_by_emoji_gray": {
@@ -3270,23 +3151,6 @@
     "not_for": "Світла тема, де помітні чорні квадрати"
    }
   },
-  "Flags_kotletovv": {
-   "en": {
-    "what": "Animated brand, app, game, crypto and payment logos on bevelled shield badges with glossy highlight and gradient; not country flags.",
-    "for": "Service lists, gaming and crypto channels, payment method menus",
-    "not_for": "Children's bots: a few badges are adult-site logos"
-   },
-   "ru": {
-    "what": "Анимированные логотипы брендов, приложений, игр, крипты и платёжек на скошенных щитах с глянцевым бликом и градиентом; это не флаги стран.",
-    "for": "Списки сервисов, игровые и крипто-каналы, меню способов оплаты",
-    "not_for": "Детские боты: среди значков есть логотипы сайтов для взрослых"
-   },
-   "uk": {
-    "what": "Анімовані логотипи брендів, застосунків, ігор, крипти й платіжок на скошених щитах із глянцевим відблиском і градієнтом; не прапори країн.",
-    "for": "Списки сервісів, ігрові та крипто-канали, меню способів оплати",
-    "not_for": "Дитячі боти: серед значків є логотипи сайтів для дорослих"
-   }
-  },
   "FlagsEmoji": {
    "en": {
     "what": "Apple-style waving country flags with soft fold shading, plus white, black, pirate, chequered and pride flags. Animated, does not repaint.",
@@ -3591,23 +3455,6 @@
     "what": "200 статичних глянцевих предметів з казуальних ігор: кристали, серця, зірки, зілля, подарунки; розмиті іскри, частини смуг і роздільників.",
     "for": "Ігрові боти, нагороди й товари внутрішньоігрової крамниці",
     "not_for": "Суворі фінансові та сервісні боти"
-   }
-  },
-  "GeorgiPrem_by_TgEmodziBot": {
-   "en": {
-    "what": "Static Georgia mix: flags and crosses, photos of footballers, khinkali, wine, people and landmarks, cartoon men, a few weapons.",
-    "for": "Georgian community chats, travel and food channels about Georgia",
-    "not_for": "Neutral business bots; crosses and weapons do not fit everywhere"
-   },
-   "ru": {
-    "what": "Статичная смесь о Грузии: флаги и кресты, фото футболистов, хинкали, вино, люди и пейзажи, мультяшные мужчины, немного оружия.",
-    "for": "Грузинские сообщества, каналы о путешествиях и кухне Грузии",
-    "not_for": "Нейтральные деловые боты; кресты и оружие уместны не везде"
-   },
-   "uk": {
-    "what": "Статична суміш про Грузію: прапори й хрести, фото футболістів, хінкалі, вино, люди й краєвиди, мультяшні чоловіки, трохи зброї.",
-    "for": "Грузинські спільноти, канали про подорожі й кухню Грузії",
-    "not_for": "Нейтральні ділові боти; хрести й зброя доречні не всюди"
    }
   },
   "GhostEmoji": {
@@ -5053,23 +4900,6 @@
     "what": "Відеоемодзі: фотовирізки мемних котів, собак і людей на чорних плитках, коти-банан і коти-яблуко на білому; частина клітинок порожня.",
     "for": "Мемні реакції в дружніх чатах і розважальних спільнотах",
     "not_for": "Кнопки магазину, оплати й дій; ділові боти"
-   }
-  },
-  "memetop_by_TgEmojiBot": {
-   "en": {
-    "what": "Animated meme mix on square tiles: Pepe frog cartoons, photo cats, dogs and people, Hello Kitty, Sailor Moon; a few promo cells.",
-    "for": "Meme chats, gaming communities, ironic reactions",
-    "not_for": "Formal or family bots; some cells have crude Russian captions"
-   },
-   "ru": {
-    "what": "Анимированный мем-микс на квадратных плитках: мультяшный Пепе, фото котов, собак и людей, Hello Kitty, Сейлор Мун; есть промо-ячейки.",
-    "for": "Мемные чаты, игровые сообщества, ироничные реакции",
-    "not_for": "Строгие и семейные боты; в части ячеек грубые подписи"
-   },
-   "uk": {
-    "what": "Анімований мем-мікс на квадратних плитках: мультяшний Пепе, фото котів, собак і людей, Hello Kitty, Сейлор Мун; є промо-клітинки.",
-    "for": "Мемні чати, ігрові спільноти, іронічні реакції",
-    "not_for": "Офіційні та сімейні боти; у частині клітинок грубі підписи"
    }
   },
   "MendeleevEmoji": {
@@ -8266,23 +8096,6 @@
     "what": "Помаранчеві смайли-жовтки з тонким темним обідком, глянцевим відблиском і тінню знизу, виразні обличчя та предмети. Статичні.",
     "for": "Реакції та жарти в чатах спільнот і розважальних ботах",
     "not_for": "Кнопки інтерфейсу та ділові повідомлення"
-   }
-  },
-  "zeeeeexexexesexcc_by_fStikBot": {
-   "en": {
-    "what": "Static cut-out anime and manga images of Rukia, one dark-haired girl character, in cel-shaded colour and black-and-white panels.",
-    "for": "Anime fan chats, fandom communities, character reactions",
-    "not_for": "Interface icons, formal finance or support bots"
-   },
-   "ru": {
-    "what": "Статичные вырезанные кадры из аниме и манги с Рукией, темноволосой героиней: цветные кадры и чёрно-белые панели.",
-    "for": "Аниме-чаты, фанатские сообщества, реакции персонажа",
-    "not_for": "Иконки интерфейса, строгие финансовые и сервисные боты"
-   },
-   "uk": {
-    "what": "Статичні вирізані кадри з аніме та манґи з Рукією, темноволосою героїнею: кольорові кадри й чорно-білі панелі.",
-    "for": "Аніме-чати, фанатські спільноти, реакції персонажа",
-    "not_for": "Іконки інтерфейсу, строгі фінансові й сервісні боти"
    }
   },
   "zhelezo_28919_by_TgEmodziBot": {
