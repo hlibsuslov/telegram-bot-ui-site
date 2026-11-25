@@ -16,7 +16,7 @@ import { StarButton } from "./header";
 import { HeroRotate } from "./hero-rotate";
 import { Container } from "./section";
 
-const PHRASES = ["feel like products", "stream with Stop", "ask before acting", "post just once", "update in place"];
+const PHRASES = ["feel like products", "stream with Stop", "run Mini Apps", "ask before acting", "post just once", "update in place"];
 
 // Layout adapted from the 21st.dev "Landing Hero" (danielpetho/fancy): a centred
 // headline with a rotating phrase, surrounded by floating cards that drift with
@@ -57,10 +57,11 @@ export function Hero() {
 
       <Container className="flex flex-col items-center text-center lg:max-w-[620px] xl:max-w-[720px]">
         <a
-          href="#studio"
+          href="#whats-new"
           className="group inline-flex items-center gap-2 rounded-full border border-brand/30 bg-card/70 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-brand/60 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
-          Try bot-ui Studio
+          <span className="rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold text-white">New</span>
+          Mini Apps, MCP server and an emoji library
           <ArrowRight aria-hidden="true" className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
         </a>
         <p className="mt-3 text-xs font-medium text-muted-foreground">
@@ -78,7 +79,7 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-lg leading-8 text-pretty text-muted-foreground">
-          Give your coding agent a skill for the whole interface of a Telegram bot: screens, texts, keyboards, streaming replies, widgets and channel posts.
+          Give your coding agent a skill for the whole interface of a Telegram bot: screens, keyboards, streaming replies, widgets, Mini Apps, premium emoji and channel posts.
           Use <a href="#studio" className="font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground">bot-ui Studio</a>{" "}
           to map your bot and test its flows.
         </p>
