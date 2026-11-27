@@ -287,6 +287,8 @@ export function MosaicStudio() {
 
   const fit = layoutFit(cols, rows);
   const ready = !!loaded && !reading;
+  // While a pack is made the page's own videos stand still, so they don't compete with the encoder's decoder.
+  const busy = !!step && (step.kind === "encoding" || step.kind === "uploading" || step.kind === "checking");
 
   if (!loaded) {
     return (
@@ -324,7 +326,7 @@ export function MosaicStudio() {
 
       <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:grid-rows-[auto_1fr] lg:gap-x-5">
           <section aria-label="Crop" className="min-w-0 lg:col-start-1 lg:row-start-1 tg-glass relative flex flex-col rounded-2xl p-2 [--crop-max:48vh] lg:[--crop-max:58vh]">
-            <CropView loaded={loaded} crop={crop} aspect={locked ? aspect : null} grid={locked ? { cols, rows, radius, outline } : null} onCrop={setCrop} start={start} duration={duration} animated={animated} still={settings.still}
+            <CropView loaded={loaded} crop={crop} aspect={locked ? aspect : null} grid={locked ? { cols, rows, radius, outline } : null} onCrop={setCrop} start={start} duration={duration} animated={animated} still={settings.still} paused={busy}
               onTrim={(s, l) => { setStart(s); if (!settings.still) setDuration(l); }} />
             <div className="flex items-center gap-2 px-1.5 pt-2 text-[12px]">
               <span className="tg-hint min-w-0 flex-1 truncate">Drag the frame or its corners{locked ? "; it keeps the grid's shape" : ""}.</span>
@@ -364,7 +366,7 @@ export function MosaicStudio() {
 
         </div>
           <section aria-label="Preview" className="min-w-0 lg:col-start-1 lg:row-start-2 relative overflow-hidden rounded-2xl">
-            <Previews loaded={loaded} settings={settings} dark={dark} animated={animated && !settings.still}
+            <Previews loaded={loaded} settings={settings} dark={dark} animated={animated && !settings.still && !busy}
               theme={<Segmented label="Chat theme" value={dark ? "dark" : "light"} options={[["light", "Light"], ["dark", "Dark"]]} onChange={(v) => setDark(v === "dark")} />} />
           </section>
       </div>
@@ -644,7 +646,7 @@ function PackDialog({ step, hosted, encoded, settings, dark, loaded, onLogin, on
         </div>
 
         <div className="mt-3 overflow-hidden">
-          <Previews loaded={loaded} settings={settings} dark={dark} animated={!settings.still} compact />
+          <Previews loaded={loaded} settings={settings} dark={dark} animated={!settings.still && !working} compact />
         </div>
 
         <div className="space-y-3 px-5 py-4 text-[15px]">
