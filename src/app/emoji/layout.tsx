@@ -38,9 +38,9 @@ export default function EmojiLayout({ children }: { children: ReactNode }) {
       </header>
       <main id="main" className="mx-auto max-w-[1760px] px-3 pt-4 pb-10 sm:px-5 2xl:px-8">{children}</main>
       <footer className="mx-auto max-w-[1760px] px-3 pb-8 sm:px-5 2xl:px-8">
-        <div className="tg-glass flex flex-wrap items-center gap-x-6 gap-y-2 rounded-2xl px-4 py-3">
-          <Disclaimer className="tg-hint min-w-0 flex-1 basis-96" />
-          <Link href="/" className="tg-accent inline-flex shrink-0 items-center gap-1 rounded text-sm font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-3 border-t border-[var(--tg-sep)] px-1 pt-5">
+          <Disclaimer className="tg-hint max-w-3xl min-w-0 flex-1 basis-80 opacity-90" />
+          <Link href="/" className="tg-cell tg-accent inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full pr-3.5 pl-2.5 text-sm font-medium">
             <ArrowLeft aria-hidden="true" className="size-4" /> Back to telegram-bot-ui
           </Link>
         </div>

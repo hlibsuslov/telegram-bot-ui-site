@@ -17,6 +17,8 @@ export const MAX_SET = 200;
 export const SAFE_COLUMNS = 8;
 export const WIDE_COLUMNS = 12;
 export const DEFAULT_SECONDS = 2.9;
+/** Heuristic: the default grid stays at or under 40 tiles; fewer, larger emoji read better in a chat. */
+export const TARGET_EMOJI = 40;
 export const DEFAULT_FALLBACK = "⬜";
 
 export type ColumnFit = "safe" | "check-narrow-phone" | "likely-wraps";
@@ -47,12 +49,14 @@ export function gridOptions(width: number, height: number, { maxEmoji = MAX_EMOJ
   return list.slice(0, limit);
 }
 
-/** The default grid: at most 8 columns, the shape within 5% when possible, then the most emoji. */
+/** The default grid: at most 8 columns, the shape within 5% when possible, then the most emoji up to TARGET_EMOJI. */
 export function autoGrid(width: number, height: number, maxEmoji = MAX_EMOJI): { cols: number; rows: number } {
   const options = gridOptions(width, height, { maxEmoji, maxCols: SAFE_COLUMNS, limit: 10_000 });
   if (!options.length) return { cols: 8, rows: 4 };
   const close = options.filter((g) => g.crop <= 0.05);
-  const pool = close.length ? close : options;
+  const shaped = close.length ? close : options;
+  const modest = shaped.filter((g) => g.emoji <= TARGET_EMOJI);
+  const pool = modest.length ? modest : shaped;
   const best = pool.reduce((a, b) => (b.emoji > a.emoji || (b.emoji === a.emoji && b.crop < a.crop) ? b : a));
   return { cols: best.cols, rows: best.rows };
 }

@@ -8,11 +8,13 @@ import { crc32, zip } from "@/lib/emoji-mosaic-zip";
 describe("grid", () => {
   test("the default keeps the shape and at most 8 columns, like the skill", () => {
     assert.deepEqual(autoGrid(1280, 720), { cols: 7, rows: 4 });
+    assert.deepEqual(autoGrid(720, 1280), { cols: 4, rows: 7 });
+    assert.deepEqual(autoGrid(1000, 1000), { cols: 6, rows: 6 });
     const square = autoGrid(1000, 1000);
     assert.equal(square.cols, square.rows);
     for (const [w, h] of [[1920, 1080], [1080, 1920], [3000, 1000]]) {
       const g = autoGrid(w, h);
-      assert.ok(g.cols <= 8 && g.cols * g.rows <= 100);
+      assert.ok(g.cols <= 8 && g.cols * g.rows <= 40);
     }
   });
   test("options are sorted by crop and labelled by column fit", () => {

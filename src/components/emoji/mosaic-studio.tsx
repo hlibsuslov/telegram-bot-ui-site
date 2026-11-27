@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
-import { Check, Download, ExternalLink, LoaderCircle, Pause, Play, RotateCcw, Sparkles, Upload, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { Check, Download, ExternalLink, LoaderCircle, Minus, Pause, Play, Plus, RotateCcw, Sparkles, Upload, X } from "lucide-react";
 import {
   DEFAULT_FALLBACK,
   DEFAULT_SECONDS,
@@ -38,6 +38,9 @@ const MAX_FILE = 300 * 1024 * 1024;
 const PICKER_COLS = 16;
 const PICKER_ROWS = 16;
 const FIT_LABEL = { safe: "fits every phone", "check-narrow-phone": "check on a narrow phone", "likely-wraps": "rows may wrap on phones" } as const;
+/** Corner presets in mosaic pixels (a tile is 100). "Round" is always the most the grid allows. */
+const CORNERS = [["none", "None", 0], ["small", "Small", 30], ["medium", "Medium", 60], ["large", "Large", 100], ["round", "Round", Infinity]] as const;
+type Corners = (typeof CORNERS)[number][0];
 const loadEncoder = () => import("@/lib/emoji-mosaic-encode");
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -50,7 +53,7 @@ export function MosaicStudio() {
   const [auto, setAuto] = useState({ cols: 8, rows: 4 });
   const [crop, setCrop] = useState<Rect>({ x: 0, y: 0, w: 1, h: 1 });
   const [locked, setLocked] = useState(true);
-  const [radius, setRadius] = useState(30);
+  const [corners, setCorners] = useState<Corners>("small");
   const [start, setStart] = useState(0);
   const [duration, setDuration] = useState(DEFAULT_SECONDS);
   const [fps, setFps] = useState(MAX_FPS);
@@ -75,9 +78,12 @@ export function MosaicStudio() {
   const height = source?.height ?? 9;
   const aspect = cols / rows;
   const count = cols * rows;
+  const cornerOptions = CORNERS.filter(([key, , px]) => key === "round" || px < maxRadius(cols, rows));
+  const cornerKey: Corners = cornerOptions.some(([key]) => key === corners) ? corners : "round";
+  const radius = Math.min(CORNERS.find(([key]) => key === cornerKey)![2], maxRadius(cols, rows));
   const emoji = useMemo(() => Array.from({ length: count }, (_, i) => tileEmoji[i] ?? baseEmoji), [count, tileEmoji, baseEmoji]);
   const recommended = useMemo(() => gridOptions(width, height, { maxCols: PICKER_COLS, limit: 40 }).filter((o) => o.crop <= 0.05 && o.rows <= PICKER_ROWS), [width, height]);
-  const settings: MosaicSettings = useMemo(() => ({ cols, rows, crop, fit: locked ? "cover" : "contain", radius: Math.min(radius, maxRadius(cols, rows)), start, duration, fps, still: still || !animated, fallback: baseEmoji, emoji }), [cols, rows, crop, locked, radius, start, duration, fps, still, animated, baseEmoji, emoji]);
+  const settings: MosaicSettings = useMemo(() => ({ cols, rows, crop, fit: locked ? "cover" : "contain", radius, start, duration, fps, still: still || !animated, fallback: baseEmoji, emoji }), [cols, rows, crop, locked, radius, start, duration, fps, still, animated, baseEmoji, emoji]);
   const encodeKey = loaded ? JSON.stringify([loaded.url, cols, rows, crop, settings.fit, settings.radius, start, duration, fps, settings.still, emoji]) : "";
 
   async function open(file: File | undefined) {
@@ -116,7 +122,6 @@ export function MosaicStudio() {
     setRows(nr);
     setTileEmoji({});
     if (locked) setCrop((old) => clampCrop(old, width, height, c / nr));
-    setRadius((old) => Math.min(old, maxRadius(c, nr)));
   }
 
   function setShape(next: boolean) {
@@ -234,7 +239,7 @@ export function MosaicStudio() {
   }
 
   return (
-    <div className="flex flex-col gap-3 lg:h-[calc(100svh-6.25rem)]">
+    <div className="flex flex-col gap-4">
       <div className="tg-bar sticky top-[4.5rem] z-30 flex min-h-14 items-center gap-2 rounded-2xl py-2 pr-2 pl-4">
         <div className="min-w-0 flex-1">
           <h1 className="text-[17px] leading-tight font-semibold">Emoji mosaic</h1>
@@ -254,23 +259,16 @@ export function MosaicStudio() {
         </button>
       </div>
 
-      <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="flex min-h-0 min-w-0 flex-col gap-3">
-          <section aria-label="Crop" className="tg-glass relative flex min-h-0 flex-col rounded-2xl p-2 [--crop-max:46vh] lg:flex-[3] lg:[--crop-max:calc((100svh-12rem)*0.6-4rem)]">
-            <CropView loaded={loaded} crop={crop} aspect={locked ? aspect : null} onCrop={setCrop} start={start} duration={duration} animated={animated} />
+      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:grid-rows-[auto_1fr] lg:gap-x-5">
+          <section aria-label="Crop" className="min-w-0 lg:col-start-1 lg:row-start-1 tg-glass relative flex flex-col rounded-2xl p-2 [--crop-max:48vh] lg:[--crop-max:58vh]">
+            <CropView loaded={loaded} crop={crop} aspect={locked ? aspect : null} grid={locked ? { cols, rows, radius } : null} onCrop={setCrop} start={start} duration={duration} animated={animated} />
             <div className="flex items-center gap-2 px-1.5 pt-2 text-[12px]">
               <span className="tg-hint min-w-0 flex-1 truncate">Drag the frame or its corners{locked ? "; it keeps the grid's shape" : ""}.</span>
               <button type="button" onClick={() => setCrop(clampCrop(centeredCrop(width, height, aspect), width, height, locked ? aspect : null))} className="tg-cell tg-accent inline-flex h-7 items-center gap-1 rounded-lg px-2"><RotateCcw aria-hidden="true" className="size-3.5" /> Centre</button>
               <label className="tg-cell tg-accent inline-flex h-7 cursor-pointer items-center gap-1 rounded-lg px-2 sm:hidden"><Upload aria-hidden="true" className="size-3.5" /> Replace<input type="file" accept={ACCEPT} className="sr-only" onChange={(e) => open(e.target.files?.[0])} /></label>
             </div>
           </section>
-          <section aria-label="Preview" className="relative min-h-0 overflow-hidden rounded-2xl lg:flex-[2]">
-            <Previews loaded={loaded} settings={settings} dark={dark} animated={animated && !settings.still}
-              theme={<Segmented label="Chat theme" value={dark ? "dark" : "light"} options={[["light", "Light"], ["dark", "Dark"]]} onChange={(v) => setDark(v === "dark")} />} />
-          </section>
-        </div>
-
-        <div className="min-h-0 min-w-0 space-y-4 lg:overflow-y-auto lg:pr-1 lg:pb-2">
+        <div className="min-w-0 space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <Group title="Grid" action={(cols !== auto.cols || rows !== auto.rows) && <button type="button" onClick={() => setGrid(auto.cols, auto.rows)} className="tg-cell tg-accent rounded-lg px-2 py-0.5 text-[13px]">Auto · {auto.cols}×{auto.rows}</button>}
             footer={<><span className={fit === "safe" ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}>{FIT_LABEL[fit]}</span>. Dots fit your video&rsquo;s shape.</>}>
             <GridPicker cols={cols} rows={rows} recommended={recommended} onPick={setGrid} />
@@ -278,21 +276,22 @@ export function MosaicStudio() {
 
           <Group title="Shape">
             <Cell label="Fill every tile"><Switch label="Fill every tile" checked={locked} onChange={setShape} /></Cell>
-            <Cell label="Rounded corners" value={settings.radius ? `${settings.radius} px` : "Off"}>
-              <input type="range" aria-label="Corner radius" min={0} max={maxRadius(cols, rows)} step={2} value={settings.radius} onChange={(e) => setRadius(+e.target.value)} className="w-full accent-[var(--tg-accent)]" />
-            </Cell>
+            <div className="px-4 pt-2.5 pb-3">
+              <p className="mb-2 text-[15px]">Rounded corners</p>
+              <Segmented full label="Rounded corners" value={cornerKey} options={cornerOptions.map(([key, text]) => [key, text])} onChange={(v) => setCorners(v as Corners)} />
+            </div>
           </Group>
 
           {animated && (
             <Group title="Motion" footer={vp9 === false ? "This browser can't encode VP9: the pack will be static. Chrome, Edge and Firefox can." : undefined}>
               <Cell label="Animated"><Switch label="Animated tiles" checked={!still} disabled={!vp9} onChange={(on) => setStill(!on)} /></Cell>
               <Cell label="Start" value={`${start.toFixed(2)} s`}>
-                <input type="range" aria-label="Start" min={0} max={Math.max(0, source!.duration - 0.1)} step={0.05} value={start} onChange={(e) => setStart(+e.target.value)} className="w-full accent-[var(--tg-accent)]" />
+                <Slider label="Start" min={0} max={Math.max(0, source!.duration - 0.1)} step={0.05} value={start} onChange={setStart} />
               </Cell>
               {!still && (
                 <>
                   <Cell label="Length" value={`${Math.min(duration, source!.duration - start).toFixed(2)} s`}>
-                    <input type="range" aria-label="Length" min={0.3} max={MAX_SECONDS} step={0.05} value={duration} onChange={(e) => setDuration(+e.target.value)} className="w-full accent-[var(--tg-accent)]" />
+                    <Slider label="Length" min={0.3} max={MAX_SECONDS} step={0.05} value={duration} onChange={setDuration} />
                   </Cell>
                   <Cell label="Frame rate"><Segmented label="Frame rate" value={String(fps)} options={[["15", "15"], ["24", "24"], ["30", "30"]]} onChange={(v) => setFps(+v)} /></Cell>
                 </>
@@ -305,6 +304,10 @@ export function MosaicStudio() {
           </Group>
 
         </div>
+          <section aria-label="Preview" className="min-w-0 lg:col-start-1 lg:row-start-2 relative overflow-hidden rounded-2xl">
+            <Previews loaded={loaded} settings={settings} dark={dark} animated={animated && !settings.still}
+              theme={<Segmented label="Chat theme" value={dark ? "dark" : "light"} options={[["light", "Light"], ["dark", "Dark"]]} onChange={(v) => setDark(v === "dark")} />} />
+          </section>
       </div>
 
       {step && (
@@ -328,42 +331,71 @@ async function api<T>(url: string, body: unknown): Promise<T> {
 function GridPicker({ cols, rows, recommended, onPick }: { cols: number; rows: number; recommended: { cols: number; rows: number }[]; onPick: (c: number, r: number) => void }) {
   const [hover, setHover] = useState<{ c: number; r: number } | null>(null);
   const show = hover ?? { c: cols, r: rows };
+  const over = show.c * show.r > MAX_EMOJI;
   const dots = new Set(recommended.map((o) => `${o.cols}x${o.rows}`));
+  const pick = (c: number, r: number) => {
+    const nc = Math.min(PICKER_COLS, Math.max(1, c));
+    const nr = Math.min(PICKER_ROWS, Math.max(1, r));
+    if (nc * nr <= MAX_EMOJI) onPick(nc, nr);
+  };
   const key = (e: ReactKeyboardEvent) => {
     const moves: Record<string, [number, number]> = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] };
     const m = moves[e.key];
     if (!m) return;
     e.preventDefault();
-    const c = Math.min(PICKER_COLS, Math.max(1, cols + m[0]));
-    const r = Math.min(PICKER_ROWS, Math.max(1, rows + m[1]));
-    if (c * r <= MAX_EMOJI) onPick(c, r);
+    pick(cols + m[0], rows + m[1]);
   };
   return (
     <div className="p-3">
-      <div
-        role="slider" tabIndex={0} aria-label="Grid size" aria-valuetext={`${cols} columns by ${rows} rows, ${cols * rows} emoji`} aria-valuenow={cols * rows} aria-valuemin={1} aria-valuemax={MAX_EMOJI}
-        onKeyDown={key} onPointerLeave={() => setHover(null)}
-        className="mx-auto grid w-fit touch-none gap-[3px] rounded-lg p-1"
-        style={{ gridTemplateColumns: `repeat(${PICKER_COLS}, minmax(0, 1fr))` }}
-      >
-        {Array.from({ length: PICKER_ROWS * PICKER_COLS }, (_, i) => {
-          const c = (i % PICKER_COLS) + 1;
-          const r = Math.floor(i / PICKER_COLS) + 1;
-          const allowed = c * r <= MAX_EMOJI;
-          const picked = c <= cols && r <= rows;
-          const inHover = !!hover && c <= hover.c && r <= hover.r;
-          const dot = dots.has(`${c}x${r}`);
-          return (
-            <div key={i}
-              onPointerEnter={() => allowed && setHover({ c, r })}
-              onPointerDown={(e) => { e.preventDefault(); if (allowed) onPick(c, r); }}
-              className={`relative size-[17px] rounded-[4px] transition-colors sm:size-[19px] ${!allowed ? "opacity-0" : inHover ? "bg-[color-mix(in_srgb,var(--tg-accent)_55%,transparent)]" : picked ? "bg-[var(--tg-accent)]" : c > 8 ? "bg-[color-mix(in_srgb,var(--tg-text)_5%,transparent)]" : "bg-[color-mix(in_srgb,var(--tg-text)_10%,transparent)]"} ${allowed ? "cursor-pointer" : ""}`}>
-              {dot && <span className={`absolute inset-0 m-auto size-1 rounded-full ${picked || inHover ? "bg-white" : "bg-[var(--tg-accent)]"}`} />}
-            </div>
-          );
-        })}
+      <div className="relative mx-auto w-fit [--cell:16px] min-[400px]:[--cell:18px]">
+        <div
+          role="slider" tabIndex={0} aria-label="Grid size" aria-valuetext={`${cols} columns by ${rows} rows, ${cols * rows} emoji`} aria-valuenow={cols * rows} aria-valuemin={1} aria-valuemax={MAX_EMOJI}
+          onKeyDown={key} onPointerLeave={() => setHover(null)}
+          className="grid touch-none rounded-md"
+          style={{ gridTemplateColumns: `repeat(${PICKER_COLS}, var(--cell))`, gridAutoRows: "var(--cell)", gap: 3 }}
+        >
+          {Array.from({ length: PICKER_ROWS * PICKER_COLS }, (_, i) => {
+            const c = (i % PICKER_COLS) + 1;
+            const r = Math.floor(i / PICKER_COLS) + 1;
+            const allowed = c * r <= MAX_EMOJI;
+            const inShow = c <= show.c && r <= show.r;
+            const tone = !allowed
+              ? "bg-[color-mix(in_srgb,var(--tg-text)_4%,transparent)]"
+              : inShow
+                ? hover ? (over ? "bg-red-500/40" : "bg-[color-mix(in_srgb,var(--tg-accent)_60%,transparent)]") : "bg-[var(--tg-accent)]"
+                : "bg-[color-mix(in_srgb,var(--tg-text)_11%,transparent)]";
+            return (
+              <div key={i}
+                onPointerEnter={() => setHover({ c, r })}
+                onPointerDown={(e) => { e.preventDefault(); pick(c, r); }}
+                className={`relative rounded-[4px] transition-colors ${tone} ${allowed ? "cursor-pointer" : "cursor-not-allowed"}`}>
+                {dots.has(`${c}x${r}`) && <span className={`absolute inset-0 m-auto size-1 rounded-full ${inShow && allowed ? "bg-white" : "bg-[var(--tg-accent)]"}`} />}
+              </div>
+            );
+          })}
+        </div>
+        <span aria-hidden="true" className="pointer-events-none absolute top-0 bottom-0 border-l border-dashed border-[var(--tg-hint)] opacity-50" style={{ left: "calc(8 * (var(--cell) + 3px) - 2px)" }} />
       </div>
-      <p aria-hidden="true" className="tg-hint mt-2 text-center text-[13px] tabular-nums">{show.c} × {show.r}{hover ? ` · ${show.c * show.r} emoji` : ""}</p>
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5">
+          <Stepper label="Columns" value={cols} min={1} max={Math.min(PICKER_COLS, Math.floor(MAX_EMOJI / rows))} onChange={(c) => pick(c, rows)} />
+          <X aria-hidden="true" className="tg-hint size-3.5" />
+          <Stepper label="Rows" value={rows} min={1} max={Math.min(PICKER_ROWS, Math.floor(MAX_EMOJI / cols))} onChange={(r) => pick(cols, r)} />
+        </div>
+        <p aria-live="polite" className={`text-[13px] tabular-nums ${over ? "text-red-600 dark:text-red-400" : "tg-hint"}`}>
+          {over ? `${show.c * show.r} — over ${MAX_EMOJI}` : `${show.c * show.r} emoji`}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Stepper({ label, value, min, max, onChange }: { label: string; value: number; min: number; max: number; onChange: (v: number) => void }) {
+  return (
+    <div className="tg-field flex h-8 items-center rounded-full p-0.5" role="group" aria-label={label}>
+      <button type="button" aria-label={`Fewer ${label.toLowerCase()}`} disabled={value <= min} onClick={() => onChange(value - 1)} className="tg-cell inline-flex size-7 items-center justify-center rounded-full disabled:pointer-events-none disabled:opacity-30"><Minus aria-hidden="true" className="size-3.5" /></button>
+      <output className="w-6 text-center text-[15px] font-semibold tabular-nums">{value}</output>
+      <button type="button" aria-label={`More ${label.toLowerCase()}`} disabled={value >= max} onClick={() => onChange(value + 1)} className="tg-cell inline-flex size-7 items-center justify-center rounded-full disabled:pointer-events-none disabled:opacity-30"><Plus aria-hidden="true" className="size-3.5" /></button>
     </div>
   );
 }
@@ -452,7 +484,7 @@ function Previews({ loaded, settings, dark, animated, compact = false, theme: th
   const canvasProps = { width: w * scale, height: h * scale, style: { width: w, height: h }, className: "block max-w-none" };
   const theme = dark ? { wall: "bg-[#0e1621]", bubble: "bg-[#182533] text-white", hint: "text-[#6d8299]", link: "text-[#71baf9]" } : { wall: "bg-[#dfe6ee]", bubble: "bg-white text-black", hint: "text-[#a1aab3]", link: "text-[#168acd]" };
   return (
-    <div className={`${theme.wall} relative h-full overflow-auto`}>
+    <div className={`${theme.wall} relative`}>
       {loaded.source.kind === "video"
         ? <video ref={media} src={loaded.url} muted playsInline preload="auto" aria-hidden="true" className="pointer-events-none fixed top-0 left-0 size-px opacity-0" />
         // eslint-disable-next-line @next/next/no-img-element -- a local object URL, drawn into the canvases
@@ -641,14 +673,22 @@ function Switch({ label, checked, disabled, onChange }: { label: string; checked
   );
 }
 
-function Segmented({ label, value, options, onChange }: { label: string; value: string; options: [string, string][]; onChange: (v: string) => void }) {
+function Segmented({ label, value, options, full = false, onChange }: { label: string; value: string; options: [string, string][]; full?: boolean; onChange: (v: string) => void }) {
   return (
-    <div role="radiogroup" aria-label={label} className="tg-field flex rounded-[10px] p-0.5 text-[13px]">
+    <div role="radiogroup" aria-label={label} className={`tg-field flex rounded-[10px] p-0.5 text-[13px] ${full ? "w-full" : ""}`}>
       {options.map(([v, text]) => (
         <button key={v} type="button" role="radio" aria-checked={value === v} onClick={() => onChange(v)}
-          className={`h-7 min-w-10 rounded-lg px-2.5 font-medium transition-colors ${value === v ? "tg-glass-strong shadow-sm" : "tg-hint"}`}>{text}</button>
+          className={`h-7 min-w-10 rounded-lg px-2.5 font-medium transition-colors ${full ? "flex-1" : ""} ${value === v ? "tg-glass-strong shadow-sm" : "tg-hint hover:text-[var(--tg-text)]"}`}>{text}</button>
       ))}
     </div>
+  );
+}
+
+function Slider({ label, min, max, step, value, onChange }: { label: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void }) {
+  const fill = max > min ? ((value - min) / (max - min)) * 100 : 0;
+  return (
+    <input type="range" aria-label={label} min={min} max={max} step={step} value={value} onChange={(e) => onChange(+e.target.value)}
+      className="tg-range w-full" style={{ "--fill": `${fill}%` } as CSSProperties} />
   );
 }
 
@@ -681,9 +721,9 @@ function previewHtml({ manifest }: EncodedMosaic): string {
   const cells = manifest.tiles.map(cell).join("");
   return `<!doctype html><meta charset="utf-8"><title>Emoji mosaic preview</title>
 <style>body{font:14px system-ui,sans-serif;margin:24px}.b{display:inline-block;padding:16px;border-radius:16px;margin:0 16px 16px 0}
-.l{background:#fff;box-shadow:0 0 0 1px #ddd}.d{background:#182533}.g{display:grid;grid-template-columns:repeat(${manifest.grid.cols},44px);column-gap:2px;row-gap:10px}
-.g>*{width:44px;height:44px;display:block}</style>
-<p>${manifest.grid.cols}&times;${manifest.grid.rows} mosaic with Telegram's gaps, at 2x. A preview, not proof: check the sent message on a phone.</p>
-<div class="b l"><div class="g">${cells}</div></div><div class="b d"><div class="g">${cells}</div></div>
+.l{background:#fff;box-shadow:0 0 0 1px #ddd}.d{background:#182533}.g{display:grid;grid-template-columns:repeat(${manifest.grid.cols},44px)}
+.o .g{column-gap:2px;row-gap:10px}.g>*{width:44px;height:44px;display:block}</style>
+<p>${manifest.grid.cols}&times;${manifest.grid.rows} mosaic at 2x: edge to edge as newer Telegram clients draw it, and with the gaps older clients leave.</p>
+<div class="b l"><div class="g">${cells}</div></div><div class="b d"><div class="g">${cells}</div></div><div class="b l o"><div class="g">${cells}</div></div>
 `;
 }
