@@ -17,11 +17,13 @@ import {
   autoGrid,
   centeredCrop,
   clampCrop,
-  columnFit,
+  bigEmojiRow,
   gridOptions,
   isSingleEmoji,
+  layoutFit,
   maxRadius,
   strokeOutline,
+  wrapsWhere,
 } from "@/lib/emoji-mosaic";
 import { zip } from "@/lib/emoji-mosaic-zip";
 import type { EncodedMosaic, MosaicSettings } from "@/lib/emoji-mosaic-encode";
@@ -41,7 +43,25 @@ type Step =
 const MAX_FILE = 300 * 1024 * 1024;
 const PICKER_COLS = 16;
 const PICKER_ROWS = 16;
-const FIT_LABEL = { safe: "fits every phone", "check-narrow-phone": "check on a narrow phone", "likely-wraps": "rows may wrap on phones" } as const;
+const FIT_TONE = { everywhere: "text-emerald-600 dark:text-emerald-400", chats: "text-amber-600 dark:text-amber-400", wraps: "text-red-600 dark:text-red-400" } as const;
+
+/** "iPhone groups and forwards; Android groups" from wrapsWhere's list. */
+function wrapPlaces(where: string[]): string {
+  const by = new Map<string, string[]>();
+  for (const w of where) {
+    const [phone, place] = w.split(" ");
+    by.set(phone, [...(by.get(phone) ?? []), place]);
+  }
+  return [...by].map(([phone, places]) => `${phone} ${places.join(" and ")}`).join("; ");
+}
+
+function fitText(cols: number, rows: number): string {
+  const fit = layoutFit(cols, rows);
+  const where = wrapPlaces(wrapsWhere(cols, rows));
+  if (fit === "everywhere") return "Rows stay whole on every phone, in chats, groups and forwards.";
+  if (fit === "chats") return `Rows stay whole in chats and channels. On small phones they wrap in ${where}.`;
+  return `Rows wrap on small phones even in chats (${where}). Use fewer columns.`;
+}
 /** Corner presets in mosaic pixels (a tile is 100). "Round" is always the most the grid allows. */
 const CORNERS = [["none", "None", 0], ["small", "Small", 30], ["medium", "Medium", 60], ["large", "Large", 100], ["round", "Round", Infinity]] as const;
 type Corners = (typeof CORNERS)[number][0];
@@ -60,7 +80,9 @@ export function MosaicStudio() {
   const [auto, setAuto] = useState({ cols: 8, rows: 4 });
   const [crop, setCrop] = useState<Rect>({ x: 0, y: 0, w: 1, h: 1 });
   const [locked, setLocked] = useState(true);
-  const [corners, setCorners] = useState<Corners>("small");
+  // Off by default: rounded corners make the corner tiles see-through, and a VP9 tile with alpha decodes more
+  // slowly in Telegram, so those tiles start later than the rest.
+  const [corners, setCorners] = useState<Corners>("none");
   const [outlineWidth, setOutlineWidth] = useState<OutlineWidth>("none");
   const [outlineColor, setOutlineColor] = useState<string>(OUTLINE_COLORS[0][0]);
   const [start, setStart] = useState(0);
@@ -93,7 +115,7 @@ export function MosaicStudio() {
   const outlinePx = OUTLINE_WIDTHS.find(([key]) => key === outlineWidth)![2];
   const outline = useMemo(() => (outlinePx > 0 ? { color: outlineColor, width: outlinePx } : undefined), [outlinePx, outlineColor]);
   const emoji = useMemo(() => Array.from({ length: count }, (_, i) => tileEmoji[i] ?? baseEmoji), [count, tileEmoji, baseEmoji]);
-  const recommended = useMemo(() => gridOptions(width, height, { maxCols: PICKER_COLS, limit: 40 }).filter((o) => o.crop <= 0.05 && o.rows <= PICKER_ROWS), [width, height]);
+  const recommended = useMemo(() => gridOptions(width, height, { maxCols: PICKER_COLS, limit: 40 }).filter((o) => o.crop <= 0.05 && o.rows <= PICKER_ROWS && o.fit !== "wraps"), [width, height]);
   const settings: MosaicSettings = useMemo(() => ({ cols, rows, crop, fit: locked ? "cover" : "contain", radius, start, duration, fps, still: still || !animated, fallback: baseEmoji, emoji, outline }), [cols, rows, crop, locked, radius, start, duration, fps, still, animated, baseEmoji, emoji, outline]);
   const encodeKey = loaded ? JSON.stringify([loaded.url, cols, rows, crop, settings.fit, settings.radius, start, duration, fps, settings.still, emoji, outline]) : "";
 
@@ -263,7 +285,7 @@ export function MosaicStudio() {
     }
   }
 
-  const fit = columnFit(cols);
+  const fit = layoutFit(cols, rows);
   const ready = !!loaded && !reading;
 
   if (!loaded) {
@@ -312,7 +334,7 @@ export function MosaicStudio() {
           </section>
         <div className="min-w-0 space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <Group title="Grid" action={(cols !== auto.cols || rows !== auto.rows) && <button type="button" onClick={() => setGrid(auto.cols, auto.rows)} className="tg-cell tg-accent rounded-lg px-2 py-0.5 text-[13px]">Auto · {auto.cols}×{auto.rows}</button>}
-            footer={<><span className={fit === "safe" ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}>{FIT_LABEL[fit]}</span>. Dots fit your video&rsquo;s shape.</>}>
+            footer={<><span className={FIT_TONE[fit]}>{fitText(cols, rows)}</span> Dots mark grids that fit your video&rsquo;s shape and stay whole in chats.</>}>
             <GridPicker cols={cols} rows={rows} recommended={recommended} onPick={setGrid} />
           </Group>
 
@@ -330,7 +352,7 @@ export function MosaicStudio() {
           </Group>
 
           {animated && (
-            <Group title="Motion" footer={vp9 === false ? "This browser can't encode VP9: the pack will be static. Chrome, Edge and Firefox can." : settings.still ? "Pick the frame on the timeline under the picture." : `Pick up to ${MAX_SECONDS} s on the timeline under the picture; only that part goes into the tiles.`}>
+            <Group title="Motion" footer={vp9 === false ? "This browser can't encode VP9: the pack will be static. Chrome, Edge and Firefox can." : settings.still ? "Pick the frame on the timeline under the picture." : `Pick up to ${MAX_SECONDS} s on the timeline under the picture; only that part goes into the tiles. Telegram starts each emoji as soon as it has loaded, so on a first view tiles can be a few frames apart: slow movement hides that best.`}>
               <Cell label="Animated"><Switch label="Animated tiles" checked={!still} disabled={!vp9} onChange={(on) => setStill(!on)} /></Cell>
               {!settings.still && <Cell label="Frame rate"><Segmented label="Frame rate" value={String(fps)} options={[["15", "15"], ["24", "24"], ["30", "30"]]} onChange={(v) => setFps(+v)} /></Cell>}
             </Group>
@@ -411,7 +433,6 @@ function GridPicker({ cols, rows, recommended, onPick }: { cols: number; rows: n
             );
           })}
         </div>
-        <span aria-hidden="true" className="pointer-events-none absolute top-0 bottom-0 border-l border-dashed border-[var(--tg-hint)] opacity-50" style={{ left: "calc(8 * (var(--cell) + 3px) - 2px)" }} />
       </div>
       <div className="mt-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-1.5">
@@ -468,28 +489,34 @@ function EmojiBehind({ cols, emoji, base, onBase, onTile }: { cols: number; emoj
 
 // ------------------------------------------------------------------ previews
 
-const POST = {
-  title: "Something new this week",
-  body: "We have refreshed the look of our channel and added a few small things to try. Thank you for reading along.",
-};
+/** Big emoji as an iPhone lays them out, in points shown as CSS pixels: tile size from the grid, rows wrapped
+ *  when they are wider than the message. Widths: a private chat or channel on a 375 pt phone, and the narrowest
+ *  common case, a forwarded message on the same phone. */
+const PREVIEW_PLACES = [
+  { key: "chat", label: "Chat or channel", width: 375 - 48 },
+  { key: "narrow", label: "Group or forward, small iPhone", width: 375 - 48 - 45 },
+] as const;
+
+function bigEmojiLayout(cols: number, rows: number, width: number) {
+  const tile = bigEmojiRow(cols, rows).ios / cols;
+  const perRow = Math.max(1, Math.floor((width + 0.01) / tile));
+  const lines = Math.ceil(cols / perRow);
+  const at = (c: number, r: number) => ({ x: (c % perRow) * tile, y: (r * lines + Math.floor(c / perRow)) * tile });
+  return { tile, at, wraps: lines > 1, w: Math.min(cols, perRow) * tile, h: rows * lines * tile };
+}
 
 function Previews({ loaded, settings, dark, animated, compact = false, theme: themeControl }: { loaded: Loaded; settings: MosaicSettings; dark: boolean; animated: boolean; compact?: boolean; theme?: ReactNode }) {
-  const message = useRef<HTMLCanvasElement>(null);
-  const post = useRef<HTMLCanvasElement>(null);
+  const canvases = useRef<(HTMLCanvasElement | null)[]>([]);
   const media = useRef<HTMLVideoElement & HTMLImageElement>(null);
   const [playing, setPlaying] = useState(() => typeof window === "undefined" || !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const { cols, rows } = settings;
-  const size = 22;
-  // Recent Telegram clients draw a row of custom emoji edge to edge, so the tiles form one picture.
-  const gapX = 0;
-  const gapY = 0;
+  const places = compact ? PREVIEW_PLACES.slice(0, 1) : PREVIEW_PLACES;
+  const layouts = places.map((p) => bigEmojiLayout(cols, rows, p.width));
   const scale = 2;
-  const w = cols * size + (cols - 1) * gapX;
-  const h = rows * size + (rows - 1) * gapY;
 
   useEffect(() => {
     const el = media.current;
-    const targets = [message.current, post.current].filter(Boolean) as HTMLCanvasElement[];
+    const targets = places.map((_, i) => ({ canvas: canvases.current[i], layout: bigEmojiLayout(cols, rows, places[i].width) })).filter((t): t is { canvas: HTMLCanvasElement; layout: ReturnType<typeof bigEmojiLayout> } => !!t.canvas);
     if (!el || !targets.length) return;
     const mosaic = new OffscreenCanvas(cols * TILE, rows * TILE);
     const mctx = mosaic.getContext("2d")!;
@@ -503,11 +530,15 @@ function Previews({ loaded, settings, dark, animated, compact = false, theme: th
       if (video && animated && video.currentTime >= end) startVideo(video, settings.start, true);
       const ready = video ? video.readyState >= 2 : (el as HTMLImageElement).complete;
       if (ready) drawMosaicSync(mctx, el, settings);
-      for (const canvas of targets) {
+      for (const { canvas, layout } of targets) {
         const ctx = canvas.getContext("2d")!;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (!ready) continue;
-        for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) ctx.drawImage(mosaic, c * TILE, r * TILE, TILE, TILE, c * (size + gapX) * scale, r * (size + gapY) * scale, size * scale, size * scale);
+        const t = layout.tile * scale;
+        for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+          const { x, y } = layout.at(c, r);
+          ctx.drawImage(mosaic, c * TILE, r * TILE, TILE, TILE, Math.round(x * scale), Math.round(y * scale), Math.ceil(t), Math.ceil(t));
+        }
       }
       if (animated && playing) frame = requestAnimationFrame(paint);
     };
@@ -518,8 +549,7 @@ function Previews({ loaded, settings, dark, animated, compact = false, theme: th
     return () => { stop = true; cancelAnimationFrame(frame); el.removeEventListener(video ? "seeked" : "load", again); video?.removeEventListener("loadeddata", again); video?.pause(); };
   }, [loaded, settings.crop, settings.fit, settings.radius, settings.outline, settings.start, settings.duration, cols, rows, animated, playing, compact]); // eslint-disable-line react-hooks/exhaustive-deps -- settings is rebuilt each render; its fields are listed
 
-  const canvasProps = { width: w * scale, height: h * scale, style: { width: w, height: h }, className: "block max-w-none" };
-  const theme = dark ? { wall: "bg-[#0e1621]", bubble: "bg-[#182533] text-white", hint: "text-[#6d8299]", link: "text-[#71baf9]" } : { wall: "bg-[#dfe6ee]", bubble: "bg-white text-black", hint: "text-[#a1aab3]", link: "text-[#168acd]" };
+  const theme = dark ? { wall: "bg-[#0e1621]", hint: "text-[#6d8299]", pill: "bg-black/40 text-white/90" } : { wall: "bg-[#dfe6ee]", hint: "text-[#6b7a88]", pill: "bg-black/25 text-white" };
   return (
     <div className={`${theme.wall} relative`}>
       {loaded.source.kind === "video"
@@ -536,26 +566,30 @@ function Previews({ loaded, settings, dark, animated, compact = false, theme: th
           {themeControl}
         </div>
       )}
-      <div className={`grid gap-4 p-4 pt-14 ${compact ? "" : "md:grid-cols-2"}`}>
-        <figure className="min-w-0">
-          <figcaption className={`mb-2 text-[12px] font-medium ${theme.hint}`}>Message</figcaption>
-          <div className={`tg-scroll-x w-fit max-w-full overflow-x-auto rounded-2xl rounded-bl-md px-3 pt-2.5 pb-1.5 shadow-sm ${theme.bubble}`}>
-            <canvas ref={message} {...canvasProps} role="img" aria-label={`The ${cols} by ${rows} mosaic as a message`} />
-            <p className={`mt-1 text-right text-[11px] ${theme.hint}`}>12:00</p>
-          </div>
-        </figure>
-        {!compact && (
-          <figure className="min-w-0">
-            <figcaption className={`mb-2 text-[12px] font-medium ${theme.hint}`}>In a post</figcaption>
-            <div className={`tg-scroll-x w-fit max-w-full overflow-x-auto rounded-2xl rounded-bl-md px-3 pt-2.5 pb-1.5 text-[14px] leading-[1.35] shadow-sm ${theme.bubble}`}>
-              <p className="font-semibold">{POST.title}</p>
-              <canvas ref={post} {...canvasProps} className="my-2 block max-w-none" role="img" aria-label="The mosaic inside a channel post" />
-              <p className="max-w-[30ch]">{POST.body}</p>
-              <p className={`mt-0.5 text-right text-[11px] ${theme.hint}`}>👁 1.2K · 12:00</p>
-            </div>
-          </figure>
-        )}
+      <div className={`grid gap-5 p-4 pt-14 ${compact ? "" : "xl:grid-cols-2"}`}>
+        {places.map((place, i) => {
+          const layout = layouts[i];
+          return (
+            <figure key={place.key} className="min-w-0">
+              <figcaption className={`mb-2 flex flex-wrap items-center gap-x-1.5 text-[12px] font-medium ${theme.hint}`}>
+                <span>{place.label}</span>
+                {!compact && <span className={layout.wraps ? "text-red-600 dark:text-red-400" : "text-emerald-700 dark:text-emerald-400"}>{layout.wraps ? "· rows wrap" : "· rows stay whole"}</span>}
+              </figcaption>
+              <div className="tg-scroll-x relative w-fit max-w-full overflow-x-auto">
+                <canvas ref={(c) => { canvases.current[i] = c; }} width={Math.ceil(layout.w * scale)} height={Math.ceil(layout.h * scale)}
+                  style={{ width: layout.w, height: layout.h }} className="block max-w-none" role="img"
+                  aria-label={`The ${cols} by ${rows} mosaic as big emoji${layout.wraps ? ", with its rows wrapped" : ""}`} />
+                <span className={`absolute right-1 bottom-1 rounded-full px-1.5 py-px text-[11px] ${theme.pill}`}>12:00</span>
+              </div>
+            </figure>
+          );
+        })}
       </div>
+      {!compact && (
+        <p className={`px-4 pb-4 text-[12px] leading-snug ${theme.hint}`}>
+          Big emoji at an iPhone&rsquo;s size. Send the mosaic as a message of its own: with any text in the same message, Telegram draws the emoji as text, sized by each reader&rsquo;s text setting, and on Android the rows overlap.
+        </p>
+      )}
     </div>
   );
 }
