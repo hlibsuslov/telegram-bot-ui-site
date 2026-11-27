@@ -46,5 +46,5 @@ export function GET() {
     `- [llms.txt](${o}/llms.txt) and [llms-full.txt](${o}/llms-full.txt): everything in one file`,
     "",
   ].join("\n");
-  return new Response(body, { headers: { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
+  return new Response(body, { headers: { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=3600", Vary: "Accept" } });
 }
