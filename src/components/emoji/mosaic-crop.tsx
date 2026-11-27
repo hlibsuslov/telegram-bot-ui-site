@@ -26,9 +26,9 @@ export function DropZone({ onFile }: { onFile: (file: File | undefined) => void 
   );
 }
 
-export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, duration, animated, still = false, onTrim }: {
+export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, duration, animated, still = false, paused = false, onTrim }: {
   loaded: Loaded; crop: Rect; aspect: number | null; grid?: { cols: number; rows: number; radius: number; outline?: Outline } | null; onCrop: (r: Rect) => void;
-  start: number; duration: number; animated: boolean; still?: boolean; onTrim?: (start: number, length: number) => void;
+  start: number; duration: number; animated: boolean; still?: boolean; paused?: boolean; onTrim?: (start: number, length: number) => void;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -50,6 +50,13 @@ export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, dur
     if (!v) return;
     v.currentTime = start;
   }, [start]);
+
+  useEffect(() => {
+    const v = video.current;
+    if (!v || !animated) return;
+    if (paused) v.pause();
+    else void v.play().catch(() => {});
+  }, [animated, paused]);
 
   useEffect(() => {
     const v = video.current;

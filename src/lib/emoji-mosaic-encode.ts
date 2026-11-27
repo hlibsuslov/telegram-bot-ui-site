@@ -85,13 +85,53 @@ export async function openSource(file: File): Promise<FrameSource> {
   if (!(await track.canDecode())) throw new Error("This browser can't decode this video. Try an MP4 (H.264) or WebM file, or another browser.");
   const first = await input.getFirstTimestamp([track]);
   const duration = Math.max(0, (await track.computeDuration()) - first);
-  const sink = new CanvasSink(track, { alpha: true, poolSize: 2 });
+  let software = false;
+  const newSink = () => new CanvasSink(track, { alpha: true, poolSize: 2, decoderOptions: { hardwareAcceleration: software ? "prefer-software" : "no-preference" } });
+  let sink = newSink();
+  const lock = serial();
   return {
     kind: "video", width: track.displayWidth, height: track.displayHeight, duration, mayHaveAlpha: type === "video/webm",
+    // One reader at a time (timeline thumbnails, the content check's frames, the encoding), so the page never
+    // runs several decoders on the clip at once. A decoder can fail for reasons that aren't the file's (the GPU
+    // busy with the page's own videos, or reset): reading then resumes at the frame that failed with a new
+    // decoder, and on a second failure with the software one.
     async *frames(times) {
-      for await (const wrapped of sink.canvasesAtTimestamps(times.map((t) => first + t))) yield wrapped?.canvas ?? null;
+      const release = await lock();
+      try {
+        let done = 0;
+        for (let attempt = 0; ; attempt++) {
+          try {
+            for await (const wrapped of sink.canvasesAtTimestamps(times.slice(done).map((t) => first + t))) {
+              yield wrapped?.canvas ?? null;
+              done++;
+            }
+            return;
+          } catch (err) {
+            if (attempt >= 2 || (err instanceof DOMException && err.name === "AbortError")) {
+              const why = err instanceof Error ? err.message : String(err);
+              throw new Error(`This browser couldn't decode the video (${why}). Try again; if it keeps failing, convert the clip to an MP4 (H.264) or try another browser.`);
+            }
+            if (attempt === 1) software = true;
+            sink = newSink();
+          }
+        }
+      } finally {
+        release();
+      }
     },
     dispose: () => input.dispose(),
+  };
+}
+
+/** A queue of one: each caller waits for the one before it to release. */
+function serial(): () => Promise<() => void> {
+  let tail = Promise.resolve();
+  return () => {
+    let release!: () => void;
+    const turn = new Promise<void>((resolve) => (release = resolve));
+    const wait = tail;
+    tail = tail.then(() => turn);
+    return wait.then(() => release);
   };
 }
 
