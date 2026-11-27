@@ -246,24 +246,26 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
   } else {
     // The tiles play side by side in Telegram, each looping on its own, so they must agree to the frame: one frame
     // rate, one frame count and the same timestamps for the whole mosaic. Only the bitrate differs from tile to
-    // tile. When a tile can't fit even at the lowest bitrate, the whole mosaic drops to half the frame rate.
+    // tile. An output is kept only when it has every frame: a tile one frame short would loop shorter than the rest
+    // and drift further off on every loop. Some browsers' VP9 encoders do drop a frame now and then, so such a tile
+    // is simply encoded again.
+    const all = Array.from({ length: count }, (_, i) => i);
     const encodeAt = async (rate: number, label: string) => {
       const frames = Math.max(1, Math.round(duration * rate));
       const times = Array.from({ length: frames }, (_, i) => s.start + i / rate);
-      const out = new Map<number, Uint8Array<ArrayBuffer>>();
-      let pending = Array.from({ length: count }, (_, i) => i);
-      for (const [pass, bitrate] of BITRATES.entries()) {
-        if (!pending.length) break;
-        const over: number[] = [];
-        for (let first = 0; first < pending.length; first += BATCH) {
+      const best = new Map<number, Uint8Array<ArrayBuffer>>();
+
+      const pass = async (indexes: number[], quality: Quality, passLabel: string) => {
+        for (let first = 0; first < indexes.length; first += BATCH) {
           if (signal?.aborted) throw new DOMException("Stopped", "AbortError");
-          const batch = pending.slice(first, first + BATCH);
+          const batch = indexes.slice(first, first + BATCH);
           const encoders = batch.map((index) => {
             const tile = new OffscreenCanvas(TILE, TILE);
             const tctx = tile.getContext("2d", { alpha: true })!;
             const output = new Output({ format: new WebMOutputFormat(), target: new BufferTarget() });
             const keep = tileAlpha(index);
-            const video = new CanvasSource(tile, { codec: "vp9", quality: new Quality({ bitrate, bitrateMode: "variable" }), alpha: keep ? "keep" : "discard", keyFrameInterval: MAX_SECONDS, hardwareAcceleration: "prefer-software" });
+            // latencyMode "quality": the WebCodecs spec says the encoder must then not drop frames.
+            const video = new CanvasSource(tile, { codec: "vp9", quality, alpha: keep ? "keep" : "discard", keyFrameInterval: MAX_SECONDS, latencyMode: "quality", hardwareAcceleration: "prefer-software" });
             output.addVideoTrack(video, { frameRate: rate, canBeTransparent: keep });
             return { index, tile, tctx, output, video };
           });
@@ -278,34 +280,50 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
               return e.video.add(frame / rate, 1 / rate);
             }));
             frame++;
-            onProgress(first + Math.round((frame / frames) * batch.length), pending.length, pass === 0 ? label : "Shrinking large tiles");
+            onProgress(first + Math.round((frame / frames) * batch.length), indexes.length, passLabel);
           }
           for (const e of encoders) {
             await e.output.finalize();
             const data = new Uint8Array(e.output.target.buffer!);
-            if (data.length > TARGET_BYTES) over.push(e.index);
-            if (!out.has(e.index) || data.length < out.get(e.index)!.length) out.set(e.index, data);
+            if ((await frameCount(data)) !== frames) continue;
+            if (!best.has(e.index) || data.length < best.get(e.index)!.length) best.set(e.index, data);
           }
         }
-        pending = over;
+      };
+
+      // Lower bitrates for the tiles still over the target, or still without a complete output.
+      let pending = all;
+      for (const [i, bitrate] of BITRATES.entries()) {
+        if (!pending.length) break;
+        await pass(pending, new Quality({ bitrate, bitrateMode: "variable" }), i === 0 ? label : "Shrinking large tiles");
+        pending = pending.filter((t) => !best.has(t) || best.get(t)!.length > TARGET_BYTES);
       }
-      return { out, frames };
+      // A tile whose encoder dropped a frame every time gets two more tries: a fixed quantizer (no rate control, so
+      // nothing to drop a frame for; the bitrate is the fallback where the browser has no quantizer mode), then a
+      // higher bitrate.
+      for (const quality of [new Quality({ quantizer: 40, bitrate: 160_000 }), new Quality({ bitrate: 320_000, bitrateMode: "variable" })]) {
+        const missing = all.filter((t) => !best.has(t));
+        if (!missing.length) break;
+        await pass(missing, quality, "Encoding a few tiles again");
+      }
+      return { out: best, frames };
     };
 
     let rate = fps;
     let { out, frames } = await encodeAt(rate, "Encoding tiles");
     const tooBig = () => [...out.values()].filter((d) => d.length > HARD_BYTES).length;
-    if (tooBig() && fps > 1) {
+    const missing = () => all.filter((t) => !out.has(t));
+    if ((tooBig() || missing().length) && fps > 1) {
       rate = Math.max(1, Math.round(fps / 2));
       ({ out, frames } = await encodeAt(rate, "Encoding at half the frame rate"));
+    }
+    if (missing().length) {
+      const n = missing().length;
+      throw new Error(`${n === 1 ? `Tile ${missing()[0] + 1} keeps` : `${n} tiles keep`} losing a frame in this browser's video encoder, so the tiles would play out of step. Try again in Chrome or Edge, or turn Animated off.`);
     }
     if (tooBig()) {
       throw new Error(`${tooBig() === 1 ? "One tile is" : `${tooBig()} tiles are`} still over Telegram's 256 KB even at the lowest quality. Pick a shorter or calmer part of the clip, use fewer frames per second, or turn Animated off.`);
     }
-    // A tile that lost a frame would loop shorter than the rest and drift further off on every loop.
-    const counts = await Promise.all(Array.from({ length: count }, (_, i) => frameCount(out.get(i)!)));
-    const off = counts.findIndex((n) => n !== frames);
-    if (off !== -1) throw new Error(`Tile ${off + 1} came out with ${counts[off]} frames instead of ${frames}, so it would play out of step. Try again, or use Chrome.`);
     usedFps = rate;
     usedDuration = frames / rate;
     for (let i = 0; i < count; i++) files.push({ name: names[i], data: out.get(i)! });
