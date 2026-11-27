@@ -2,7 +2,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH, EMOJI_SHARE_IMAGE_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { listedPackName } from "@/lib/emoji-pack-list";
 
-const libraryResources = new Set([EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH]);
+// Library pages that are not packs, including the Russian and Ukrainian landings (/emoji/ru, /emoji/uk).
+const libraryResources = new Set([EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH, "/emoji/ru", "/emoji/uk"]);
 
 export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
