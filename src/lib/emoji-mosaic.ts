@@ -5,10 +5,13 @@
 export const MOSAIC_SCHEMA = "tg-emoji-mosaic/v1";
 /** core.telegram.org/stickers: emoji are exactly 100x100 px. */
 export const TILE = 100;
-/** core.telegram.org/stickers: video emoji last at most 3 s, up to 30 FPS, at most 256 KB. */
+/** core.telegram.org/stickers: video emoji last at most 3 s, up to 30 FPS; video stickers at most 256 KB. */
 export const MAX_SECONDS = 3;
 export const MAX_FPS = 30;
 export const MAX_VIDEO_BYTES = 256 * 1024;
+/** Video custom emoji: Telegram refused a 74.6 KB tile with STICKER_VIDEO_BIG (Observed, Nov 2026) although the
+ *  stickers page gives 256 KB for video; 64 KB is the figure given for video emoji elsewhere. */
+export const MAX_EMOJI_VIDEO_BYTES = 64 * 1024;
 /** appConfig message_animated_emoji_max; 100 observed, Telegram documents only the name. */
 export const MAX_EMOJI = 100;
 /** Bot API addStickerToSet: emoji sets hold up to 200. */

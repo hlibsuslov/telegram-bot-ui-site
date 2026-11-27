@@ -162,10 +162,11 @@ export function MosaicStudio() {
     if (next) setCrop((old) => clampCrop(old, width, height, aspect));
   }
 
-  const encode = useCallback(async (signal: AbortSignal): Promise<Encoded> => {
-    if (encoded.current?.key === encodeKey) return encoded.current;
+  const encode = useCallback(async (signal: AbortSignal, maxTileBytes?: number): Promise<Encoded> => {
+    const key = encodeKey + (maxTileBytes ? `/${maxTileBytes}` : "");
+    if (encoded.current?.key === key) return encoded.current;
     const { encodeMosaic } = await loadEncoder();
-    const result = await encodeMosaic(loaded!.file, loaded!.source, settings, (done, total, label) => setStep({ kind: "encoding", done, total, label }), signal);
+    const result = await encodeMosaic(loaded!.file, loaded!.source, maxTileBytes ? { ...settings, maxTileBytes } : settings, (done, total, label) => setStep({ kind: "encoding", done, total, label }), signal);
     const folder = "emoji-mosaic";
     const text = new TextEncoder();
     const entries = [
@@ -175,7 +176,7 @@ export function MosaicStudio() {
       ...result.files.map((f) => ({ name: `${folder}/${f.name}`, data: f.data })),
     ];
     if (encoded.current) URL.revokeObjectURL(encoded.current.zipUrl);
-    encoded.current = { ...result, key: encodeKey, zipName: `emoji-mosaic-${cols}x${rows}.zip`, zipUrl: URL.createObjectURL(new Blob([zip(entries)], { type: "application/zip" })) };
+    encoded.current = { ...result, key, zipName: `emoji-mosaic-${cols}x${rows}.zip`, zipUrl: URL.createObjectURL(new Blob([zip(entries)], { type: "application/zip" })) };
     setLastEncoded(encoded.current);
     return encoded.current;
   }, [encodeKey, loaded, settings, cols, rows]);
@@ -199,7 +200,7 @@ export function MosaicStudio() {
         packed.catch(() => {});
       }
       setStep({ kind: "encoding", done: 0, total: count, label: "Cutting tiles" });
-      let result: Encoded;
+      let result!: Encoded;
       try {
         result = await encode(controller.signal);
       } catch (err) {
@@ -213,34 +214,51 @@ export function MosaicStudio() {
       // Tiles go up in runs of up to 50 (one createNewStickerSet for the first run) and 3 MB, well under the
       // platform's body limit. The server answers with the set's length, which is where the next run starts, so
       // a retried run never adds a tile twice.
-      const total = result.files.length;
-      const type = result.manifest.format === "video" ? "video/webm" : "image/png";
-      let next = 0;
-      while (next < total) {
-        let end = next;
-        let bytes = 0;
-        while (end < total && end - next < RUN_TILES && (end === next || bytes + result.files[end].data.length <= RUN_BYTES)) bytes += result.files[end++].data.length;
-        setStep({ kind: "uploading", done: next, total });
-        for (let attempt = 0; ; attempt++) {
-          if (controller.signal.aborted) throw new DOMException("Stopped", "AbortError");
-          const form = new FormData();
-          form.set("job", job);
-          for (let i = next; i < end; i++) {
-            form.append("index", String(i));
-            form.append("emoji", emoji[i]);
-            form.append("tile", new Blob([result.files[i].data], { type }), result.files[i].name.split("/").pop());
+      const upload = async () => {
+        const total = result.files.length;
+        const type = result.manifest.format === "video" ? "video/webm" : "image/png";
+        let next = 0;
+        while (next < total) {
+          let end = next;
+          let bytes = 0;
+          while (end < total && end - next < RUN_TILES && (end === next || bytes + result.files[end].data.length <= RUN_BYTES)) bytes += result.files[end++].data.length;
+          setStep({ kind: "uploading", done: next, total });
+          for (let attempt = 0; ; attempt++) {
+            if (controller.signal.aborted) throw new DOMException("Stopped", "AbortError");
+            const form = new FormData();
+            form.set("job", job);
+            for (let i = next; i < end; i++) {
+              form.append("index", String(i));
+              form.append("emoji", emoji[i]);
+              form.append("tile", new Blob([result.files[i].data], { type }), result.files[i].name.split("/").pop());
+            }
+            const res = await fetch("/api/mosaic/tile", { method: "POST", body: form }).catch(() => null);
+            const body = (await res?.json().catch(() => null)) as { ok?: boolean; have?: number; error?: { code?: string; message: string; retryAfter?: number | null } } | null;
+            if (res?.ok && body?.ok) {
+              if (!body.have || body.have <= next) throw new Error("The pack didn't grow; start again.");
+              next = body.have;
+              break;
+            }
+            if (body?.error?.code === "TILE_REFUSED") throw new Refused(body.error.message, next, end);
+            const wait = body?.error?.retryAfter ?? (res && res.status < 500 && res.status !== 429 ? null : 2);
+            if (wait === null || attempt >= 8) throw new Error(body?.error?.message ?? "The upload failed.");
+            setStep({ kind: "uploading", done: next, total, wait });
+            await sleep(wait * 1000);
           }
-          const res = await fetch("/api/mosaic/tile", { method: "POST", body: form }).catch(() => null);
-          const body = (await res?.json().catch(() => null)) as { ok?: boolean; have?: number; error?: { message: string; retryAfter?: number | null } } | null;
-          if (res?.ok && body?.ok) {
-            if (!body.have || body.have <= next) throw new Error("The pack didn't grow; start again.");
-            next = body.have;
-            break;
-          }
-          const wait = body?.error?.retryAfter ?? (res && res.status < 500 && res.status !== 429 ? null : 2);
-          if (wait === null || attempt >= 8) throw new Error(body?.error?.message ?? "The upload failed.");
-          setStep({ kind: "uploading", done: next, total, wait });
-          await sleep(wait * 1000);
+        }
+      };
+      // Telegram's real ceiling for a video emoji is lower than documented and not published. If it still refuses
+      // tiles as too big while nothing is in the set yet, every tile is encoded again under 3/4 of the largest one
+      // it refused, and the upload starts over; twice at most.
+      for (let round = 0; ; round++) {
+        try {
+          await upload();
+          break;
+        } catch (err) {
+          if (!(err instanceof Refused) || err.from > 0 || round >= 2 || result.manifest.format !== "video") throw err;
+          const largest = Math.max(...result.files.slice(err.from, err.to).map((f) => f.data.length));
+          setStep({ kind: "encoding", done: 0, total: count, label: "Telegram wants smaller tiles: encoding again" });
+          result = await encode(controller.signal, Math.max(12 * 1024, Math.floor(largest * 0.75)));
         }
       }
       setStep({ kind: "checking", label: "Checking the finished pack" });
@@ -377,6 +395,13 @@ export function MosaicStudio() {
       )}
     </div>
   );
+}
+
+/** Telegram refused tiles from..to-1 as too big (STICKER_VIDEO_BIG or similar). */
+class Refused extends Error {
+  constructor(message: string, readonly from: number, readonly to: number) {
+    super(message);
+  }
 }
 
 async function api<T>(url: string, body: unknown): Promise<T> {

@@ -6,7 +6,7 @@ import {
   DEFAULT_FALLBACK,
   MAX_FPS,
   MAX_SECONDS,
-  MAX_VIDEO_BYTES,
+  MAX_EMOJI_VIDEO_BYTES,
   MOSAIC_SCHEMA,
   type MosaicManifest,
   type Outline,
@@ -43,6 +43,8 @@ export type MosaicSettings = {
   /** The emoji behind each tile, in tile order. */
   emoji?: string[];
   outline?: Outline;
+  /** A lower ceiling for each video tile than Telegram's usual one, after Telegram refused tiles as too big. */
+  maxTileBytes?: number;
 };
 
 export type EncodedMosaic = { manifest: MosaicManifest; files: { name: string; data: Uint8Array<ArrayBuffer> }[] };
@@ -50,12 +52,13 @@ export type EncodedMosaic = { manifest: MosaicManifest; files: { name: string; d
 /** Bitrates tried in turn for the tiles still over the target. All variable-rate: a constant-rate VP9 encoder may
  *  drop frames to hold its rate, and a tile with fewer frames drifts away from the others in Telegram. The
  *  software encoder is asked for, since hardware VP9 encoders may ignore the bitrate. */
-const BITRATES = [160_000, 110_000, 75_000, 50_000];
-/** The size each tile aims for. Telegram documents 256 KB, but has refused tiles under it with
- *  STICKER_VIDEO_BIG; its own video emoji are mostly 20-60 KB, and at 100x100 this budget still looks sharp. */
-const TARGET_BYTES = 64 * 1024;
-/** Never sent: over Telegram's documented limit, less some room for the WebM container. */
-const HARD_BYTES = MAX_VIDEO_BYTES - 4 * 1024;
+const BITRATES = [160_000, 110_000, 75_000, 50_000, 35_000, 25_000];
+/** The size each tile aims for, with room under the limit; Telegram's own video emoji are mostly 20-60 KB, and at
+ *  100x100 this budget still looks sharp. */
+const TARGET_BYTES = 56 * 1024;
+/** Never sent: over Telegram's limit for a video emoji, less some room. A smaller cap can be asked for
+ *  (MosaicSettings.maxTileBytes) when Telegram refuses tiles under this one. */
+const HARD_BYTES = MAX_EMOJI_VIDEO_BYTES - 1024;
 /** Tiles encoded side by side from one decode of the clip. Each encoder is a 100x100 VP9 stream, so 50 at once is
  *  light; most grids then need a single pass over the video. */
 const BATCH = 50;
@@ -231,6 +234,8 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
   };
   const tileAlpha = (i: number) => s.fit === "contain" || source.mayHaveAlpha || (s.radius > 0 && cornerTile(i));
   const files: EncodedMosaic["files"] = [];
+  const hard = Math.min(HARD_BYTES, s.maxTileBytes ?? HARD_BYTES);
+  const target = Math.min(TARGET_BYTES, Math.floor(hard * 0.875));
   let usedFps = still ? 0 : fps;
   let usedDuration = duration;
 
@@ -296,7 +301,7 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
       for (const [i, bitrate] of BITRATES.entries()) {
         if (!pending.length) break;
         await pass(pending, new Quality({ bitrate, bitrateMode: "variable" }), i === 0 ? label : "Shrinking large tiles");
-        pending = pending.filter((t) => !best.has(t) || best.get(t)!.length > TARGET_BYTES);
+        pending = pending.filter((t) => !best.has(t) || best.get(t)!.length > target);
       }
       // A tile whose encoder dropped a frame every time gets two more tries: a fixed quantizer (no rate control, so
       // nothing to drop a frame for; the bitrate is the fallback where the browser has no quantizer mode), then a
@@ -311,7 +316,7 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
 
     let rate = fps;
     let { out, frames } = await encodeAt(rate, "Encoding tiles");
-    const tooBig = () => [...out.values()].filter((d) => d.length > HARD_BYTES).length;
+    const tooBig = () => [...out.values()].filter((d) => d.length > hard).length;
     const missing = () => all.filter((t) => !out.has(t));
     if ((tooBig() || missing().length) && fps > 1) {
       rate = Math.max(1, Math.round(fps / 2));
@@ -322,7 +327,7 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
       throw new Error(`${n === 1 ? `Tile ${missing()[0] + 1} keeps` : `${n} tiles keep`} losing a frame in this browser's video encoder, so the tiles would play out of step. Try again in Chrome or Edge, or turn Animated off.`);
     }
     if (tooBig()) {
-      throw new Error(`${tooBig() === 1 ? "One tile is" : `${tooBig()} tiles are`} still over Telegram's 256 KB even at the lowest quality. Pick a shorter or calmer part of the clip, use fewer frames per second, or turn Animated off.`);
+      throw new Error(`${tooBig() === 1 ? "One tile is" : `${tooBig()} tiles are`} still over ${Math.round(hard / 1024)} KB, the most Telegram takes for a video emoji, even at the lowest quality. Pick a shorter or calmer part of the clip, use fewer frames per second, or turn Animated off.`);
     }
     usedFps = rate;
     usedDuration = frames / rate;

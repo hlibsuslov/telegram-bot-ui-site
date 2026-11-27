@@ -14,7 +14,7 @@ export const metadata = emojiMetadata(EMOJI_MOSAIC_PATH, TITLE, DESCRIPTION);
 const LIMITS: [value: string, label: string][] = [
   ["100×100", "pixels per tile"],
   ["3 s · 30 FPS", "longest video"],
-  ["256 KB", "per video tile"],
+  ["64 KB", "per video emoji"],
   ["100", "emoji per message"],
   ["≤ 7", "columns for narrow phones"],
 ];
