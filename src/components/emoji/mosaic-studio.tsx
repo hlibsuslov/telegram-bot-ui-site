@@ -41,8 +41,10 @@ type Step =
   | { kind: "error"; message: string };
 
 const MAX_FILE = 300 * 1024 * 1024;
-const PICKER_COLS = 16;
-const PICKER_ROWS = 16;
+/** 8 columns at most: from 9, a row of big emoji is wider than a chat on a 360 dp Android phone and wraps (and
+ *  from 13 on an iPhone), so the picture would fall apart on many phones. 12 rows hold 8 x 12 = 96 emoji. */
+const PICKER_COLS = 8;
+const PICKER_ROWS = 12;
 const FIT_TONE = { everywhere: "text-emerald-600 dark:text-emerald-400", chats: "text-amber-600 dark:text-amber-400", wraps: "text-red-600 dark:text-red-400" } as const;
 
 /** "iPhone groups and forwards; Android groups" from wrapsWhere's list. */
@@ -116,6 +118,8 @@ export function MosaicStudio() {
   const outline = useMemo(() => (outlinePx > 0 ? { color: outlineColor, width: outlinePx } : undefined), [outlinePx, outlineColor]);
   const emoji = useMemo(() => Array.from({ length: count }, (_, i) => tileEmoji[i] ?? baseEmoji), [count, tileEmoji, baseEmoji]);
   const recommended = useMemo(() => gridOptions(width, height, { maxCols: PICKER_COLS, limit: 40 }).filter((o) => o.crop <= 0.05 && o.rows <= PICKER_ROWS && o.fit !== "wraps"), [width, height]);
+  // The closest grid to the video's shape whose rows stay whole on every phone, also in groups and forwards.
+  const safest = useMemo(() => gridOptions(width, height, { maxCols: PICKER_COLS, limit: 10_000 }).find((o) => o.fit === "everywhere" && o.rows <= PICKER_ROWS && o.emoji >= 6) ?? null, [width, height]);
   const settings: MosaicSettings = useMemo(() => ({ cols, rows, crop, fit: locked ? "cover" : "contain", radius, start, duration, fps, still: still || !animated, fallback: baseEmoji, emoji, outline }), [cols, rows, crop, locked, radius, start, duration, fps, still, animated, baseEmoji, emoji, outline]);
   const encodeKey = loaded ? JSON.stringify([loaded.url, cols, rows, crop, settings.fit, settings.radius, start, duration, fps, settings.still, emoji, outline]) : "";
 
@@ -354,7 +358,9 @@ export function MosaicStudio() {
           </section>
         <div className="min-w-0 space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <Group title="Grid" action={(cols !== auto.cols || rows !== auto.rows) && <button type="button" onClick={() => setGrid(auto.cols, auto.rows)} className="tg-cell tg-accent rounded-lg px-2 py-0.5 text-[13px]">Auto · {auto.cols}×{auto.rows}</button>}
-            footer={<><span className={FIT_TONE[fit]}>{fitText(cols, rows)}</span> Dots mark grids that fit your video&rsquo;s shape and stay whole in chats.</>}>
+            footer={<><span className={FIT_TONE[fit]}>{fitText(cols, rows)}</span>{" "}
+              {fit !== "everywhere" && safest && <button type="button" onClick={() => setGrid(safest.cols, safest.rows)} className="tg-accent font-medium hover:underline">Fit every phone · {safest.cols}×{safest.rows}</button>}
+              {fit === "everywhere" && "Dots mark grids that fit your video\u2019s shape."}</>}>
             <GridPicker cols={cols} rows={rows} recommended={recommended} onPick={setGrid} />
           </Group>
 
@@ -385,6 +391,7 @@ export function MosaicStudio() {
         </div>
           <section aria-label="Preview" className="min-w-0 lg:col-start-1 lg:row-start-2 relative overflow-hidden rounded-2xl">
             <Previews loaded={loaded} settings={settings} dark={dark} animated={animated && !settings.still && !busy}
+              fix={fit !== "everywhere" && safest ? { label: `Fit every phone · ${safest.cols}×${safest.rows}`, onClick: () => setGrid(safest.cols, safest.rows) } : undefined}
               theme={<Segmented label="Chat theme" value={dark ? "dark" : "light"} options={[["light", "Light"], ["dark", "Dark"]]} onChange={(v) => setDark(v === "dark")} />} />
           </section>
       </div>
@@ -532,7 +539,7 @@ function bigEmojiLayout(cols: number, rows: number, width: number) {
   return { tile, at, wraps: lines > 1, w: Math.min(cols, perRow) * tile, h: rows * lines * tile };
 }
 
-function Previews({ loaded, settings, dark, animated, compact = false, theme: themeControl }: { loaded: Loaded; settings: MosaicSettings; dark: boolean; animated: boolean; compact?: boolean; theme?: ReactNode }) {
+function Previews({ loaded, settings, dark, animated, compact = false, theme: themeControl, fix }: { loaded: Loaded; settings: MosaicSettings; dark: boolean; animated: boolean; compact?: boolean; theme?: ReactNode; fix?: { label: string; onClick: () => void } }) {
   const canvases = useRef<(HTMLCanvasElement | null)[]>([]);
   const media = useRef<HTMLVideoElement & HTMLImageElement>(null);
   const [playing, setPlaying] = useState(() => typeof window === "undefined" || !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -601,6 +608,7 @@ function Previews({ loaded, settings, dark, animated, compact = false, theme: th
               <figcaption className={`mb-2 flex flex-wrap items-center gap-x-1.5 text-[12px] font-medium ${theme.hint}`}>
                 <span>{place.label}</span>
                 {!compact && <span className={layout.wraps ? "text-red-600 dark:text-red-400" : "text-emerald-700 dark:text-emerald-400"}>{layout.wraps ? "· rows wrap" : "· rows stay whole"}</span>}
+                {!compact && layout.wraps && fix && <button type="button" onClick={fix.onClick} className="tg-accent ml-1 rounded-full bg-[color-mix(in_srgb,var(--tg-accent)_12%,transparent)] px-2 py-0.5 font-semibold">{fix.label}</button>}
               </figcaption>
               <div className="tg-scroll-x relative w-fit max-w-full overflow-x-auto">
                 <canvas ref={(c) => { canvases.current[i] = c; }} width={Math.ceil(layout.w * scale)} height={Math.ceil(layout.h * scale)}
