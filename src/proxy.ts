@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_SHARE_IMAGE_PATH, emojiPackPath } from "@/lib/emoji-links";
+import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH, EMOJI_SHARE_IMAGE_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { listedPackName } from "@/lib/emoji-pack-list";
 
-const libraryResources = new Set([EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH]);
+const libraryResources = new Set([EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH]);
 
 export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;

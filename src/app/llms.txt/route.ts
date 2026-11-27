@@ -1,7 +1,7 @@
 import { MCP_RESPONSE_MAX, RATE_LIMITS } from "@/lib/emoji-api-contract";
 import { catalogExport } from "@/lib/emoji-export";
 import { catalogVersion, facetCodes } from "@/lib/emoji-facets";
-import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_LIBRARY_PATH, EMOJI_MCP_PATH, EMOJI_OPENAPI_PATH } from "@/lib/emoji-links";
+import { EMOJI_API_DOCS_PATH, EMOJI_EXPORT_PATH, EMOJI_GUIDE_PATH, EMOJI_LIBRARY_PATH, EMOJI_MCP_PATH, EMOJI_MOSAIC_PATH, EMOJI_OPENAPI_PATH } from "@/lib/emoji-links";
 import { siteUrl } from "@/lib/site-url";
 import skillDocs from "@/content/agents-llms.txt";
 
@@ -22,6 +22,7 @@ export function GET() {
     `- [JSON API and ID lookup](${origin}${EMOJI_API_DOCS_PATH}): Endpoints, parameters, responses, errors, and source links.`,
     `- [Custom emoji guide](${origin}${EMOJI_GUIDE_PATH}): Example sendMessage payloads for a message and an inline keyboard.`,
     `- [Pack catalog](${origin}${EMOJI_LIBRARY_PATH}): Search packs and browse their canonical pages.`,
+    `- [Emoji mosaic maker](${origin}${EMOJI_MOSAIC_PATH}): Cut a video, GIF or picture into 100x100 custom emoji tiles in the browser; the ZIP feeds the skill's tgui.py mosaic publish.`,
     "",
     "## Emoji library API for agents",
     "",

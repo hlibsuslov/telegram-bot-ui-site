@@ -29,6 +29,15 @@ other host, put the app behind a proxy that overwrites them, or a caller can cho
 - The GitHub star count is fetched at build time and refreshed hourly.
 - `NEXT_PUBLIC_SITE_URL` overrides the canonical origin. Production defaults to `https://telegram-bot-ui.hlixli.com`, and Vercel previews use their own origin.
 - The catalog, pack pages, and sitemap use the existing server-side `EMOJI_RESOLVER_BOT_TOKEN`. Pack pages and the sitemap resolve data on request. The documentation and other site pages also render locally without the resolver.
+- Emoji mosaic maker (`/emoji/mosaic`): tiles are cut and encoded in the browser (mediabunny, WebCodecs VP9). Creating the
+  pack on the page is off until two variables are set: `MOSAIC_BOT_TOKEN` (the bot that creates packs; its username is read
+  with getMe, or set `MOSAIC_BOT_USERNAME`) and `ANTHROPIC_API_KEY` for the content check. The check (Claude Opus 5.5,
+  `src/lib/emoji-mosaic-moderation.ts`) runs twice and fails closed: on five frames the browser sends before any tile is
+  uploaded, and on frames the server rebuilds with ffmpeg from the tiles Telegram actually stored. A refused set is deleted
+  before its link leaves the server, and its owner can't start another pack for a day. In @BotFather run `/setdomain` for that bot with the site's domain so the
+  Telegram Login Widget works. Visitors log in with Telegram and the bot creates the set under their own account, then sends
+  them the mosaic. Limits are per instance: 10 packs an hour and 320 tiles per 10 minutes per user. To take a reported pack
+  down, call `deleteStickerSet` with that bot; Vercel logs show `mosaic: set created` with the owner's id.
 - The [Emoji Library API reference](https://telegram-bot-ui.hlixli.com/emoji/api-docs) documents pack search, pack contents, and reverse ID lookup.
 
 ## License

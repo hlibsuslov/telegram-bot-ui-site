@@ -41,6 +41,18 @@ export default function PrivacyPage() {
               </p>
             </section>
             <section>
+              <h2>Emoji mosaic maker</h2>
+              <p>
+                Your video or picture is cut into tiles in your browser and is never uploaded. If you choose to create a
+                pack, you log in with Telegram: the site receives your Telegram id, name and username from Telegram (never
+                your phone number or password), keeps them in a signed cookie for two hours, and sends only the finished
+                tiles to Telegram to create a pack owned by your account. Before and after the upload, a few still frames of
+                the mosaic go to Anthropic&apos;s Claude API for an automatic content check; a pack that fails it is deleted.
+                The site logs the pack&apos;s name and the check&apos;s outcome with your Telegram id so that abuse reports can
+                be answered. Downloading the tiles as a ZIP needs no login.
+              </p>
+            </section>
+            <section>
               <h2>Questions</h2>
               <p>
                 Questions go to the project&apos;s{" "}

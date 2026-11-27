@@ -34,6 +34,9 @@ const nextConfig: NextConfig = {
   },
   // The local preview is opened through both localhost and the IPv4 loopback address.
   allowedDevOrigins: ["127.0.0.1"],
+  // The mosaic check stacks tiles with ffmpeg; ship the binary with the one route that runs it.
+  serverExternalPackages: ["ffmpeg-static"],
+  outputFileTracingIncludes: { "/api/mosaic/finish": ["./node_modules/ffmpeg-static/ffmpeg*"] },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

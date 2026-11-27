@@ -3,7 +3,7 @@ import { ExpandSummary } from "@/components/emoji/expand-summary";
 import { LibraryApp } from "@/components/emoji/library-app";
 import { JsonLd } from "@/components/emoji/json-ld";
 import { cardPack, getLibrary } from "@/lib/emoji-library";
-import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, emojiPackPath } from "@/lib/emoji-links";
+import { EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH, emojiPackPath } from "@/lib/emoji-links";
 import { emojiMetadata } from "@/lib/emoji-metadata";
 import { siteUrl } from "@/lib/site-url";
 
@@ -28,6 +28,7 @@ export default async function EmojiLibraryPage() {
       <nav aria-label="Custom emoji help" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 px-1 text-sm">
         <Link className="tg-accent underline" href={EMOJI_GUIDE_PATH}>Use custom emoji in a Telegram bot</Link>
         <Link className="tg-accent underline" href={EMOJI_API_DOCS_PATH}>Emoji Library JSON API</Link>
+        <Link className="tg-accent underline" href={EMOJI_MOSAIC_PATH}>Make an emoji mosaic from a video</Link>
       </nav>
       {library.packs.length > 0 && (
         <details className="tg-glass group mt-4 rounded-2xl px-4 py-3 text-sm">

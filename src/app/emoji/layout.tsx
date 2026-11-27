@@ -29,6 +29,7 @@ export default function EmojiLayout({ children }: { children: ReactNode }) {
             <span className="truncate">Emoji library</span>
           </Link>
           <nav aria-label="Site" className="ml-auto flex items-center gap-1 text-sm">
+            <Link href="/emoji/mosaic" className="tg-cell tg-hint hidden rounded-lg px-2.5 py-1.5 sm:inline">Mosaic maker</Link>
             <Link href="/studio" className="tg-cell tg-hint hidden rounded-lg px-2.5 py-1.5 md:inline">Studio</Link>
             <Link href="/#install" className="tg-cell tg-hint hidden rounded-lg px-2.5 py-1.5 md:inline">Install the skill</Link>
             <ThemeToggle />

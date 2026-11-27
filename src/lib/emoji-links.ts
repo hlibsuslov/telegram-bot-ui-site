@@ -1,6 +1,7 @@
 export const EMOJI_LIBRARY_PATH = "/emoji";
 export const EMOJI_GUIDE_PATH = "/emoji/custom-emoji-guide";
 export const EMOJI_API_DOCS_PATH = "/emoji/api-docs";
+export const EMOJI_MOSAIC_PATH = "/emoji/mosaic";
 export const EMOJI_SHARE_IMAGE_PATH = "/share/telegram-emoji-library.png";
 export const EMOJI_OPENAPI_PATH = "/api/emoji-openapi.json";
 export const EMOJI_EXPORT_PATH = "/emoji-library.ndjson.gz";
