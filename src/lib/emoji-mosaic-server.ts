@@ -13,7 +13,7 @@
 import "server-only";
 import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { request } from "node:https";
-import { MAX_EMOJI, MAX_VIDEO_BYTES, mosaicMessage } from "./emoji-mosaic";
+import { MAX_EMOJI, MAX_EMOJI_VIDEO_BYTES, mosaicMessage } from "./emoji-mosaic";
 
 export const SESSION_COOKIE = "mosaic_session";
 const SESSION_SECONDS = 2 * 60 * 60;
@@ -133,7 +133,7 @@ export function readJob(text: string | null | undefined, user: MosaicUser, token
 /** WEBM (EBML header) for video, PNG or WEBP for static; sizes from Telegram's sticker requirements. */
 export function checkTile(data: Uint8Array, format: Job["format"]): string {
   if (format === "video") {
-    if (data.length > MAX_VIDEO_BYTES) throw new MosaicError(413, "TILE_TOO_BIG", "a video emoji is at most 256 KB");
+    if (data.length > MAX_EMOJI_VIDEO_BYTES) throw new MosaicError(413, "TILE_TOO_BIG", "a video emoji is at most 64 KB");
     if (!(data[0] === 0x1a && data[1] === 0x45 && data[2] === 0xdf && data[3] === 0xa3)) throw new MosaicError(415, "NOT_WEBM", "a video tile must be WEBM");
     return "video/webm";
   }

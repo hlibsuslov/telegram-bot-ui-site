@@ -153,7 +153,7 @@ describe("tiles and the message", () => {
   });
   test("tile files are checked before they reach Telegram", () => {
     assert.equal(checkTile(WEBM, "video"), "video/webm");
-    assert.throws(() => checkTile(new Uint8Array(300 * 1024).fill(0x1a), "video"), /256 KB/);
+    assert.throws(() => checkTile(new Uint8Array(65 * 1024).fill(0x1a), "video"), /64 KB/);
     assert.throws(() => checkTile(new Uint8Array([0x89, 0x50, 0x4e, 0x47]), "video"), /WEBM/);
     assert.throws(() => checkTile(WEBM, "static"), /100x100 PNG/);
   });
