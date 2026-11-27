@@ -22,13 +22,66 @@ export const TARGET_EMOJI = 40;
 export const DEFAULT_FALLBACK = "⬜";
 
 export type ColumnFit = "safe" | "check-narrow-phone" | "likely-wraps";
-export type GridOption = { cols: number; rows: number; emoji: number; crop: number; columns: ColumnFit };
+export type GridOption = { cols: number; rows: number; emoji: number; crop: number; columns: ColumnFit; fit: Fit };
 export type Rect = { x: number; y: number; w: number; h: number };
 
 export function columnFit(cols: number): ColumnFit {
   if (cols <= SAFE_COLUMNS) return "safe";
   if (cols <= WIDE_COLUMNS) return "check-narrow-phone";
   return "likely-wraps";
+}
+
+// ------------------------------------------------------------------ how phones lay the message out
+// A message of custom emoji only is drawn as "big emoji", and a row wider than the message wraps: the last tiles
+// drop to a new line and the picture falls apart. The tile size there does not follow the text-size setting; it
+// comes from the grid. Read from the clients' source (Nov 2026):
+// - iOS (ChatMessageAnimatedStickerItemNode.fontSizeForEmojiString): font = floor(94 x m), tile = font x 24/17,
+//   m chosen by max(columns, rows), so rows of 5-8 columns are 282-304 pt wide whatever the grid.
+// - Android (Theme.chat_msgTextPaintEmoji, MessageObject.checkEmojiOnly): tile = (120 x k + 4) x 1.2 dp, k by the
+//   total emoji count; about 32 dp from 7 emoji.
+// - Widths: iOS W-48 pt in chats and channels, W-86 in groups, 45 less again when forwarded; Android W-80 dp,
+//   14 less for a channel or bot post's share button, 52 less in groups, at most 0.65 W when forwarded.
+const IOS_FONT = [94, 78, 64, 49, 43, 35, 30, 25, 22, 19];
+const ANDROID_K = [0.46, 0.46, 0.46, 0.34, 0.28, 0.22, 0.19];
+
+/** Row width in iOS points and Android dp of a cols x rows mosaic shown as big emoji. */
+export function bigEmojiRow(cols: number, rows: number): { ios: number; android: number } {
+  const dim = Math.max(cols, rows);
+  const ios = cols * IOS_FONT[Math.min(dim, IOS_FONT.length) - 1] * (24 / 17);
+  const k = ANDROID_K[Math.min(cols * rows, ANDROID_K.length) - 1];
+  return { ios, android: cols * (120 * k + 4) * 1.2 };
+}
+
+/** Where the rows stay whole, judged on the narrow phones many people have: an iPhone at 375 pt (mini, SE, or
+ *  Display Zoom) and an Android phone at 360 dp.
+ *  - everywhere: also in groups and in forwarded messages;
+ *  - chats: in private chats and channel posts; on those phones rows wrap in groups or when forwarded;
+ *  - wraps: rows wrap even in a private chat or a channel post on such a phone. */
+export type Fit = "everywhere" | "chats" | "wraps";
+const NARROW = {
+  ios: { chat: 375 - 48, group: 375 - 86, forwarded: 375 - 48 - 45 },
+  android: { chat: 360 - 80 - 14, group: 360 - 80 - 52, forwarded: Math.min(360 - 80 - 14, 0.65 * 360) },
+};
+
+export function layoutFit(cols: number, rows: number): Fit {
+  return wrapsWhere(cols, rows).length === 0 ? "everywhere" : wrapsWhere(cols, rows).some((w) => w.endsWith("chats")) ? "wraps" : "chats";
+}
+
+/** The narrow-phone places where the rows wrap, for the label under the grid. */
+export function wrapsWhere(cols: number, rows: number): string[] {
+  const { ios, android } = bigEmojiRow(cols, rows);
+  const where: string[] = [];
+  if (ios > NARROW.ios.chat) where.push("iPhone chats");
+  else {
+    if (ios > NARROW.ios.group) where.push("iPhone groups");
+    if (ios > NARROW.ios.forwarded) where.push("iPhone forwards");
+  }
+  if (android > NARROW.android.chat) where.push("Android chats");
+  else {
+    if (android > NARROW.android.group) where.push("Android groups");
+    if (android > NARROW.android.forwarded) where.push("Android forwards");
+  }
+  return where;
 }
 
 /** Grids for a width x height source, closest shape first, then more emoji. `crop` is the share a cover fit cuts. */
@@ -40,7 +93,7 @@ export function gridOptions(width: number, height: number, { maxEmoji = MAX_EMOJ
     for (let rows = 1; rows <= Math.floor(maxEmoji / cols); rows++) {
       const ratio = cols / rows;
       const crop = 1 - Math.min(ratio, want) / Math.max(ratio, want);
-      found.push({ cols, rows, emoji: cols * rows, crop, columns: columnFit(cols) });
+      found.push({ cols, rows, emoji: cols * rows, crop, columns: columnFit(cols), fit: layoutFit(cols, rows) });
     }
   }
   const useful = found.filter((g) => g.emoji >= 4);
@@ -49,12 +102,20 @@ export function gridOptions(width: number, height: number, { maxEmoji = MAX_EMOJ
   return list.slice(0, limit);
 }
 
-/** The default grid: at most 8 columns, the shape within 5% when possible, then the most emoji up to TARGET_EMOJI. */
+/** The default grid: at most 8 columns, the shape within 5% when possible, rows that stay whole on narrow phones
+ *  (everywhere first when that still gives 9 or more emoji, then in chats and channels), then the most emoji up
+ *  to TARGET_EMOJI. */
 export function autoGrid(width: number, height: number, maxEmoji = MAX_EMOJI): { cols: number; rows: number } {
   const options = gridOptions(width, height, { maxEmoji, maxCols: SAFE_COLUMNS, limit: 10_000 });
-  if (!options.length) return { cols: 8, rows: 4 };
+  if (!options.length) return { cols: 7, rows: 4 };
   const close = options.filter((g) => g.crop <= 0.05);
-  const shaped = close.length ? close : options;
+  const pick = (list: GridOption[]) => {
+    const everywhere = list.filter((g) => g.fit === "everywhere" && g.emoji >= 9);
+    if (everywhere.length) return everywhere;
+    const chats = list.filter((g) => g.fit !== "wraps");
+    return chats.length ? chats : list;
+  };
+  const shaped = pick(close.length ? close : options);
   const modest = shaped.filter((g) => g.emoji <= TARGET_EMOJI);
   const pool = modest.length ? modest : shaped;
   const best = pool.reduce((a, b) => (b.emoji > a.emoji || (b.emoji === a.emoji && b.crop < a.crop) ? b : a));

@@ -1,15 +1,20 @@
-// The mosaic maker's rules match the skill's emoji_mosaic.py: the same default grids, crops, tile names and
-// UTF-16 message, and a ZIP the skill's loader can read (stored entries, CRC-32, UTF-8 names).
+// The mosaic maker's rules match the skill's emoji_mosaic.py: the same crops, tile names and UTF-16 message, and a
+// ZIP the skill's loader can read (stored entries, CRC-32, UTF-8 names). The default grid also weighs how phones
+// lay out big emoji (layoutFit), which the skill does not do yet.
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { autoGrid, centeredCrop, clampCrop, columnFit, gridOptions, gridProblem, maxRadius, mosaicMessage, placement, tileNames } from "@/lib/emoji-mosaic";
+import { autoGrid, bigEmojiRow, centeredCrop, clampCrop, columnFit, gridOptions, layoutFit, wrapsWhere, gridProblem, maxRadius, mosaicMessage, placement, tileNames } from "@/lib/emoji-mosaic";
 import { crc32, zip } from "@/lib/emoji-mosaic-zip";
 
 describe("grid", () => {
-  test("the default keeps the shape and at most 8 columns, like the skill", () => {
+  test("the default keeps the shape, at most 8 columns, and rows that stay whole on narrow phones", () => {
     assert.deepEqual(autoGrid(1280, 720), { cols: 7, rows: 4 });
     assert.deepEqual(autoGrid(720, 1280), { cols: 4, rows: 7 });
-    assert.deepEqual(autoGrid(1000, 1000), { cols: 6, rows: 6 });
+    assert.deepEqual(autoGrid(1000, 1000), { cols: 4, rows: 4 });
+    for (const [w, h] of [[1280, 720], [720, 1280], [1000, 1000], [1440, 1080], [1080, 1350]]) {
+      const g = autoGrid(w, h);
+      assert.notEqual(layoutFit(g.cols, g.rows), "wraps", `${w}x${h}`);
+    }
     const square = autoGrid(1000, 1000);
     assert.equal(square.cols, square.rows);
     for (const [w, h] of [[1920, 1080], [1080, 1920], [3000, 1000]]) {
@@ -23,6 +28,20 @@ describe("grid", () => {
     assert.equal(columnFit(8), "safe");
     assert.equal(columnFit(12), "check-narrow-phone");
     assert.equal(columnFit(13), "likely-wraps");
+  });
+  test("big emoji rows: iOS sizes tiles by max(columns, rows), Android by the count", () => {
+    // Row widths from the clients' constants: iOS 303.5 / 296.5 / 296.5 / 282.4 / 279.5 pt for 5-9 columns.
+    assert.deepEqual([5, 6, 7, 8, 9].map((c) => Math.round(bigEmojiRow(c, 3).ios * 10) / 10), [303.5, 296.5, 296.5, 282.4, 279.5]);
+    assert.equal(Math.round(bigEmojiRow(7, 4).android), 225);
+    // 7x4 fits chats; on a 375 pt iPhone it wraps in groups and forwards. 8 columns wrap in Android groups.
+    assert.equal(layoutFit(7, 4), "chats");
+    assert.deepEqual(wrapsWhere(7, 4), ["iPhone groups", "iPhone forwards"]);
+    assert.ok(wrapsWhere(8, 4).includes("Android groups"));
+    // Taller grids shrink every tile on iOS, so 7x8 stays whole everywhere; 9 columns overflow Android chats.
+    assert.equal(layoutFit(7, 8), "everywhere");
+    assert.equal(layoutFit(4, 4), "everywhere");
+    assert.equal(layoutFit(9, 5), "wraps");
+    assert.ok(gridOptions(1280, 720).every((o) => o.fit === layoutFit(o.cols, o.rows)));
   });
   test("limits", () => {
     assert.equal(gridProblem(10, 10), null);

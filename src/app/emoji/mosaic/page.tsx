@@ -16,7 +16,7 @@ const LIMITS: [value: string, label: string][] = [
   ["3 s · 30 FPS", "longest video"],
   ["256 KB", "per video tile"],
   ["100", "emoji per message"],
-  ["8", "columns fit every phone"],
+  ["≤ 7", "columns for narrow phones"],
 ];
 
 export default function EmojiMosaicPage() {
