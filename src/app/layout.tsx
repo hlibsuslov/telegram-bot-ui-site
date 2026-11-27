@@ -6,14 +6,21 @@ import { THEME_BOOT_SCRIPT } from "@/lib/theme";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
+// No preload: a preloaded font makes every page answer with Next's own Link header, which replaces the homepage's
+// RFC 8288 Link to llms.txt, the Markdown version and the API catalog (next.config.ts). display: swap keeps text
+// visible while the fonts arrive.
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -65,6 +72,7 @@ export const viewport: Viewport = {
 
 // One linked graph, so answer engines can tell what the site is, who makes it, what the code is and how to get it.
 const AUTHOR_ID = "https://github.com/hlibsuslov#person";
+const ORG_ID = `${SITE_ORIGIN}/#org`;
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -75,7 +83,18 @@ const jsonLd = {
       name: SITE_NAME,
       description: SITE_DESCRIPTION,
       inLanguage: ["en", "ru", "uk"],
-      publisher: { "@id": AUTHOR_ID },
+      publisher: { "@id": ORG_ID },
+    },
+    {
+      // The project as the entity: the same name as the title's prefix and og:site_name.
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: SITE_NAME,
+      url: `${SITE_ORIGIN}/`,
+      logo: { "@type": "ImageObject", url: `${SITE_ORIGIN}/icon.png`, width: 192, height: 192 },
+      description: SITE_DESCRIPTION,
+      founder: { "@id": AUTHOR_ID },
+      sameAs: [REPO_URL, "https://github.com/hlibsuslov"],
     },
     {
       "@type": "Person",
@@ -83,7 +102,7 @@ const jsonLd = {
       name: "Hlib Suslov",
       alternateName: "hlibsuslov",
       url: "https://github.com/hlibsuslov",
-      sameAs: ["https://github.com/hlibsuslov"],
+      sameAs: ["https://github.com/hlibsuslov", REPO_URL],
     },
     {
       "@type": "SoftwareSourceCode",

@@ -13,8 +13,31 @@ function wantsMarkdown(accept: string | null): boolean {
   return md !== -1 && (html === -1 || md < html);
 }
 
+/** RFC 9727 API catalog (RFC 9264 linkset): the emoji library's HTTP API and its MCP server. */
+function apiCatalog(origin: string): Response {
+  const linkset = {
+    linkset: [
+      {
+        anchor: `${origin}/api/`,
+        "service-desc": [{ href: `${origin}/api/emoji-openapi.json`, type: "application/openapi+json" }],
+        "service-doc": [{ href: `${origin}/emoji/api-docs`, type: "text/html" }],
+        describedby: [{ href: `${origin}/llms.txt`, type: "text/plain" }],
+      },
+      {
+        anchor: `${origin}/api/mcp`,
+        "service-desc": [{ href: `${origin}/.well-known/mcp/server.json`, type: "application/json" }],
+        "service-doc": [{ href: `${origin}/emoji/api-docs#mcp`, type: "text/html" }],
+      },
+    ],
+  };
+  return new Response(JSON.stringify(linkset, null, 2), {
+    headers: { "Content-Type": "application/linkset+json; charset=utf-8", "Cache-Control": "public, max-age=3600", "Access-Control-Allow-Origin": "*" },
+  });
+}
+
 export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  if (path === "/.well-known/api-catalog") return apiCatalog(request.nextUrl.origin);
   if (path === "/") {
     const res = wantsMarkdown(request.headers.get("accept")) ? NextResponse.rewrite(new URL("/index.md", request.url)) : NextResponse.next();
     res.headers.set("Vary", "Accept");
@@ -43,4 +66,4 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/", "/emoji/:name"] };
+export const config = { matcher: ["/", "/.well-known/api-catalog", "/emoji/:name"] };
