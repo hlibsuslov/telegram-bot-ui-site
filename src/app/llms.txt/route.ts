@@ -39,6 +39,7 @@ export function GET() {
     `- [OpenAPI 3.1 contract](${origin}${EMOJI_OPENAPI_PATH}): every endpoint with parameters, response schemas, error status and code, rate limits, and an example.`,
     `- [Catalog export](${origin}${EMOJI_EXPORT_PATH}): every pack in one gzip NDJSON file, ${file.lines} lines, ${file.bytes} bytes, ETag ${file.etag}.`,
     `- [Remote MCP server](${origin}${EMOJI_MCP_PATH}): the same library as MCP tools (Streamable HTTP, no key).`,
+    `- [MCP server card](${origin}/.well-known/mcp/server.json): the same server described in the MCP registry's server.json format.`,
     "",
     `Read-only GET, no key. Keep emoji ids as strings. Resolve relative paths (pageUrl, preview, animation, still) against ${origin}. ` +
       `Every JSON answer carries the catalog version: taxonomy ${catalogVersion.taxonomy}, generated ${catalogVersion.generated} ` +

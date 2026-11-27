@@ -5,8 +5,21 @@ import { listedPackName } from "@/lib/emoji-pack-list";
 // Library pages that are not packs, including the Russian and Ukrainian landings (/emoji/ru, /emoji/uk).
 const libraryResources = new Set([EMOJI_API_DOCS_PATH, EMOJI_GUIDE_PATH, EMOJI_MOSAIC_PATH, "/emoji/ru", "/emoji/uk"]);
 
+/** An agent that asks for Markdown first (Accept: text/markdown before text/html) gets the landing as Markdown. */
+function wantsMarkdown(accept: string | null): boolean {
+  if (!accept) return false;
+  const md = accept.indexOf("text/markdown");
+  const html = accept.indexOf("text/html");
+  return md !== -1 && (html === -1 || md < html);
+}
+
 export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  if (path === "/") {
+    const res = wantsMarkdown(request.headers.get("accept")) ? NextResponse.rewrite(new URL("/index.md", request.url)) : NextResponse.next();
+    res.headers.set("Vary", "Accept");
+    return res;
+  }
   if (path === "/emoji/share-image") {
     return NextResponse.rewrite(new URL(EMOJI_SHARE_IMAGE_PATH, request.url));
   }
@@ -30,4 +43,4 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: "/emoji/:name" };
+export const config = { matcher: ["/", "/emoji/:name"] };
