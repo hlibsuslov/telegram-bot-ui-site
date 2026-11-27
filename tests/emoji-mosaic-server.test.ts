@@ -3,7 +3,7 @@
 import assert from "node:assert/strict";
 import { createHash, createHmac } from "node:crypto";
 import { describe, test } from "node:test";
-import { addTile, type BotCall, checkTile, cleanEmoji, finishPack, MosaicError, newJob, PACK_TITLE, readJob, readSession, sessionCookie, verifyLogin } from "@/lib/emoji-mosaic-server";
+import { addTile, addTiles, type BotCall, checkTile, cleanEmoji, finishPack, MosaicError, newJob, PACK_TITLE, readJob, readSession, sessionCookie, verifyLogin } from "@/lib/emoji-mosaic-server";
 
 const TOKEN = "123456:mosaic-test-token";
 const CONFIG = { token: TOKEN, username: "MosaicMakerBot" };
@@ -102,6 +102,32 @@ describe("tiles and the message", () => {
     assert.equal(done.link, `https://t.me/addemoji/${job.name}`);
     assert.equal(tg.sent()!.text, "🌅🌿\n🌿⬜");
     assert.equal(tg.sent()!.chat_id, 42);
+  });
+  test("a run of tiles makes the set in one call, then adds the rest; a retried run adds nothing twice", async () => {
+    const tg = fakeTelegram();
+    const job = readJob(newJob(user, { count: 60, cols: 6, format: "video" }, CONFIG, NOW).job, user, TOKEN, NOW);
+    const tiles = (from: number, to: number) => Array.from({ length: to - from }, (_, i) => ({ index: from + i, data: WEBM, emoji: "🌿" }));
+    assert.deepEqual(await addTiles(tg.call, job, tiles(0, 50)), { added: 50, have: 50 });
+    assert.equal(tg.calls.filter((m) => m === "createNewStickerSet").length, 1);
+    assert.equal(tg.calls.filter((m) => m === "addStickerToSet").length, 0);
+    assert.equal(tg.calls.filter((m) => m === "getStickerSet").length, 1);
+    await assert.rejects(addTiles(tg.call, job, tiles(51, 55)), /send tile 51 first/);
+    assert.deepEqual(await addTiles(tg.call, job, tiles(45, 60)), { added: 10, have: 60 });
+    assert.equal(tg.calls.filter((m) => m === "addStickerToSet").length, 10);
+    assert.deepEqual(await addTiles(tg.call, job, tiles(50, 60)), { added: 0, have: 60 });
+    assert.equal(tg.sets.get(job.name)!.length, 60);
+    await assert.rejects(addTiles(tg.call, job, [...tiles(0, 2), ...tiles(3, 4)]), /unbroken run/);
+  });
+  test("a tile Telegram refuses is named with its size", async () => {
+    const tg = fakeTelegram();
+    const job = readJob(newJob(user, { count: 2, cols: 2, format: "video" }, CONFIG, NOW).job, user, TOKEN, NOW);
+    const refuse: BotCall = async (method, params, file) => {
+      if (method === "addStickerToSet") throw new MosaicError(400, "TELEGRAM", "addStickerToSet: Bad Request: STICKER_VIDEO_BIG");
+      return tg.call(method, params, file);
+    };
+    await addTile(refuse, job, 0, WEBM);
+    await assert.rejects(addTile(refuse, job, 1, new Uint8Array([0x1a, 0x45, 0xdf, 0xa3, ...new Array(2044).fill(0)])),
+      (err: unknown) => err instanceof MosaicError && err.code === "TILE_REFUSED" && /tile 2 \(2 KB\)/.test(err.message));
   });
   test("an unfinished set isn't sent", async () => {
     const tg = fakeTelegram();

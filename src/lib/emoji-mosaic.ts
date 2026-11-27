@@ -113,6 +113,32 @@ export function maxRadius(cols: number, rows: number): number {
 }
 
 /** Tile files row by row, left to right: tiles/r01c01.webm, tiles/r01c02.webm, ... */
+/** A line drawn along the mosaic's outer edge, inside it, following the rounded corners. Width in mosaic pixels. */
+export type Outline = { color: string; width: number };
+
+/** Thickness presets in mosaic pixels. A chat shows a tile at about 22 px, so 4 is about one screen pixel. */
+export const OUTLINE_WIDTHS = [["none", "None", 0], ["thin", "Thin", 4], ["medium", "Medium", 8], ["bold", "Bold", 12], ["heavy", "Heavy", 18]] as const;
+export type OutlineWidth = (typeof OUTLINE_WIDTHS)[number][0];
+
+/** Telegram's own accent colours (its themes' palette), plus white for dark chats and black for light ones. */
+export const OUTLINE_COLORS = [
+  ["#FFFFFF", "White"], ["#000000", "Black"], ["#3390EC", "Blue"], ["#8774E1", "Violet"], ["#00C2ED", "Cyan"],
+  ["#29B327", "Green"], ["#F08200", "Orange"], ["#EB6CA4", "Pink"], ["#E53935", "Red"],
+] as const;
+
+export function strokeOutline(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, width: number, height: number, radius: number, outline?: Outline) {
+  if (!outline || outline.width <= 0) return;
+  const w = outline.width;
+  ctx.save();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.strokeStyle = outline.color;
+  ctx.lineWidth = w;
+  ctx.beginPath();
+  ctx.roundRect(w / 2, w / 2, width - w, height - w, Math.max(0, radius - w / 2));
+  ctx.stroke();
+  ctx.restore();
+}
+
 export function tileNames(cols: number, rows: number, ext: "webm" | "png"): string[] {
   const names: string[] = [];
   for (let r = 1; r <= rows; r++) for (let c = 1; c <= cols; c++) names.push(`tiles/r${String(r).padStart(2, "0")}c${String(c).padStart(2, "0")}.${ext}`);
