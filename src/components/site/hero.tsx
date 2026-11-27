@@ -68,15 +68,15 @@ export function Hero() {
           Agent Skill · Telegram Bot API {BOT_API} · v{VERSION}
         </p>
 
-        <h1 id="hero-heading" className="mt-6 text-4xl leading-[1.08] font-bold tracking-tight sm:text-6xl xl:text-7xl">
-          <span className="sr-only">Telegram bots that feel like real products</span>
-          <span aria-hidden="true" className="block">
-            Telegram bots that
-          </span>
-          <span aria-hidden="true" className="block">
+        {/* One clean heading for search engines, answer engines and screen readers. The animated headline is
+            decoration: text extractors ignore aria-hidden, so inside the h1 it read "...products f e e l l i k e". */}
+        <h1 id="hero-heading" className="sr-only">Telegram bots that feel like real products</h1>
+        <div aria-hidden="true" data-nosnippet="" className="mt-6 text-4xl leading-[1.08] font-bold tracking-tight sm:text-6xl xl:text-7xl">
+          <span className="block">Telegram bots that</span>
+          <span className="block">
             <HeroRotate texts={PHRASES} />
           </span>
-        </h1>
+        </div>
 
         <p className="mt-6 max-w-xl text-lg leading-8 text-pretty text-muted-foreground">
           Give your coding agent a skill for the whole interface of a Telegram bot: screens, keyboards, streaming replies, widgets, Mini Apps, premium emoji and channel posts.

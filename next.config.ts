@@ -13,10 +13,23 @@ const AGENT_DOCS = [
   { source: "/llms-full.txt", type: "text/plain; charset=utf-8" },
 ];
 
+/** What the site publishes for agents: only resources that exist. */
+const AGENT_LINKS = [
+  '</index.md>; rel="alternate"; type="text/markdown"',
+  '</llms.txt>; rel="describedby"; type="text/plain"',
+  '</agents.md>; rel="service-doc"; type="text/markdown"',
+  '</.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"',
+  '</api/emoji-openapi.json>; rel="service-desc"; type="application/openapi+json"',
+  '</emoji/api-docs>; rel="service-doc"; type="text/html"',
+].join(", ");
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
       ...AGENT_DOCS.map(({ source, type }) => ({ source, headers: [{ key: "Content-Type", value: type }] })),
+      // RFC 8288 links on the homepage to what the site publishes for agents. Set here rather than in the proxy:
+      // the page render writes its own Link header (font preloads) over one set there.
+      { source: "/", headers: [{ key: "Link", value: AGENT_LINKS }] },
       ...["/emoji", "/emoji/:path*"].map((source) => ({ source, headers: [{ key: "Content-Security-Policy", value: EMOJI_CSP }] })),
       ...["/api/emoji-search", "/api/emoji-pack/:name"].map((source) => ({ source, headers: [{ key: "X-Robots-Tag", value: "noindex" }] })),
     ];

@@ -43,8 +43,9 @@ export const AGENT_PROMPTS = [
 
 export const SITE_NAME = "Telegram Bot UI";
 export const SITE_TITLE = "Telegram Bot UI: Agent Skill for bots, Mini Apps and emoji";
+/** 50-160 characters: search engines cut longer descriptions. */
 export const SITE_DESCRIPTION =
-  "Open-source Agent Skill for Claude Code, Codex and Cursor: Telegram bot screens, keyboards, streaming replies, widgets, Mini Apps, Stars payments and premium emoji, plus an MCP server and a free emoji library.";
+  "Open-source Agent Skill for Claude Code, Codex and Cursor: Telegram bot screens, Mini Apps, Stars and premium emoji, plus an MCP server and emoji library.";
 
 /** Demo video below the hero (web copies of the 16:9 master, 1280x720). */
 export const DEMO_VIDEO = {

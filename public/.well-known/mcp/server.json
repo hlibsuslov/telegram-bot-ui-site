@@ -1,0 +1,10 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.hlibsuslov/telegram-emoji-library",
+  "title": "Telegram Emoji Library",
+  "description": "Search Telegram premium emoji packs by name, meaning or emoji, resolve custom emoji IDs to their pack, and get snippets for bot messages and buttons. Read-only, no key.",
+  "version": "1.0.0",
+  "websiteUrl": "https://telegram-bot-ui.hlixli.com/emoji/api-docs",
+  "repository": { "url": "https://github.com/hlibsuslov/telegram-bot-ui", "source": "github" },
+  "remotes": [{ "type": "streamable-http", "url": "https://telegram-bot-ui.hlixli.com/api/mcp" }]
+}
