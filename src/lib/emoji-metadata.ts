@@ -10,12 +10,16 @@ const shareImage = {
   alt: "Telegram Emoji Library. Find a pack. Copy an emoji ID. A yellow duck with a magnifying glass examines six emoji beside a copy icon.",
 };
 
-export function emojiMetadata(path: string, title: string, description: string, type: "website" | "article" = "website"): Metadata {
+export function emojiMetadata(
+  path: string, title: string, description: string, type: "website" | "article" = "website",
+  extra: { languages?: Record<string, string>; locale?: string; keywords?: string[] } = {},
+): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: path },
-    openGraph: { type, url: path, title, description, images: [shareImage], siteName: "Telegram Emoji Library", locale: "en_US" },
+    keywords: extra.keywords,
+    alternates: { canonical: path, languages: extra.languages },
+    openGraph: { type, url: path, title, description, images: [shareImage], siteName: "Telegram Emoji Library", locale: extra.locale ?? "en_US" },
     twitter: { card: "summary_large_image", title, description, images: [shareImage] },
   };
 }

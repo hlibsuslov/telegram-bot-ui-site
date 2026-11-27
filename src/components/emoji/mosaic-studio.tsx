@@ -73,7 +73,10 @@ const RUN_BYTES = 3 * 1024 * 1024;
 const loadEncoder =() => import("@/lib/emoji-mosaic-encode");
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export function MosaicStudio() {
+/** The words above the drop zone, in the page's language. */
+export type StudioCopy = { h1: string; lead: string; drop: string; dropHint: string };
+
+export function MosaicStudio({ copy }: { copy?: StudioCopy } = {}) {
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const [error, setError] = useState("");
   const [reading, setReading] = useState(false);
@@ -316,10 +319,10 @@ export function MosaicStudio() {
     return (
       <div className="mx-auto max-w-3xl">
         <header className="mb-5 px-1 pt-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Emoji mosaic</h1>
-          <p className="tg-hint mt-1.5 text-[15px]">A clip or picture as a premium emoji pack. Sent as one message, the emoji rebuild it and play together.</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{copy?.h1 ?? "Emoji mosaic"}</h1>
+          <p className="tg-hint mt-1.5 text-[15px] text-balance">{copy?.lead ?? "A clip or picture as a premium emoji pack. Sent as one message, the emoji rebuild it and play together."}</p>
         </header>
-        <DropZone onFile={open} />
+        <DropZone onFile={open} label={copy?.drop} hint={copy?.dropHint} />
         <p role="status" className="mt-3 text-center text-sm">{reading ? <span className="tg-hint">Reading the file…</span> : error && <span className="text-red-600 dark:text-red-400">{error}</span>}</p>
       </div>
     );

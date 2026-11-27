@@ -9,7 +9,7 @@ export type Loaded = { file: File; url: string; source: FrameSource };
 type Corner = "nw" | "ne" | "sw" | "se";
 export const ACCEPT = "video/mp4,video/webm,video/quicktime,image/gif,image/png,image/jpeg,image/webp";
 
-export function DropZone({ onFile }: { onFile: (file: File | undefined) => void }) {
+export function DropZone({ onFile, label, hint }: { onFile: (file: File | undefined) => void; label?: string; hint?: string }) {
   const [over, setOver] = useState(false);
   return (
     <label
@@ -19,8 +19,8 @@ export function DropZone({ onFile }: { onFile: (file: File | undefined) => void 
       className={`tg-field flex aspect-video cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed p-6 text-center ${over ? "border-[var(--tg-accent)]" : "border-transparent"}`}
     >
       <Upload aria-hidden="true" className="tg-accent size-8" />
-      <span className="font-medium">Drop a video, GIF or picture</span>
-      <span className="tg-hint text-[13px]">MP4, WebM, MOV, GIF, PNG, JPEG or WebP. Tiles are cut right here in your browser.</span>
+      <span className="font-medium">{label ?? "Drop a video, GIF or picture"}</span>
+      <span className="tg-hint text-[13px]">{hint ?? "MP4, WebM, MOV, GIF, PNG, JPEG or WebP. Tiles are cut right here in your browser."}</span>
       <input type="file" accept={ACCEPT} className="sr-only" onChange={(e) => onFile(e.target.files?.[0])} />
     </label>
   );
