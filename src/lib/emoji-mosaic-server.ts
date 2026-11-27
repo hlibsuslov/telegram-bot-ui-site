@@ -164,26 +164,79 @@ export function cleanEmoji(value: unknown): string {
   return text.length <= 16 && EMOJI.test(text) ? text : FALLBACK;
 }
 
-/** Adds tile `index` in order. The set's own length is the cursor, so a retried request never adds twice:
- *  a tile already in the set is skipped, a tile ahead of the set is refused. */
-export async function addTile(call: BotCall, job: Job, index: number, data: Uint8Array, emoji: unknown = FALLBACK): Promise<{ added: boolean; have: number }> {
-  if (!Number.isInteger(index) || index < 0 || index >= job.count) throw new MosaicError(400, "BAD_INDEX", "tile index out of range");
-  const type = checkTile(data, job.format);
+export type Tile = { index: number; data: Uint8Array; emoji?: unknown };
+/** createNewStickerSet takes 1-50 stickers in one call. */
+const CREATE_MAX = 50;
+/** uploadStickerFile calls in flight at once, for one request. */
+const UPLOADS_AT_ONCE = 6;
+
+/** Adds a run of tiles in order. The set's own length is the cursor, so a retried request never adds twice:
+ *  tiles already in the set are skipped, a run that starts ahead of the set is refused. The files go up in
+ *  parallel; a new set is created with up to 50 of them in one call, the rest are added one by one (Telegram
+ *  keeps the order of addStickerToSet calls, not of uploads). */
+export async function addTiles(call: BotCall, job: Job, tiles: Tile[]): Promise<{ added: number; have: number }> {
+  if (!tiles.length) throw new MosaicError(400, "BAD_REQUEST", "send at least one tile");
+  for (const t of tiles) if (!Number.isInteger(t.index) || t.index < 0 || t.index >= job.count) throw new MosaicError(400, "BAD_INDEX", "tile index out of range");
+  const run = [...tiles].sort((a, b) => a.index - b.index);
+  if (run.some((t, i) => i > 0 && t.index !== run[i - 1].index + 1)) throw new MosaicError(400, "BAD_INDEX", "send tiles as one unbroken run");
+  const types = run.map((t) => checkTile(t.data, job.format));
   const set = await readSet(call, job.name);
-  const have = set?.stickers?.length ?? 0;
+  let have = set?.stickers?.length ?? 0;
   if (set && set.sticker_type !== "custom_emoji") throw new MosaicError(409, "NOT_EMOJI_SET", "that set isn't a custom emoji set");
-  if (index < have) return { added: false, have };
-  if (index > have) throw new MosaicError(409, "OUT_OF_ORDER", `send tile ${have + 1} first`);
+  const skip = run.findIndex((t) => t.index >= have);
+  if (skip === -1) return { added: 0, have };
+  const todo = run.slice(skip);
+  if (todo[0].index > have) throw new MosaicError(409, "OUT_OF_ORDER", `send tile ${have + 1} first`);
   const format = job.format === "video" ? "video" : "static";
-  const file = (await call("uploadStickerFile", { user_id: job.uid, sticker_format: format }, { field: "sticker", name: type === "video/webm" ? "tile.webm" : "tile.png", type, data })) as { file_id: string };
-  const sticker = { sticker: file.file_id, format, emoji_list: [cleanEmoji(emoji)] };
+
+  const ids: string[] = new Array(todo.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(UPLOADS_AT_ONCE, todo.length) }, async () => {
+    while (next < todo.length) {
+      const k = next++;
+      const t = todo[k];
+      const type = types[skip + k];
+      const file = (await refused(job, [t], () => call("uploadStickerFile", { user_id: job.uid, sticker_format: format }, { field: "sticker", name: type === "video/webm" ? "tile.webm" : "tile.png", type, data: t.data }))) as { file_id: string };
+      ids[k] = file.file_id;
+    }
+  }));
+  const stickers = todo.map((t, k) => ({ sticker: ids[k], format, emoji_list: [cleanEmoji(t.emoji ?? FALLBACK)] }));
+
+  let k = 0;
   if (have === 0) {
-    await call("createNewStickerSet", { user_id: job.uid, name: job.name, title: job.title, sticker_type: "custom_emoji", stickers: [sticker] });
+    const first = stickers.slice(0, CREATE_MAX);
+    await refused(job, todo.slice(0, first.length), () => call("createNewStickerSet", { user_id: job.uid, name: job.name, title: job.title, sticker_type: "custom_emoji", stickers: first }));
     console.info("mosaic: set created", JSON.stringify({ owner: job.uid, set: job.name, tiles: job.count }));
-  } else {
-    await call("addStickerToSet", { user_id: job.uid, name: job.name, sticker });
+    k = first.length;
+    have = first.length;
   }
-  return { added: true, have: have + 1 };
+  for (; k < stickers.length; k++) {
+    await refused(job, [todo[k]], () => call("addStickerToSet", { user_id: job.uid, name: job.name, sticker: stickers[k] }));
+    have++;
+  }
+  return { added: todo.length, have };
+}
+
+/** One tile, for callers that send them singly. */
+export async function addTile(call: BotCall, job: Job, index: number, data: Uint8Array, emoji: unknown = FALLBACK): Promise<{ added: boolean; have: number }> {
+  const { added, have } = await addTiles(call, job, [{ index, data, emoji }]);
+  return { added: added > 0, have };
+}
+
+/** Telegram's sticker errors name the rule, not the file: log the tiles' sizes so a refusal can be traced, and
+ *  tell the visitor which tile it was and how big. */
+async function refused<T>(job: Job, tiles: Tile[], step: () => Promise<T>): Promise<T> {
+  try {
+    return await step();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (!/STICKER_VIDEO_(BIG|LONG)|STICKER_.*(SIZE|DIMENSIONS)/i.test(message)) throw err;
+    const biggest = tiles.reduce((a, b) => (b.data.length > a.data.length ? b : a));
+    const kb = Math.round(biggest.data.length / 102.4) / 10;
+    console.warn("mosaic: tile refused", JSON.stringify({ set: job.name, tiles: tiles.map((t) => [t.index, t.data.length]), error: message }));
+    const which = tiles.length === 1 ? `tile ${biggest.index + 1} (${kb} KB)` : `one of tiles ${tiles[0].index + 1}-${tiles[tiles.length - 1].index + 1} (the largest is ${kb} KB)`;
+    throw new MosaicError(422, "TILE_REFUSED", `Telegram refused ${which}: ${message}. Pick a shorter or calmer part of the clip, or turn Animated off, and try again`);
+  }
 }
 
 /** Reads the set back, sends the mosaic to its owner and says whether every custom emoji survived. */

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
 import { Upload } from "lucide-react";
-import { MAX_SECONDS, type Rect, TILE, clampCrop } from "@/lib/emoji-mosaic";
+import { MAX_SECONDS, type Outline, type Rect, TILE, clampCrop } from "@/lib/emoji-mosaic";
 import type { FrameSource } from "@/lib/emoji-mosaic-encode";
 
 export type Loaded = { file: File; url: string; source: FrameSource };
@@ -26,7 +26,10 @@ export function DropZone({ onFile }: { onFile: (file: File | undefined) => void 
   );
 }
 
-export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, duration, animated }: { loaded: Loaded; crop: Rect; aspect: number | null; grid?: { cols: number; rows: number; radius: number } | null; onCrop: (r: Rect) => void; start: number; duration: number; animated: boolean }) {
+export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, duration, animated, still = false, onTrim }: {
+  loaded: Loaded; crop: Rect; aspect: number | null; grid?: { cols: number; rows: number; radius: number; outline?: Outline } | null; onCrop: (r: Rect) => void;
+  start: number; duration: number; animated: boolean; still?: boolean; onTrim?: (start: number, length: number) => void;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const drag = useRef<{ mode: "move" | Corner; x: number; y: number; rect: Rect } | null>(null);
@@ -128,7 +131,7 @@ export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, dur
     ? `M2 ${handle}V${arc + 2}A${arc} ${arc} 0 0 1 ${arc + 2} 2H${handle}`
     : `M${at(Math.PI / 4 - half)}A${arc} ${arc} 0 0 1 ${at(Math.PI / 4 + half)}`;
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex flex-col items-center">
       <div ref={box} className="relative w-full touch-none select-none overflow-hidden rounded-xl bg-[repeating-conic-gradient(#8882_0_25%,transparent_0_50%)] bg-[length:16px_16px]" style={{ aspectRatio: `${width} / ${height}`, maxHeight: "var(--crop-max, 62vh)", maxWidth: `calc(var(--crop-max, 62vh) * ${width / height})` }} onPointerMove={move} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}>
         {isVideo ? (
           <video ref={video} src={loaded.url} muted playsInline autoPlay={animated} loop className="pointer-events-none absolute inset-0 size-full" />
@@ -149,6 +152,9 @@ export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, dur
               {Array.from({ length: grid.rows - 1 }, (_, i) => <span key={`r${i}`} className="absolute inset-x-0 h-px -translate-y-1/2 bg-white/45" style={{ top: pct(i + 1, grid.rows) }} />)}
             </span>
           )}
+          {grid?.outline && (
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ borderRadius: rounding, boxShadow: `inset 0 0 0 ${Math.max(1, (grid.outline.width / (grid.cols * TILE)) * frameW)}px ${grid.outline.color}` }} />
+          )}
           <span aria-hidden="true" className="pointer-events-none absolute inset-0 ring-1 ring-white/80" style={{ borderRadius: rounding }} />
           {corners.map((c) => (
             <span key={c} role="button" tabIndex={0} aria-label={`Resize from the ${{ nw: "top-left", ne: "top-right", sw: "bottom-left", se: "bottom-right" }[c]} corner`}
@@ -165,6 +171,146 @@ export function CropView({ loaded, crop, aspect, grid = null, onCrop, start, dur
             </span>
           ))}
         </div>
+      </div>
+      {animated && onTrim && <TrimBar source={loaded.source} start={start} length={duration} still={still} video={isVideo ? video : null} onTrim={onTrim} />}
+    </div>
+  );
+}
+
+const MIN_TRIM = 0.3;
+const THUMBS = 10;
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+const round = (t: number) => Math.round(t * 100) / 100;
+const clock = (t: number) => `${Math.floor(t / 60)}:${(t % 60).toFixed(1).padStart(4, "0")}`;
+
+/** The clip's timeline under the picture: a filmstrip with a window of at most MAX_SECONDS that is dragged, or
+ *  stretched by its handles. Only that window goes into the tiles, so a long video never yields a tile Telegram
+ *  refuses as too long. With "Animated" off it becomes a marker that picks the one frame. */
+function TrimBar({ source, start, length, still, video, onTrim }: {
+  source: FrameSource; start: number; length: number; still: boolean; video: RefObject<HTMLVideoElement | null> | null; onTrim: (start: number, length: number) => void;
+}) {
+  const total = source.duration;
+  const track = useRef<HTMLDivElement>(null);
+  const head = useRef<HTMLSpanElement>(null);
+  const thumbs = useRef<(HTMLCanvasElement | null)[]>([]);
+  const drag = useRef<{ mode: "move" | "start" | "end"; x: number; start: number; length: number } | null>(null);
+  const len = still ? 0 : clamp(Math.min(length, total - start), 0, MAX_SECONDS);
+  const thumbH = 72;
+  const thumbW = Math.round(thumbH * (source.width / source.height));
+
+  useEffect(() => {
+    let stop = false;
+    (async () => {
+      const times = Array.from({ length: THUMBS }, (_, i) => (total * (i + 0.5)) / THUMBS);
+      let i = 0;
+      try {
+        for await (const image of source.frames(times)) {
+          if (stop) break;
+          const canvas = thumbs.current[i++];
+          if (image && canvas) canvas.getContext("2d")!.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
+      } catch { /* the source was closed: a new file replaced it */ }
+    })();
+    return () => { stop = true; };
+  }, [source, total]);
+
+  useEffect(() => {
+    const v = video?.current;
+    const el = head.current;
+    if (!v || !el || still) return;
+    let frame = 0;
+    const tick = () => { el.style.left = `${(v.currentTime / total) * 100}%`; frame = requestAnimationFrame(tick); };
+    tick();
+    return () => cancelAnimationFrame(frame);
+  }, [video, total, still]);
+
+  function apply(mode: "move" | "start" | "end", s0: number, l0: number, dt: number) {
+    if (still) return onTrim(round(clamp(s0 + dt, 0, Math.max(0, total - 0.1))), length);
+    if (mode === "move") return onTrim(round(clamp(s0 + dt, 0, total - l0)), l0);
+    if (mode === "start") {
+      const end = s0 + l0;
+      const s = round(clamp(s0 + dt, Math.max(0, end - MAX_SECONDS), Math.max(0, end - MIN_TRIM)));
+      return onTrim(s, round(end - s));
+    }
+    onTrim(s0, round(clamp(l0 + dt, Math.min(MIN_TRIM, total - s0), Math.min(MAX_SECONDS, total - s0))));
+  }
+
+  function down(e: ReactPointerEvent, mode: "move" | "start" | "end") {
+    e.preventDefault();
+    e.stopPropagation();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    drag.current = { mode, x: e.clientX, start, length: len };
+  }
+
+  // A press on the strip outside the window centres the window there and keeps dragging it.
+  function jump(e: ReactPointerEvent) {
+    const r = track.current!.getBoundingClientRect();
+    const at = ((e.clientX - r.left) / r.width) * total;
+    const s = round(clamp(at - len / 2, 0, Math.max(0, total - (still ? 0.1 : len))));
+    onTrim(s, still ? length : len);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    drag.current = { mode: "move", x: e.clientX, start: s, length: len };
+  }
+
+  function move(e: ReactPointerEvent) {
+    const d = drag.current;
+    if (!d) return;
+    const r = track.current!.getBoundingClientRect();
+    apply(d.mode, d.start, d.length, ((e.clientX - d.x) / r.width) * total);
+  }
+
+  function key(mode: "move" | "start" | "end") {
+    return (e: ReactKeyboardEvent) => {
+      const step = e.shiftKey ? 0.5 : 0.1;
+      const dt = { ArrowLeft: -step, ArrowDown: -step, ArrowRight: step, ArrowUp: step }[e.key];
+      if (dt === undefined) return;
+      e.preventDefault();
+      e.stopPropagation();
+      apply(mode, start, len, dt);
+    };
+  }
+
+  const pct = (t: number) => `${(t / total) * 100}%`;
+  const veil = "bg-[color-mix(in_srgb,var(--tg-card)_68%,transparent)]";
+  return (
+    <div className="w-full px-1.5 pt-3">
+      <div className="px-3.5">
+        <div ref={track} onPointerDown={jump} onPointerMove={move} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
+          className="relative h-12 cursor-pointer touch-none select-none">
+          <div aria-hidden="true" className="tg-field absolute inset-0 flex overflow-hidden rounded-lg">
+            {Array.from({ length: THUMBS }, (_, i) => (
+              <canvas key={i} ref={(el) => { thumbs.current[i] = el; }} width={thumbW} height={thumbH} className="h-full min-w-0 flex-1 object-cover" />
+            ))}
+          </div>
+          {/* The parts that are left out fade into the card. */}
+          <span aria-hidden="true" className={`pointer-events-none absolute inset-y-0 left-0 rounded-l-lg ${veil}`} style={{ width: pct(start) }} />
+          <span aria-hidden="true" className={`pointer-events-none absolute inset-y-0 right-0 rounded-r-lg ${veil}`} style={{ left: pct(start + len) }} />
+          {still ? (
+            <span role="slider" tabIndex={0} aria-label="Frame" aria-valuemin={0} aria-valuemax={round(total)} aria-valuenow={start} aria-valuetext={`${start.toFixed(1)} seconds`}
+              onPointerDown={(e) => down(e, "move")} onKeyDown={key("move")}
+              className="absolute -inset-y-1 w-3 -translate-x-1/2 cursor-ew-resize" style={{ left: pct(start) }}>
+              <span className="absolute inset-y-0 left-1/2 w-1 -translate-x-1/2 rounded-full bg-[var(--tg-accent)] ring-2 ring-white" />
+            </span>
+          ) : (
+            <div role="slider" tabIndex={0} aria-label="Clip position" aria-valuemin={0} aria-valuemax={round(total - len)} aria-valuenow={start} aria-valuetext={`${clock(start)} to ${clock(start + len)}`}
+              onPointerDown={(e) => down(e, "move")} onKeyDown={key("move")}
+              className="absolute inset-y-0 cursor-grab border-y-[3px] border-[var(--tg-accent)] active:cursor-grabbing" style={{ left: pct(start), width: pct(len) }}>
+              {(["start", "end"] as const).map((edge) => (
+                <span key={edge} role="slider" tabIndex={0} aria-label={edge === "start" ? "Clip start" : "Clip end"}
+                  aria-valuemin={0} aria-valuemax={round(total)} aria-valuenow={edge === "start" ? start : round(start + len)}
+                  onPointerDown={(e) => down(e, edge)} onKeyDown={key(edge)}
+                  className={`absolute -inset-y-[3px] flex w-3.5 cursor-ew-resize items-center justify-center bg-[var(--tg-accent)] ${edge === "start" ? "-left-3.5 rounded-l-lg" : "-right-3.5 rounded-r-lg"}`}>
+                  <span className="h-4 w-[3px] rounded-full bg-white/90" />
+                </span>
+              ))}
+            </div>
+          )}
+          {video && !still && <span ref={head} aria-hidden="true" className="pointer-events-none absolute -inset-y-1 w-[3px] -translate-x-1/2 rounded-full bg-white shadow-[0_0_0_1px_rgb(0_0_0/0.25)]" />}
+        </div>
+      </div>
+      <div className="tg-hint mt-2 flex items-center justify-between gap-2 px-1.5 text-[12px] tabular-nums">
+        <span className="font-medium text-[var(--tg-text)]">{still ? `Frame at ${clock(start)}` : `${clock(start)} – ${clock(start + len)}`}</span>
+        <span>{still ? `of ${clock(total)}` : `${len.toFixed(1)} s of ${total.toFixed(1)} s · up to ${MAX_SECONDS} s`}</span>
       </div>
     </div>
   );

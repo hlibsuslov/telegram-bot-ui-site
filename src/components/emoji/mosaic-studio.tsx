@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { Check, Download, ExternalLink, LoaderCircle, Minus, Pause, Play, Plus, RotateCcw, Sparkles, Upload, X } from "lucide-react";
 import {
   DEFAULT_FALLBACK,
@@ -9,6 +9,9 @@ import {
   MAX_EMOJI,
   MAX_FPS,
   MAX_SECONDS,
+  OUTLINE_COLORS,
+  OUTLINE_WIDTHS,
+  type OutlineWidth,
   type Rect,
   TILE,
   autoGrid,
@@ -18,6 +21,7 @@ import {
   gridOptions,
   isSingleEmoji,
   maxRadius,
+  strokeOutline,
 } from "@/lib/emoji-mosaic";
 import { zip } from "@/lib/emoji-mosaic-zip";
 import type { EncodedMosaic, MosaicSettings } from "@/lib/emoji-mosaic-encode";
@@ -41,7 +45,10 @@ const FIT_LABEL = { safe: "fits every phone", "check-narrow-phone": "check on a 
 /** Corner presets in mosaic pixels (a tile is 100). "Round" is always the most the grid allows. */
 const CORNERS = [["none", "None", 0], ["small", "Small", 30], ["medium", "Medium", 60], ["large", "Large", 100], ["round", "Round", Infinity]] as const;
 type Corners = (typeof CORNERS)[number][0];
-const loadEncoder = () => import("@/lib/emoji-mosaic-encode");
+/** One upload request: at most this many tiles and bytes (the server takes 50 and 3.5 MB). */
+const RUN_TILES = 50;
+const RUN_BYTES = 3 * 1024 * 1024;
+const loadEncoder =() => import("@/lib/emoji-mosaic-encode");
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function MosaicStudio() {
@@ -54,6 +61,8 @@ export function MosaicStudio() {
   const [crop, setCrop] = useState<Rect>({ x: 0, y: 0, w: 1, h: 1 });
   const [locked, setLocked] = useState(true);
   const [corners, setCorners] = useState<Corners>("small");
+  const [outlineWidth, setOutlineWidth] = useState<OutlineWidth>("none");
+  const [outlineColor, setOutlineColor] = useState<string>(OUTLINE_COLORS[0][0]);
   const [start, setStart] = useState(0);
   const [duration, setDuration] = useState(DEFAULT_SECONDS);
   const [fps, setFps] = useState(MAX_FPS);
@@ -81,10 +90,12 @@ export function MosaicStudio() {
   const cornerOptions = CORNERS.filter(([key, , px]) => key === "round" || px < maxRadius(cols, rows));
   const cornerKey: Corners = cornerOptions.some(([key]) => key === corners) ? corners : "round";
   const radius = Math.min(CORNERS.find(([key]) => key === cornerKey)![2], maxRadius(cols, rows));
+  const outlinePx = OUTLINE_WIDTHS.find(([key]) => key === outlineWidth)![2];
+  const outline = useMemo(() => (outlinePx > 0 ? { color: outlineColor, width: outlinePx } : undefined), [outlinePx, outlineColor]);
   const emoji = useMemo(() => Array.from({ length: count }, (_, i) => tileEmoji[i] ?? baseEmoji), [count, tileEmoji, baseEmoji]);
   const recommended = useMemo(() => gridOptions(width, height, { maxCols: PICKER_COLS, limit: 40 }).filter((o) => o.crop <= 0.05 && o.rows <= PICKER_ROWS), [width, height]);
-  const settings: MosaicSettings = useMemo(() => ({ cols, rows, crop, fit: locked ? "cover" : "contain", radius, start, duration, fps, still: still || !animated, fallback: baseEmoji, emoji }), [cols, rows, crop, locked, radius, start, duration, fps, still, animated, baseEmoji, emoji]);
-  const encodeKey = loaded ? JSON.stringify([loaded.url, cols, rows, crop, settings.fit, settings.radius, start, duration, fps, settings.still, emoji]) : "";
+  const settings: MosaicSettings = useMemo(() => ({ cols, rows, crop, fit: locked ? "cover" : "contain", radius, start, duration, fps, still: still || !animated, fallback: baseEmoji, emoji, outline }), [cols, rows, crop, locked, radius, start, duration, fps, still, animated, baseEmoji, emoji, outline]);
+  const encodeKey = loaded ? JSON.stringify([loaded.url, cols, rows, crop, settings.fit, settings.radius, start, duration, fps, settings.still, emoji, outline]) : "";
 
   async function open(file: File | undefined) {
     if (!file) return;
@@ -151,37 +162,67 @@ export function MosaicStudio() {
     const controller = new AbortController();
     abort.current = controller;
     try {
+      // The content check needs only a few frames of the mosaic, so it runs while the tiles are encoded; a
+      // refusal stops the encoding.
+      let packed: Promise<{ job: string }> | null = null;
+      if (hosted.enabled && user) {
+        setStep({ kind: "checking", label: "Preparing" });
+        const { sampleFrames } = await loadEncoder();
+        const form = new FormData();
+        form.set("count", String(count));
+        form.set("cols", String(cols));
+        form.set("format", settings.still ? "static" : "video");
+        for (const [i, frame] of (await sampleFrames(loaded!.source, settings)).entries()) form.append("frame", frame, `frame-${i}.jpg`);
+        packed = api<{ job: string }>("/api/mosaic/pack", form).catch((err) => { controller.abort(); throw err; });
+        packed.catch(() => {});
+      }
       setStep({ kind: "encoding", done: 0, total: count, label: "Cutting tiles" });
-      const result = await encode(controller.signal);
-      if (!hosted.enabled || !user) return setStep({ kind: "zip" });
+      let result: Encoded;
+      try {
+        result = await encode(controller.signal);
+      } catch (err) {
+        if (packed) await packed;
+        throw err;
+      }
+      if (!packed) return setStep({ kind: "zip" });
       setStep({ kind: "checking", label: "Checking the content" });
-      const { sampleFrames } = await loadEncoder();
-      const form = new FormData();
-      form.set("count", String(count));
-      form.set("cols", String(cols));
-      form.set("format", result.manifest.format);
-      for (const [i, frame] of (await sampleFrames(loaded!.source, settings)).entries()) form.append("frame", frame, `frame-${i}.jpg`);
-      const pack = await api<{ job: string }>("/api/mosaic/pack", form);
-      for (let i = 0; i < result.files.length; i++) {
-        setStep({ kind: "uploading", done: i, total: result.files.length });
+      const { job } = await packed;
+
+      // Tiles go up in runs of up to 50 (one createNewStickerSet for the first run) and 3 MB, well under the
+      // platform's body limit. The server answers with the set's length, which is where the next run starts, so
+      // a retried run never adds a tile twice.
+      const total = result.files.length;
+      const type = result.manifest.format === "video" ? "video/webm" : "image/png";
+      let next = 0;
+      while (next < total) {
+        let end = next;
+        let bytes = 0;
+        while (end < total && end - next < RUN_TILES && (end === next || bytes + result.files[end].data.length <= RUN_BYTES)) bytes += result.files[end++].data.length;
+        setStep({ kind: "uploading", done: next, total });
         for (let attempt = 0; ; attempt++) {
           if (controller.signal.aborted) throw new DOMException("Stopped", "AbortError");
           const form = new FormData();
-          form.set("job", pack.job);
-          form.set("index", String(i));
-          form.set("emoji", emoji[i]);
-          form.set("tile", new Blob([result.files[i].data], { type: result.manifest.format === "video" ? "video/webm" : "image/png" }), result.files[i].name.split("/").pop());
+          form.set("job", job);
+          for (let i = next; i < end; i++) {
+            form.append("index", String(i));
+            form.append("emoji", emoji[i]);
+            form.append("tile", new Blob([result.files[i].data], { type }), result.files[i].name.split("/").pop());
+          }
           const res = await fetch("/api/mosaic/tile", { method: "POST", body: form }).catch(() => null);
-          const body = (await res?.json().catch(() => null)) as { ok?: boolean; error?: { message: string; retryAfter?: number | null } } | null;
-          if (res?.ok && body?.ok) break;
+          const body = (await res?.json().catch(() => null)) as { ok?: boolean; have?: number; error?: { message: string; retryAfter?: number | null } } | null;
+          if (res?.ok && body?.ok) {
+            if (!body.have || body.have <= next) throw new Error("The pack didn't grow; start again.");
+            next = body.have;
+            break;
+          }
           const wait = body?.error?.retryAfter ?? (res && res.status < 500 && res.status !== 429 ? null : 2);
           if (wait === null || attempt >= 8) throw new Error(body?.error?.message ?? "The upload failed.");
-          setStep({ kind: "uploading", done: i, total: result.files.length, wait });
+          setStep({ kind: "uploading", done: next, total, wait });
           await sleep(wait * 1000);
         }
       }
       setStep({ kind: "checking", label: "Checking the finished pack" });
-      const done = await api<{ link: string; delivered: boolean }>("/api/mosaic/finish", { job: pack.job });
+      const done = await api<{ link: string; delivered: boolean }>("/api/mosaic/finish", { job });
       setStep({ kind: "done", link: done.link, delivered: done.delivered });
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return setStep(null);
@@ -261,7 +302,8 @@ export function MosaicStudio() {
 
       <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:grid-rows-[auto_1fr] lg:gap-x-5">
           <section aria-label="Crop" className="min-w-0 lg:col-start-1 lg:row-start-1 tg-glass relative flex flex-col rounded-2xl p-2 [--crop-max:48vh] lg:[--crop-max:58vh]">
-            <CropView loaded={loaded} crop={crop} aspect={locked ? aspect : null} grid={locked ? { cols, rows, radius } : null} onCrop={setCrop} start={start} duration={duration} animated={animated} />
+            <CropView loaded={loaded} crop={crop} aspect={locked ? aspect : null} grid={locked ? { cols, rows, radius, outline } : null} onCrop={setCrop} start={start} duration={duration} animated={animated} still={settings.still}
+              onTrim={(s, l) => { setStart(s); if (!settings.still) setDuration(l); }} />
             <div className="flex items-center gap-2 px-1.5 pt-2 text-[12px]">
               <span className="tg-hint min-w-0 flex-1 truncate">Drag the frame or its corners{locked ? "; it keeps the grid's shape" : ""}.</span>
               <button type="button" onClick={() => setCrop(clampCrop(centeredCrop(width, height, aspect), width, height, locked ? aspect : null))} className="tg-cell tg-accent inline-flex h-7 items-center gap-1 rounded-lg px-2"><RotateCcw aria-hidden="true" className="size-3.5" /> Centre</button>
@@ -274,28 +316,23 @@ export function MosaicStudio() {
             <GridPicker cols={cols} rows={rows} recommended={recommended} onPick={setGrid} />
           </Group>
 
-          <Group title="Shape">
+          <Group title="Shape" footer={outline ? "White reads on dark chats, black on light ones, the colours on both. Check with Light and Dark in the preview." : undefined}>
             <Cell label="Fill every tile"><Switch label="Fill every tile" checked={locked} onChange={setShape} /></Cell>
             <div className="px-4 pt-2.5 pb-3">
               <p className="mb-2 text-[15px]">Rounded corners</p>
               <Segmented full label="Rounded corners" value={cornerKey} options={cornerOptions.map(([key, text]) => [key, text])} onChange={(v) => setCorners(v as Corners)} />
             </div>
+            <div className="px-4 pt-2.5 pb-3">
+              <p className="mb-2 text-[15px]">Outline</p>
+              <Segmented full label="Outline thickness" value={outlineWidth} options={OUTLINE_WIDTHS.map(([key, text]) => [key, text])} onChange={(v) => setOutlineWidth(v as OutlineWidth)} />
+              {outline && <ColorPicker value={outlineColor} onChange={setOutlineColor} />}
+            </div>
           </Group>
 
           {animated && (
-            <Group title="Motion" footer={vp9 === false ? "This browser can't encode VP9: the pack will be static. Chrome, Edge and Firefox can." : undefined}>
+            <Group title="Motion" footer={vp9 === false ? "This browser can't encode VP9: the pack will be static. Chrome, Edge and Firefox can." : settings.still ? "Pick the frame on the timeline under the picture." : `Pick up to ${MAX_SECONDS} s on the timeline under the picture; only that part goes into the tiles.`}>
               <Cell label="Animated"><Switch label="Animated tiles" checked={!still} disabled={!vp9} onChange={(on) => setStill(!on)} /></Cell>
-              <Cell label="Start" value={`${start.toFixed(2)} s`}>
-                <Slider label="Start" min={0} max={Math.max(0, source!.duration - 0.1)} step={0.05} value={start} onChange={setStart} />
-              </Cell>
-              {!still && (
-                <>
-                  <Cell label="Length" value={`${Math.min(duration, source!.duration - start).toFixed(2)} s`}>
-                    <Slider label="Length" min={0.3} max={MAX_SECONDS} step={0.05} value={duration} onChange={setDuration} />
-                  </Cell>
-                  <Cell label="Frame rate"><Segmented label="Frame rate" value={String(fps)} options={[["15", "15"], ["24", "24"], ["30", "30"]]} onChange={(v) => setFps(+v)} /></Cell>
-                </>
-              )}
+              {!settings.still && <Cell label="Frame rate"><Segmented label="Frame rate" value={String(fps)} options={[["15", "15"], ["24", "24"], ["30", "30"]]} onChange={(v) => setFps(+v)} /></Cell>}
             </Group>
           )}
 
@@ -479,7 +516,7 @@ function Previews({ loaded, settings, dark, animated, compact = false, theme: th
     el.addEventListener(video ? "seeked" : "load", again);
     video?.addEventListener("loadeddata", again);
     return () => { stop = true; cancelAnimationFrame(frame); el.removeEventListener(video ? "seeked" : "load", again); video?.removeEventListener("loadeddata", again); video?.pause(); };
-  }, [loaded, settings.crop, settings.fit, settings.radius, settings.start, settings.duration, cols, rows, animated, playing, compact]); // eslint-disable-line react-hooks/exhaustive-deps -- settings is rebuilt each render; its fields are listed
+  }, [loaded, settings.crop, settings.fit, settings.radius, settings.outline, settings.start, settings.duration, cols, rows, animated, playing, compact]); // eslint-disable-line react-hooks/exhaustive-deps -- settings is rebuilt each render; its fields are listed
 
   const canvasProps = { width: w * scale, height: h * scale, style: { width: w, height: h }, className: "block max-w-none" };
   const theme = dark ? { wall: "bg-[#0e1621]", bubble: "bg-[#182533] text-white", hint: "text-[#6d8299]", link: "text-[#71baf9]" } : { wall: "bg-[#dfe6ee]", bubble: "bg-white text-black", hint: "text-[#a1aab3]", link: "text-[#168acd]" };
@@ -545,6 +582,7 @@ function drawMosaicSync(ctx: OffscreenCanvasRenderingContext2D, image: CanvasIma
     ctx.fill();
   }
   ctx.restore();
+  strokeOutline(ctx, width, height, s.radius, s.outline);
 }
 
 // ------------------------------------------------------------------ the pack dialog
@@ -673,6 +711,25 @@ function Switch({ label, checked, disabled, onChange }: { label: string; checked
   );
 }
 
+function ColorPicker({ value, onChange }: { value: string; onChange: (color: string) => void }) {
+  const preset = OUTLINE_COLORS.some(([c]) => c.toLowerCase() === value.toLowerCase());
+  const ring = "ring-2 ring-[var(--tg-accent)] ring-offset-2 ring-offset-[var(--tg-card)]";
+  return (
+    <div role="radiogroup" aria-label="Outline colour" className="mt-3 flex flex-wrap items-center gap-2.5">
+      {OUTLINE_COLORS.map(([color, name]) => (
+        <button key={color} type="button" role="radio" aria-checked={value.toLowerCase() === color.toLowerCase()} aria-label={name} title={name} onClick={() => onChange(color)}
+          className={`size-7 rounded-full shadow-[inset_0_0_0_1px_rgb(0_0_0/0.14)] transition-shadow dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.18)] ${value.toLowerCase() === color.toLowerCase() ? ring : ""}`}
+          style={{ background: color }} />
+      ))}
+      <label title="Another colour" className={`tg-field relative inline-flex size-7 cursor-pointer items-center justify-center rounded-full ${!preset ? ring : ""}`}
+        style={!preset ? { background: value } : undefined}>
+        {preset && <Plus aria-hidden="true" className="tg-hint size-3.5" />}
+        <input type="color" aria-label="Another outline colour" value={value} onChange={(e) => onChange(e.target.value)} className="absolute inset-0 cursor-pointer opacity-0" />
+      </label>
+    </div>
+  );
+}
+
 function Segmented({ label, value, options, full = false, onChange }: { label: string; value: string; options: [string, string][]; full?: boolean; onChange: (v: string) => void }) {
   return (
     <div role="radiogroup" aria-label={label} className={`tg-field flex rounded-[10px] p-0.5 text-[13px] ${full ? "w-full" : ""}`}>
@@ -681,14 +738,6 @@ function Segmented({ label, value, options, full = false, onChange }: { label: s
           className={`h-7 min-w-10 rounded-lg px-2.5 font-medium transition-colors ${full ? "flex-1" : ""} ${value === v ? "tg-glass-strong shadow-sm" : "tg-hint hover:text-[var(--tg-text)]"}`}>{text}</button>
       ))}
     </div>
-  );
-}
-
-function Slider({ label, min, max, step, value, onChange }: { label: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void }) {
-  const fill = max > min ? ((value - min) / (max - min)) * 100 : 0;
-  return (
-    <input type="range" aria-label={label} min={min} max={max} step={step} value={value} onChange={(e) => onChange(+e.target.value)}
-      className="tg-range w-full" style={{ "--fill": `${fill}%` } as CSSProperties} />
   );
 }
 

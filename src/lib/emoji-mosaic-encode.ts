@@ -9,9 +9,11 @@ import {
   MAX_VIDEO_BYTES,
   MOSAIC_SCHEMA,
   type MosaicManifest,
+  type Outline,
   type Rect,
   TILE,
   placement,
+  strokeOutline,
   tileNames,
 } from "./emoji-mosaic";
 
@@ -40,12 +42,29 @@ export type MosaicSettings = {
   fallback?: string;
   /** The emoji behind each tile, in tile order. */
   emoji?: string[];
+  outline?: Outline;
 };
 
 export type EncodedMosaic = { manifest: MosaicManifest; files: { name: string; data: Uint8Array<ArrayBuffer> }[] };
 
-const BITRATES = [400_000, 250_000, 160_000, 100_000];
-const BATCH = 16;
+/** Each pass encodes again only the tiles still over the target: lower bitrates first (constant rate once the
+ *  first pass overshot), then half the frame rate. The software encoder is asked for, since hardware VP9
+ *  encoders may ignore the bitrate. */
+const PASSES: { bitrate: number; mode: "variable" | "constant"; fpsScale: number }[] = [
+  { bitrate: 160_000, mode: "variable", fpsScale: 1 },
+  { bitrate: 110_000, mode: "constant", fpsScale: 1 },
+  { bitrate: 75_000, mode: "constant", fpsScale: 1 },
+  { bitrate: 75_000, mode: "constant", fpsScale: 0.5 },
+  { bitrate: 45_000, mode: "constant", fpsScale: 0.5 },
+];
+/** The size each tile aims for. Telegram documents 256 KB, but has refused tiles under it with
+ *  STICKER_VIDEO_BIG; its own video emoji are mostly 20-60 KB, and at 100x100 this budget still looks sharp. */
+const TARGET_BYTES = 64 * 1024;
+/** Never sent: over Telegram's documented limit, less some room for the WebM container. */
+const HARD_BYTES = MAX_VIDEO_BYTES - 4 * 1024;
+/** Tiles encoded side by side from one decode of the clip. Each encoder is a 100x100 VP9 stream, so 50 at once is
+ *  light; most grids then need a single pass over the video. */
+const BATCH = 50;
 
 type DecoderFrame = { image: CanvasImageSource & { close(): void }; duration: number | null; timestamp: number };
 type ImageDecoderLike = {
@@ -120,7 +139,7 @@ async function openGif(file: File): Promise<FrameSource> {
 }
 
 /** Draws one mosaic frame: the crop placed on the cols*100 x rows*100 canvas, corners cut when asked. */
-export function drawMosaic(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, image: CanvasImageSource, s: Pick<MosaicSettings, "cols" | "rows" | "crop" | "fit" | "radius">) {
+export function drawMosaic(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, image: CanvasImageSource, s: Pick<MosaicSettings, "cols" | "rows" | "crop" | "fit" | "radius" | "outline">) {
   const width = s.cols * TILE;
   const height = s.rows * TILE;
   const at = placement(s.crop, s.cols, s.rows, s.fit);
@@ -135,6 +154,7 @@ export function drawMosaic(ctx: CanvasRenderingContext2D | OffscreenCanvasRender
     ctx.fill();
   }
   ctx.restore();
+  strokeOutline(ctx, width, height, s.radius, s.outline);
 }
 
 export async function canEncodeVp9(): Promise<boolean> {
@@ -156,6 +176,15 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
   const canvas = new OffscreenCanvas(s.cols * TILE, s.rows * TILE);
   const ctx = canvas.getContext("2d", { alpha: true })!;
   const alpha = s.radius > 0 || s.fit === "contain" || source.mayHaveAlpha;
+  // Alpha is a second stream in VP9 and about doubles a tile, so only tiles with a see-through pixel carry it:
+  // with "cover" and an opaque source, those are the tiles the rounded corners cut into.
+  const cornerTile = (i: number) => {
+    const c = i % s.cols;
+    const r = Math.floor(i / s.cols);
+    const reach = Math.ceil(s.radius / TILE);
+    return (c < reach || c >= s.cols - reach) && (r < reach || r >= s.rows - reach);
+  };
+  const tileAlpha = (i: number) => s.fit === "contain" || source.mayHaveAlpha || (s.radius > 0 && cornerTile(i));
   const files: EncodedMosaic["files"] = [];
 
   if (still) {
@@ -168,12 +197,13 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
       onProgress(i + 1, count, "Cutting tiles");
     }
   } else {
-    const frames = Math.max(1, Math.round(duration * fps));
-    const times = Array.from({ length: frames }, (_, i) => s.start + i / fps);
     const out = new Map<number, Uint8Array<ArrayBuffer>>();
     let pending = Array.from({ length: count }, (_, i) => i);
-    for (const bitrate of BITRATES) {
+    for (const [pass, { bitrate, mode, fpsScale }] of PASSES.entries()) {
       if (!pending.length) break;
+      const rate = Math.max(1, Math.round(fps * fpsScale));
+      const frames = Math.max(1, Math.round(duration * rate));
+      const times = Array.from({ length: frames }, (_, i) => s.start + i / rate);
       const over: number[] = [];
       for (let first = 0; first < pending.length; first += BATCH) {
         if (signal?.aborted) throw new DOMException("Stopped", "AbortError");
@@ -182,8 +212,9 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
           const tile = new OffscreenCanvas(TILE, TILE);
           const tctx = tile.getContext("2d", { alpha: true })!;
           const output = new Output({ format: new WebMOutputFormat(), target: new BufferTarget() });
-          const video = new CanvasSource(tile, { codec: "vp9", quality: new Quality({ bitrate, bitrateMode: "variable" }), alpha: alpha ? "keep" : "discard", keyFrameInterval: MAX_SECONDS });
-          output.addVideoTrack(video, { frameRate: fps, canBeTransparent: alpha });
+          const keep = tileAlpha(index);
+          const video = new CanvasSource(tile, { codec: "vp9", quality: new Quality({ bitrate, bitrateMode: mode }), alpha: keep ? "keep" : "discard", keyFrameInterval: MAX_SECONDS, hardwareAcceleration: "prefer-software" });
+          output.addVideoTrack(video, { frameRate: rate, canBeTransparent: keep });
           return { index, tile, tctx, output, video };
         });
         await Promise.all(encoders.map((e) => e.output.start()));
@@ -194,19 +225,23 @@ export async function encodeMosaic(file: File, source: FrameSource, s: MosaicSet
           await Promise.all(encoders.map((e) => {
             e.tctx.clearRect(0, 0, TILE, TILE);
             e.tctx.drawImage(canvas, (e.index % s.cols) * TILE, Math.floor(e.index / s.cols) * TILE, TILE, TILE, 0, 0, TILE, TILE);
-            return e.video.add(frame / fps, 1 / fps);
+            return e.video.add(frame / rate, 1 / rate);
           }));
           frame++;
-          onProgress(first + Math.round((frame / frames) * batch.length), pending.length, bitrate === BITRATES[0] ? "Encoding tiles" : "Shrinking large tiles");
+          onProgress(first + Math.round((frame / frames) * batch.length), pending.length, pass === 0 ? "Encoding tiles" : "Shrinking large tiles");
         }
         for (const e of encoders) {
           await e.output.finalize();
           const data = new Uint8Array(e.output.target.buffer!);
-          if (data.length > MAX_VIDEO_BYTES && bitrate !== BITRATES[BITRATES.length - 1]) over.push(e.index);
-          out.set(e.index, data);
+          if (data.length > TARGET_BYTES) over.push(e.index);
+          if (!out.has(e.index) || data.length < out.get(e.index)!.length) out.set(e.index, data);
         }
       }
       pending = over;
+    }
+    const tooBig = [...out.values()].filter((d) => d.length > HARD_BYTES).length;
+    if (tooBig) {
+      throw new Error(`${tooBig === 1 ? "One tile is" : `${tooBig} tiles are`} still over Telegram's 256 KB even at the lowest quality. Pick a shorter or calmer part of the clip, use fewer frames per second, or turn Animated off.`);
     }
     for (let i = 0; i < count; i++) files.push({ name: names[i], data: out.get(i)! });
   }
